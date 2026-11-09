@@ -14,7 +14,10 @@ Capítulos, cada um com objetivos pagos com moedinhas e coisas que destravam:
 4. **Casamento** (o grande objetivo): pagar aos poucos alianças, vestido, terno, festa, igreja católica; cerimônia jogável.
 5. **Família**: quarto do bebê, filho.
 
-## Mundinho do zero — v7.8 (a próxima, prioridade)
+## Relógio do jogo — próxima
+O jogo tem o próprio tempo (um dia do jogo dura bem menos que um dia real e é igual nos dois celulares). De dia o consultório abre e a gente trabalha; de noite dá sono, e dormir juntos faz a noite passar. Disposição cai ao longo do dia e volta dormindo; trabalhar com sono rende menos.
+
+## Mundinho do zero — v7.8 (feito; enriquecer aos poucos)
 Pedido: começar sem nada mesmo, só o trabalho e a casinha pobre, e ir evoluindo tudo (até o lago é comprado). Refazer o mundo do zero.
 - **Era nova**: carteira zerada, nada desbloqueado, móveis e bichinhos antigos saem (lembranças ficam: sequência, datas, álbum, cartas, chat, quadros, nível do trabalho). Marca de era nos docs (`era`), pra valer nos dois celulares.
 - **Estado inicial**: barraquinho de madeira (por dentro: sala vazia, 2 sacos de dormir, um lampião, uma caixa de papelão), o Predinho pra trabalhar, um caminho de terra e mato em volta.
@@ -48,7 +51,10 @@ Pedido: começar sem nada mesmo, só o trabalho e a casinha pobre, e ir evoluind
 - Evolução: nível (30), reputação (média das últimas 20), equipamentos com bônus (16), funcionários com salário diário (recepcionista, estagiária, nutri associada com renda passiva de até 8 h).
 - Números: consulta paga ~15 🪙 no começo e ~100 no fim; equipamentos de 120 a 5000 🪙; salários de 30 a 120 🪙/dia.
 
-## Estúdio do Alvaro — v7.6
+## Trabalho do Alvaro
+Ele pediu pra não ter trabalho de programador: é o braço direito do consultório (pré-consulta na balança, cesta saudável), com nível próprio. O texto abaixo era o plano antigo e ficou só de registro.
+
+## (antigo) Estúdio do Alvaro
 - Mural de freelas (cliente, tipo, tarefas, prazo de verdade, pagamento). Cada tarefa é um minijogo curto: caça-bug, montar o código, ligar os canos (deploy) e revisão relâmpago (verdadeiro ou falso de JS).
 - Tarefa mal feita vira bug que o cliente reclama depois. Entrega no prazo dá gorjeta, avaliação e cliente que volta com projeto maior.
 - Evolução: PC gamer (placa, monitores, teclado, cadeira, RGB…), equipe (estagiário, dev, designer, QA), etapas da empresa (freelancer → estúdio → startup → empresa) com produto próprio de renda passiva.
