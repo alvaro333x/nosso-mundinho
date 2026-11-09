@@ -902,6 +902,33 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .qdStart{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(var(--sb) + 26px);z-index:2452;border:0;border-radius:999px;padding:12px 26px;font:inherit;font-weight:700;font-size:1.05rem;color:#fff;background:var(--pink);box-shadow:0 4px 0 var(--pinkD),0 10px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;animation:obPulse 1.4s ease-in-out infinite}
 .qdStart[hidden]{display:none}.qdStart .ico{width:22px!important;height:22px!important;--ia:#fff;--ig:#fff}
 .qdStart:active{transform:translate(-50%,2px);box-shadow:0 2px 0 var(--pinkD)}
+/* cozinha a dois (v6.5) */
+.scene.kzMode .hudTop,.scene.kzMode #banners,.scene.kzMode #ctrlBar,.scene.kzMode .ov3,.scene.kzMode .ctx,.scene.kzMode .starTag,.scene.kzMode .enterBtn,.scene.kzMode #acts3,.scene.kzMode #emoTray,.scene.kzMode .tvRemote2,.scene.kzMode .tvScreen{display:none!important}
+.kzHud{position:absolute;inset:0;z-index:2450;pointer-events:none}.kzHud button{pointer-events:auto}
+.kzTop{position:absolute;left:0;right:0;top:0;display:flex;align-items:flex-start;gap:8px;padding:calc(var(--st) + 7px) calc(var(--sr) + 10px) 0 calc(var(--sl) + 10px)}
+.kzOrders{flex:1;display:flex;gap:6px;overflow:hidden}
+.kzO{background:var(--paper);color:var(--ink2);border-radius:12px;padding:5px 8px 6px;min-width:96px;box-shadow:0 4px 12px rgba(20,8,16,.3);display:flex;flex-direction:column;gap:3px;animation:chPop .35s cubic-bezier(.2,1.4,.4,1)}
+.kzO b{font-size:.72rem;white-space:nowrap}.kzO span{display:flex;gap:3px}.kzO u{display:block;height:5px;border-radius:9px;background:#f0e2e8;overflow:hidden;text-decoration:none}.kzO s{display:block;height:100%;border-radius:9px;text-decoration:none}
+.kzI{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.62rem;font-style:normal;color:#fff;font-weight:700;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.kzInfo{display:flex;flex-direction:column;align-items:flex-end;background:var(--hud);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border-radius:14px;padding:4px 10px;box-shadow:inset 0 0 0 1px var(--hudB)}
+.kzInfo b{font-size:1.05rem;font-variant-numeric:tabular-nums}.kzInfo b.hurry{color:#ff8a8a;animation:obPulse .8s infinite}.kzInfo span{font-size:.72rem;opacity:.9}
+.kzMsg{position:absolute;left:50%;top:calc(var(--st) + 70px);transform:translateX(-50%);background:var(--paper);color:var(--ink2);font-weight:700;font-size:.9rem;padding:6px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(20,8,16,.3);white-space:nowrap}
+.kzMsg[hidden]{display:none}.kzMsg.pop{animation:chPop .35s cubic-bezier(.2,1.4,.4,1)}
+.kzBtns{position:absolute;right:calc(var(--sr) + 18px);bottom:calc(var(--sb) + 18px);display:flex;align-items:flex-end;gap:12px}
+.kzB{border:0;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:inherit;color:#fff;--ia:#fff;cursor:pointer;touch-action:none}
+.kzB b{font-size:.7rem;font-weight:700}.kzB .ico{width:28px!important;height:28px!important}
+.kzPick{width:86px;height:86px;background:var(--pink);box-shadow:0 5px 0 var(--pinkD),0 10px 22px rgba(0,0,0,.28)}
+.kzChop{width:66px;height:66px;background:var(--sage);box-shadow:0 4px 0 var(--sageD),0 8px 18px rgba(0,0,0,.25)}
+.kzB.on{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.25)}.kzChop.dim{opacity:.55}
+.kzBar{position:absolute;left:0;top:0;width:56px;height:9px;margin:-4px 0 0 -28px;border-radius:9px;background:rgba(45,28,41,.7);box-shadow:0 0 0 2px rgba(255,255,255,.8);overflow:hidden;pointer-events:none}.kzBar i{display:block;height:100%;border-radius:9px}
+.kzMenu{text-align:center}.kzMenu h3{margin:12px 0 6px;font-size:1rem;display:flex;justify-content:center;gap:10px;align-items:center}
+.kzCoin{background:#fff1c9;color:#8a5a00;border-radius:999px;padding:1px 10px;font-size:.85rem}.kzCoin .ico{width:16px!important;height:16px!important;vertical-align:-3px}
+.kzLv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.kzL,.kzU{border:0;background:#f6ecf1;color:var(--ink2);border-radius:14px;padding:8px 10px;text-align:left;display:flex;flex-direction:column;gap:2px;font:inherit;cursor:pointer}
+.kzL b{font-size:.9rem}.kzL span{color:#e9a400;font-size:.95rem;letter-spacing:1px}.kzL span.small{color:var(--inkSoft);letter-spacing:0;font-size:.72rem}.kzL.lock{opacity:.55}.kzL.lock span{color:var(--inkSoft);font-size:.72rem;letter-spacing:0}
+.kzUp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (orientation:landscape){ .kzLv,.kzUp{grid-template-columns:repeat(4,1fr)} .kzMenu p.small{margin:2px 0} .kzMenu h3{margin:8px 0 4px} }.kzU b{font-size:.85rem}.kzU span{font-size:.72rem;color:var(--inkSoft)}.kzU:disabled{opacity:.5}
+.kzStars{display:flex;justify-content:center;gap:6px;font-size:2.4rem;color:#e6dcef}.kzStars .on{color:#ffc65c;text-shadow:0 3px 0 #d99a2b}
 /* adicionar à Tela de Início */
 .a2hs{text-align:left}
 .a2hs ol{margin:6px 0 12px;padding-left:22px;line-height:1.55;color:#5a4652}
@@ -1399,7 +1426,10 @@ Object.assign(ICONS,{
   moon:`<path d="M30 6 A18 18 0 1 0 42 32 A14 14 0 1 1 30 6Z" fill="#ffd34d" ${SW}/><circle cx="11" cy="11" r="2" fill="#fff3b0"/><circle cx="41" cy="11" r="1.6" fill="#fff3b0"/>`,
   mailbox:`<path d="M8 20 Q8 10 18 10 H32 Q40 10 40 20 V32 H8Z" fill="#e8607f" ${SW}/><path d="M18 10 Q26 10 26 20 V32" fill="none" ${SW}/><rect x="21" y="32" width="6" height="12" fill="#a87346" ${SW}/><path d="M34 6 V20 M34 6 H42 V11 H34" fill="#ffd34d" ${SW}/>`,
   lock:`<rect x="10" y="21" width="28" height="22" rx="4" fill="#ffcc33" ${SW}/><path d="M16 21 V15 Q16 7 24 7 Q32 7 32 15 V21" fill="none" ${SW} stroke-width="3.4"/><circle cx="24" cy="31" r="3" fill="#3a2a33"/><path d="M24 33 V37" stroke="#3a2a33" stroke-width="2.6" stroke-linecap="round"/>`});
-Object.assign(EMO2ICO,{"🌙":"moon","📬":"mailbox","📭":"mailbox","🔒":"lock","💬":"chat","📨":"send"});
+Object.assign(EMO2ICO,{"🌙":"moon","📬":"mailbox","📭":"mailbox","🔒":"lock","💬":"chat","📨":"send","🔪":"knife","🍳":"pan","👟":"shoe"});
+Object.assign(UIC,{ knife: uD("M4 19.5 14.6 8.9l2.4 2.4L6.4 21.9a1.7 1.7 0 0 1-2.4-2.4z")+uP("M14.6 8.9l3.3-3.3a2.2 2.2 0 0 1 3.1 3.1l-3.3 3.3"),
+  pan: uD("M3.5 11.5h12a0 0 0 0 1 0 0 6 6 0 0 1-12 0z")+uP("M15.5 12.4h5.2")+uA("M7.6 9.4q.8-1.4 0-2.8 M10.4 9.4q.8-1.4 0-2.8"),
+  shoe: uD("M3.4 16.6V9.8l3.6.4 2.4 2.6 5.8 1.4c2.6.6 5 1.7 5.4 3.4v.9H3.4z")+uP("M7.8 12.4l1.2-1.4 M10.4 13.2l1.2-1.4") });
 Object.assign(UIC,{ chat: uD("M4.5 6.6A2.6 2.6 0 0 1 7.1 4h9.8a2.6 2.6 0 0 1 2.6 2.6v6.3a2.6 2.6 0 0 1-2.6 2.6h-5.6L7 19.2v-3.7a2.6 2.6 0 0 1-2.5-2.6z")+uH(12,9.9,.4),
   send: uD("M3.6 11.3 20.2 4.2l-6.7 16.2-2.7-6.6z")+uP("M10.8 13.8 20.2 4.2") });
 // figurinha colorida: só pros efeitos que voam no mundo (corações subindo, beijo estourando)
@@ -1661,7 +1691,7 @@ async function initNet(){
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
-      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1"];
+      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1","cozinha/estado","cozinha/p0","cozinha/p1","cozinha/acao-p0","cozinha/acao-p1"];
     paths.forEach(p=>{ NET.subs[p]=db.doc(p).onSnapshot(s=>{ NET.docs[p]=s.exists?s.data():null; netChanged(p); }, e=>{}); });
     NET.ready=true; initPetsNet(); initMailNet(); initChatNet(); refreshStatus();
   }catch(e){}
@@ -1670,6 +1700,7 @@ function netChanged(path){
   if(path.startsWith("obby/")) OB.rx[path]=performance.now();
   if(path.startsWith("papo-lido/") && CHAT.el) chatRender();
   if(path.startsWith("queda/")) qdNet(path);
+  if(path.startsWith("cozinha/")) kzNet(path);
   if(path==="dupla/lev" && OB.coop){ const d=NET.docs[path]; OB.lev=Object.assign({},d||{}); }
   if(path===hubPath(other())){
     const d=NET.docs[path];
@@ -1695,7 +1726,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "6.4";
+const VERSION = "6.5";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2209,7 +2240,7 @@ const PLOT3=Array.from({length:8},(_,i)=>({x:15.2+(i%2)*3.0, z:-6.8-Math.floor(i
 const EASELS=[{x:-10.4,z:-6.95},{x:-12.8,z:-6.95}], EASEL3={x:-11.6,z:-6.9}, DOG3={x:-15,z:-8}, DOCK3={x:4.3,z:5.2}, DOCK_LEN=4.5, BENCH3={x:11,z:-4.6};
 const PLACES3=[["🌷","Jardim",16.7,-3.9],["🎨","Ateliê",-11.6,-5.6],["🏡","Casa",0,-7.6],["🛶","Lago",3.2,5.2],["🎣","Pescar",8.3,4.9],["🎪","Jogos",0,11.5],["📬","Caixinha de correio",1.2,-5.0],["🎡","Parque Radical",-29,2]];
 const STATIONS={quiz:{emoji:"💞",label:"QUIZ DO CASAL",c1:"#e8607f"},stop:{emoji:"✋",label:"STOP",c1:"#4a7bd6"},desenho:{emoji:"✏️",label:"DESENHA E ADIVINHA",c1:"#8a63d2"},termo:{emoji:"🟩",label:"TERMO",c1:"#3aa394"},bingo:{emoji:"🎱",label:"BINGO",c1:"#ff7a93"},caca:{emoji:"🔎",label:"CAÇA-PALAVRAS",c1:"#d9a54a"}};
-const GAME_NAMES={obby:"Parkour",quiz:"Quiz do casal",stop:"Stop",desenho:"Desenha e adivinha",termo:"Termo",bingo:"Bingo",caca:"Caça-palavras",coop:"Termo juntos"};
+const GAME_NAMES={cozinha:"Cozinha a Dois",obby:"Parkour",quiz:"Quiz do casal",stop:"Stop",desenho:"Desenha e adivinha",termo:"Termo",bingo:"Bingo",caca:"Caça-palavras",coop:"Termo juntos"};
 const FLOWERS={girassol:{n:"Girassol",e:"🌻"},rosa:{n:"Rosa",e:"🌹"},tulipa:{n:"Tulipa",e:"🌷"},margarida:{n:"Margarida",e:"🌼"},lavanda:{n:"Lavanda",e:"💜"},hortensia:{n:"Hortênsia",e:"💠"}};
 let HUB=null, W3=null;
 const actor=()=> online()? S.me : (HUB?HUB.ctrl:S.me);
@@ -2975,7 +3006,7 @@ function standUp(C){ if(!C.sofa) return; C.sofa=false; C.pose="idle"; C.root.pos
 const HAM3={x:-12.8,z:11.2,r:Math.PI/2+.12}, HAM_ROOT_Y=1.15;
 /* Parque Radical: área dos minigames de ação (parkours). Fica a oeste, fora do círculo do mundinho, com chão plano e entrada pelo arco */
 const ARENA={x0:-46,x1:-25.5,z0:-8,z1:12};
-const AR_PORTALS=[{id:"nuvens",x:-41.8,z:-3.4,r:Math.PI/2},{id:"dupla",x:-42.6,z:2,r:Math.PI/2},{id:"extremo",x:-41.8,z:7.4,r:Math.PI/2},{id:"queda",x:-34.6,z:-5.8,r:0}];
+const AR_PORTALS=[{id:"nuvens",x:-41.8,z:-3.4,r:Math.PI/2},{id:"dupla",x:-42.6,z:2,r:Math.PI/2},{id:"extremo",x:-41.8,z:7.4,r:Math.PI/2},{id:"queda",x:-34.6,z:-5.8,r:0},{id:"cozinha",x:-36.8,z:10.1,r:Math.PI}];
 const AR_BLOCKS=[[-45.5,-43.6,-7.5,-5.6],[-45.5,-43.6,9.6,11.5],[-30.6,-28.6,-7.5,-5.6],[-30.6,-28.6,9.6,11.5]];
 function inArena(x,z){ return x>=ARENA.x0&&x<=ARENA.x1&&z>=ARENA.z0&&z<=ARENA.z1; }
 function inGate(x,z){ return x>=-26.6&&x<=-22&&z>=.5&&z<=3.5; }
@@ -3023,6 +3054,16 @@ function portalGroup(P){
     g.add(mesh(new THREE.CylinderGeometry(.14,.18,.62,10),MT("#3b2a4a"),0,.31,1.75,false)); g.add(hel);
     anims.push(t=>{ hel.rotation.y=t*2.4; lavaM.color.setRGB(1,.22+.14*Math.sin(t*4),.18); fl.forEach((f,k)=>{ const q=1+Math.sin(t*13+k*2)*.16; f.scale.set(q,1.25*q,q); }); });
     signP(textTex("Parkour Extremo",512,128,"#2a1838","#ffd0e8","#ff4f7a",56));
+  } else if(id==="cozinha"){
+    // quiosque de lanchonete: balcão listrado, toldo, hambúrguer gigante no teto e fumacinha
+    const sc2=document.createElement("canvas"); sc2.width=64; sc2.height=8; const x2=sc2.getContext("2d"); for(let k=0;k<8;k++){ x2.fillStyle=k%2?"#ffffff":"#ff6f91"; x2.fillRect(k*8,0,8,8); } const stx=new THREE.CanvasTexture(sc2); stx.encoding=THREE.sRGBEncoding; stx.wrapS=THREE.RepeatWrapping; stx.repeat.set(3,1);
+    g.add(mesh(new THREE.BoxGeometry(2.8,1.0,1.1),new THREE.MeshStandardMaterial({map:stx,roughness:.7}),0,.5,0)); g.add(mesh(new THREE.BoxGeometry(3.0,.1,1.3),MT("#c8935f"),0,1.05,0));
+    [-1.35,1.35].forEach(px=>[-.5,.5].forEach(pz=>g.add(mesh(new THREE.CylinderGeometry(.05,.05,1.6,6),MT("#ffffff"),px,1.85,pz))));
+    const aw=mesh(new THREE.BoxGeometry(3.2,.14,1.6),new THREE.MeshStandardMaterial({map:stx,roughness:.7}),0,2.7,.05); aw.rotation.x=-.12; g.add(aw);
+    const bg=grp(0,3.0,0); bg.add(mesh(new THREE.SphereGeometry(.6,16,10,0,Math.PI*2,0,Math.PI/2),MT("#e8b066"),0,.32,0)); bg.add(mesh(new THREE.CylinderGeometry(.62,.62,.16,16),MT("#7a4430"),0,.24,0)); bg.add(mesh(new THREE.CylinderGeometry(.66,.66,.06,16),MT("#ffd24d"),0,.34,0)); bg.add(mesh(new THREE.CylinderGeometry(.6,.56,.18,16),MT("#e8b066"),0,.08,0)); g.add(bg);
+    [-.8,.8].forEach((px,k)=>{ const t=mesh(new THREE.SphereGeometry(.14,10,8),MT(k?"#ff5a4f":"#79c95a"),px,1.22,.1); g.add(t); });
+    anims.push(t=>{ bg.rotation.y=t*.6; bg.position.y=3.0+Math.sin(t*1.8)*.08; });
+    signP(textTex("Cozinha a Dois",512,128,"#ffffff","#ff6f91","#58b394",60),3.9);
   } else if(id==="queda"){
     // pilha de hexágonos coloridos, um caindo e voltando, aro laranja
     const HX=new THREE.CylinderGeometry(.5,.5,.22,6); HX.rotateY(Math.PI/2); const hx=[], cs=["#ff8fb0","#b9a7ff","#7fd8b8","#ffd15c"];
@@ -3064,7 +3105,7 @@ function arenaGroup(){
   // placa no meio apontando pros três portais
   const it=[], BX=new THREE.BoxGeometry(1,1,1), CN=new THREE.ConeGeometry(.2,.32,3), cols=["#ff6f91","#ffc65c","#58b394","#9583ec","#6fb8ff"];
   it.push({g:BX,m:M4(cx,1.3,cz,.16,2.6,.16),c:"#8e5a34"}); it.push({g:new THREE.SphereGeometry(.16,10,8),m:M4(cx,2.65,cz,1,1,1),c:"#ffc65c"});
-  [["nuvens","Nuvens",2.05],["dupla","Dupla",1.55],["extremo","Extremo",1.05],["queda","Chão que Cai",.55]].forEach(([id,txt,y])=>{ const q=AR_PORTALS.find(o=>o.id===id), ang=Math.atan2(q.x-cx,q.z-cz)-Math.PI/2;
+  [["nuvens","Nuvens",2.05],["dupla","Dupla",1.55],["extremo","Extremo",1.05],["queda","Chão que Cai",.55],["cozinha","Cozinha",2.45]].forEach(([id,txt,y])=>{ const q=AR_PORTALS.find(o=>o.id===id), ang=Math.atan2(q.x-cx,q.z-cz)-Math.PI/2;
     const bd=grp(cx,y,cz); bd.rotation.y=ang; const tx=woodSignTex(txt+" →",384,96,46); const f=mesh(new THREE.PlaneGeometry(1.5,.38),new THREE.MeshBasicMaterial({map:tx,transparent:true}),.78,0,.03,false); bd.add(f);
     const bk=mesh(new THREE.PlaneGeometry(1.5,.38),new THREE.MeshBasicMaterial({map:woodSignTex("← "+txt,384,96,46),transparent:true}),.78,0,-.03,false); bk.rotation.y=Math.PI; bd.add(bk); g.add(bd); });
   // canteirinhos de flor encostados na cerca
@@ -3854,7 +3895,7 @@ function hub(){
     if(e.code==="Space"){ e.preventDefault(); HUB.jumpHeld=e.type==="keydown"; if(e.type==="keydown"&&!e.repeat) jumpMe(); return; }
     const k=JOYKEYS[e.key]; if(!k) return; HUB.keys[k]=e.type==="keydown"; e.preventDefault(); };
   window.addEventListener("keydown",kd); window.addEventListener("keyup",kd);
-  screenCleanup=()=>{ if(OB.on) obbyExit(true); cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); if(TV.mode) tvOff(false); TV.scr=null; TV.rem=null; HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
+  screenCleanup=()=>{ if(OB.on) obbyExit(true); if(KZ.on) kzExit(true); cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); if(TV.mode) tvOff(false); TV.scr=null; TV.rem=null; HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
   bindActs3(root);
   mailTick(); refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags(); SKY.force=true; refreshSkyBtn(); starsChanged();
   root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook;
@@ -3871,7 +3912,7 @@ function hub(){
 }
 function doorFade(){ if(!HUB) return; const f=document.createElement("div"); f.className="doorFade"; HUB.scene.appendChild(f); setTimeout(()=>f.remove(),700); }
 function tap3(e){
-  if(OB.on) return;
+  if(OB.on||KZ.on) return;
   if(HUB.ctx){ closeCtx(); return; }
   if(HUB.fishing && HUB.fishing.state==="bite"){ return hookFish(); }
   const r=W3.R.domElement.getBoundingClientRect(); const v=new THREE.Vector2((e.clientX-r.left)/r.width*2-1, -((e.clientY-r.top)/r.height)*2+1);
@@ -4292,6 +4333,7 @@ function obLevPush(){ if(online()) push("dupla/lev",Object.assign({},OB.lev)); }
 
 /* ---------- entrar / sair ---------- */
 function obbyMenu(cid){
+  if(cid==="cozinha") return kzMenu();
   if(!window.THREE) return; cid=OB_COURSES[cid]?cid:"nuvens";
   if(OB_COURSES[cid].arena){ const o=other(), m=modal(`<div class="obMenu"><h2>⭐ Chão que Cai</h2>
       <p>Três andares de hexágonos no céu. Cada um cai logo depois que alguém pisa, e depois de 25 s eles começam a cair sozinhos. Tem chão especial: <b>mola</b> te joga pro alto, <b>gelo</b> escorrega, o <b>laranja</b> cai na hora, a <b>pedra</b> aguenta 3 s e o <b>verde</b> volta depois de cair. Quem cair lá embaixo perde a rodada. Ganha quem fizer 3 primeiro.</p>
@@ -4624,6 +4666,265 @@ function qdTick(dt){ const Q=OB.qd; if(!Q) return; const now=performance.now();
   const near=[]; for(const q of OB.Ps){ if(!obLocal(q.i)||q.dead) continue; for(const T of OB.tiles){ if(T.st>=2) continue; if(Math.abs(T.x-q.x)<3.4&&Math.abs(T.z-q.z)<3.4&&q.y>T.top-4) near.push(T.s); } }
   OB.solids=near; }
 
+
+/* =================== COZINHA A DOIS: cozinha cooperativa com pedidos, fases, estrelas, moedas e melhorias ===================
+   Um celular "comanda" a cozinha (estado K) e manda o estado pro outro; o outro só manda as ações (pegar/cortar) e a posição. */
+const KZ={on:false, rx:{}}, KZ_C=1.3;
+const KZ_ING={t:{n:"tomate",c:"#ff5a4f"},a:{n:"alface",c:"#79c95a"},p:{n:"pão",c:"#e8b066"},c:{n:"carne",c:"#c4564a"},q:{n:"queijo",c:"#ffd24d"}};
+const KZ_CHOP={t:1,a:1,q:1};
+// parte de prato = letra + estado (0 cru, 1 picado, 2 frito, 3 queimado)
+const KZ_REC={salada:{n:"Salada",parts:["a1","t1"],pts:20}, burger:{n:"Hambúrguer",parts:["p0","c2"],pts:30}, natural:{n:"Sanduíche natural",parts:["p0","a1","t1"],pts:40}, xburger:{n:"X-Burguer",parts:["p0","c2","q1"],pts:50}};
+const KZ_LV=[
+  {n:"Primeiro dia", rec:["salada"], time:150, every:17, lim:75, stars:[40,90,140], spawn:[[2,2],[6,2]], map:[
+    "###a#t###",
+    "#.......#",
+    "#..###..C",
+    "#.......#",
+    "#..###..C",
+    "#.......#",
+    "#P#X##D##"]},
+  {n:"Hora do lanche", rec:["salada","burger"], time:180, every:16, lim:80, stars:[90,170,250], spawn:[[2,2],[8,2]], map:[
+    "##a#t#p#c##",
+    "#.........#",
+    "C...###...S",
+    "#.........#",
+    "C...###...S",
+    "#.........#",
+    "##P#X###D##"]},
+  {n:"Cozinha dividida", rec:["burger","natural"], time:180, every:16, lim:85, stars:[90,180,260], spawn:[[3,1],[7,5]], map:[
+    "#a#t#p#c###",
+    "#.........#",
+    "C.........C",
+    "##=#=#=#=##",
+    "#.........#",
+    "S.........S",
+    "##P#X##D###"]},
+  {n:"Lanchonete lotada", rec:["salada","burger","natural","xburger"], time:210, every:13, lim:85, stars:[140,260,380], spawn:[[3,1],[9,5]], map:[
+    "##a#t#q#p#c##",
+    "#...........#",
+    "C...##=##...S",
+    "#...........#",
+    "C...##=##...S",
+    "#...........#",
+    "##P##X###D#D#"]}
+];
+const KZ_UP={faca:{n:"Faca afiada",d:"corta mais rápido",ic:"🔪"}, fogao:{n:"Fogão turbo",d:"frita mais rápido",ic:"🔥"}, tenis:{n:"Tênis de corrida",d:"anda mais rápido",ic:"👟"}, gorjeta:{n:"Sorriso no balcão",d:"gorjetas maiores",ic:"🪙"}};
+const KZ_COST=[40,90,160];
+function kzSave(){ if(!S.kz||typeof S.kz!=="object") S.kz={}; const z=S.kz; z.coins=+z.coins||0; z.stars=z.stars||{}; z.up=z.up||{}; z.best=z.best||{}; return z; }
+const kzKey=(c,r)=>c+","+r;
+function kzPart(it){ return it&&it.k!=="plate"? it.k+(it.s||0) : null; }
+
+/* ---------- cena ---------- */
+function kzBuild(lv){
+  const L=KZ_LV[lv], sc=new THREE.Scene(); KZ.scene=sc; KZ.lv=lv;
+  sc.background=new THREE.Color("#3a2632"); sc.fog=new THREE.Fog(new THREE.Color("#3a2632"),26,60);
+  sc.add(new THREE.HemisphereLight(new THREE.Color("#fff3e6"),new THREE.Color("#7a5a6a"),GFX2?1.05:.6));
+  const sun=new THREE.DirectionalLight(new THREE.Color("#ffe9d0"),GFX2?1.1:.55); sun.position.set(-6,14,8); sc.add(sun);
+  const H=L.map.length, W=L.map[0].length; KZ.W=W; KZ.H=H; KZ.cells={};
+  const cx=c=>(c-(W-1)/2)*KZ_C, cz=r=>(r-(H-1)/2)*KZ_C;
+  // piso xadrez e um salão em volta
+  const c=document.createElement("canvas"); c.width=c.height=128; const x=c.getContext("2d"); for(let i=0;i<2;i++) for(let j=0;j<2;j++){ x.fillStyle=(i+j)%2?"#f7e6dc":"#ffd9e3"; x.fillRect(i*64,j*64,64,64); }
+  const ft=new THREE.CanvasTexture(c); ft.encoding=THREE.sRGBEncoding; ft.wrapS=ft.wrapT=THREE.RepeatWrapping; ft.repeat.set(W*KZ_C/2.6,H*KZ_C/2.6);
+  const fl=mesh(new THREE.PlaneGeometry(W*KZ_C,H*KZ_C),new THREE.MeshStandardMaterial({map:ft,roughness:.8}),0,0,0,false); fl.rotation.x=-Math.PI/2; fl.receiveShadow=true; sc.add(fl);
+  const rug=mesh(new THREE.PlaneGeometry(W*KZ_C+16,H*KZ_C+16),MT("#5c3a52"),0,-.02,0,false); rug.rotation.x=-Math.PI/2; sc.add(rug);
+  // paredes do fundo com janelas e prateleiras (só cenário)
+  const it=[], BX=new THREE.BoxGeometry(1,1,1), wz=cz(-1)-1.4;
+  it.push({g:BX,m:M4(0,2.4,wz,W*KZ_C+6,4.8,.3),c:"#f3d9c8"}); it.push({g:BX,m:M4(0,.35,wz+.2,W*KZ_C+6,.7,.1),c:"#c8935f"});
+  for(let k=-1;k<=1;k++){ it.push({g:BX,m:M4(k*4.2,2.7,wz+.18,2.2,1.5,.06),c:"#9fd2ff"}); it.push({g:BX,m:M4(k*4.2,2.7,wz+.2,2.4,.12,.08),c:"#ffffff"}); it.push({g:BX,m:M4(k*4.2,2.7,wz+.2,.12,1.7,.08),c:"#ffffff"}); }
+  [-1,1].forEach(sd=>{ it.push({g:BX,m:M4(sd*(W*KZ_C/2+3),2.4,0,.3,4.8,H*KZ_C+3),c:"#f3d9c8"}); for(let k=0;k<3;k++) it.push({g:BX,m:M4(sd*(W*KZ_C/2+2.75),1.4+k*.9,-1+k*.6,.5,.08,2.4),c:"#c8935f"}); });
+  // balcões e estações
+  const top="#d9a46e", body="#ffd2c2", ST={};
+  for(let r=0;r<H;r++) for(let cc=0;cc<W;cc++){ const ch=L.map[r][cc]; if(ch==="."||ch===" ") continue; const X=cx(cc), Z=cz(r), k=kzKey(cc,r);
+    const cell={c:cc,r,ch,x:X,z:Z}; KZ.cells[k]=cell;
+    const bcol=ch==="S"?"#4b3a57":ch==="D"?"#58b394":ch==="X"?"#8a8199":body;
+    it.push({g:BX,m:M4(X,.45,Z,KZ_C-.04,.9,KZ_C-.04),c:bcol}); it.push({g:BX,m:M4(X,.94,Z,KZ_C,.08,KZ_C),c:ch==="S"?"#2c2230":ch==="="?"#e6dcff":top});
+    if("tapcq".includes(ch)){ it.push({g:BX,m:M4(X,1.18,Z,.9,.4,.9),c:"#a2734c"}); it.push({g:BX,m:M4(X,1.4,Z,.94,.06,.94),c:KZ_ING[ch].c}); }
+    if(ch==="C"){ it.push({g:BX,m:M4(X,1.0,Z,.95,.06,.7),c:"#e8c08f"}); it.push({g:BX,m:M4(X+.38,1.06,Z+.2,.42,.03,.08),c:"#cfd6e6"}); }
+    if(ch==="X"){ it.push({g:new THREE.CylinderGeometry(.42,.36,.5,14),m:M4(X,1.2,Z,1,1,1),c:"#5f5a6e"}); }
+    if(ch==="D"){ it.push({g:BX,m:M4(X,1.0,Z,1.0,.04,1.0),c:"#ffd15c"}); it.push({g:new THREE.SphereGeometry(.14,10,8,0,6.3,0,1.6),m:M4(X+.4,1.0,Z-.35,1,1,1),c:"#ffd15c"}); }
+    if(ch==="S"){ it.push({g:new THREE.TorusGeometry(.32,.05,6,18),m:M4(X,1.0,Z,1,1,1,Math.PI/2,0,0),c:"#3a3340"}); }
+  }
+  sc.add(new THREE.Mesh(mergeGeos(it),toonM("#ffffff",{vertexColors:true})));
+  // frigideiras e chama (mudam de cor quando fritando)
+  KZ.pans={}; for(const k in KZ.cells){ const cl=KZ.cells[k]; if(cl.ch!=="S") continue; const g=grp(cl.x,1.0,cl.z); g.add(mesh(new THREE.CylinderGeometry(.36,.3,.12,18),MT("#3a3340"),0,.08,0,false)); g.add(mesh(new THREE.BoxGeometry(.5,.05,.08),MT("#3a3340"),.52,.12,0,false));
+    const fire=mesh(new THREE.TorusGeometry(.3,.06,6,18),new THREE.MeshBasicMaterial({color:new THREE.Color("#ff8a3d"),toneMapped:false}),0,-.02,0,false); fire.rotation.x=Math.PI/2; fire.visible=false; g.add(fire); sc.add(g); KZ.pans[k]={g,fire}; }
+  // pilha de pratos
+  KZ.plateMeshes=[]; for(const k in KZ.cells){ const cl=KZ.cells[k]; if(cl.ch!=="P") continue; for(let i=0;i<5;i++){ const m=mesh(new THREE.CylinderGeometry(.34,.3,.05,20),MT("#ffffff"),cl.x,1.02+i*.06,cl.z,false); sc.add(m); KZ.plateMeshes.push(m); } }
+  // alvo (onde você vai pegar/soltar)
+  KZ.hl=mesh(new THREE.BoxGeometry(KZ_C+.04,.06,KZ_C+.04),new THREE.MeshBasicMaterial({color:new THREE.Color("#ffffff"),transparent:true,opacity:.35,depthWrite:false,toneMapped:false}),0,1.0,0,false); sc.add(KZ.hl);
+  KZ.itemMesh={}; KZ.blob=[0,1].map(()=>{ const b=new THREE.Mesh(new THREE.CircleGeometry(.4,20),new THREE.MeshBasicMaterial({color:0x2a1830,transparent:true,opacity:.28,depthWrite:false})); b.rotation.x=-Math.PI/2; b.position.y=.02; sc.add(b); return b; });
+  KZ.dust=makeDust(sc,24); KZ.cx=cx; KZ.cz=cz;
+}
+/* malhas dos ingredientes e do prato */
+function kzIngMesh(k,s){ const g=new THREE.Group();
+  if(s===3){ g.add(mesh(new THREE.CylinderGeometry(.2,.22,.08,12),MT("#2a1a14"),0,.04,0,false)); return g; }
+  if(k==="t"){ if(s===1) for(let i=0;i<3;i++){ const m=mesh(new THREE.CylinderGeometry(.11,.11,.04,12),MT("#ff5a4f"),(i-1)*.13,.03,0,false); g.add(m); } else { g.add(mesh(new THREE.SphereGeometry(.17,12,10),MT("#ff5a4f"),0,.17,0,false)); g.add(mesh(new THREE.ConeGeometry(.06,.06,5),MT("#4f9a3a"),0,.33,0,false)); } }
+  if(k==="a"){ if(s===1) for(let i=0;i<5;i++) g.add(mesh(new THREE.BoxGeometry(.12,.03,.1),MT(i%2?"#79c95a":"#a8e07a"),(Math.random()-.5)*.3,.03+i*.01,(Math.random()-.5)*.25,false)); else g.add(mesh(new THREE.IcosahedronGeometry(.2,1),MT("#79c95a"),0,.17,0,false)); }
+  if(k==="p"){ g.add(mesh(new THREE.SphereGeometry(.22,14,8,0,Math.PI*2,0,Math.PI/2),MT("#e8b066"),0,.04,0,false)); g.add(mesh(new THREE.CylinderGeometry(.22,.22,.05,14),MT("#f3d39a"),0,.03,0,false)); }
+  if(k==="c"){ g.add(mesh(new THREE.CylinderGeometry(.19,.19,.08,14),MT(s===2?"#7a4430":"#d9606a"),0,.04,0,false)); }
+  if(k==="q"){ if(s===1) g.add(mesh(new THREE.BoxGeometry(.3,.03,.3),MT("#ffd24d"),0,.02,0,false)); else g.add(mesh(new THREE.BoxGeometry(.28,.2,.22),MT("#ffd24d"),0,.1,0,false)); }
+  return g; }
+function kzItemMesh(it){ if(!it) return null; const g0=kzItemMesh0(it); g0.scale.setScalar(1.35); return g0; }
+function kzItemMesh0(it){
+  if(it.k!=="plate") return kzIngMesh(it.k,it.s||0);
+  const g=new THREE.Group(); g.add(mesh(new THREE.CylinderGeometry(.34,.3,.05,20),MT("#ffffff"),0,.025,0,false));
+  const order=["p0","c2","q1","a1","t1"]; let y=.05; [...it.parts].sort((a,b)=>order.indexOf(a)-order.indexOf(b)).forEach(pt=>{ const m=kzIngMesh(pt[0],+pt[1]); m.position.y=y; m.scale.setScalar(.85); g.add(m); y+=pt[0]==="p"?.06:.05; });
+  if(it.parts.includes("p0") && it.parts.length>1){ const top=mesh(new THREE.SphereGeometry(.2,14,8,0,Math.PI*2,0,Math.PI/2),MT("#e8b066"),0,y+.02,0,false); g.add(top); }
+  return g; }
+const kzSig=it=>it?(it.k==="plate"?"P"+it.parts.slice().sort().join(""):it.k+(it.s||0)):"";
+
+/* ---------- regras (só quem comanda roda) ---------- */
+function kzNewState(lv){ const L=KZ_LV[lv]; return {lv, run:true, t0:Date.now()+3500, dur:L.time*1000, score:0, served:0, lost:0, orders:[], nextO:0, plates:4, back:[], it:{}, pg:{}, ck:{}, held:[null,null], msg:null, msgT:0, over:false, seq:[0,0], up:Object.assign({},kzSave().up), by:S.me, oid:0}; }
+function kzTargetFor(x,z,yaw){ // quadradinho de balcão na frente do boneco
+  let best=null, bs=9; const fx=Math.sin(yaw), fz=Math.cos(yaw);
+  for(const k in KZ.cells){ const cl=KZ.cells[k], dx=cl.x-x, dz=cl.z-z, d=Math.hypot(dx,dz); if(d>1.6) continue; const front=(dx*fx+dz*fz)/(d||1); if(front<.2) continue; const sc=d-front*.8; if(sc<bs){ bs=sc; best=k; } }
+  return best; }
+function kzAllowed(parts){ const L=KZ_LV[KZ.K.lv]; return L.rec.some(r=>parts.every(p=>KZ_REC[r].parts.includes(p))); }
+function kzSay(t){ const K=KZ.K; K.msg=t; K.msgT=Date.now(); }
+function kzAct(i,key){ const K=KZ.K; if(!K||!K.run||Date.now()<K.t0||!key) return; const cl=KZ.cells[key]; if(!cl) return; const ch=cl.ch; let h=K.held[i], on=K.it[key]||null;
+  const take=it=>{ K.held[i]=it; }, put=it=>{ K.it[key]=it; K.held[i]=null; };
+  if(!h){
+    if("tapcq".includes(ch) && !on){ take({k:ch,s:0}); snd("pop"); return; }
+    if(ch==="P" && !on){ if(K.plates>0){ K.plates--; take({k:"plate",parts:[]}); snd("pop"); } else kzSay("Acabaram os pratos!"); return; }
+    if(on){ take(on); delete K.it[key]; delete K.pg[key]; if(ch==="S") delete K.ck[key]; snd("pop"); }
+    return; }
+  // segurando alguma coisa
+  if(ch==="X"){ if(h.k==="plate"){ h.parts=[]; } else K.held[i]=null; snd("splash"); return; }
+  if(ch==="D"){ if(h.k!=="plate"||!h.parts.length){ kzSay("Põe a comida num prato!"); return; }
+    const sig=h.parts.slice().sort().join(","); const rk=Object.keys(KZ_REC).find(r=>KZ_REC[r].parts.slice().sort().join(",")===sig);
+    const o=rk&&K.orders.filter(o=>o.r===rk).sort((a,b)=>a.t-b.t)[0];
+    if(!o){ kzSay(rk?"Ninguém pediu isso agora":"Essa receita não existe"); snd("bad"); return; }
+    const left=Math.max(0,1-(Date.now()-o.t)/o.lim), tip=Math.round(10*left*(1+.25*(K.up.gorjeta||0)));
+    K.score+=KZ_REC[rk].pts+tip; K.served++; K.orders=K.orders.filter(x=>x!==o); K.held[i]=null; K.back.push(Date.now()+6000); kzSay(`+${KZ_REC[rk].pts+tip} ${KZ_REC[rk].n}!`); snd("fanfare"); return; }
+  if(on){ // misturar no prato
+    if(on.k==="plate" && h.k!=="plate"){ const pt=kzPart(h); if(on.parts.includes(pt)||!kzAllowed([...on.parts,pt])){ kzSay(h.s===0&&(KZ_CHOP[h.k]||h.k==="c")?(h.k==="c"?"A carne precisa fritar":"Pica antes!"):"Isso não combina"); snd("bad"); return; } on.parts.push(pt); K.held[i]=null; snd("pop"); return; }
+    if(h.k==="plate" && on.k!=="plate"){ const pt=kzPart(on); if(h.parts.includes(pt)||!kzAllowed([...h.parts,pt])){ kzSay(on.s===0&&(KZ_CHOP[on.k]||on.k==="c")?(on.k==="c"?"A carne precisa fritar":"Pica antes!"):"Isso não combina"); snd("bad"); return; } h.parts.push(pt); delete K.it[key]; delete K.pg[key]; if(ch==="S") delete K.ck[key]; snd("pop"); return; }
+    kzSay("Esse lugar tá ocupado"); return; }
+  if(ch==="S" && !(h.k==="c")){ kzSay("No fogão só vai carne"); return; }
+  if(ch==="C" && !(KZ_CHOP[h.k] && h.s===0)){ if(h.k!=="plate"){ put(h); snd("tap"); } return; }
+  if("tapcqP".includes(ch)){ kzSay("Põe no balcão"); return; }
+  put(h); if(ch==="S") K.ck[key]=K.ck[key]||0; snd("tap"); }
+function kzHostTick(dt){ const K=KZ.K, L=KZ_LV[K.lv], now=Date.now(); if(!K.run||now<K.t0) return;
+  if(now>=K.t0+K.dur){ K.run=false; K.over=true; kzFinish(); return; }
+  if(now>=K.nextO && K.orders.length<4){ const r=L.rec[Math.floor(Math.random()*L.rec.length)]; K.orders.push({id:++K.oid,r,t:now,lim:L.lim*1000}); K.nextO=now+(K.orders.length<2?5000:L.every*1000); snd("ding"); }
+  for(const o of [...K.orders]) if(now-o.t>o.lim){ K.orders=K.orders.filter(x=>x!==o); K.lost++; K.score=Math.max(0,K.score-10); kzSay("Um pedido foi embora…"); snd("meh"); }
+  K.back=K.back.filter(t=>{ if(now>=t){ K.plates++; return false; } return true; });
+  const cook=(1+.25*(K.up.fogao||0)), chop=(1+.25*(K.up.faca||0));
+  for(const k in K.ck){ const it=K.it[k]; if(!it||it.k!=="c"){ delete K.ck[k]; continue; }
+    if(it.s===0){ K.ck[k]+=dt*cook/6; if(K.ck[k]>=1){ it.s=2; K.ck[k]=0; snd("good"); } }
+    else if(it.s===2){ K.ck[k]+=dt/9; if(K.ck[k]>=1){ it.s=3; K.ck[k]=1; kzSay("Queimou! Joga no lixo"); snd("bad"); } } }
+  for(let i=0;i<2;i++){ const u=KZ.use[i]; if(!u||!u.on) continue; const k=u.key, it=K.it[k], cl=KZ.cells[k]; if(!cl||cl.ch!=="C"||!it||!KZ_CHOP[it.k]||it.s!==0||K.held[i]) continue;
+    K.pg[k]=(K.pg[k]||0)+dt*chop/2.6; if(K.pg[k]>=1){ it.s=1; delete K.pg[k]; snd("good"); } } }
+function kzFinish(){ const K=KZ.K, L=KZ_LV[K.lv], st=L.stars.filter(v=>K.score>=v).length; K.stars=st; kzPush(true); kzResult(); }
+
+/* ---------- rede ---------- */
+function kzHost(){ return !KZ.guest; }
+function kzPush(force){ if(!online()) return; const now=performance.now(); if(kzHost()){ if(!force&&now-(KZ.pushT||0)<180) return; KZ.pushT=now; const K=KZ.K; push("cozinha/estado",Object.assign({},K,{at:Date.now()})); } }
+function kzPosPush(){ if(!online()) return; const P=KZ.P, now=performance.now(); if(now-(KZ.posT||0)<120) return; KZ.posT=now;
+  push("cozinha/p"+S.me,{x:+P.x.toFixed(2),z:+P.z.toFixed(2),r:+P.yaw.toFixed(2),w:+(KZ.chars[S.me].walk||0).toFixed(2),key:KZ.tgt||null,use:KZ.chopHeld?1:0,lv:KZ.lv,t:Date.now(),out:0}); }
+function kzNet(path){ if(!KZ.on) return; const d=NET.docs[path]; if(!d) return; KZ.rx[path]=performance.now();
+  if(path==="cozinha/estado" && KZ.guest && d.by!==S.me){ KZ.K=d; if(d.lv!==KZ.lv){ kzBuild(d.lv); kzChars(); } if(d.over&&!KZ.shown) kzResult(); }
+  if(path==="cozinha/estado" && !KZ.guest && d.by!==S.me && d.run && d.by<S.me && Date.now()-(d.at||0)<4000){ KZ.guest=true; KZ.K=d; toast(`Entrando na cozinha de ${nmRaw(d.by)}`); }
+  if(path==="cozinha/acao-p"+other() && kzHost() && KZ.K){ const o=other(); if((d.seq||0)>(KZ.K.seq[o]||0)){ KZ.K.seq[o]=d.seq; kzAct(o,d.key); kzPush(true); } }
+  if(path==="cozinha/p"+other()){ KZ.use[other()]={on:!!d.use,key:d.key}; } }
+function kzPick(){ if(!KZ.on||!KZ.K) return; const key=KZ.tgt; if(!key) return; KZ.chars[S.me===undefined?0:KZ.me].pose="give";
+  if(kzHost()){ kzAct(KZ.me,key); kzPush(true); } else { KZ.seq=(KZ.seq||0)+1; push("cozinha/acao-p"+S.me,{seq:KZ.seq,key,t:Date.now()}); snd("tap"); } }
+
+/* ---------- entrar / sair ---------- */
+function kzMenu(){ if(!window.THREE) return; const z=kzSave(), o=other(), d=NET.docs["cozinha/estado"], live=online()&&d&&d.run&&d.by!==S.me&&Date.now()-(d.at||0)<5000;
+  const unlocked=i=>i===0||(z.stars[i-1]||0)>=1, star=n=>"★".repeat(n)+"☆".repeat(3-n);
+  const m=modal(`<div class="kzMenu"><h2>🍳 Cozinha a Dois</h2><p class="small">Peguem os ingredientes, piquem na tábua, fritem a carne, montem no prato e entreguem no balcão verde antes do pedido ir embora. Juntos é bem mais fácil!</p>
+    ${live?`<button class="btn pink" data-g="join">Entrar na cozinha de ${nm(d.by)}</button>`:""}
+    <div class="kzLv">${KZ_LV.map((L,i)=>`<button class="kzL ${unlocked(i)?"":"lock"}" data-l="${i}"><b>${i+1}. ${L.n}</b><span>${unlocked(i)?star(z.stars[i]||0):"🔒 faça 1 estrela na anterior"}</span><span class="small">${L.rec.map(r=>KZ_REC[r].n).join(" · ")}</span></button>`).join("")}</div>
+    <h3>Lojinha <span class="kzCoin">🪙 ${z.coins}</span></h3>
+    <div class="kzUp">${Object.entries(KZ_UP).map(([k,u])=>{ const lv=z.up[k]||0, cost=KZ_COST[lv]; return `<button class="kzU" data-u="${k}" ${lv>=3||z.coins<cost?"disabled":""}><b>${u.n}</b><span>${u.d}</span><span>${"●".repeat(lv)}${"○".repeat(3-lv)} ${lv>=3?"máximo":`🪙 ${cost}`}</span></button>`; }).join("")}</div>
+    <div class="obBtns"><button class="btn alt" data-close>Agora não</button></div></div>`);
+  m.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{ const i=+b.dataset.l; if(!unlocked(i)){ toast("Faça pelo menos 1 estrela na fase anterior"); return; } m.remove(); kzEnter(i,false); });
+  const j=m.querySelector('[data-g="join"]'); if(j) j.onclick=()=>{ m.remove(); kzEnter(d.lv,true); };
+  m.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>{ const k=b.dataset.u, lv=z.up[k]||0, cost=KZ_COST[lv]; if(lv>=3||z.coins<cost) return; z.coins-=cost; z.up[k]=lv+1; save(); snd("fanfare"); m.remove(); kzMenu(); });
+}
+function kzChars(){ (KZ.chars||[]).forEach(C=>{ if(C&&C.root.parent) C.root.parent.remove(C.root); }); KZ.chars=[0,1].map(i=>{ const C=buildChar(S.players[i]); KZ.scene.add(C.root); C.root.visible=i===KZ.me; return C; });
+  const L=KZ_LV[KZ.lv], sp=L.spawn[KZ.me]; KZ.P={x:KZ.cx(sp[0]),z:KZ.cz(sp[1]),vx:0,vz:0,yaw:0}; KZ.rem=null; }
+function kzEnter(lv,join){ if(!HUB||!W3) return; closeCtx(); hideEnter();
+  KZ.me=online()?S.me:actor(); KZ.guest=!!join; KZ.use=[null,null]; KZ.seq=(NET.docs["cozinha/acao-p"+S.me]||{}).seq||0; KZ.shown=false; KZ.tgt=null; KZ.chopHeld=false;
+  if(join){ const d=NET.docs["cozinha/estado"]; KZ.K=d; kzBuild(d.lv); } else { kzBuild(lv); KZ.K=kzNewState(lv); }
+  kzChars(); KZ.on=true;
+  KZ.cam={yaw:HUB.yaw,yawT:HUB.yawT,pitch:HUB.pitch,pitchT:HUB.pitchT,dist:HUB.dist,distT:HUB.distT}; HUB.joyV=null; HUB.keys={};
+  HUB.scene.classList.add("kzMode");
+  const hud=document.createElement("div"); hud.className="kzHud";
+  hud.innerHTML=artify(`<div class="kzTop"><button class="hb" id="kzX" aria-label="Sair da cozinha">↩️</button><div class="kzOrders" id="kzOrders"></div><div class="kzInfo"><b id="kzTime">3:00</b><span id="kzScore">0</span></div><button class="hb chatHb" id="kzChat" aria-label="Conversa">💬<i class="chatBadge" hidden></i></button></div>
+    <div class="kzMsg" id="kzMsg"></div>
+    <div class="kzBtns"><button class="kzB kzChop" id="kzChop">🔪<b>Cortar</b></button><button class="kzB kzPick" id="kzPick">✋<b>Pegar</b></button></div>`);
+  HUB.scene.appendChild(hud); KZ.hud=hud;
+  hud.querySelector("#kzX").onclick=()=>confirmBox("Sair da cozinha?","A fase acaba pra você.","Sair",()=>kzExit());
+  hud.querySelector("#kzChat").onclick=chatOpen; chatBadge();
+  const pk=hud.querySelector("#kzPick"); pk.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); pk.classList.add("on"); kzPick(); }); ["pointerup","pointercancel","pointerleave"].forEach(ev=>pk.addEventListener(ev,()=>pk.classList.remove("on")));
+  const ch=hud.querySelector("#kzChop"); ch.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); ch.classList.add("on"); KZ.chopHeld=true; }); ["pointerup","pointercancel","pointerleave"].forEach(ev=>ch.addEventListener(ev,()=>{ ch.classList.remove("on"); KZ.chopHeld=false; }));
+  KZ.bars={}; doorFade(); snd("go"); pushMe({place:"cozinha"});
+  if(!join){ kzPush(true); [3,2,1].forEach((n,k)=>setTimeout(()=>{ if(KZ.on) bigToast(String(n),k?"":KZ_LV[lv].n); },k*1000)); }
+  setTimeout(()=>{ if(KZ.on && !S.kzTut){ S.kzTut=true; save(); toast("✋ pega e solta · 🔪 segura pra picar · a carne frita sozinha no fogão (não deixa queimar!)",5200); } },3800);
+}
+function kzExit(quiet){ if(!KZ.on) return; KZ.on=false; if(KZ.hud) KZ.hud.remove(); KZ.hud=null; Object.values(KZ.bars||{}).forEach(b=>b.remove()); KZ.bars={};
+  if(online()) push("cozinha/p"+S.me,{out:1,t:Date.now()});
+  if(kzHost()&&KZ.K&&online()&&KZ.K.run){ KZ.K.run=false; kzPush(true); }
+  if(quiet||!HUB) return; HUB.scene.classList.remove("kzMode"); Object.assign(HUB,KZ.cam||{}); HUB.camInit=false; HUB.joyV=null; HUB.keys={}; if(online()) pushMe({place:"hub"}); doorFade(); }
+function kzResult(){ if(KZ.shown||!KZ.on) return; KZ.shown=true; const K=KZ.K, L=KZ_LV[K.lv], st=K.stars!=null?K.stars:L.stars.filter(v=>K.score>=v).length, z=kzSave();
+  const coins=Math.round(K.score/4); z.coins+=coins; z.stars[K.lv]=Math.max(z.stars[K.lv]||0,st); z.best[K.lv]=Math.max(z.best[K.lv]||0,K.score); save();
+  snd(st?"fanfare":"meh"); const nextOk=st>=1&&K.lv<KZ_LV.length-1;
+  setTimeout(()=>{ if(!KZ.on) return; const m=modal(`<div class="obMenu"><h2>${st?"Mandaram bem!":"Quase lá!"}</h2><div class="kzStars">${[0,1,2].map(i=>`<span class="${i<st?"on":""}">★</span>`).join("")}</div>
+    <p>${K.score} pontos · ${K.served} ${K.served===1?"pedido entregue":"pedidos entregues"}${K.lost?` · ${K.lost} perdido${K.lost>1?"s":""}`:""}</p><p>+ 🪙 ${coins} pra lojinha</p>
+    <div class="obBtns">${nextOk&&kzHost()?`<button class="btn pink" data-o="next">Próxima fase</button>`:""}${kzHost()?`<button class="btn gold" data-o="again">Jogar de novo</button>`:""}<button class="btn alt" data-o="out">Sair</button></div></div>`);
+    const b=(k,f)=>{ const e=m.querySelector(`[data-o="${k}"]`); if(e) e.onclick=()=>{ m.remove(); f(); }; };
+    b("next",()=>{ kzExit(true); HUB.scene.classList.remove("kzMode"); kzEnter(K.lv+1,false); }); b("again",()=>{ kzExit(true); HUB.scene.classList.remove("kzMode"); kzEnter(K.lv,false); }); b("out",()=>kzExit()); },900); }
+
+/* ---------- quadro a quadro ---------- */
+function kzStep(dt){ const K=KZ.K, P=KZ.P, me=KZ.me, C=KZ.chars[me]; if(!K) return; KZ.t=(KZ.t||0)+dt;
+  if(kzHost()){ KZ.use[me]={on:KZ.chopHeld,key:KZ.tgt}; kzHostTick(dt); kzPush(false); }
+  // eu andando (câmera fixa olhando a cozinha de cima)
+  const v=joyVec(), spd=5.0*(1+.08*((K.up&&K.up.tenis)||0)); let tx=0,tz=0; if(v&&!document.querySelector(".modalBg")){ const m=Math.min(1,Math.hypot(v.x,v.y)); tx=v.x/(m||1)*spd*m; tz=v.y/(m||1)*spd*m; }
+  const k=1-Math.exp(-dt*(v?14:12)); P.vx+=(tx-P.vx)*k; P.vz+=(tz-P.vz)*k; const sp=Math.hypot(P.vx,P.vz);
+  const solid=(x,z)=>{ const c=Math.round(x/KZ_C+(KZ.W-1)/2), r=Math.round(z/KZ_C+(KZ.H-1)/2); if(c<0||r<0||c>=KZ.W||r>=KZ.H) return true; const ch=KZ_LV[KZ.lv].map[r][c]; return ch!=="."; };
+  const R=.32, tryMove=(nx,nz)=>![[R,0],[-R,0],[0,R],[0,-R],[R*.7,R*.7],[-R*.7,R*.7],[R*.7,-R*.7],[-R*.7,-R*.7]].some(([a,b])=>solid(nx+a,nz+b));
+  if(tryMove(P.x+P.vx*dt,P.z)) P.x+=P.vx*dt; else P.vx*=.3; if(tryMove(P.x,P.z+P.vz*dt)) P.z+=P.vz*dt; else P.vz*=.3;
+  if(sp>.4) { const ty=Math.atan2(P.vx,P.vz); let a=ty-P.yaw; a=Math.atan2(Math.sin(a),Math.cos(a)); P.yaw+=a*Math.min(1,dt*14); C.turn=a; }
+  C.root.position.set(P.x,0,P.z); C.root.rotation.y=P.yaw; C.walk=Math.min(1,sp/2.4); C.gait=Math.max(.8,sp/3.7); C.jv=null;
+  const held=K.held&&K.held[me]; C.pose=KZ.chopHeld&&KZ.tgt&&KZ.cells[KZ.tgt]&&KZ.cells[KZ.tgt].ch==="C"&&!held?"reach":(held?"give":"idle"); animChar(C,dt,KZ.t);
+  KZ.tgt=kzTargetFor(P.x,P.z,P.yaw); const tc=KZ.tgt&&KZ.cells[KZ.tgt]; KZ.hl.visible=!!tc; if(tc){ KZ.hl.position.set(tc.x,1.0,tc.z); KZ.hl.material.opacity=.25+.15*Math.sin(KZ.t*6); }
+  kzPosPush();
+  // o outro
+  const o=1-me, Co=KZ.chars[o], d=online()?NET.docs["cozinha/p"+o]:null, fresh=d&&!d.out&&d.lv===KZ.lv&&performance.now()-(KZ.rx["cozinha/p"+o]||0)<5000;
+  if(fresh){ if(!KZ.rem) KZ.rem={x:d.x,z:d.z}; const kk=1-Math.exp(-dt*12); KZ.rem.x+=(d.x-KZ.rem.x)*kk; KZ.rem.z+=(d.z-KZ.rem.z)*kk; Co.root.visible=true; Co.root.position.set(KZ.rem.x,0,KZ.rem.z); let a=(d.r||0)-Co.root.rotation.y; a=Math.atan2(Math.sin(a),Math.cos(a)); Co.root.rotation.y+=a*Math.min(1,dt*12);
+    Co.walk=d.w||0; Co.pose=d.use?"reach":(K.held&&K.held[o]?"give":"idle"); animChar(Co,dt,KZ.t); } else { Co.root.visible=false; KZ.rem=null; }
+  // itens no balcão, nas mãos e na pilha de pratos
+  const want={}; for(const key in (K.it||{})) want["c:"+key]={it:K.it[key],cell:KZ.cells[key]}; for(let i=0;i<2;i++) if(K.held&&K.held[i]) want["h:"+i]={it:K.held[i],hand:i};
+  for(const id in KZ.itemMesh) if(!want[id]||KZ.itemMesh[id].sig!==kzSig(want[id].it)){ KZ.scene.remove(KZ.itemMesh[id].m); delete KZ.itemMesh[id]; }
+  for(const id in want){ let e=KZ.itemMesh[id]; if(!e){ const m=kzItemMesh(want[id].it); KZ.scene.add(m); e=KZ.itemMesh[id]={m,sig:kzSig(want[id].it)}; }
+    const w=want[id]; if(w.cell){ const ch=w.cell.ch; e.m.position.set(w.cell.x,ch==="S"?1.12:ch==="C"?1.03:.98,w.cell.z); e.m.rotation.y=0; }
+    else { const Ch=KZ.chars[w.hand]; if(!Ch.root.visible){ e.m.visible=false; continue; } e.m.visible=true; const yy=Ch.root.rotation.y; e.m.position.set(Ch.root.position.x+Math.sin(yy)*.55,1.05,Ch.root.position.z+Math.cos(yy)*.55); e.m.rotation.y=yy; } }
+  KZ.plateMeshes.forEach((m,i)=>m.visible=i<Math.min(5,K.plates||0));
+  for(const key in KZ.pans){ const it=K.it&&K.it[key], f=KZ.pans[key].fire; f.visible=!!(it&&it.k==="c"&&it.s!==3); if(f.visible){ f.material.color.set(it.s===2&&(K.ck[key]||0)>.55?(Math.sin(KZ.t*14)>0?"#ff3d3d":"#ff8a3d"):"#ff8a3d"); f.scale.setScalar(1+Math.sin(KZ.t*16)*.06); }
+    if(it&&it.s===3&&Math.random()<dt*6) KZ.dust.puff(KZ.cells[key].x,1.3,KZ.cells[key].z,.3,(Math.random()-.5)*.2,1.1,(Math.random()-.5)*.2,1.2,"#6e6470"); }
+  KZ.dust.tick(dt);
+  [P,KZ.rem].forEach((q,i)=>{ const b=KZ.blob[i]; b.visible=!!q; if(q) b.position.set(q.x,.02,q.z); });
+  // câmera fixa
+  const cam=W3.cam, cw=HUB.szW||926, chh=HUB.szH||428, asp=cw/chh, span=Math.max(KZ.W*KZ_C/asp*1.05, KZ.H*KZ_C*.95), dist=Math.max(7.5,span*.92);
+  KZ.camX=(KZ.camX==null?P.x*.45:KZ.camX+(P.x*.45-KZ.camX)*Math.min(1,dt*3)); KZ.camZ=(KZ.camZ==null?P.z*.35:KZ.camZ+(P.z*.35-KZ.camZ)*Math.min(1,dt*3));
+  const tx2=KZ.camX, tz2=KZ.camZ; cam.position.set(tx2,dist*.95,tz2+dist*.55); cam.lookAt(tx2,0,tz2-.2);
+  W3.R.render(KZ.scene,cam);
+  kzHud(dt); }
+function kzBar(id,x,y,z,v,col){ let b=KZ.bars[id]; if(!b){ b=document.createElement("div"); b.className="kzBar"; b.innerHTML="<i></i>"; HUB.ov.appendChild(b); KZ.bars[id]=b; }
+  const p=proj(V3(x,y,z)); b.style.transform=`translate(${p.x}px,${p.y}px)`; b.firstChild.style.width=(Math.max(0,Math.min(1,v))*100)+"%"; b.firstChild.style.background=col; b.dataset.u=KZ.frame; }
+function kzHud(dt){ const K=KZ.K, H=KZ.hud; if(!H) return; KZ.frame=(KZ.frame||0)+1; const now=Date.now();
+  const left=K.t0>now?K.dur:Math.max(0,K.t0+K.dur-now), s=Math.ceil(left/1000), tt=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`, e=H.querySelector("#kzTime"); if(e.textContent!==tt){ e.textContent=tt; e.classList.toggle("hurry",s<=20&&K.run); }
+  const sc=H.querySelector("#kzScore"), st=`${K.score} pts`; if(sc.textContent!==st) sc.textContent=st;
+  const sig=(K.orders||[]).map(o=>o.id).join(","), box=H.querySelector("#kzOrders"); if(box.dataset.sig!==sig){ box.dataset.sig=sig; box.innerHTML=(K.orders||[]).map(o=>`<div class="kzO" data-id="${o.id}"><b>${KZ_REC[o.r].n}</b><span>${KZ_REC[o.r].parts.map(p=>`<i class="kzI" style="background:${KZ_ING[p[0]].c}">${p[1]==="1"?"✂":p[1]==="2"?"♨":""}</i>`).join("")}</span><u><s></s></u></div>`).join(""); }
+  (K.orders||[]).forEach(o=>{ const el=box.querySelector(`[data-id="${o.id}"] s`); if(el){ const f=Math.max(0,1-(now-o.t)/o.lim); el.style.width=(f*100)+"%"; el.style.background=f<.25?"#ff5a4f":f<.5?"#ffb020":"#58b394"; } });
+  const msg=H.querySelector("#kzMsg"); const show=K.msg&&now-K.msgT<1800; if(show&&msg.textContent!==K.msg){ msg.textContent=K.msg; msg.classList.remove("pop"); void msg.offsetWidth; msg.classList.add("pop"); } msg.hidden=!show;
+  for(const key in (K.pg||{})){ const cl=KZ.cells[key]; if(cl) kzBar("pg"+key,cl.x,1.6,cl.z,K.pg[key],"#58b394"); }
+  for(const key in (K.ck||{})){ const cl=KZ.cells[key], it=K.it[key]; if(cl&&it) kzBar("ck"+key,cl.x,1.75,cl.z,K.ck[key],it.s===0?"#ffb020":"#ff5a4f"); }
+  for(const id in KZ.bars) if(+KZ.bars[id].dataset.u!==KZ.frame){ KZ.bars[id].remove(); delete KZ.bars[id]; }
+  const tc=KZ.tgt&&KZ.cells[KZ.tgt], cb=H.querySelector("#kzChop"), canChop=tc&&tc.ch==="C"&&K.it&&K.it[KZ.tgt]&&KZ_CHOP[K.it[KZ.tgt].k]&&K.it[KZ.tgt].s===0; cb.classList.toggle("dim",!canChop); }
+
 /* =================== PULO E BOTÕES DE AÇÃO =================== */
 function jumpChar(i, fromNet){ if(!W3) return false; const C=W3.chars[i];
   if(!C || C.anim || C.seated || C.swim || C.diving || C.jv!=null) return false;
@@ -4631,7 +4932,7 @@ function jumpChar(i, fromNet){ if(!W3) return false; const C=W3.chars[i];
   C.jv=7.4; C.jy=C.jy||0; C.land=0;
   if(HUB){ const me=W3.chars[actor()].root.position, p=C.root.position; if(!fromNet||Math.hypot(me.x-p.x,me.z-p.z)<14) snd("jump"); }
   return true; }
-function jumpMe(){ if(!HUB||!W3) return; if(OB.on){ OB.buf=.15; return; } const a=actor(); if(!jumpChar(a,false)){ HUB.jumpBuf=performance.now(); return; } closeCtx(); W3.chars[a].squash=.5;
+function jumpMe(){ if(!HUB||!W3) return; if(KZ.on){ kzPick(); return; } if(OB.on){ OB.buf=.15; return; } const a=actor(); if(!jumpChar(a,false)){ HUB.jumpBuf=performance.now(); return; } closeCtx(); W3.chars[a].squash=.5;
   if(online() && a===S.me){ const p=W3.chars[a].root.position; pushMe({jump:{t:Date.now()}, x:fw(p.x), y:fw(p.z), place:"hub"}); } }
 const EMO_TRAY=[{ic:"👋",l:"Oi",k:"wave"},{ic:"💃",l:"Dançar",k:"dance"},{ic:"😘",l:"Beijinho",k:"blow"},{ic:"❤️",l:"Te amo",k:0},{ic:"🥺",l:"Saudade",k:6},{ic:"😂",l:"KKKK",k:2},{ic:"💪",l:"Shape",k:4},{ic:"👕",l:"Visual",k:"look"}];
 const EMO_SAY=["Te amo! ❤️","Beijo! 😘","KKKKKK 😂","Oii! 👋","Olha o shape 💪","Pra você 🌻","Saudade 🥺"];
@@ -4667,7 +4968,7 @@ function nearThing(){
   } else {
     for(const [k,b] of Object.entries(BOOTH3)){ const f=boothFront(b,1.6); cand(f.x,f.z,2.3,STATIONS[k].emoji,`Jogar ${GAME_NAMES[k]}`,()=>{ faceW(a,b.x,b.z); openStation(k); }); }
     cand(MAIL3.x,MAIL3.z,2.3,"📬","Correio",mailMenu);
-    for(const q of AR_PORTALS) cand(q.x+Math.sin(q.r)*1.3,q.z+Math.cos(q.r)*1.3,2.6,"🚀",q.id==="extremo"?"Extremo":q.id==="dupla"?"Dupla":q.id==="queda"?"Chão que Cai":"Parkour",()=>obbyMenu(q.id));
+    for(const q of AR_PORTALS) cand(q.x+Math.sin(q.r)*1.3,q.z+Math.cos(q.r)*1.3,2.6,"🚀",q.id==="extremo"?"Extremo":q.id==="dupla"?"Dupla":q.id==="queda"?"Chão que Cai":q.id==="cozinha"?"Cozinha":"Parkour",()=>obbyMenu(q.id));
     { const nap=W3.napper; cand(HAM3.x,HAM3.z,2.7,"🌙",nap!=null&&nap!==a?esc(nmRaw(nap)):"Cochilar",hammockMenu); }
     cand(FOUNT.x,FOUNT.z,3.5,"⛲","Fonte",fountainMenu,.6);
     EASELS.forEach((E,idx)=>cand(E.x,E.z+.7,1.9,"🎨","Pintar",()=>hitMenu("easel-"+idx)));
@@ -5043,6 +5344,7 @@ function mailCompose(kind, sealed){
 
 /* ---------- loop ---------- */
 function step(dt){
+  if(KZ.on) return kzStep(dt);
   if(OB.on) return obStep(dt);
   W3.t+=dt; const t=W3.t;
   // personagens
@@ -5490,13 +5792,15 @@ function refreshBanners(){
     const url=location.href.split("#")[0];
     html+=`<div class="banner"><span>💌 Manda o link pra ${nm(other())} jogar com você</span><a class="btn wa" href="${waLink(`Vem jogar comigo no nosso mundinho! 💞 ${url}`)}" target="_blank" rel="noopener">WhatsApp</a><button class="x" data-a="hideInv">✕</button></div>`;
   }
-  if(online() && partnerHere() && !OB.on){ const dh=NET.docs[hubPath(other())]; if(dh && dh.place==="obby"){ const dob=NET.docs["obby/p"+other()]||{}; html+=`<div class="banner"><span>🚀 ${nm(other())} tá no ${(OB_COURSES[dob.c]||OB_COURSES.nuvens).name}</span><button class="btn pink" data-a="obby">Ir junto</button></div>`; } }
+  if(online() && partnerHere() && !OB.on){ const dh=NET.docs[hubPath(other())]; if(dh && dh.place==="cozinha") html+=`<div class="banner"><span>🍳 ${nm(other())} tá na Cozinha a Dois</span><button class="btn pink" data-a="kz">Ir junto</button></div>`;
+    if(dh && dh.place==="obby"){ const dob=NET.docs["obby/p"+other()]||{}; html+=`<div class="banner"><span>🚀 ${nm(other())} tá no ${(OB_COURSES[dob.c]||OB_COURSES.nuvens).name}</span><button class="btn pink" data-a="obby">Ir junto</button></div>`; } }
   html+=mailBanners();
   if(html && html!==box._last){ const n=(html.match(/class="banner"/g)||[]).length; if(n>(box._n||0)) snd("ding"); box._n=n; } box._last=html; box.innerHTML=artify(html);
   box.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{
     const a=b.dataset.a, o=other();
     if(a.startsWith("mail")||a==="sealx"){ mailBannerAct(a); return; }
     if(a==="hideInv"){ S.inviteHidden=true; save(); refreshBanners(); return; }
+    if(a==="kz"){ kzMenu(); return; }
     if(a==="obby"){ obbyMenu((NET.docs["obby/p"+other()]||{}).c); return; }
     if(a==="inv"){ const inv=NET.docs["jogos/pra-p"+S.me]; playInbox(inv); }
     else if(a==="seen"){ const sent=NET.docs["jogos/pra-p"+o]; S.seenRes=[...(S.seenRes||[]).slice(-40), sent.code]; save(); refreshBanners(); }
