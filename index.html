@@ -18,7 +18,7 @@
   --keyh:min(54px, 6.4dvh);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;color:var(--ink);font-family:'Fredoka',ui-rounded,system-ui,-apple-system,sans-serif;overscroll-behavior:none;overflow:hidden}
+html,body{touch-action:manipulation;margin:0;height:100%;color:var(--ink);font-family:'Fredoka',ui-rounded,system-ui,-apple-system,sans-serif;overscroll-behavior:none;overflow:hidden}
 body{background:radial-gradient(130% 80% at 50% 0%,#735a69 0%,var(--bg1) 38%,var(--bg2) 100%) fixed;background-color:var(--bg2)}
 button{font-family:inherit;color:inherit}
 #app{height:100dvh;display:flex;flex-direction:column;max-width:520px;margin:0 auto;
@@ -564,7 +564,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "1.3.1";
+const VERSION = "1.3.2";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -1954,6 +1954,13 @@ function customize(i){
   root.querySelector("#save").onclick=()=>{ p.name=root.querySelector("#name").value.trim().slice(0,12)||(i?"Jogador 2":"Jogador 1"); S.players[i]=p; save(); if(online()&&i===S.me) pushMe({}); hub(); };
 }
 
+/* =================== SEM ZOOM NO IPHONE =================== */
+(()=>{ let last=0;
+  document.addEventListener("touchend",e=>{ const now=Date.now(); if(now-last<350 && !(e.target.closest&&e.target.closest("input,textarea"))){ e.preventDefault(); } last=now; },{passive:false});
+  ["gesturestart","gesturechange","gestureend"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+  document.addEventListener("dblclick",e=>e.preventDefault(),{passive:false});
+  document.addEventListener("touchmove",e=>{ if(e.touches&&e.touches.length>1) e.preventDefault(); },{passive:false});
+})();
 /* =================== ATUALIZAÇÃO AUTOMÁTICA (site) =================== */
 function checkUpdate(){
   if(window.claude || location.protocol==="file:") return;
