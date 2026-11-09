@@ -680,7 +680,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "3.0";
+const VERSION = "3.1";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -917,10 +917,12 @@ function buildChar(p){
   [-1,1].forEach(s=>head.add(mesh(new THREE.SphereGeometry(.05,8,6), mSk, s*.245,-.01,0)));
   // cabelo
   const cap=(thetaLen,sc=1.06)=>{ const m=mesh(new THREE.SphereGeometry(HR,28,16,0,Math.PI*2,0,thetaLen), mHair); m.scale.set(sc,sc,sc); return m; };
+  const backCap=(len,sc=1.07)=>{ const m=mesh(new THREE.SphereGeometry(HR,26,16,Math.PI,Math.PI,0,len), mHair); m.scale.set(sc,sc*1.03,sc); return m; };
+  if(p.hair!==4) head.add(backCap(p.hair===1?Math.PI*.82:Math.PI*.66));
   if(p.hair===1){ // longo liso
-    const c=cap(Math.PI*.5); c.rotation.x=-.18; head.add(c);
-    const back=mesh(new THREE.CapsuleGeometry(.23,.62,6,14), mHair, 0,-.42,-.1); back.scale.set(1.12,1,.42); head.add(back);
-    [-1,1].forEach(s=>{ const cur=mesh(new THREE.CapsuleGeometry(.055,.5,4,8), mHair, s*.21,-.3,.05); cur.rotation.z=s*.06; head.add(cur); });
+    const c=cap(Math.PI*.5,1.07); c.rotation.x=-.3; head.add(c);
+    const back=mesh(new THREE.CapsuleGeometry(.24,.6,6,14), mHair, 0,-.45,-.12); back.scale.set(1.1,1,.5); head.add(back);
+    [-1,1].forEach(s=>{ const cur=mesh(new THREE.CapsuleGeometry(.06,.55,4,8), mHair, s*.225,-.3,.0); cur.rotation.z=s*.05; head.add(cur); const sd=mesh(new THREE.SphereGeometry(.12,12,8), mHair, s*.2,-.02,-.02); sd.scale.set(.55,1.25,.95); head.add(sd); });
     [-1,1].forEach(s=>{ const b=mesh(new THREE.SphereGeometry(.15,12,8), mHair, s*.1,.16,.17); b.scale.set(1.1,.45,.5); b.rotation.z=s*.5; head.add(b); });
   } else if(p.hair===5){ // franja
     const c=cap(Math.PI*.47,1.1); c.rotation.x=-.26; head.add(c);
@@ -945,8 +947,8 @@ function setFace(C, mood){ const t=faceTex(C.kind, mood); if(C.face.material.map
 const POSE={
   idle:[[0,.12,-.15],[0,-.12,-.15]], walk:[[0,.1,-.2],[0,-.1,-.2]],
   happy:[[0,2.6,-.2],[0,-2.6,-.2]], wave:[[0,.12,-.15],[0,-2.5,-.5]],
-  dance:[[0,2.3,-.6],[-.6,-.6,-1.2]], hug:[[-1.35,-.55,-.7],[-1.35,.55,-.7]],
-  kiss:[[0,.1,-.15],[-1.1,.45,-.4]], reach:[[0,.12,-.15],[-1.2,-.1,-.1]],
+  dance:[[0,2.3,-.6],[-.6,-.6,-1.2]], hug:[[-1.25,-.32,-.35],[-1.25,.32,-.35]],
+  kiss:[[0,.1,-.15],[-1.05,.25,-.3]], reach:[[0,.12,-.15],[-1.2,-.1,-.1]],
   give:[[0,.12,-.15],[-1.35,-.15,-.35]], think:[[0,.12,-.15],[-.5,.6,-2.3]], sad:[[.1,.05,-.05],[.1,-.05,-.05]], sit:[[-.4,.2,-.9],[-.4,-.2,-.9]]
 };
 function animChar(C, dt, t){
@@ -1236,10 +1238,15 @@ function buildWorld(){
   const rr2=rng(31); for(let k=0;k<7;k++){ const a=rr2()*6.28, d=.35+rr2()*.5; const pad=mesh(new THREE.CylinderGeometry(.38,.38,.03,14),MT("#4f9a41"),Math.cos(a)*LAKE3.rx*d,.08,Math.sin(a)*LAKE3.rz*d,false); lk.add(pad); if(k%2===0) lk.add(mesh(new THREE.SphereGeometry(.1,8,6),MT("#ff9fc0"),Math.cos(a)*LAKE3.rx*d,.16,Math.sin(a)*LAKE3.rz*d,false)); }
   sc.add(lk);
   // cisnes
-  for(let k=0;k<2;k++){ const s=grp(); const wh=MT("#ffffff");
-    const bd=mesh(new THREE.SphereGeometry(.35,12,8),wh,0,.22,0); bd.scale.set(.75,.55,1.2); s.add(bd);
-    const nk=mesh(new THREE.TorusGeometry(.22,.06,6,10,Math.PI*1.1),wh,0,.55,.18); nk.rotation.y=Math.PI/2; s.add(nk);
-    s.add(mesh(new THREE.SphereGeometry(.1,8,6),wh,0,.82,.32)); const bk=mesh(new THREE.ConeGeometry(.04,.14,6),MT("#f08a2e"),0,.8,.45); bk.rotation.x=Math.PI/2; s.add(bk);
+  for(let k=0;k<2;k++){ const s=grp(), wh=MT("#ffffff");
+    const bd=mesh(new THREE.SphereGeometry(.4,18,12),wh,0,.22,0); bd.scale.set(.75,.55,1.15); s.add(bd);
+    const tl=mesh(new THREE.ConeGeometry(.15,.32,8),wh,0,.36,-.46); tl.rotation.x=-2.15; s.add(tl);
+    [-1,1].forEach(q=>{ const w=mesh(new THREE.SphereGeometry(.3,12,8),wh,q*.21,.34,-.06); w.scale.set(.22,.42,.95); w.rotation.x=-.3; s.add(w); });
+    const cv=new THREE.CatmullRomCurve3([V3(0,.3,.3),V3(0,.58,.44),V3(0,.84,.3),V3(0,1.0,.34)]);
+    s.add(mesh(new THREE.TubeGeometry(cv,18,.058,8,false),wh));
+    const hd=mesh(new THREE.SphereGeometry(.1,12,10),wh,0,1.04,.4); hd.scale.set(.9,.9,1.25); s.add(hd);
+    const bk=mesh(new THREE.ConeGeometry(.038,.16,8),MT("#f08a2e"),0,1.02,.57); bk.rotation.x=Math.PI/2; s.add(bk);
+    [-1,1].forEach(q=>s.add(mesh(new THREE.SphereGeometry(.018,6,4),MT("#1a1416"),q*.068,1.07,.46,false)));
     sc.add(s); W3.swans.push({g:s,ph:k*.6}); }
   // píer e barquinho
   const dock=grp(DOCK3.x,0,DOCK3.z); for(let k=0;k<7;k++) dock.add(mesh(new THREE.BoxGeometry(.45,.12,1.4),MT("#c8935f"),k*.48,.32,0)); [[0,-.6],[0,.6],[2.9,-.6],[2.9,.6]].forEach(([x,z])=>dock.add(mesh(new THREE.CylinderGeometry(.07,.07,.8,6),MT("#8a5a3b"),x,.1,z))); sc.add(dock);
@@ -1362,6 +1369,8 @@ function step(dt){
     animChar(C,dt,t);
     if(HUB) HUB.pos[i]={x:fw(C.root.position.x),y:fw(C.root.position.z)};
   });
+  if(!(W3.coupleUntil>Date.now()) && !W3.boatRide){ const A=W3.chars[0].root.position, Bp=W3.chars[1].root.position, dx=A.x-Bp.x, dz=A.z-Bp.z, d=Math.hypot(dx,dz);
+    if(d<.62 && d>0){ const push=(.62-d)/2, nx=dx/d, nz=dz/d; const ac=actor(); if(online()){ const me=W3.chars[S.me].root.position, s=S.me===0?1:-1; me.x+=nx*push*2*s; me.z+=nz*push*2*s; } else { A.x+=nx*push; A.z+=nz*push; Bp.x-=nx*push; Bp.z-=nz*push; } } }
   // bichinhos
   Object.entries(W3.pets).forEach(([id,P])=>{
     const p=P.root.position;
@@ -1372,7 +1381,7 @@ function step(dt){
     animPet(P,dt);
   });
   // cisnes, nuvens, água
-  W3.swans.forEach((s,k)=>{ const a=t*.08+s.ph*Math.PI; const x=LAKE3.x+Math.cos(a)*LAKE3.rx*.55+k*.6, z=LAKE3.z+Math.sin(a)*LAKE3.rz*.5; s.g.position.set(x,Math.sin(t*2+k)*.03,z); s.g.rotation.y=-a; });
+  W3.swans.forEach((s,k)=>{ const a=t*.08+s.ph*Math.PI, rx=LAKE3.rx*.55, rz=LAKE3.rz*.5; const x=LAKE3.x+Math.cos(a)*rx+k*.6, z=LAKE3.z+Math.sin(a)*rz; s.g.position.set(x,.02+Math.sin(t*2+k)*.025,z); s.g.rotation.y=Math.atan2(-Math.sin(a)*rx, Math.cos(a)*rz); });
   W3.clouds.forEach((c,k)=>{ c.position.x+=dt*(.4+k*.05); if(c.position.x>60) c.position.x=-60; });
   if(W3.water) W3.water.material.color.setHSL(.55,.62,.6+Math.sin(t*.8)*.02);
   if(W3.boatRide) W3.boatRide(dt);
@@ -1470,18 +1479,18 @@ function coupleAct(a, ini, fromNet, at){
   if(a==="boat") return boatRide(ini, fromNet);
   const po=Co.root.position.clone(), pi=Ci.root.position;
   let dx=pi.x-po.x, dz=pi.z-po.z; const len=Math.hypot(dx,dz)||1; dx/=len; dz/=len;
-  const d={kiss:.5,hug:.42,dance:1.1,flowers:.8}[a];
+  const d={kiss:.66,hug:.62,dance:1.2,flowers:.9}[a]; W3.coupleUntil=Date.now()+6500;
   let tx=po.x+dx*d, tz=po.z+dz*d;
   if(at){ tx=wx(at.x); tz=wx(at.y); }
   if(!fromNet && online() && ini===S.me) pushMe({couple:{a,t:Date.now(),x:fw(tx),y:fw(tz)}});
   walkW(ini, tx, tz, ()=>{
     faceW(ini,po.x,po.z); faceW(o,tx,tz); Co.path=[];
     const mid=()=>V3((Ci.root.position.x+Co.root.position.x)/2, 1.95, (Ci.root.position.z+Co.root.position.z)/2);
-    if(a==="kiss"){ [Ci,Co].forEach(C=>{ C.pose="kiss"; setFace(C,"kiss"); C.lean=.16; });
+    if(a==="kiss"){ [Ci,Co].forEach(C=>{ C.pose="kiss"; setFace(C,"kiss"); C.lean=.075; });
       setTimeout(()=>{ const m=mid(); bigPopW("💋",m.x,m.y,m.z); heartsW(m.x,m.y,m.z,["💖","💕","❤️","💗"],10); },500);
       later(ini,()=>{ [Ci,Co].forEach(C=>{ C.lean=0; C.pose="happy"; setFace(C,"happy"); }); },2700);
       later(ini,()=>{ [Ci,Co].forEach(C=>{ C.pose="idle"; setFace(C,"idle"); }); },3700); }
-    if(a==="hug"){ [Ci,Co].forEach(C=>{ C.pose="hug"; setFace(C,"hug"); C.lean=.08; });
+    if(a==="hug"){ [Ci,Co].forEach(C=>{ C.pose="hug"; setFace(C,"hug"); C.lean=.04; });
       setTimeout(()=>{ const m=mid(); bigPopW("🤗",m.x,m.y+.2,m.z); heartsW(m.x,m.y,m.z,["💞","💕","🥰"],9); },400);
       later(ini,()=>{ [Ci,Co].forEach(C=>{ C.lean=0; C.pose="happy"; setFace(C,"happy"); }); },2900);
       later(ini,()=>{ [Ci,Co].forEach(C=>{ C.pose="idle"; setFace(C,"idle"); }); },3900); }
