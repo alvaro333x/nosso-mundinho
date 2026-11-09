@@ -1695,7 +1695,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "6.2";
+const VERSION = "6.3";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2489,8 +2489,8 @@ function buildWorld(){
   const ground=mesh(geo,new THREE.MeshToonMaterial({vertexColors:true,gradientMap:toonGrad(),map:groundTex()}),0,0,0,false); ground.userData.ground=true; sc.add(ground); W3.ground=ground;
   // caminhos
   const pathM=pathMat(); W3.paths=[];
-  const pathSeg=(x1,z1,x2,z2,w=2)=>{ W3.paths.push({x1,z1,x2,z2,w}); const L=Math.hypot(x2-x1,z2-z1); const p=mesh(uvScale(new THREE.PlaneGeometry(w,L),w/2.2,L/2.2),pathM,(x1+x2)/2,.02,(z1+z2)/2,false); p.rotation.x=-Math.PI/2; p.rotation.z=-Math.atan2(x2-x1,z2-z1); p.userData.ground=true; sc.add(p); const c=mesh(uvScale(new THREE.CircleGeometry(w/2,20),w/2.2,w/2.2),pathM,x2,.021,z2,false); c.rotation.x=-Math.PI/2; c.userData.ground=true; sc.add(c); };
-  pathSeg(0,-7.4,0,4.5,2.4); pathSeg(0,4.5,0,GP3.z-GP3.r+.4,2.2); pathSeg(-2.3,2.2,-12.5,2.2,1.8); pathSeg(-12.5,2.2,-24.6,2.0,1.8); pathSeg(3.2,-5.9,12.6,-5.9,1.5); pathSeg(12.6,-5.9,GARDEN3.gx,-4.3,1.5); pathSeg(2.9,DOCK3.z,DOCK3.x-.6,DOCK3.z,1.8); pathSeg(-1.2,-5.6,-14.2,-5.6,1.6);
+  const pathSeg=(x1,z1,x2,z2,w=2)=>{ W3.paths.push({x1,z1,x2,z2,w}); const L=Math.hypot(x2-x1,z2-z1); const p=mesh(uvScale(new THREE.PlaneGeometry(w,L),w/2.2,L/2.2),pathM,(x1+x2)/2,.02,(z1+z2)/2,false); p.rotation.x=-Math.PI/2; p.rotation.z=-Math.atan2(x2-x1,z2-z1); p.userData.ground=true; sc.add(p); [[x2,z2],[x1,z1]].forEach(([cx2,cz2])=>{ const c=mesh(uvScale(new THREE.CircleGeometry(w/2,20),w/2.2,w/2.2),pathM,cx2,.021,cz2,false); c.rotation.x=-Math.PI/2; c.userData.ground=true; sc.add(c); }); };
+  pathSeg(0,-7.4,0,4.5,2.4); pathSeg(0,4.5,0,GP3.z-GP3.r+.4,2.2); pathSeg(-2.3,2.0,-25.3,2.0,2.0); pathSeg(3.2,-5.9,12.6,-5.9,1.5); pathSeg(12.6,-5.9,GARDEN3.gx,-4.3,1.5); pathSeg(2.9,DOCK3.z,DOCK3.x-.6,DOCK3.z,1.8); pathSeg(-1.2,-5.6,-14.2,-5.6,1.6);
   { const gp=mesh(uvScale(new THREE.CircleGeometry(GP3.r,48),GP3.r/1.1,GP3.r/1.1),pathM,GP3.x,.023,GP3.z,false); gp.rotation.x=-Math.PI/2; gp.userData.ground=true; sc.add(gp);
     Object.values(BOOTH3).forEach(b=>{ const a=Math.atan2(b.x-GP3.x,b.z-GP3.z), s=Math.sin(a), c=Math.cos(a); pathSeg(GP3.x+s*(GP3.r-.4),GP3.z+c*(GP3.r-.4),GP3.x+s*5.5,GP3.z+c*5.5,1.6); }); }
   const plaza=mesh(uvScale(new THREE.CircleGeometry(3.4,40),3,3),pathM,0,.025,4.5,false); plaza.rotation.x=-Math.PI/2; plaza.userData.ground=true; sc.add(plaza);
@@ -2981,7 +2981,7 @@ function inArena(x,z){ return x>=ARENA.x0&&x<=ARENA.x1&&z>=ARENA.z0&&z<=ARENA.z1
 function inGate(x,z){ return x>=-26.6&&x<=-22&&z>=.5&&z<=3.5; }
 function arenaFlat(x,z){ const dx=Math.max(ARENA.x0-1-x,0,x-ARENA.x1-1), dz=Math.max(ARENA.z0-1-z,0,z-ARENA.z1-1), k=Math.min(1,Math.hypot(dx,dz)/20); return k*k*(3-2*k); }
 const AR_C={x:-35.6,z:2};
-const AR_PATHS=[[-25.2,2,-32,2,2.2],...AR_PORTALS.map(q=>[AR_C.x,AR_C.z,q.x+Math.sin(q.r)*2.2,q.z+Math.cos(q.r)*2.2,1.8])];
+const AR_PATHS=[[-25.3,2,-32,2,2.0],...AR_PORTALS.map(q=>[AR_C.x,AR_C.z,q.x+Math.sin(q.r)*2.2,q.z+Math.cos(q.r)*2.2,1.8])];
 function arenaDecoBlocked(x,z){ if(Math.hypot(x-AR_C.x,z-AR_C.z)<4) return true; for(const q of AR_PORTALS) if(Math.hypot(x-q.x,z-q.z)<2.6) return true;
   for(const [x1,z1,x2,z2,w] of AR_PATHS){ const L2=(x2-x1)**2+(z2-z1)**2, u=Math.max(0,Math.min(1,((x-x1)*(x2-x1)+(z-z1)*(z2-z1))/L2)); if(Math.hypot(x-(x1+u*(x2-x1)),z-(z1+u*(z2-z1)))<w/2+.25) return true; }
   for(const [a,b,c,d] of AR_BLOCKS) if(x>a-.3&&x<b+.3&&z>c-.3&&z<d+.3) return true;
@@ -3049,7 +3049,8 @@ function portalGroup(P){
 function arenaGroup(){
   const g=new THREE.Group(), A=ARENA, cx=AR_C.x, cz=AR_C.z, pm=pathMat();
   // caminhos de pedrinha (igual ao resto do mundinho): do arco até a pracinha e da pracinha até cada portal
-  const seg=(x1,z1,x2,z2,w)=>{ const L=Math.hypot(x2-x1,z2-z1); const q=mesh(uvScale(new THREE.PlaneGeometry(w,L),w/2.2,L/2.2),pm,(x1+x2)/2,.022,(z1+z2)/2,false); q.rotation.x=-Math.PI/2; q.rotation.z=-Math.atan2(x2-x1,z2-z1); q.receiveShadow=true; q.userData.ground=true; g.add(q); };
+  const seg=(x1,z1,x2,z2,w)=>{ const L=Math.hypot(x2-x1,z2-z1); const q=mesh(uvScale(new THREE.PlaneGeometry(w,L),w/2.2,L/2.2),pm,(x1+x2)/2,.022,(z1+z2)/2,false); q.rotation.x=-Math.PI/2; q.rotation.z=-Math.atan2(x2-x1,z2-z1); q.receiveShadow=true; q.userData.ground=true; g.add(q);
+    [[x1,z1],[x2,z2]].forEach(([a,b])=>{ const c=mesh(uvScale(new THREE.CircleGeometry(w/2,20),w/2.2,w/2.2),pm,a,.0215,b,false); c.rotation.x=-Math.PI/2; c.receiveShadow=true; c.userData.ground=true; g.add(c); }); };
   const circ=(x,z,r,y=.024)=>{ const q=mesh(uvScale(new THREE.CircleGeometry(r,40),r/1.1,r/1.1),pm,x,y,z,false); q.rotation.x=-Math.PI/2; q.receiveShadow=true; q.userData.ground=true; g.add(q); };
   AR_PATHS.forEach(([x1,z1,x2,z2,w])=>seg(x1,z1,x2,z2,w)); circ(cx,cz,3.6,.026); AR_PORTALS.forEach(q=>circ(q.x+Math.sin(q.r)*.4,q.z+Math.cos(q.r)*.4,2.5));
   { const cb=[], BXc=new THREE.BoxGeometry(1,1,1), stone="#d8c9b1";
@@ -4293,7 +4294,7 @@ function obLevPush(){ if(online()) push("dupla/lev",Object.assign({},OB.lev)); }
 function obbyMenu(cid){
   if(!window.THREE) return; cid=OB_COURSES[cid]?cid:"nuvens";
   if(OB_COURSES[cid].arena){ const o=other(), m=modal(`<div class="obMenu"><h2>⭐ Chão que Cai</h2>
-      <p>Três andares de hexágonos no céu. Cada um cai logo depois que alguém pisa, e depois de 20 s eles começam a cair sozinhos. Quem cair lá embaixo perde a rodada. Ganha quem fizer 3 primeiro.</p>
+      <p>Três andares de hexágonos no céu. Cada um cai logo depois que alguém pisa, e depois de 25 s eles começam a cair sozinhos. Quem cair lá embaixo perde a rodada. Ganha quem fizer 3 primeiro.</p>
       <p class="small">${online()?(partnerHere()?`Entrem os dois e apertem “Começar rodada”.`:`Sem ${nm(o)} online vira treino: quanto tempo você aguenta? Recorde: ${(+S.qdBest||0).toFixed(1)} s`):`No mesmo celular vira treino: quanto tempo você aguenta? Recorde: ${(+S.qdBest||0).toFixed(1)} s`}</p>
       <div class="obBtns"><button class="btn pink" data-o="go">Jogar</button><button class="btn alt" data-close>Agora não</button></div></div>`);
     m.querySelector('[data-o="go"]').onclick=()=>{ m.remove(); obbyEnter(true,cid); }; return; }
@@ -4546,7 +4547,7 @@ function qdBuild(sc,CC){
 const QD_M=new (window.THREE?THREE.Matrix4:Object)(), QD_Q=window.THREE?new THREE.Quaternion():null, QD_E=window.THREE?new THREE.Euler():null;
 function qdDraw(T){ const m=new THREE.Matrix4(), q=new THREE.Quaternion(), e=new THREE.Euler(T.rot*.6,0,T.rot), v=V3(T.x+(T.st===1?(Math.random()-.5)*.08:0),T.y-.25,T.z+(T.st===1?(Math.random()-.5)*.08:0)), sc=T.st===3?1e-4:1;
   q.setFromEuler(e); m.compose(v,q,V3(sc,sc,sc)); T.im.setMatrixAt(T.k,m); T.im.setColorAt(T.k,T.st===1?new THREE.Color(QD.warn).lerp(T.col,.5+.5*Math.sin(OB.t*30)):T.col); T.im.instanceMatrix.needsUpdate=true; if(T.im.instanceColor) T.im.instanceColor.needsUpdate=true; }
-function qdTouch(T){ if(!T||T.st!==0||OB.qd.phase!=="play") return; T.st=1; T.t=.5; OB.qdAnim.add(T); }
+function qdTouch(T){ if(!T||T.st!==0||OB.qd.phase!=="play") return; T.st=1; T.t=1.0; OB.qdAnim.add(T); }
 function qdReset(){ for(const T of OB.tiles){ T.st=0; T.t=0; T.y=T.top; T.rot=0; T.s.off=false; qdDraw(T); } OB.qdAnim=new Set(); }
 function qdSpawn(P){ const sx=P.i?4.5:-4.5; Object.assign(P,{x:sx,y:.02,z:0,vx:0,vz:0,vy:0,gr:null,dead:0,cp:0}); const C=OB.chars[P.i]; C.root.visible=true; C.root.position.set(P.x,P.y,P.z); C.root.rotation.y=P.i?-Math.PI/2:Math.PI/2; P.yawT=C.root.rotation.y; }
 function qdSolo(){ return !online() || !OB.rem; }
@@ -4581,7 +4582,7 @@ function qdNet(path){ if(!OB.on||!OB.arena||!OB.qd) return; const d=NET.docs[pat
 function qdTick(dt){ const Q=OB.qd; if(!Q) return; const now=performance.now();
   if(Q.phase==="count" && now>=Q.t0){ Q.phase="play"; snd("go"); bigToast("Vai!",""); }
   // depois de 20 s, um hexágono por vez cai sozinho (mesma ordem nos dois celulares)
-  if(Q.phase==="play"){ const el=now-Q.t0; if(el>20000){ const k=Math.floor((el-20000)/380); while(Q.dropK<k){ Q.dropK++; const r=rng(Q.seed+Q.dropK*7919)(); qdTouch(OB.tiles[Math.floor(r*OB.tiles.length)]); } } }
+  if(Q.phase==="play"){ const el=now-Q.t0; if(el>25000){ const k=Math.floor((el-25000)/550); while(Q.dropK<k){ Q.dropK++; const r=rng(Q.seed+Q.dropK*7919)(); qdTouch(OB.tiles[Math.floor(r*OB.tiles.length)]); } } }
   // pisou, começa a cair (eu e o outro)
   for(const q of OB.Ps) if(obLocal(q.i) && q.gr && q.gr.tile) qdTouch(q.gr.tile);
   const Rm=OB.rem; if(Rm && !OB.remDead){ for(const T of OB.tiles) if(T.st===0 && Math.abs(Rm.y-T.top)<.4 && Math.abs(Rm.x-T.x)<1 && Math.abs(Rm.z-T.z)<1 && Math.hypot(Rm.x-T.x,Rm.z-T.z)<.92) qdTouch(T); }
