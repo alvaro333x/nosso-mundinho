@@ -1106,6 +1106,12 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .stI u{display:block;height:6px;border-radius:9px;background:#f4e6eb;overflow:hidden;text-decoration:none;margin:3px 0 1px}.stI s{display:block;height:100%;background:var(--gold);border-radius:9px;text-decoration:none}.stI span{font-size:.66rem;color:var(--inkSoft);font-weight:700;display:flex;align-items:center;gap:3px}.stI span .ico{width:12px!important;height:12px!important}
 .stI .btn{margin:0;padding:6px 8px;font-size:.72rem;width:auto;flex:none}.stI.ok{box-shadow:inset 0 0 0 2px #7fd1a6;background:#f2fbf6}.stI.ok s{background:var(--sage)}.stI em{font-style:normal;color:#2f8a66;font-weight:700;font-size:1.1rem}
 @media (max-width:560px){ .stW,.stCh ul{grid-template-columns:1fr} }
+/* relógio do jogo (v7.9) */
+.gClock{position:absolute;right:calc(var(--sr) + 10px);top:calc(var(--st) + 48px);z-index:2449;display:flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:4px 11px 4px 7px;background:var(--hud);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font:600 .74rem Fredoka,system-ui,sans-serif;box-shadow:inset 0 0 0 1px var(--hudB);cursor:pointer;white-space:nowrap}
+.gClock i{font-style:normal;font-size:.95rem}.gClock b{font-variant-numeric:tabular-nums}.gClock span{opacity:.8}.gClock u{display:block;width:34px;height:6px;border-radius:9px;background:rgba(255,255,255,.22);overflow:hidden;text-decoration:none}.gClock s{display:block;height:100%;background:#7dffb8;border-radius:9px;text-decoration:none}.gClock u.mid s{background:var(--gold)}.gClock u.lo s{background:#ff7a8a}
+.scene.decMode .gClock,.scene.phMode .gClock,.scene.obMode .gClock,.scene.kzMode .gClock,.scene.cinMode .gClock{display:none}
+.ngF{position:absolute;inset:0;z-index:2700;display:grid;place-items:center;background:#120a1c;color:#fff;pointer-events:none;animation:ngF 5.2s ease forwards;font-family:Fredoka,sans-serif}.ngF div{display:flex;flex-direction:column;align-items:center;gap:6px}.ngF i{font-style:normal;font-size:3rem}.ngF b{font-size:1.4rem;opacity:.9}
+@keyframes ngF{0%{opacity:0}22%{opacity:1}72%{opacity:1}100%{opacity:0}}
 /* mundinho do zero (v7.8) */
 .wrl{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;background:radial-gradient(120% 90% at 50% 0%,#7a4a66 0%,#3f2838 45%,#21141e 100%);color:#fff;font-family:Fredoka,ui-rounded,system-ui,sans-serif;animation:fadeIn .3s}
 .wrl>div{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:0 24px}.wrl i{font-style:normal;font-size:3rem;animation:wrlB .5s ease-in-out infinite alternate}.wrl b{font-size:1.5rem}.wrl span{opacity:.8;font-size:.9rem}
@@ -1899,7 +1905,7 @@ async function initNet(){
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
-      "jogos/bingo-p0","jogos/bingo-p1","casal/p0","casal/p1","casal/datas","casa/decor","trab/p0","trab/p1","historia/sala","historia/p0","historia/p1","toque/p0","toque/p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1","cozinha/estado","cozinha/p0","cozinha/p1","cozinha/acao-p0","cozinha/acao-p1"];
+      "jogos/bingo-p0","jogos/bingo-p1","casal/p0","casal/p1","casal/datas","casa/decor","trab/p0","trab/p1","historia/sala","historia/p0","historia/p1","tempo/sala","toque/p0","toque/p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1","cozinha/estado","cozinha/p0","cozinha/p1","cozinha/acao-p0","cozinha/acao-p1"];
     paths.forEach(p=>{ NET.subs[p]=db.doc(p).onSnapshot(s=>{ NET.docs[p]=s.exists?s.data():null; netChanged(p); }, e=>{}); });
     NET.ready=true; initAlbumNet(); setTimeout(csPush,1500); initPetsNet(); initMailNet(); initChatNet(); refreshStatus();
   }catch(e){}
@@ -1912,6 +1918,7 @@ function netChanged(path){
   if(path.startsWith("casal/p")) csNet(path);
   if(path==="casa/decor") decorNet();
   if(path.startsWith("trab/")) jobNet(path);
+  if(path==="tempo/sala"){ gSt(); if(typeof SKY!=="undefined") SKY.force=true; }
   if(path.startsWith("historia/")){ stNet(path); if(curScreen==="hub") refreshBanners(); }
   if(path==="toque/p"+other()) thinkCheck();
   if(path==="dupla/lev" && OB.coop){ const d=NET.docs[path]; OB.lev=Object.assign({},d||{}); }
@@ -1939,7 +1946,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "7.8.2";
+const VERSION = "7.9";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -3635,7 +3642,7 @@ function insideTick(dt){
   officeTick(dt,zn); gamerTick(dt,zn);
   if(inside){ const cam=W3.cam.position; IS.walls.forEach(w=>{ const wp=w.g.position, nrm=V3(0,0,1).applyAxisAngle(V3(0,1,0),w.g.rotation.y); const rel=V3(cam.x-(IN3.x+wp.x),0,cam.z-(IN3.z+wp.z)); w.g.visible=rel.dot(nrm)>-.2; }); }
   if(IS.flame) IS.flame.scale.set(1+Math.sin(W3.t*13)*.12,1.6+Math.sin(W3.t*9)*.25,1);
-  const d=new Date(); if(IS.hands){ IS.hands[1].rotation.z=-d.getMinutes()/60*Math.PI*2; IS.hands[0].rotation.z=-(d.getHours()%12+d.getMinutes()/60)/12*Math.PI*2; IS.hands.forEach(h=>{ const a=h.rotation.z, l=h.geometry.parameters.height/2; h.position.set(-Math.sin(a)*l*-1*-1, Math.cos(a)*l, .05); }); }
+  const gh=gHour(); if(IS.hands){ IS.hands[1].rotation.z=-(gh%1)*Math.PI*2; IS.hands[0].rotation.z=-(gh%12)/12*Math.PI*2; IS.hands.forEach(h=>{ const a=h.rotation.z, l=h.geometry.parameters.height/2; h.position.set(-Math.sin(a)*l*-1*-1, Math.cos(a)*l, .05); }); }
 }
 /* sentar no sofá */
 function sofaSit(i,fromNet){
@@ -3880,7 +3887,7 @@ const NT_TITLES=[[1,"Nutri recém-formada"],[3,"Nutri do bairro"],[6,"Nutri quer
 const jobTitle=(L,lv)=>L.filter(([n])=>n<=lv).pop()[1];
 // cafezinho de presente: quem ganha trabalha 10 min valendo 20% a mais
 function buffOn(i){ return !!(S.buff&&S.buff[i]>Date.now()); }
-function buffGive(i,from){ S.buff=S.buff||{}; S.buff[i]=Date.now()+10*60e3; save(); if(HUB&&(!online()||i===S.me)){ bigToast(`${nmRaw(from)} trouxe um café`,"10 min valendo 20% a mais no trabalho"); snd("chime"); const C=W3.chars[i]; heartsW(C.root.position.x,2.2,C.root.position.z,["☕","💕","✨"],8); } }
+function buffGive(i,from){ S.buff=S.buff||{}; S.buff[i]=Date.now()+10*60e3; save(); if(!online()||i===S.me) enAdd(i,15); if(HUB&&(!online()||i===S.me)){ bigToast(`${nmRaw(from)} trouxe um café`,"10 min valendo 20% a mais no trabalho"); snd("chime"); const C=W3.chars[i]; heartsW(C.root.position.x,2.2,C.root.position.z,["☕","💕","✨"],8); } }
 function giftCheck(){ if(!online()) return; const d=NET.docs["trab/p"+other()], g=d&&d.gift; if(!g||!(+g.t)) return; if((S.giftSeen||0)>=g.t) return; S.giftSeen=+g.t; save(); if(Date.now()-g.t<10*60e3) buffGive(S.me,other()); }
 function coffeeGive(a){ const o=1-a, C=W3.chars[a], Co=W3.chars[o]; if(Date.now()-(S.coffeeT||0)<60e3){ toast("O café ainda tá passando ☕ Espera um minutinho"); return; }
   if(online()&&!partnerHere()){ toast(`${nmRaw(o)} não tá por aqui agora ☕`); return; } if(zone(Co.root.position.x)!==2){ toast(`${nmRaw(o)} não tá no predinho ☕`); return; }
@@ -3891,7 +3898,7 @@ function coffeeGive(a){ const o=1-a, C=W3.chars[a], Co=W3.chars[o]; if(Date.now(
 function charSit(i,key,then,fromNet){ const s=seatW(key), C=W3.chars[i]; if(!s||!C) return; const sx=s[0], sz=s[1], ox=sx+Math.sin(s[2]+Math.PI/2)*.75, oz=sz+Math.cos(s[2]+Math.PI/2)*.75;
   walkW(i,ox,oz,()=>{ C.chair={k:key,ox,oz}; C.path=[]; C.root.position.set(sx,0,sz); C.targetYaw=s[2]; C.root.rotation.y=s[2]; C.sitting=true; C.pose=key==="dev"||key.startsWith("pc")?"type":"sit"; if(then) then(); },fromNet);
   if(!fromNet&&online()&&i===S.me) pushMe({sit:{k:key,t:Date.now()}}); }
-function chairUp(C){ const ch=C.chair; C.chair=null; C.sitting=false; C.pose="idle"; if(ch) C.root.position.set(ch.ox,0,ch.oz); const i=W3.chars.indexOf(C); if(online()&&i===S.me) pushMe({sit:null}); if(i===actor()&&CON.on&&!CON.done) conClose(true); }
+function chairUp(C){ const ch=C.chair; C.chair=null; C.sitting=false; C.pose="idle"; if(ch) C.root.position.set(ch.ox,0,ch.oz); const i=W3.chars.indexOf(C); if(online()&&i===S.me) pushMe({sit:null,bed:null}); if(i===actor()&&CON.on&&!CON.done) conClose(true); }
 function sitNet(o,d){ const C=W3.chars[o]; if(d.sit&&d.sit.t&&d.sit.t!==HUB.lastSit){ HUB.lastSit=d.sit.t; if(Date.now()-d.sit.t<6*36e5) charSit(o,d.sit.k,null,true); } else if(!d.sit&&HUB.lastSit){ HUB.lastSit=0; if(C.chair) chairUp(C); } }
 /* ---------- consultório: alimentos, tipos de paciente e perguntas ---------- */
 const FOODS=`🍞|Pão integral com ovo mexido|c|290|16|5|2|420|glu,ovo
@@ -4054,7 +4061,7 @@ const ntCap=J=>Math.min(30,6+lvOf(J.xp).lv);
 const ntInterval=J=>Math.max(30,95/(1+(J.sc.length>=3?(ntRep(J)-1.5)*.2:0))/(1+ntBonus(J,"spawn")+(ntStaff(J,"recep")?.2:0)));   // segundos entre pacientes novos
 const ntPatience=J=>240*(1+ntBonus(J,"pat"))*(ntStaff(J,"recep")?1.5:1);
 const ntAsks=J=>2+ntBonus(J,"ask")+(ntStaff(J,"estag")?1:0);
-function ntPrice(J,p,score,ret){ const lv=lvOf(J.xp).lv; return Math.max(3,Math.round((10+lv*2.2)*(p.pre?1.15:1)*NT[p.k].mul*(.4+score/100*.8)*(1+ntBonus(J,"pay"))*(ret?.85:1)*(buffOn(1)?1.2:1))); }
+function ntPrice(J,p,score,ret){ const lv=lvOf(J.xp).lv; return Math.max(3,Math.round((10+lv*2.2)*(p.pre?1.15:1)*NT[p.k].mul*(.4+score/100*.8)*(1+ntBonus(J,"pay"))*(ret?.85:1)*(buffOn(1)?1.2:1)*enMul(1))); }
 function ntPt(J,id){ return J.pts.find(p=>p.id===id)||null; }
 function ntGoals(p){ const T=NT[p.k], G=T.goal(p).map(g=>g.slice()), forb=new Set(T.forb||[]); (p.cd||[]).forEach(c=>{ const D=CD[c]; if(!D) return; (D.forb||[]).forEach(t=>forb.add(t)); if(D.goal&&!G.some(g=>g[0]===D.goal[0])) G.push(D.goal.slice()); }); return {G,forb:[...forb]}; }
 function planSum(ids){ const s={kcal:0,prot:0,fib:0,acu:0,sod:0,ca:0,fe:0,fv:0,n:0}; ids.forEach(i=>{ const f=FOODS[i]; if(!f) return; s.n++; s.kcal+=f.kcal; s.prot+=f.prot; s.fib+=f.fib; s.acu+=f.acu; s.sod+=f.sod; f.tags.forEach(t=>{ if(t==="ca"||t==="fe"||t==="fv") s[t]++; }); }); return s; }
@@ -4108,7 +4115,7 @@ function ntProgress(p){ const a=Math.max(0,Math.min(1,(p.adh||.5)+(Math.random()
   else p.pr=Math.max(0,Math.min(100,(p.pr||0)+(a<.3?-4:Math.round(10+a*22))));
   p.hist.push(ntVal(p)); if(p.hist.length>14) p.hist.shift(); return {a,before,now:ntVal(p),d:r1(ntVal(p)-before)}; }
 function ntRetMs(J){ return (45+Math.random()*45)*60e3*(1-ntBonus(J,"ret")); }
-function ntArrive(J,now=Date.now()){ const seats=ntSeats(J); let ch=false; const inQ=id=>J.q.some(e=>e.id===id)||J.cur===id||(J.cur2&&J.cur2.id===id);
+function ntArrive(J,now=Date.now()){ if(!gOpen()) return false; const seats=ntSeats(J); let ch=false; const inQ=id=>J.q.some(e=>e.id===id)||J.cur===id||(J.cur2&&J.cur2.id===id);
   J.pts.filter(p=>p.vis>0&&p.next&&p.next<=now&&!inQ(p.id)).sort((a,b)=>a.next-b.next).forEach(p=>{ if(J.q.length<seats){ J.q.push({id:p.id,t:now}); ch=true; } });
   const iv=ntInterval(J)*1000; if(!J.lastNew) J.lastNew=now-iv;
   if(J.q.length<seats&&now-J.lastNew>=iv){ const p=ntNew(J); J.lastNew=now; if(p){ J.pts.push(p); J.q.push({id:p.id,t:now}); ch=true; } }
@@ -4220,7 +4227,7 @@ function officeTick(dt,zn){ const O=W3.office; if(!O||zn!==2) return; const cam=
   O.tk=(O.tk||0)+dt; if(O.tk>=1){ O.tk=0; if(act) ntTick(); else officeItems(); workHud(); patienceFx(); } }
 function patienceFx(){ const O=W3.office, J=ntJ(), pat=ntPatience(J)*1000, now=Date.now(); J.q.forEach(e=>{ const n=O.npcs[e.id]; if(!n) return; const k=(now-e.t)/pat, late=k>.7&&ntActive(); if(late&&!n.huff){ n.huff=emojiSprite("😤",.34); n.huff.position.set(0,2.15,0); n.C.root.add(n.huff); setFace(n.C,"sad"); } else if(!late&&n.huff){ n.C.root.remove(n.huff); n.huff=null; setFace(n.C,"idle"); } }); }
 function workHud(){ if(!HUB||HUB.zone!==2) return; let h=HUB.root.querySelector("#jobHud"); if(!h){ h=document.createElement("button"); h.id="jobHud"; h.className="jobHud"; h.onclick=e=>{ e.stopPropagation(); jobPanel(1); }; h.addEventListener("pointerdown",e=>e.stopPropagation()); HUB.scene.appendChild(h); }
-  const J=ntJ(), L=lvOf(J.xp), rs=ntRepStars(J), html=`<i>🩺</i><span><b>Nv ${L.lv}</b>${rs?` · ★ ${rs.toFixed(1)}`:""}</span><span class="jhQ">${J.q.length} esperando</span>${buffOn(1)?`<span class="jhB">☕ +20%</span>`:""}`; if(h.dataset.h!==html){ h.dataset.h=html; h.innerHTML=html; } }
+  const J=ntJ(), L=lvOf(J.xp), rs=ntRepStars(J), html=`<i>🩺</i><span><b>Nv ${L.lv}</b>${rs?` · ★ ${rs.toFixed(1)}`:""}</span><span class="jhQ">${!gOpen()&&!J.q.length?"fechado até as 7h":`${J.q.length} esperando`}</span>${buffOn(1)?`<span class="jhB">☕ +20%</span>`:""}`; if(h.dataset.h!==html){ h.dataset.h=html; h.innerHTML=html; } }
 function officeNear(cand,a,p){ const X=x=>OF3.x+x, Z=z=>OF3.z+z, J=ntJ(), mine=jobMine(1)&&a===1, O=W3.office;
   cand(OF_DOOR_IN.x,OF_DOOR_IN.z+.4,1.9,"🚪","Sair",()=>walkW(a,OF_DOOR_OUT.x+1,OF_DOOR_OUT.z));
   cand(X(-5.2),Z(-3.7),2.5,mine&&J.q.length?"🩺":"📋",mine&&J.q.length?"Atender":"Consultório",()=>mine&&J.q.length?conStart():jobPanel(1),-.25);
@@ -4310,7 +4317,7 @@ function conFinish(){ const p=CON.p, J=ntJ(), pz=CON.pz, r=ntScore(p,pz,CON.sel,
   else if(p.one){ J.pts=J.pts.filter(x=>x!==p); nextTxt="consulta avulsa"; } else { const ms=ntRetMs(J); p.next=now+ms; nextTxt=`retorno em ${Math.round(ms/60e3)} min`; }
   if(!alta&&(r.stars===0||(r.stars===3&&Math.random()<.4)||(r.stars===1&&Math.random()<.5))) J.rev.unshift({n:p.n,s:[1,2,4,5][r.stars],x:pick(NT_REV[r.stars]),t:now}); J.rev=J.rev.slice(0,15);
   if(r.stars===3&&Math.random()<.2){ J.lastNew=Math.min(J.lastNew,now-ntInterval(J)*1000); setTimeout(()=>toast(`${p.n} indicou você pra mais gente 💕`,2400),2600); }
-  ntStar(J,r.stars); J.st.cons++; J.st.earn+=pay; J.cur=null; ntXp(J,xp); CON.res=Object.assign(r,{pay,xp:Math.round(xp*(1+ntBonus(J,"xp"))*(buffOn(1)?1.2:1)),lines,nextTxt,alta}); CON.done=true; CON.step="fim"; CON.mood=r.stars>=2?"happy":r.stars===1?"idle":"sad";
+  ntStar(J,r.stars); J.st.cons++; J.st.earn+=pay; J.cur=null; enAdd(1,-3); ntXp(J,xp); CON.res=Object.assign(r,{pay,xp:Math.round(xp*(1+ntBonus(J,"xp"))*(buffOn(1)?1.2:1)),lines,nextTxt,alta}); CON.done=true; CON.step="fim"; CON.mood=r.stars>=2?"happy":r.stars===1?"idle":"sad";
   const n=W3.office&&W3.office.npcs[p.id]; if(n) n.mood=r.stars>=2?"happy":"sad"; cEarn(pay,alta?"alta":"consulta"); mis("consulta"); mis("trabalho"); snd(alta||r.stars===3?"fanfare":r.stars?"good":"lose"); jobSave(1,true); officeSync(); conDraw();
   if(alta&&HUB){ const C=W3.chars[1]; heartsW(C.root.position.x,2.3,C.root.position.z,["🎉","💖","✨","⭐"],14); } }
 /* ---------- painel do trabalho ---------- */
@@ -4321,7 +4328,7 @@ function jobPanel(i,tab){ if(i===0){ const J=dvJ(), L=lvOf(J.xp), mine=jobMine(0
     let body=""; const CO=icon("🪙")+" ";
     if(tb==="hoje"){ body=`<div class="jbStats"><div><b>${rs?rs.toFixed(1):"—"}</b><span>★ nota</span></div><div><b>${J.q.length}/${ntSeats(J)}</b><span>esperando</span></div><div><b>${roster.length}/${ntCap(J)}</b><span>pacientes fixos</span></div><div><b>${J.st.cons}</b><span>consultas</span></div><div><b>${J.st.alta}</b><span>altas</span></div><div><b>${J.st.earn}</b><span>moedinhas ganhas</span></div></div>
         ${buffOn(1)?`<div class="usNext">☕ Café do amor: valendo 20% a mais por ${agoMin(S.buff[1]-now)}</div>`:""}${J.off?`<div class="usNext">😴 A equipe folgou hoje (faltou moedinha pro salário)</div>`:""}
-        <h3>Na sala de espera</h3><div class="jbQ">${J.q.map(e=>{ const p=ntPt(J,e.id); return p?`<button class="jbP" data-p="${p.id}"><img src="${npcPortrait(p)}" alt=""><b>${esc(p.n)}</b><span>${NT[p.k].n}${p.vis?" · retorno":" · 1ª vez"}</span></button>`:""; }).join("")||`<p class="small">Ninguém esperando. Paciente novo chega a cada ${Math.round(ntInterval(J))} s com ${esc(nmRaw(1))} no consultório.</p>`}</div>
+        <h3>Na sala de espera</h3><div class="jbQ">${J.q.map(e=>{ const p=ntPt(J,e.id); return p?`<button class="jbP" data-p="${p.id}"><img src="${npcPortrait(p)}" alt=""><b>${esc(p.n)}</b><span>${NT[p.k].n}${p.vis?" · retorno":" · 1ª vez"}</span></button>`:""; }).join("")||`<p class="small">${gOpen()?`Ninguém esperando. Paciente novo chega a cada ${Math.round(ntInterval(J))} s com ${esc(nmRaw(1))} no consultório.`:"O consultório atende das 7h às 19h (hora do mundinho). De noite é hora de descansar."}</p>`}</div>
         <p class="small">Cada consulta tem anamnese, plano alimentar e orientação. Quanto melhor o plano, mais o paciente segue e mais ele evolui no retorno.</p>`; }
     else if(tb==="pac"){ body=`<div class="jbL">${roster.sort((a,b)=>a.next-b.next).map(p=>`<button class="jbRow" data-p="${p.id}"><img src="${npcPortrait(p)}" alt=""><div><b>${esc(p.n)}, ${p.a}</b><span>${NT[p.k].n}${p.cd.length&&p.kn.s?" · "+p.cd.map(c=>CD[c].n).join(", "):""}</span>${conFicha(p)}</div><em>${J.q.some(e=>e.id===p.id)?"na sala de espera":J.cur===p.id?"em consulta":p.next>now?"volta em "+agoMin(p.next-now):"chegando"}</em></button>`).join("")||`<p class="small">Quem faz acompanhamento aparece aqui depois da primeira consulta, com ficha, meta e evolução.</p>`}</div>
         ${J.hall.length?`<h3>Mural de altas</h3><div class="jbHall">${J.hall.map(h=>`<span>🎉 ${esc(h.n)}${h.d?` (${h.d>0?"+":"−"}${kg(Math.abs(h.d))} kg)`:""}</span>`).join("")}</div>`:""}`; }
@@ -4648,6 +4655,49 @@ function storyModal(){ const G=storyGoals(), done=G.filter(g=>g[1]).length, tot=
     <div class="stCh"><div class="stHd"><i>4</i><div><b>Nossa família</b><span>o quartinho do bebê e uma surpresa</span></div><em>depois do casamento</em></div></div>
     <div class="obBtns"><button class="btn blue" id="stCin">🎬 Rever a abertura</button><button class="btn alt" data-close>Fechar</button></div></div>`);
   m.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{ wedPay(b.dataset.w,+b.dataset.n); m.remove(); storyModal(); }); m.querySelector("#stCin").onclick=()=>{ m.remove(); cinStart("full"); }; }
+/* =================== TEMPO DO JOGO: o mundinho tem o próprio relógio (dia pra trabalhar, noite pra dormir), igual nos dois celulares =================== */
+// 1 dia do jogo = 36 minutos de verdade. A hora sai do relógio real + um ajuste guardado em "tempo/sala" (o último que mexeu vale):
+// dormir de noite soma no ajuste até virar 7h, e quem abre o jogo depois de um tempo fora acorda de manhã.
+const G_RATE=40, G_DAY=864e5, G_EPOCH=Date.UTC(2026,10,1);
+function gSt(){ const l=S.gt&&typeof S.gt==="object"?S.gt:(S.gt={off:0,d0:0,t:0}), d=online()?NET.docs["tempo/sala"]:null; if(d&&typeof d==="object"&&(+d.t||0)>(+l.t||0)){ S.gt={off:+d.off||0,d0:+d.d0||0,t:+d.t}; save(); return S.gt; } return l; }
+const gMs=()=>(Date.now()-G_EPOCH)*G_RATE+(+gSt().off||0);
+const gHour=()=>{ const q=/[?&]hora=([\d.]+)/.exec(location.search); return q?(+q[1])%24:(gMs()%G_DAY)/36e5; };
+function gDay(){ const st=gSt(), n=Math.floor(gMs()/G_DAY); if(!st.d0){ st.d0=n; st.t=st.t||1; save(); } return Math.max(1,n-st.d0+1); }
+const gNight=(h=gHour())=>h>=21||h<6, gOpen=(h=gHour())=>h>=7&&h<19;
+const gHM=(h=gHour())=>`${String(Math.floor(h)).padStart(2,"0")}:${String(Math.floor(h%1*60)).padStart(2,"0")}`;
+function gJump(to){ const st=gSt(), h=(gMs()%G_DAY)/36e5, add=((to-h+24)%24)*36e5; S.gt={off:(+st.off||0)+add,d0:st.d0||Math.floor(gMs()/G_DAY),t:Date.now()}; save(); if(online()) push("tempo/sala",S.gt); if(typeof SKY!=="undefined") SKY.force=true; }
+/* ---------- disposição: cai ao longo do dia e com o trabalho, volta dormindo; com sono o trabalho rende menos ---------- */
+function enSt(i){ const E=S.en&&typeof S.en==="object"?S.en:(S.en={}); if(!E[i]||E[i].t>Date.now()+6e4) E[i]={v:100,t:Date.now()}; return E[i]; }
+function enGet(i){ const e=enSt(i), dh=Math.max(0,(Date.now()-e.t)*G_RATE/36e5); return Math.max(0,Math.min(100,e.v-dh*5.5)); }
+function enSet(i,v){ enSt(i); S.en[i]={v:Math.max(0,Math.min(100,v)),t:Date.now()}; save(); }
+const enAdd=(i,n)=>enSet(i,enGet(i)+n);
+const enMul=i=>{ const v=enGet(i); return v>=35?1:v>=15?.8:.6; };
+const enMine=()=>online()?[S.me]:[0,1];
+/* ---------- dormir: de noite, com todo mundo que está jogando deitado, a noite passa ---------- */
+function bedOf(i){ const C=W3&&W3.chars[i]; return !!(C&&C.chair&&C.chair.k==="bed"); }
+function sleepTry(){ if(!HUB||GTM.skip||!gNight()) return; const me=online()?S.me:actor(); if(!bedOf(me)) return;
+  if(online()&&partnerHere()){ const d=NET.docs[hubPath(other())]; if(!(d&&d.bed&&Date.now()-d.bed.t<30*60e3)){ if(!GTM.waitT||Date.now()-GTM.waitT>20000){ GTM.waitT=Date.now(); toast(`Esperando ${nmRaw(other())} deitar pra noite passar 🌙`,3200); } return; } if(S.me!==0) return; }   // online e os dois deitados: o celular do jogador 1 vira a noite
+  GTM.skip=true; setTimeout(()=>{ GTM.skip=false; if(HUB&&bedOf(me)&&gNight()) gJump(7); },2600); nightFade(); }
+function nightFade(){ if(!HUB||document.querySelector(".ngF")) return; const f=document.createElement("div"); f.className="ngF"; f.innerHTML=`<div><i>🌙</i><b>boa noite…</b></div>`; HUB.scene.appendChild(f); if(!S.mute) [[72,0],[67,.5],[64,1],[60,1.5]].forEach(([n,at])=>tone(NOTE(n),.9,"sine",.04,at)); setTimeout(()=>f.remove(),5200); }
+function morning(){ const who=enMine().filter(bedOf); if(!who.length) return; who.forEach(i=>{ enSet(i,100); const C=W3.chars[i]; standUp(C); setFace(C,"happy"); later(i,()=>setFace(C,"idle"),2200); }); const both=bedTogether; bedTogether=false;
+  bigToast("Bom dia!",`dia ${gDay()} do nosso mundinho`); snd("chime"); if(both){ mis("carinho"); who.forEach(i=>{ const C=W3.chars[i]; heartsW(C.root.position.x,2.2,C.root.position.z,["💕","☀️","💗"],8); }); setTimeout(()=>toast("Dormiram juntinhos: acordaram com a disposição cheia 💕",3000),2200); } }
+let bedTogether=false;
+function bedNet(o,d){ const C=W3.chars[o]; if(d.bed&&d.bed.t&&d.bed.t!==HUB.lastBed){ HUB.lastBed=d.bed.t; if(Date.now()-d.bed.t<30*60e3){ sleepNow(o,true); if(gNight()&&!bedOf(S.me)&&Date.now()-d.bed.t<15000) toast(`${nmRaw(o)} foi deitar 😴 Deita também pra noite passar`,3600); } } else if(!d.bed&&HUB.lastBed){ HUB.lastBed=0; if(C.chair&&C.chair.k==="bed") standUp(C); } }
+/* ---------- relógio na tela e o passar das horas ---------- */
+const GTM={acc:0,skip:false,wasNight:null,nag:0,low:{}};
+function gInit(){ GTM.wasNight=null; setTimeout(()=>{ if(!HUB) return; const away=Date.now()-(S.gtSeen||0); if(!(online()&&partnerHere())&&away>20*60e3&&!/[?&]hora=/.test(location.search)){ gJump(7); enMine().forEach(i=>enSet(i,100)); if(S.gtSeen) setTimeout(()=>{ if(HUB&&!CIN.on) bigToast("Bom dia!",`dia ${gDay()} do nosso mundinho`); },1500); } S.gtSeen=Date.now(); save(); },online()?4200:900); }
+function gTick(dt){ GTM.acc+=dt; if(GTM.acc<1) return; GTM.acc=0; if(!HUB) return; const h=gHour(), night=gNight(h), me=online()?S.me:actor();
+  let el=HUB.root.querySelector("#gClock"); if(!el){ el=document.createElement("button"); el.id="gClock"; el.className="gClock"; el.onclick=e=>{ e.stopPropagation(); gModal(); }; el.addEventListener("pointerdown",e=>e.stopPropagation()); HUB.scene.appendChild(el); }
+  const en=Math.round(enGet(me)), html=`<i>${h>=6&&h<18?"☀️":h>=18&&h<21?"🌇":"🌙"}</i><b>${gHM(h)}</b><span>dia ${gDay()}</span><u class="${en<15?"lo":en<35?"mid":""}"><s style="width:${en}%"></s></u>`; if(el.dataset.h!==html){ el.dataset.h=html; el.innerHTML=html; }
+  if(GTM.wasNight===true&&!night) morning(); GTM.wasNight=night;
+  if(night&&bedOf(me)) sleepTry();
+  if(night&&!bedOf(me)&&HUB.zone!==undefined&&Math.floor(gMs()/G_DAY)!==GTM.nag&&h>=21.5&&!CIN.on){ GTM.nag=Math.floor(gMs()/G_DAY); toast("Já é noite 🌙 Bora pra casa dormir? Com sono o trabalho rende menos",4200); }
+  enMine().forEach(i=>{ const v=enGet(i), lv=v<15?2:v<35?1:0; if(lv>(GTM.low[i]||0)&&i===me) toast(lv===2?"Caindo de sono… 😴 O trabalho tá rendendo bem menos":"Bateu um soninho 🥱 O trabalho rende um pouco menos",3600); GTM.low[i]=lv; });
+  if(Date.now()-(S.gtSeen||0)>8000){ S.gtSeen=Date.now(); save(); } }
+function gModal(){ const me=online()?S.me:actor(), h=gHour(), en=Math.round(enGet(me));
+  modal(`<div class="usM"><h2>${h>=6&&h<18?"☀️":"🌙"} ${gHM(h)} · dia ${gDay()}</h2><p>O mundinho tem o próprio relógio: um dia aqui dura uns 36 minutos de verdade e é igual nos dois celulares.</p>
+    <p><b>De dia</b> (7h às 19h) o consultório recebe pacientes. <b>De noite</b> (depois das 21h) é hora de ir pra casa e deitar: com todo mundo que está jogando deitado, a noite passa na hora.</p>
+    <p><b>Disposição de ${esc(nmRaw(me))}: ${en}%</b>. Ela cai ao longo do dia e a cada trabalho; com menos de 35% o trabalho rende menos. Dormir enche tudo, um cochilo de dia dá um gás e um café de presente também.</p><div class="obBtns"><button class="btn alt" data-close>Entendi</button></div></div>`); }
 /* =================== MUNDINHO DO ZERO: começamos com um barraquinho e o trabalho; todo o resto é construído com as moedinhas =================== */
 // [chave, nome, emoji, preço, precisa de, descrição, lugar da plaquinha no mapa, grupo]
 const BUILD=[
@@ -4737,7 +4787,12 @@ function sleepSpot(H){ const w=IN3.w, d=IN3.d, x=-w+1.55, z=-d+1.5, B=batcher();
   if(wHas("colchao")){ B.box(1.8,.24,2.1,"#fffaf3",x,.12,z).box(1.84,.1,1.3,"#f3a6bb",x,.27,z+.4).box(1.86,.04,.2,"#ffffff",x,.3,z-.2); [-.45,.45].forEach(q=>B.box(.66,.14,.38,"#ffffff",x+q,.3,z-.78)); }
   else [["#5a8fd6","#3d6fb5",-.5],["#ff9ab0","#e2788f",.5]].forEach(([c1,c2,q])=>{ B.add(new THREE.CapsuleGeometry(.34,1.25,6,14),c1,x+q,.14,z+.1,1,1,.42,Math.PI/2,0,0).box(.56,.02,.5,c2,x+q,.29,z+.55).box(.5,.13,.34,"#fffaf2",x+q,.1,z-.82).box(.02,.02,1.2,"#ffd15c",x+q+.3,.28,z+.1); });
   const m=B.mesh(); m.traverse(o=>o.userData.hit="bed"); m.userData.hit="bed"; H.add(m); IN_BLOCK.push([IN3.x+x-1.0,IN3.x+x+1.0,IN3.z+z-1.05,IN3.z+z+1.05]); }
-function sleepNow(a){ const C=W3.chars[a], b=W3.inside&&W3.inside.bed; if(!b) return; const q=a?.5:-.5; walkW(a,b.x+q,b.z+1.45,()=>{ C.chair={k:"bed",ox:b.x+q,oz:b.z+1.45}; C.path=[]; C.root.position.set(b.x+q,.12,b.z+.35); C.root.rotation.y=C.targetYaw=0; C.sitting=true; C.pose="sit"; setFace(C,"sleep"); say(a,"zzz… 😴",2600); snd("purr"); const o=W3.chars[1-a]; if(o.chair&&o.chair.k==="bed"){ heartsW(b.x,1.4,b.z,["💕","🌙","💗"],8); mis("carinho"); } }); }
+function sleepNow(a,fromNet){ const C=W3.chars[a], b=W3.inside&&W3.inside.bed; if(!b||bedOf(a)) return; const q=a?.5:-.5;
+  const lie=()=>{ C.chair={k:"bed",ox:b.x+q,oz:b.z+1.45}; C.path=[]; C.root.position.set(b.x+q,.12,b.z+.35); C.root.rotation.y=C.targetYaw=0; C.sitting=true; C.pose="sit"; setFace(C,"sleep");
+    if(!fromNet){ say(a,gNight()?"boa noite… 😴":"um cochilinho 😴",2400); snd("purr"); if(online()&&a===S.me) pushMe({bed:{t:Date.now()}}); if(!gNight()){ clearTimeout(GTM.napT); GTM.napT=setTimeout(()=>{ if(bedOf(a)){ enAdd(a,25); toast("Cochilo bom: +25 de disposição ⚡",2400); } },7000); } }
+    if(bedOf(1-a)){ bedTogether=true; heartsW(b.x,1.4,b.z,["💕","🌙","💗"],8); }
+    if(!online()&&!fromNet&&gNight()&&!bedOf(1-a)) sleepNow(1-a,true); };
+  if(fromNet&&zone(C.root.position.x)!==1){ C.root.position.set(DOOR_IN.x,0,DOOR_IN.z); C.path=[]; } walkW(a,b.x+q,b.z+1.45,lie,fromNet); }
 function buildShack(sc){ const H=grp(IN3.x,0,IN3.z), w=IN3.w, d=IN3.d, WH=HT?3.0:2.7, IS=W3.inside={g:H,walls:[],frames:[]}, poor=!HT;
   const ft=plankTex(poor?"chao0":"chao1",poor?150:200,poor?112:152,poor?84:108,6).clone(); ft.needsUpdate=true; ft.repeat.set(2,1.6); const floor=mesh(new THREE.PlaneGeometry(w*2,d*2),new THREE.MeshToonMaterial({map:ft,gradientMap:toonGradSoft()}),0,.001,0,false); floor.rotation.x=-Math.PI/2; floor.userData.ground=true; H.add(floor); H.add(mesh(new THREE.BoxGeometry(w*2+.6,.4,d*2+.6),MT("#5a4336"),0,-.2,0,false));
   let wm; if(poor){ const wt=plankTex("parede0",172,130,98,5).clone(); wt.needsUpdate=true; wt.center.set(.5,.5); wt.rotation=Math.PI/2; wm=new THREE.MeshToonMaterial({map:wt,gradientMap:toonGradSoft(),side:THREE.DoubleSide}); } else wm=new THREE.MeshToonMaterial({map:clapTex(),color:new THREE.Color("#f6e7cf"),gradientMap:toonGradSoft(),side:THREE.DoubleSide});
@@ -4793,9 +4848,9 @@ function devDraw(){ const el=DEV.el; if(!el) return; const J=dvJ(), L=lvOf(J.xp)
   el.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{ DEV.pickB=+b.dataset.t; DEV.sB=DEV.pickB===DEV.bugI?1:0; snd(DEV.sB?"good2":"bad"); devDraw(); setTimeout(()=>{ if(!DEV.el) return; DEV.step="pub"; devDraw(); },1000); });
   on("#dvStop",()=>{ const g=el.querySelector(".dvGauge").getBoundingClientRect(), n=el.querySelector(".dvNeedle").getBoundingClientRect(), x=(n.left+n.width/2-g.left)/g.width*100; DEV.sD=x>=DEV.zone[0]-1&&x<=DEV.zone[0]+DEV.zone[1]+1?1:0; devFinish(); }); }
 function devFinish(){ if(!DEV.el||DEV.done) return; const J=dvJ(), lv=lvOf(J.xp).lv, score=DEV.sP*.4+DEV.sB*.35+DEV.sD*.25, stars=score>=.95?3:score>=.6?2:score>=.3?1:0;
-  const pay=Math.max(2,Math.round((10+lv*2.2)*(.3+score*.7)*(buffOn(0)?1.2:1))), xp=Math.round((8+stars*4)*(buffOn(0)?1.2:1)), b0=lv; J.xp+=xp; J.st.tasks=(J.st.tasks||0)+1; J.st.earn=(J.st.earn||0)+pay; const a=lvOf(J.xp).lv;
+  const pay=Math.max(2,Math.round((10+lv*2.2)*(.3+score*.7)*(buffOn(0)?1.2:1)*enMul(0))), xp=Math.round((8+stars*4)*(buffOn(0)?1.2:1)), b0=lv; J.xp+=xp; J.st.tasks=(J.st.tasks||0)+1; J.st.earn=(J.st.earn||0)+pay; const a=lvOf(J.xp).lv;
   DEV.done=true; DEV.step="fim"; DEV.res={stars,pay,xp,lines:[[DEV.sP>=1,DEV.sP>=1?"Pedido pra IA certinho":`Pedido pra IA: ${Math.round(DEV.sP*3)} de 3 blocos`],[!!DEV.sB,DEV.sB?"Achou o bug antes do cliente":"O bug passou batido"],[!!DEV.sD,DEV.sD?"Publicado sem cair":"O site caiu na hora de publicar"]]};
-  cEarn(pay,"projeto"); mis("trabalho"); jobSave(0,true); snd(stars===3?"fanfare":stars?"good":"lose"); devDraw();
+  enAdd(0,-3); cEarn(pay,"projeto"); mis("trabalho"); jobSave(0,true); snd(stars===3?"fanfare":stars?"good":"lose"); devDraw();
   if(a>b0) setTimeout(()=>{ usToast(`Nível ${a} no estúdio!`,jobTitle(DEV_TITLES,a)); snd("fanfare"); cEarn(40+a*10,"nível "+a); },900); }
 function preApply(){}
 /* =================== MODO SAUDADE: quem tá fora dorme na rede; quem ficou deixa beijinho, cafuné e recadinho =================== */
@@ -5693,7 +5748,7 @@ function hub(){
     const k=JOYKEYS[e.key]; if(!k) return; HUB.keys[k]=e.type==="keydown"; e.preventDefault(); };
   window.addEventListener("keydown",kd); window.addEventListener("keyup",kd);
   screenCleanup=()=>{ if(OB.on) obbyExit(true); if(KZ.on) kzExit(true); cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); if(TV.mode) tvOff(false); TV.scr=null; TV.rem=null; HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
-  bindActs3(root); pcBack(); builtParty();
+  bindActs3(root); pcBack(); builtParty(); gInit();
   if(stLive()&&stGet().prem&&!CIN.played&&!S.recapOff){ CIN.played=1; setTimeout(()=>{ if(HUB&&curScreen==="hub"&&!document.querySelector(".modalBg")){ CIN.played=0; cinStart("recap"); } },900); }
   if(!S.n76){ S.n76=1; save(); setTimeout(()=>{ if(HUB&&curScreen==="hub"&&!CIN.on&&!document.querySelector(".modalBg")) modal(`<div class="usM"><h2>🎮 Os jogos mudaram de lugar</h2><p>O Parque Radical e as barraquinhas saíram do mapa. Agora a casa tem um <b>quarto gamer</b> (a porta roxa da sala): vocês abrem o quarto, compram o PC de cada um e jogam tudo por dentro do PC, comprando os jogos aos poucos.</p><p>O <b>Nosso Predinho</b> (💼 no mapa) é onde a gente trabalha pra juntar as moedinhas. Os recordes antigos continuam guardados.</p><div class="obBtns"><button class="btn pink" data-close>Bora</button></div></div>`); },4200); }
   mailTick(); refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags(); SKY.force=true; refreshSkyBtn(); starsChanged();
@@ -7110,7 +7165,7 @@ function joySync(C,i,final,dt=0){ HUB.joyNetT=(HUB.joyNetT||0)-dt; if(!final && 
 /* =================== CÉU DE VERDADE (dia e noite pela hora real) =================== */
 const SKY={h:12, night:0, sunK:1, hemiK:1, paintT:0, force:true, tags:[], shootT:20};
 const WATER_MATS=[];
-function skyHour(){ const q=/[?&]hora=([\d.]+)/.exec(location.search); if(q) return (+q[1])%24; const d=new Date(); return d.getHours()+d.getMinutes()/60+d.getSeconds()/3600; }
+function skyHour(){ return gHour(); }
 // [hora, céu topo, meio, horizonte, base, neblina, luz do sol/lua, força do sol, força do céu, céu (hemi), chão (hemi), reflexo da água, brilho da água]
 const SKY_KEYS=[
  [0,   "#0b1030","#18204a","#272c58","#30365e","#141a3c","#9fb4ff",.24,.42,"#6f86c8","#28323e","#2a3560",.34],
@@ -7539,7 +7594,7 @@ function step(dt){
     Object.values(W3.pets).forEach(P=>{ if(!P.ov) return; const p=proj(P.root.localToWorld(V3(0,.75,0))); P.ov.style.transform=`translate(${p.x}px,${p.y}px)`; P.ov.style.display=p.vis?"":"none"; });
     if(HUB.ctx && HUB.ctxAnchor){ const p=proj(HUB.ctxAnchor()); HUB.ctx.style.left=p.x+"px"; HUB.ctx.style.top=p.y+"px"; }
     if(HUB.enterBtn && HUB.enterAnchor){ const p=proj(HUB.enterAnchor); HUB.enterBtn.style.left=p.x+"px"; HUB.enterBtn.style.top=p.y+"px"; }
-    skyTagsTick(); actsTick(dt); tvScreenTick(); napTick();
+    skyTagsTick(); actsTick(dt); tvScreenTick(); napTick(); gTick(dt);
   }
 }
 
@@ -7850,7 +7905,7 @@ function hubNet(path){
     if(d.typing && d.typing!==HUB.lastTyping){ const first=HUB.lastTyping===undefined; HUB.lastTyping=d.typing; if(!first||Date.now()-d.typing<6000){ CHAT.typingAt=performance.now(); chatTypingUI(); } }
     if(typeof d.x==="number"){ const dst=(HUB.dest&&HUB.dest[o])||HUB.pos[o]; if(Math.abs(dst.x-d.x)>.002||Math.abs(dst.y-d.y)>.002) walkTo(o, d.x, d.y, null, true); }
     if(d.tv && d.tv.t && d.tv.t!==HUB.lastTv){ const fresh=Date.now()-d.tv.t<15*60e3; HUB.lastTv=d.tv.t; if(fresh) tvRemote(d.tv); }
-    sitNet(o,d);
+    sitNet(o,d); bedNet(o,d);
     if(d.jump && d.jump.t && d.jump.t!==HUB.lastJump){ const fresh=Date.now()-d.jump.t<4000; HUB.lastJump=d.jump.t; if(fresh) jumpChar(o,true); }
     if(d.emote && d.emote.t && d.emote.t!==HUB.lastEmote[o]){ const fresh=Date.now()-d.emote.t<20000; HUB.lastEmote[o]=d.emote.t; if(fresh) showEmote(o, d.emote.e); }
     refreshStatus();
