@@ -828,6 +828,16 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .tvRemote2{background:linear-gradient(180deg,rgba(63,40,56,.96),rgba(33,20,30,.96))}
 .trBtns>button.big{background:var(--pink)}
 .aInt{background:var(--pink)}
+/* modo saudade (v5.6) */
+.dot.zz{background:#9583ec;box-shadow:0 0 8px #9583ec}
+.zzT{margin-left:4px;color:#c9bcff;font-weight:700;font-size:.85em}.zzT small{font-size:.7em;vertical-align:super}
+.saud{text-align:center}.saud h2{margin:2px 0 6px}
+.saudArt svg{width:120px;height:54px;font-family:Fredoka,ui-rounded,system-ui,sans-serif}
+.saudL{list-style:none;padding:0;margin:8px 0;display:grid;gap:7px;text-align:left}
+.saudL li{display:flex;align-items:center;gap:10px;background:#f6ecf1;border-radius:14px;padding:8px 12px;color:var(--ink2);font-weight:500}
+.saudL .ico{width:24px!important;height:24px!important;flex-shrink:0}
+.saudB{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}.saudB .btn{flex:1 1 auto;width:auto}
+@media (orientation:landscape){ .saudArt{display:none} .saudL{grid-template-columns:1fr 1fr} }
 /* adicionar à Tela de Início */
 .a2hs{text-align:left}
 .a2hs ol{margin:6px 0 12px;padding-left:22px;line-height:1.55;color:#5a4652}
@@ -1583,7 +1593,7 @@ async function initNet(){
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
-      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1"];
+      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1"];
     paths.forEach(p=>{ NET.subs[p]=db.doc(p).onSnapshot(s=>{ NET.docs[p]=s.exists?s.data():null; netChanged(p); }, e=>{}); });
     NET.ready=true; initPetsNet(); initMailNet(); refreshStatus();
   }catch(e){}
@@ -1613,7 +1623,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "5.5";
+const VERSION = "5.6";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2002,6 +2012,10 @@ const POSE={
 function animChar(C, dt, t){
   C.t+=dt;
   if(C.swim||C.diving) return animSwim(C,dt);
+  if(C.nap){ const L=Math.min(1,dt*6); C.arms.forEach((a,k)=>{ a.sho.rotation.x+=(0-a.sho.rotation.x)*L; a.sho.rotation.z+=((k?.06:-.06)-a.sho.rotation.z)*L; a.elb.rotation.x+=(-.1-a.elb.rotation.x)*L; });
+    C.legs.forEach(lg=>{ lg.rotation.x+=(0-lg.rotation.x)*L; }); C.body.position.y+=(0-C.body.position.y)*L; C.body.position.z=Math.sin(C.t*1.5)*.014;
+    C.body.rotation.x+=(0-C.body.rotation.x)*L; C.body.rotation.z+=(0-C.body.rotation.z)*L; C.head.rotation.x+=(-.12-C.head.rotation.x)*L; return; }
+  if(C.body.position.z) C.body.position.z=0;
   if(C.wasSwim){ C.wasSwim=false; const W=Math.PI*2; C.arms.forEach(a=>{ a.sho.rotation.x=((a.sho.rotation.x+Math.PI)%W+W)%W-Math.PI; }); C.head.rotation.y=0; C.body.rotation.z=0; }
   const P=POSE[C.walk>.05?"walk":C.pose]||POSE.idle, L=Math.min(1,dt*10), air=C.jv!=null, g=C.gait||1;
   C.wt=(C.wt||0)+dt*9*g; if(C.land>0) C.land-=dt;
@@ -2430,6 +2444,7 @@ function buildWorld(){
   for(let k=0;k<70;k++){ const a=rt()*Math.PI*2, d=27+rt()*14; sc.add(treeGroup(Math.cos(a)*d,Math.sin(a)*d,1+rt()*.6,k+3)); }
   [[-14,-24],[-9,-25.5],[-3,-26],[3,-25.5],[9,-25],[15,-23.5],[-17,-19],[17,-18]].forEach(([x,z],k)=>sc.add(treeGroup(x,z,1.7,k+400)));
   [[-20,-12],[-21,9],[20,-12],[-10,21],[14,-14],[-11,-15],[22,12],[17,17],[-17,14]].forEach(([x,z],k)=>sc.add(treeGroup(x,z,1.1,k+200)));
+  [[-1,333],[1,335]].forEach(([q,sd])=>{ const t=hamPt(0,0,1.95*q); sc.add(treeGroup(t.x,t.z,1.05,sd)); }); sc.add(hammockGroup()); sc.add(W3.zzz);
   for(let k=0;k<26;k++) sc.add(sunflower3(-19+k*.5+(k%2)*.2, -2.2-(k%3)*.4, 1+rt()*.3));
   for(let k=0;k<16;k++) sc.add(sunflower3(14+ (k%8)*.6, -11-(k>7?.9:0), 1.1));
   buildGrass(sc); buildFlowers(sc); buildButterflies(sc);
@@ -2868,6 +2883,120 @@ function sofaSit(i,fromNet){
     const o=W3.chars[1-i]; if(o.sofa){ heartsW(SOFA3.x,1.8,SOFA3.z,["💕","💗"],5); snd("chime"); } },fromNet);
 }
 function standUp(C){ if(!C.sofa) return; C.sofa=false; C.pose="idle"; C.root.position.y=0; C.root.position.z=SOFA3.z-.95; }
+/* =================== MODO SAUDADE: quem tá fora dorme na rede; quem ficou deixa beijinho, cafuné e recadinho =================== */
+const HAM3={x:-12.8,z:11.2,r:Math.PI/2+.12}, HAM_ROOT_Y=1.15;
+const hamY=lz=>.86+.30*(lz/1.3)**2;
+function hamPt(lx,y,lz){ const c=Math.cos(HAM3.r), s=Math.sin(HAM3.r); return V3(HAM3.x+lx*c+lz*s, y, HAM3.z-lx*s+lz*c); }
+function hamHit(x,z){ const dx=x-HAM3.x, dz=z-HAM3.z, c=Math.cos(HAM3.r), s=Math.sin(HAM3.r), lx=dx*c-dz*s, lz=dx*s+dz*c; return Math.abs(lx)<.6&&Math.abs(lz)<1.55; }
+function cylBetween(a,b,r,mat){ const d=b.clone().sub(a), L=d.length(), m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,L,5),mat); m.position.copy(a).add(b).multiplyScalar(.5); m.quaternion.setFromUnitVectors(V3(0,1,0),d.normalize()); m.castShadow=true; return m; }
+function hammockGroup(){
+  const g=grp(HAM3.x,0,HAM3.z); g.rotation.y=HAM3.r;
+  // lona listrada (rosa, creme, sálvia e dourado), curvada como uma rede de verdade
+  const c=document.createElement("canvas"); c.width=64; c.height=256; const x=c.getContext("2d"), cols=["#ff8fa8","#fff3e6","#7cc4a8","#fff3e6","#ffc65c","#fff3e6","#ff8fa8","#fff3e6"];
+  cols.forEach((cl,k)=>{ x.fillStyle=cl; x.fillRect(k*8,0,8,256); }); x.fillStyle="rgba(90,50,40,.07)"; for(let y=0;y<256;y+=6) x.fillRect(0,y,64,2);
+  const tex=new THREE.CanvasTexture(c); tex.encoding=THREE.sRGBEncoding;
+  const fg=new THREE.PlaneGeometry(.95,2.6,8,20); fg.rotateX(-Math.PI/2); const P=fg.attributes.position;
+  for(let k=0;k<P.count;k++){ const lx=P.getX(k), lz=P.getZ(k); P.setY(k, hamY(lz)+.14*(lx/.475)**2); }
+  fg.computeVertexNormals();
+  const fab=new THREE.Mesh(fg,toonM("#ffffff",{map:tex,side:THREE.DoubleSide})); fab.castShadow=true; fab.receiveShadow=true; g.add(fab);
+  const wood=MT("#8e5a34"), rope=MT("#e8d9bf");
+  [-1,1].forEach(sz=>{ const z=1.32*sz, yb=hamY(1.32)+.06;
+    const bar=mesh(new THREE.CylinderGeometry(.03,.03,1.08,6),wood,0,yb,z); bar.rotation.z=Math.PI/2; g.add(bar);
+    const knot=V3(0,1.72,1.8*sz); [-.5,0,.5].forEach(bx=>g.add(cylBetween(V3(bx,yb,z),knot,.014,rope)));
+    const wrap=mesh(new THREE.TorusGeometry(.16,.03,6,14),rope,0,1.72,1.95*sz,false); wrap.rotation.x=Math.PI/2; g.add(wrap); });
+  // travesseirinho
+  const pil=mesh(new THREE.CapsuleGeometry(.11,.42,4,10),MT("#fff7ea"),0,hamY(-.78)+.12,-.78); pil.rotation.z=Math.PI/2; pil.scale.set(1,1,.8); g.add(pil);
+  // cobertinha (aparece quando alguém tá dormindo porque saiu do jogo)
+  const bc=document.createElement("canvas"); bc.width=bc.height=64; const bx=bc.getContext("2d"); bx.fillStyle="#f7a8bf"; bx.fillRect(0,0,64,64); bx.fillStyle="rgba(255,255,255,.45)"; [8,40].forEach(v=>{ bx.fillRect(v,0,10,64); bx.fillRect(0,v,64,10); });
+  const bt=new THREE.CanvasTexture(bc); bt.encoding=THREE.sRGBEncoding; bt.wrapS=bt.wrapT=THREE.RepeatWrapping; bt.repeat.set(2,2);
+  const bg=new THREE.CylinderGeometry(.45,.45,1.15,14,1,true,-Math.PI/2,Math.PI); bg.rotateX(-Math.PI/2);
+  const bl=new THREE.Mesh(bg,toonM("#ffffff",{map:bt,side:THREE.DoubleSide})); bl.position.set(0,HAM_ROOT_Y-.02,.38); bl.scale.set(1,.62,1); bl.castShadow=true; bl.visible=false; g.add(bl);
+  g.traverse(o=>{ if(o.isMesh) o.userData.hit="hammock"; });
+  W3.ham={g,blanket:bl};
+  // zzz flutuando
+  const zc=document.createElement("canvas"); zc.width=zc.height=64; const zx=zc.getContext("2d"); zx.font="700 52px Fredoka, ui-rounded, system-ui, sans-serif"; zx.textAlign="center"; zx.textBaseline="middle"; zx.lineWidth=8; zx.strokeStyle="#7a63d8"; zx.strokeText("z",32,34); zx.fillStyle="#ffffff"; zx.fillText("z",32,34);
+  const zt=new THREE.CanvasTexture(zc); zt.encoding=THREE.sRGBEncoding; const Z=new THREE.Group(); Z.visible=false;
+  for(let k=0;k<3;k++){ const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:zt,transparent:true,depthWrite:false})); Z.add(sp); }
+  W3.zzz=Z;
+  return g;
+}
+function charTop(C,h=2.05){ return C.nap? C.root.localToWorld(V3(0,.75,h-1.5)) : C.root.localToWorld(V3(0,h,0)); }
+function napOn(i,away){
+  const C=W3.chars[i]; if(!C||C.nap) return;
+  if(C.fishV) rodOff(i); standUp(C); C.anim=null; C.queue=null; if(C.swim||C.diving){ C.swim=false; C.diving=false; C.wasSwim=true; }
+  C.nap=true; C.napAway=!!away; C.seated=true; C.path=[]; C.onArrive=null; C.walk=0; C.jv=null; C.jy=0; C.jyP=0;
+  C.root.position.copy(hamPt(0,HAM_ROOT_Y,.95)); C.root.rotation.order="YXZ"; C.root.rotation.set(-Math.PI/2+.1,HAM3.r,0); C.targetYaw=null;
+  C.pose="nap"; setFace(C,"sleep"); W3.napper=i; W3.ham.blanket.visible=!!away; refreshStatus();
+}
+function napOff(i,sync){
+  const C=W3.chars[i]; if(!C||!C.nap) return;
+  C.nap=false; C.napAway=false; C.seated=false; C.root.rotation.order="XYZ"; C.root.rotation.set(0,HAM3.r+Math.PI/2,0); C.targetYaw=HAM3.r+Math.PI/2;
+  C.root.position.copy(hamPt(1.0,0,.2)); C.pose="idle"; setFace(C,"idle"); if(W3.napper===i) W3.napper=null; W3.ham.blanket.visible=false;
+  if(sync && online() && i===S.me){ pushMe({nap:0}); joySync(C,i,true); } refreshStatus();
+}
+const NAP_TALK=[n=>"hmm… 😊",n=>`zzz… ${n}…`,n=>"…mais cinco minutinhos…",n=>"…te amo… zzz",n=>"hihi… zzz",n=>`…${n} bobo… zzz`];
+function napLove(i,kind){
+  const a=actor(), st=hamPt(.95,0,-.45), head=hamPt(0,1.3,-.62);
+  walkW(a,st.x,st.z,()=>{ faceW(a,head.x,head.z); const C=W3.chars[i]; if(!C.nap) return;
+    if(kind==="k"){ snd("kiss"); charMood(a,"kiss","kiss",1600); heartsW(head.x,head.y+.3,head.z,["💋","💕","💗"],6); }
+    else { snd("pop"); charMood(a,"happy","reach",2200); heartsW(head.x,head.y+.3,head.z,["💕","✨"],5); }
+    setFace(C,"happy"); setTimeout(()=>{ if(C.nap) setFace(C,"sleep"); },1600);
+    if(Math.random()<.65) setTimeout(()=>say(i,pick(NAP_TALK)(nmRaw(a)),2300),700);
+    if(online() && C.napAway && i===other()){ saudAdd(i,kind); toast(kind==="k"?`Beijinho guardado pra quando ${nmRaw(i)} voltar 💋`:`${nmRaw(i)} vai saber do cafuné quando voltar 🤚`,2400); }
+  });
+}
+function napMenu(i){
+  const a=actor(), C=W3.chars[i], anc=()=>charTop(C,2.2);
+  if(i===a) return ctxMenu(anc,"🌙 Cochilando",[{ic:"👋",label:"Levantar",fn:()=>napOff(i,true)}]);
+  ctxMenu(anc, C.napAway?`🌙 ${nm(i)} tá dormindo`:`🌙 ${nm(i)} tá cochilando`,[
+    {ic:"💋",label:"Beijinho",fn:()=>napLove(i,"k")},{ic:"🤚",label:"Cafuné",fn:()=>napLove(i,"c")},
+    {ic:"💌",label:"Recadinho",fn:()=>walkMail(()=>mailCompose("txt",false))}]);
+}
+function hammockMenu(){
+  const a=actor(), n=W3.napper;
+  if(n!=null) return napMenu(n);
+  ctxMenu(()=>hamPt(0,2.1,0),"🌙 Rede",[{ic:"🌙",label:"Cochilar",fn:()=>{ const st=hamPt(1.0,0,.2); walkW(a,st.x,st.z,()=>{ if(W3.napper!=null) return; napOn(a,false); if(online()&&a===S.me) pushMe({nap:1}); say(a,"Que soneca boa…",1800); }); }}]);
+}
+/* contadores de saudade: cada um só escreve no do outro (saudade/pX = o que X recebeu enquanto tava fora) */
+function saudAdd(i,f){ if(!online()) return; const p="saudade/p"+i, d=Object.assign({k:0,c:0,v:0},NET.docs[p]||{}); d[f]=(+d[f]||0)+1; d.t=Date.now(); NET.docs[p]=d; push(p,d); }
+function saudCheck(){
+  if(!online()||!HUB||curScreen!=="hub") return; const d=NET.docs["saudade/p"+S.me]; if(!d) return;
+  const cur={k:+d.k||0,c:+d.c||0,v:+d.v||0}, seen=S.saudSeen||{k:0,c:0,v:0}, dk=cur.k-seen.k, dc=cur.c-seen.c, dv=cur.v-seen.v;
+  if(dk<0||dc<0||dv<0){ S.saudSeen=cur; save(); return; }
+  if(dk+dc+dv<=0) return;
+  if(document.querySelector(".modalBg")) return;   // tenta de novo daqui a pouco
+  S.saudSeen=cur; save(); saudModal(dk,dc,dv,d.t);
+}
+function saudModal(dk,dc,dv,t){
+  const o=other(), n=nm(o), un=MAIL.unreadN||0, L=[];
+  if(dv>0) L.push(`<li>🏡<span>${n} passou aqui ${dv===1?"1 vez":dv+" vezes"}</span></li>`);
+  if(dk>0) L.push(`<li>💋<span>${dv>0?"deixou":`${n} deixou`} ${dk===1?"1 beijinho":dk+" beijinhos"} na sua testa</span></li>`);
+  if(dc>0) L.push(`<li>🤚<span>${dv>0||dk>0?"fez":`${n} fez`} ${dc===1?"1 cafuné":dc+" cafunés"} em você</span></li>`);
+  if(un>0) L.push(`<li>💌<span>e tem ${un===1?"1 recadinho":un+" recadinhos"} no correio</span></li>`);
+  const m=modal(`<div class="saud"><div class="saudArt"><svg viewBox="0 0 120 54" aria-hidden="true"><path d="M60 8a17 17 0 1 0 16 22A14 14 0 1 1 60 8z" fill="#ffc65c"/><text x="84" y="22" font-size="13" font-weight="700" fill="#9583ec">z</text><text x="94" y="13" font-size="10" font-weight="700" fill="#b8a9f5">z</text><path d="M14 44q46 14 92 0" stroke="#ff8fa8" stroke-width="5" fill="none" stroke-linecap="round"/></svg></div>
+    <h2>Enquanto você dormia</h2><ul class="saudL">${L.join("")}</ul>${t?`<p class="small">A última vez foi ${ago(t)}.</p>`:""}
+    <div class="saudB">${un?`<button class="btn pink" data-s="mail">💌 Ler recadinho</button>`:""}<button class="btn ${un?"gold":"pink"}" data-s="kiss">💋 Mandar beijinho de volta</button><button class="btn alt" data-close>Agora não</button></div></div>`);
+  const q=m.querySelector('[data-s="mail"]'); if(q) q.onclick=()=>{ m.remove(); walkMail(()=>mailModal("in")); };
+  m.querySelector('[data-s="kiss"]').onclick=()=>{ m.remove();
+    if(partnerHere()) selfAct(S.me,"blow"); else { saudAdd(o,"k"); snd("kiss"); const C=W3.chars[S.me]; heartsW(C.root.position.x,2.2,C.root.position.z,["💋","💕"],5); toast(`Beijinho guardado pra ${nmRaw(o)} 💋`,2400); } };
+}
+function napTick(){
+  if(!HUB||!W3||!W3.ham) return; const now=Date.now();
+  if(online() && NET.ready){
+    const o=other(), C=W3.chars[o], here=partnerHere(), d=NET.docs[hubPath(o)]||{};
+    if(here) HUB.awayT=0; else if(!HUB.awayT) HUB.awayT=now;
+    const want= here? !!d.nap : now-HUB.awayT>9000;
+    if(want && !C.nap){ if(!C.anim && !W3.boatRide && !(W3.coupleUntil>now) && W3.napper==null) napOn(o,!here); }
+    else if(want && C.nap && C.napAway===here){ C.napAway=!here; W3.ham.blanket.visible=!here; refreshStatus(); }
+    else if(!want && C.nap){ const wasAway=C.napAway; napOff(o); if(typeof d.x==="number") walkTo(o,d.x,d.y,null,true);
+      if(wasAway){ toast(`${nmRaw(o)} acordou e chegou 💕`,2600); setTimeout(()=>say(o,"Cheguei! 💕",2200),400); } }
+    if(!here && !HUB.visitDone && HUB.awayT && now-HUB.awayT>9000){ HUB.visitDone=true; if(now-(S.visitT||0)>20*60e3){ S.visitT=now; save(); saudAdd(o,"v"); } }
+    if(now>(HUB.saudNext||0)){ HUB.saudNext=now+4000; saudCheck(); }
+  }
+  const Z=W3.zzz, on=W3.napper!=null; Z.visible=on;
+  if(on){ const b=hamPt(0,1.5,-.62); Z.children.forEach((sp,k)=>{ const ph=(W3.t*.4+k/3)%1, sc=.16+ph*.22; sp.position.set(b.x+ph*.3,b.y+ph*.95,b.z+ph*.12); sp.scale.set(sc,sc,sc); sp.material.opacity=Math.sin(ph*Math.PI)*.95; }); }
+}
+
 /* cinema */
 function updateCineBtn(){ if(!HUB||!HUB.root) return; const b=HUB.root.querySelector("#bCine"); if(b) b.remove(); }
 /* =================== TV DA SALA: funciona de verdade. A imagem (Spotify ou YouTube) passa na tela 3D da TV e toca junto nos dois celulares =================== */
@@ -3646,6 +3775,7 @@ function joySolid(C,x,z){
   if(Math.hypot(x,z-4.5)<2.05) return "fountain";
   if(Math.hypot(x-MAIL3.x,z-MAIL3.z)<.5) return "mailbox";
   for(const b of Object.values(BOOTH3)){ const dx=x-b.x, dz=z-b.z, c=Math.cos(b.r), s=Math.sin(b.r), lx=dx*c-dz*s, lz=dx*s+dz*c; if(Math.abs(lx)<1.7&&lz>-1.1&&lz<.95) return "booth"; }
+  if(hamHit(x,z)) return "hammock";
   for(const t of (W3.treeCol||[])){ const dx=x-t.x, dz=z-t.z; if(dx*dx+dz*dz<t.r*t.r) return "tree"; }
   return null;
 }
@@ -3653,6 +3783,7 @@ function joySolid(C,x,z){
 const SLIDE_A=[.35,.7,1.05,1.35];
 function joyStep(C,i,dt){
   const v=joyVec(), M=HUB.mv||(HUB.mv={x:0,z:0});
+  if(v && C.nap) napOff(i,true);
   if(v && (C.seated||W3.boatRide)) return false;
   if(v && HUB.joyAuto){ if(C.path&&C.path.length) return false; HUB.joyAuto=false; }
   if(!v && !HUB.joyMoving) return false;
@@ -3728,6 +3859,7 @@ function nearThing(){
   } else {
     for(const [k,b] of Object.entries(BOOTH3)){ const f=boothFront(b,1.6); cand(f.x,f.z,2.3,STATIONS[k].emoji,`Jogar ${GAME_NAMES[k]}`,()=>{ faceW(a,b.x,b.z); openStation(k); }); }
     cand(MAIL3.x,MAIL3.z,2.3,"📬","Correio",mailMenu);
+    { const nap=W3.napper; cand(HAM3.x,HAM3.z,2.7,"🌙",nap!=null&&nap!==a?esc(nmRaw(nap)):"Cochilar",hammockMenu); }
     cand(FOUNT.x,FOUNT.z,3.5,"⛲","Fonte",fountainMenu,.6);
     EASELS.forEach((E,idx)=>cand(E.x,E.z+.7,1.9,"🎨","Pintar",()=>hitMenu("easel-"+idx)));
     cand(DOG3.x,DOG3.z,2.8,"🐾","Pets",()=>hitMenu("doghouse"));
@@ -3745,7 +3877,7 @@ function actsTick(dt){
   HUB.nearT=(HUB.nearT||0)-dt; if(HUB.nearT>0) return; HUB.nearT=.15;
   const root=HUB.root, bi=root.querySelector("#aInt"); if(!bi) return;
   const a=actor(), C=W3.chars[a], busy=C.seated||W3.boatRide||C.anim||(HUB.fishing&&HUB.fishing.i===a);
-  const n=busy? null : nearThing(); HUB.near=n;
+  const n=C.nap? {ic:"👋",label:"Levantar",fn:()=>napOff(a,true),key:"nap"} : busy? null : nearThing(); HUB.near=n;
   const key=n?n.key:""; if(bi.dataset.k!==key){ bi.dataset.k=key; if(n){ bi.querySelector(".aIc").innerHTML=icon(n.ic); bi.querySelector("b").textContent=n.label; bi.hidden=false; bi.classList.remove("pop"); void bi.offsetWidth; bi.classList.add("pop"); } else bi.hidden=true; }
   const o=W3.chars[1-a], d=C.root.position.distanceTo(o.root.position), near=!busy && !C.swim && !o.swim && d<3.4 && (!online()||partnerHere()) && isIn(C.root.position.x)===isIn(o.root.position.x);
   ["#aKiss","#aHug"].forEach(s=>{ const b=root.querySelector(s); if(b.hidden===near){ b.hidden=!near; if(near){ b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } } });
@@ -4119,11 +4251,11 @@ function step(dt){
   W3.R.render(W3.scene,W3.cam);
   // overlays
   if(HUB){
-    W3.chars.forEach((C,i)=>{ if(!C.ov) return; const p=proj(C.root.localToWorld(V3(0,2.05,0))); C.ov.style.transform=`translate(${p.x}px,${p.y}px)`; C.ov.style.display=p.vis?"":"none"; });
+    W3.chars.forEach((C,i)=>{ if(!C.ov) return; const p=proj(charTop(C)); C.ov.style.transform=`translate(${p.x}px,${p.y}px)`; C.ov.style.display=p.vis?"":"none"; });
     Object.values(W3.pets).forEach(P=>{ if(!P.ov) return; const p=proj(P.root.localToWorld(V3(0,.75,0))); P.ov.style.transform=`translate(${p.x}px,${p.y}px)`; P.ov.style.display=p.vis?"":"none"; });
     if(HUB.ctx && HUB.ctxAnchor){ const p=proj(HUB.ctxAnchor()); HUB.ctx.style.left=p.x+"px"; HUB.ctx.style.top=p.y+"px"; }
     if(HUB.enterBtn && HUB.enterAnchor){ const p=proj(HUB.enterAnchor); HUB.enterBtn.style.left=p.x+"px"; HUB.enterBtn.style.top=p.y+"px"; }
-    skyTagsTick(); actsTick(dt); tvScreenTick();
+    skyTagsTick(); actsTick(dt); tvScreenTick(); napTick();
   }
 }
 
@@ -4146,7 +4278,7 @@ function landPath(cur,q){
   return planPath(cur,q);
 }
 function walkW(i,x,z,onArrive,fromNet){
-  if(!W3) return; const C=W3.chars[i]; if(C.seated) return;
+  if(!W3) return; const C=W3.chars[i]; if(C.nap && !fromNet && i===actor()) napOff(i,true); if(C.seated) return;
   if(C.anim){ C.queue=[x,z,onArrive,fromNet]; return; }
   standUp(C);
   if(C.fishV) stopFish(i, fromNet);
@@ -4202,6 +4334,7 @@ function ctxMenu(anchorFn, title, items){
 }
 function charMenu(i){
   const a=actor(), C=W3.chars[i], anc=()=>C.root.localToWorld(V3(0,2.2,0));
+  if(C.nap) return napMenu(i);
   if(i===a) return ctxMenu(anc,nm(i),[
       {ic:"👋",label:"Acenar",fn:()=>selfAct(i,"wave")},{ic:"💃",label:"Dançar",fn:()=>selfAct(i,"dance")},
       {ic:"😘",label:"Mandar beijo",fn:()=>selfAct(i,"blow")},{ic:"👕",label:"Visual",fn:()=>customize(i)}]);
@@ -4224,6 +4357,7 @@ function hitMenu(h, pt){
     return ctxMenu(()=>V3(E.x,2.6,E.z),`🎨 Quadro de ${nmRaw(idx)}`,(mine?[{ic:"🖌️",label:"Pintar",fn:()=>walkW(a,E.x,E.z+1.25,()=>{ faceW(a,E.x,E.z); paintScreen(idx); })}]:[]).concat([{ic:"🖼️",label:"Galeria",fn:galleryModal}])); }
   if(h==="fountain") return fountainMenu();
   if(h==="mailbox") return mailMenu();
+  if(h==="hammock") return hammockMenu();
   if(h==="dock") return ctxMenu(()=>V3(DOCK3.x+DOCK_LEN/2,1.6,DOCK3.z),"🎣 Píer",[{ic:"🎣",label:"Pescar",fn:()=>startFish(a)},{ic:"🏊",label:"Pular na água",fn:()=>walkW(a,DOCK3.x+DOCK_LEN+2.6,DOCK3.z)},{ic:"🐟",label:"Coleção",fn:fishDex}]);
   if(h==="boat") return ctxMenu(()=>W3.boat.position.clone().add(V3(0,1.2,0)),"🛶 Barquinho",[{ic:"💞",label:"Passear juntos",fn:()=>coupleAct("boat",a)}]);
 }
@@ -4373,7 +4507,7 @@ function refreshTags(){
   if(!HUB||!W3) return;
   [0,1].forEach(i=>{ const t=HUB.root.querySelector("#tag"+i); if(!t) return; let s=nmRaw(i);
     if(online() && i===other()){ const d=NET.docs[hubPath(i)]; if(d && d.place && d.place!=="hub" && partnerHere()) s+=` · ${GAME_NAMES[d.place]||(d.place==="paint"?"pintando":"jogando")}`; }
-    t.textContent=s; t.classList.toggle("me", i===actor()); });
+    if(W3.chars[i]&&W3.chars[i].nap) t.innerHTML=`${esc(s)}<span class="zzT">z<small>z</small></span>`; else t.textContent=s; t.classList.toggle("me", i===actor()); });
 }
 function refreshCtrl(){ if(!HUB) return; const bar=HUB.root.querySelector("#ctrlBar"); bar.innerHTML= online()? `<span>v${VERSION}</span>` : `<span>📱 ${nm(actor())} · v${VERSION}</span>`; refreshTags(); }
 function refreshStatus(){
@@ -4382,13 +4516,14 @@ function refreshStatus(){
     const d=NET.docs[hubPath(other())];
     const ph=partnerHere(); if(ph && HUB.wasHere===false) snd("ding"); HUB.wasHere=ph;
     if(ph) el.innerHTML=`<span class="dot on"></span>${nm(other())} tá online`;
+    else if(W3&&W3.chars[other()]&&W3.chars[other()].napAway) el.innerHTML=`<span class="dot zz"></span>${nm(other())} tá dormindo na rede ${d&&d.act?`· visto ${ago(d.act)}`:""}`;
     else if(NET.p2p){ const s=NET.p2p.info(); el.innerHTML=`<span class="dot"></span>${s.relay!=="ok" && !s.p2pOpen && s.p2p!=="esperando" && s.p2p!=="procurando" ? "Conectando…" : `Esperando ${nm(other())}… ${d&&d.act?`(visto ${ago(d.act)})`:""}`}`; }
     else el.innerHTML=`<span class="dot"></span>Online · ${nm(other())} ${d&&d.act?`visto ${ago(d.act)}`:"ainda não entrou"}`;
   } else el.innerHTML=`<span class="dot"></span>Modo mesmo celular`;
   refreshTags();
 }
 function ago(t){ const m=Math.round((Date.now()-t)/60000); if(m<1) return "agora"; if(m<60) return `há ${m} min`; const h=Math.round(m/60); if(h<24) return `há ${h}h`; return `há ${Math.round(h/24)}d`; }
-function redrawChars(){ if(!W3) return; [0,1].forEach(i=>{ const old=W3.chars[i]; const C=buildChar(S.players[i]); C.root.position.copy(old.root.position); C.root.rotation.copy(old.root.rotation); C.path=old.path; C.onArrive=old.onArrive; C.ov=old.ov; W3.scene.remove(old.root); W3.scene.add(C.root); W3.chars[i]=C; }); refreshTags(); }
+function redrawChars(){ if(!W3) return; [0,1].forEach(i=>{ const old=W3.chars[i]; const C=buildChar(S.players[i]); C.root.position.copy(old.root.position); C.root.rotation.copy(old.root.rotation); C.path=old.path; C.onArrive=old.onArrive; C.ov=old.ov; if(old.nap){ C.nap=true; C.napAway=old.napAway; C.seated=true; C.pose="nap"; setFace(C,"sleep"); } W3.scene.remove(old.root); W3.scene.add(C.root); W3.chars[i]=C; }); refreshTags(); }
 function hubNet(path){
   if(!HUB||!W3) return;
   const o=other();
