@@ -1690,7 +1690,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "6.0";
+const VERSION = "6.1";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -4179,9 +4179,9 @@ function obBuild(cid){
       box(x,y+1.6,z0+10,6,3.2,4,"#e6dcff"); plate("t3",2,x+1.8,y+3.2,z0+10.6);
       const g=gate({c:2,plates:["t3"],mode:"any"}); ghost(g,x-1.6,y+1.1,z0+5.4,1.3,1.3); ghost(g,x-2.4,y+2.2,z0+7.0,1.3,1.3);
       cur.y+=3.2; cur.z=z0+12; },
-    d4(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+2.5,6,.8,5,col); sign("Um desce, o outro sobe",x,y+2.4,z0+1.2);
+    d4(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+2.5,6,.8,5,col); sign("Pisa no amarelo pro azul subir",x,y+2.4,z0+1.2);
       const A=box(x-1.1,y-.2,z0+6.6,2.2,.4,2.2,"#ffd15c",{dynv:1,saw:1,loose:1}), B=box(x+1.6,y-.2,z0+6.6,2.2,.4,2.2,"#36d1c4",{dynv:1,saw:1,loose:1}); A.y0=A.y; B.y0=B.y;
-      const sw={a:A,b:B,amp:1.8,o:0,ropes:[]}; OB.saws.push(sw);
+      const sw={a:A,b:B,amp:2.5,o:0,ropes:[]}; OB.saws.push(sw);
       [x-2.6,x+3.1].forEach(px=>st.push({g:BX,m:M4(px,y+2.6,z0+6.6,.2,6.6,.2),c:"#8e5a34"})); st.push({g:BX,m:M4(x+.25,y+5.85,z0+6.6,6,.24,.24),c:"#8e5a34"});
       [A,B].forEach(S2=>[-.8,.8].forEach(ox=>{ const r=mesh(new THREE.CylinderGeometry(.025,.025,1,6),MT("#e8d9bf"),S2.x+ox,0,S2.z,false); sc.add(r); sw.ropes.push({m:r,s:S2}); }));
       box(x,y+3.0,z0+10.5,6,.8,5,col);
@@ -4435,7 +4435,7 @@ function obSim(P,dt){
 }
 /* botões, portas, balança, elevador e alavancas da Dupla do Céu: cada celular calcula com a posição dos dois */
 function obWho(i){ if(obLocal(i)){ const q=OB.Ps[i]; return q.dead?null:{x:q.x,y:q.y,z:q.z,gr:q.gr,loc:true}; } const R=OB.rem; return R&&!OB.remDead?{x:R.x,y:R.y,z:R.z}:null; }
-function obOcc(s,W){ let n=0; const S2=s; for(const q of W){ if(!q) continue; if(q.loc){ if(q.gr===S2) n++; } else if(obOver(S2,q.x,q.z,.05)&&Math.abs(q.y-S2.top)<(S2.loose?.7:.3)) n++; } return n; }
+function obOcc(s,W){ let n=0; const S2=s; for(const q of W){ if(!q) continue; if(q.loc){ if(q.gr===S2) n++; } else if(obOver(S2,q.x,q.z,.1)&&Math.abs(q.y-S2.top)<(S2.saw?1.1:S2.loose?.7:.3)) n++; } return n; }
 function obCoopTick(dt){
   const W=[obWho(0),obWho(1)];
   W.forEach((q,i)=>{ const M=OB.mates[i]; if(!q){ M.off=true; M.px=null; return; } M.off=false; M.dx=M.px==null?0:q.x-M.px; M.dy=M.py==null?0:q.y-M.py; M.dz=M.pz==null?0:q.z-M.pz; M.px=q.x; M.py=q.y; M.pz=q.z; M.x=q.x; M.z=q.z; M.y=q.y+.85; M.top=q.y+1.66; M.bot=q.y; });
@@ -4458,7 +4458,7 @@ function obCoopTick(dt){
     if(s.swap){ const ow=obOwn(s); if(ow!==s.ownV){ s.ownV=ow; s.m.children.forEach(c=>{ if(c.isMesh) c.material=OB.onlyMat[ow]; }); } } }
   if(OB.syms) for(const q of OB.syms) q.sp.position.y=q.y+Math.sin(OB.t*2.2+q.y)*.08;
   for(const L of OB.lifts){ const s=L.s, tg=L.g.act?L.up:0; L.o+=Math.max(-dt*1.7,Math.min(dt*1.7,tg-L.o)); const ny=s.y0+L.o; s.dynY=1; s.dy=ny-s.y; s.dx=s.dz=0; s.y=ny; s.top=ny+s.h/2; s.bot=ny-s.h/2; s.m.position.y=ny; }
-  for(const sw of OB.saws){ const wa=obOcc(sw.a,W), wb=obOcc(sw.b,W), tg=wa>wb?1:wb>wa?-1:0; sw.o+=Math.max(-dt*1.3,Math.min(dt*1.3,tg-sw.o));
+  for(const sw of OB.saws){ const wa=obOcc(sw.a,W), wb=obOcc(sw.b,W), tg=wa>0?1:wb>0?-1:0;   /* quem pisa no lado amarelo faz o azul subir, mesmo com alguém em cima dele */ sw.o+=Math.max(-dt*1.3,Math.min(dt*1.3,tg-sw.o));
     [[sw.a,-1],[sw.b,1]].forEach(([s,sg])=>{ const ny=s.y0+sg*sw.o*sw.amp; s.dynY=1; s.dy=ny-s.y; s.dx=s.dz=0; s.y=ny; s.top=ny+s.h/2; s.bot=ny-s.h/2; s.m.position.y=ny; });
     for(const r of sw.ropes){ const top=OB.cps[0].y, y1=r.s.top, beam=r.s.y0+.2+6.05-0; const L=Math.max(.1,beam-y1); r.m.scale.y=L; r.m.position.y=y1+L/2; } }
   // alavanca perto: aparece o botão "Puxar"

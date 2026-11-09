@@ -58,6 +58,11 @@ Tudo em português do Brasil. O Alvaro não quer ter que escolher entre opções
 - **Jogos**: Termo (duelo, juntos, por código), Bingo, Caça-palavras, Quiz do casal (`quizGame`), Stop (`stopGame`), Desenha e adivinha (`drawGame`). Ficam nas barraquinhas `BOOTH3`, em volta da pracinha `GP3`, e abrem por `openStation`/`startOnline`.
 - **Outros**: pesca com 15 peixes e raridades (`FISH`, `RARITY`, `startFish`, `fishDex`), ateliê com 2 cavaletes (`paintScreen(dono)`), jardim, pets, fonte dos desejos.
 
+## Regras de fase (parkour e Dupla) — siga ao desenhar, sem precisar testar tudo de novo
+- Pulo: sobe no máximo ~1,9 m; pra subir com folga use degraus de até 1,2 m. Correndo, alcança ~4,3 m de distância no mesmo nível (~3,6 m subindo 1,6 m). Buraco no mesmo nível: até 3,4 m.
+- Em cima da cabeça do outro fica a 1,66 m: dali sobe no máximo até ~3,4 m (use 3,0–3,2).
+- Balança: quem pisa no lado A faz o B subir (`tg=wa>0?1:…`), mesmo com alguém no B; a beirada lá em cima tem que ficar no máximo 1,2 m acima do B levantado.
+- Teste rápido de pulo com o robô: `.playwright-mcp/hoptest.js` (anda, pula e corrige no ar).
 ## Testes
 - Servidor local: `python3 -m http.server 8080` na raiz.
 - No Playwright (Chrome headless) use `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader`. O headless é lento (FPS baixo), então dê tempo para as animações.
