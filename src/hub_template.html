@@ -712,6 +712,33 @@ span.ico svg{width:100%!important;height:100%!important;transform:none!important
 .btn.alt{--ia:#ffd3dc}
 .hb .ico.ui,.aBtn .ico.ui{stroke-width:2}
 .aEmo,.hb{color:#fff7f2}
+/* TV da sala (playlist do Spotify) e controle */
+.tvBox{position:absolute;z-index:8;left:50%;transform:translateX(-50%);top:calc(var(--st) + 48px);width:min(440px,60vw);background:#1d1520;border-radius:18px;overflow:hidden;box-shadow:0 0 0 3px #3a2a33,0 12px 30px rgba(0,0,0,.45);pointer-events:auto;color:#fff7f2}
+.tvTop{display:flex;align-items:center;justify-content:space-between;padding:5px 8px 4px 12px;font-size:.78rem;color:#e8d6de}
+.tvTop b{color:#fff}
+.tvX{border:0;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;width:28px;height:28px;display:grid;place-items:center;padding:0}
+.tvX .ico{width:16px!important;height:16px!important}
+.tvPlayer{padding:0 8px;min-height:80px}
+.tvPlayer iframe{display:block;border-radius:12px}
+.tvNow{padding:5px 12px 0;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tvNow span{opacity:.7;margin-left:4px}
+.tvRemote{display:flex;align-items:center;gap:6px;padding:6px 10px 9px}
+.tvRemote>button,.tvVol button{border:0;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff7f2;display:grid;place-items:center;padding:0;cursor:pointer}
+.tvRemote>button.big{width:46px;height:46px;background:#ff7a93;--ia:#fff}
+.tvRemote .ico{width:20px!important;height:20px!important}
+.tvRemote>button:active,.tvVol button:active{transform:scale(.9)}
+.tvVol{margin-left:auto;display:flex;align-items:center;gap:5px}
+.tvVol button{width:32px;height:32px}
+.tvVol i{width:46px;height:6px;border-radius:9px;background:linear-gradient(90deg,#ffcf5a calc(var(--v,1)*100%),rgba(255,255,255,.18) 0)}
+.tvTap{padding:7px;text-align:center;background:#ff5d7a;color:#fff;font-weight:700;font-size:.85rem;cursor:pointer}
+.tvPrev{padding:6px 10px;background:#2c2030;font-size:.74rem;color:#e8d6de;text-align:center}
+.tvPrev a{color:#ffcf5a;font-weight:700}
+.tvList{display:flex;flex-direction:column;gap:6px;max-height:calc(100dvh - 190px);overflow:auto;margin-bottom:10px}
+.tvList button{border:0;border-radius:12px;background:#f1e6eb;color:#3a2a33;text-align:left;padding:8px 12px;display:flex;flex-direction:column;font:inherit;cursor:pointer}
+.tvList button small{color:#8a7480}
+.tvList button.on{background:#ff7a93;color:#fff}.tvList button.on small{color:#ffe3ea}
+.volRow{display:flex;align-items:center;gap:10px}.volRow .btn{width:auto}
+.volBar{flex:1;height:10px;border-radius:9px;background:#eadde3;overflow:hidden}.volBar i{display:block;height:100%;background:#ffcf5a}
 /* adicionar à Tela de Início */
 .a2hs{text-align:left}
 .a2hs ol{margin:6px 0 12px;padding-left:22px;line-height:1.55;color:#5a4652}
@@ -1195,9 +1222,15 @@ const UIC={
   pizza: uD("M12 21.5 3.4 6.4a15 15 0 0 1 17.2 0z")+uP("M4.8 8.8a12.4 12.4 0 0 1 14.4 0")+uC(10.4,11.4,1.1,2)+uC(14.2,10.6,1.1,2)+uC(12.2,15.4,1.1,2),
   rainbow: uP("M2.8 18.6a9.2 9.2 0 0 1 18.4 0")+`<path d="M6 18.6a6 6 0 0 1 12 0" stroke="var(--ia,#ff7a93)"/>`+`<path d="M9.2 18.6a2.8 2.8 0 0 1 5.6 0" stroke="var(--ig,#ffcf5a)"/>`,
   wind: uP("M3 9h11a3 3 0 1 0-3-3 M3 14h15a3 3 0 1 1-3 3 M3 19h7"),
+  tv: uD("M3 6.5h18v11.5H3z")+uP("M8 21h8 M12 18v3 M9 3l3 3.4L15 3"),
+  prev: uP("M6 5v14")+uD("M18.5 5.5v13L8.6 12z"),
+  next: uP("M18 5v14")+uD("M5.5 5.5v13L15.4 12z"),
+  list: uP("M9 6.5h11 M9 12h11 M9 17.5h7")+uC(4.6,6.5,1.1,3)+uC(4.6,12,1.1,3)+uC(4.6,17.5,1.1,3),
+  vol_down: uD("M4 9.5h3.5L12 5.5v13l-4.5-4H4z")+uP("M16 10q1.6 2 0 4"),
+  vol_up: uD("M4 9.5h3.5L12 5.5v13l-4.5-4H4z")+uP("M16 9.4q2.2 2.6 0 5.2 M18.6 7q4 5 0 10"),
   devil: uF(uP("M5.6 6.4 4.4 2.6l4 2.2 M18.4 6.4l1.2-3.8-4 2.2 M7.8 9.6l2.4 1 M16.2 9.6l-2.4 1 M8.5 14.6q3.5 3 7 0")),
 };
-const EMO2ICO={"❤️":"heart","❤":"heart","💖":"heart","💗":"heart","💓":"heart","💕":"hearts","💞":"hearts","💘":"heart","✨":"sparkle","🌟":"star","⭐":"star","🎵":"note","🎶":"note","💋":"lips","🤗":"hug","💃":"dance","🛶":"boat","💐":"bouquet","👋":"wave","😘":"blowkiss","👕":"shirt","🤚":"hand","🛁":"bath","📋":"clip","🖼️":"frame","🖼":"frame","🏆":"trophy","❓":"help","➕":"plus","🌱":"sprout","💧":"drop","💦":"drops","🚿":"can","🥣":"bowl","🗺️":"map","🗺":"map","🏡":"house","🏠":"house","🎨":"palette","🖌️":"brush","🖌":"brush","🐾":"paw","🟩":"tiles","🎱":"ball","🔎":"magnifier","🔍":"magnifier","🤝":"coop","⚔️":"duel","✍️":"pencil","✍":"pencil","✏️":"pencil","📱":"phone","🔑":"key","💌":"letter","🎲":"dice","🙈":"eyeoff","👀":"eye","🚀":"star","🎉":"confetti","🏞️":"tree","💾":"save","🧽":"eraser","↩️":"undo","🗑️":"trash","🎪":"tent","👑":"crown","👤":"person","🎮":"gamepad","💪":"arm","🌸":"blossom","🌻":"sunflower","🌹":"rose","🌷":"tulip","🌼":"daisy","💜":"lavender","💠":"hydrangea","🦴":"bone","🐟":"fish","🥕":"carrot","🥬":"lettuce","🍓":"strawberry","🥜":"peanut","🍎":"apple","🎾":"tennis","🧶":"yarn","🫧":"bubbles","🎡":"wheel","⚽":"soccer","👉":"point","🍽️":"bowl","🍽":"bowl","🎯":"star","🌐":"letter","📲":"phone","🟢":"phone","🏊":"swim","🎣":"rod","❗":"alert","🪙":"coin","✋":"hand","⛲":"fountain","🍿":"popcorn","🛋️":"sofa","🛋":"sofa","🚪":"door","⏸️":"pause","⏸":"pause","▶️":"play","▶":"play","🕯️":"candle","💡":"bulb","🎬":"clapper","🐠":"fish","😅":"face_sweat","😎":"face_cool","🥰":"face_love","😍":"face_love","🔥":"fire","🤔":"face_think","😏":"face_smirk","😋":"face_yum","😤":"face_huff","🥺":"face_plead","🥹":"face_plead","😢":"face_sad","😭":"face_sad","😄":"face_grin","😂":"face_grin","😆":"face_grin","🤩":"face_love","🤭":"face_wink","😱":"face_shock","🤯":"face_shock","😳":"face_shock","😮":"face_wow","🙄":"face_smirk","😜":"face_wink","😉":"face_wink","🙃":"face_wink","😊":"face_smile","✅":"check","👏":"clap","💨":"wind","⏳":"hourglass","🥵":"face_huff","❄":"snow","❄️":"snow","😈":"devil","🔁":"repeat","🤷":"shrug","💅":"nails","🤏":"pinch","😽":"face_cat","💫":"sparkle","🤎":"heartbrown","🍪":"cookie","☕":"coffee","🌅":"sunset","💑":"couple","☔":"umbrella","📍":"pin","🎂":"cake","🏖":"beach","🏖️":"beach","🔮":"crystal","🍕":"pizza","🌈":"rainbow"};
+const EMO2ICO={"❤️":"heart","❤":"heart","💖":"heart","💗":"heart","💓":"heart","💕":"hearts","💞":"hearts","💘":"heart","✨":"sparkle","🌟":"star","⭐":"star","🎵":"note","🎶":"note","💋":"lips","🤗":"hug","💃":"dance","🛶":"boat","💐":"bouquet","👋":"wave","😘":"blowkiss","👕":"shirt","🤚":"hand","🛁":"bath","📋":"clip","🖼️":"frame","🖼":"frame","🏆":"trophy","❓":"help","➕":"plus","🌱":"sprout","💧":"drop","💦":"drops","🚿":"can","🥣":"bowl","🗺️":"map","🗺":"map","🏡":"house","🏠":"house","🎨":"palette","🖌️":"brush","🖌":"brush","🐾":"paw","🟩":"tiles","🎱":"ball","🔎":"magnifier","🔍":"magnifier","🤝":"coop","⚔️":"duel","✍️":"pencil","✍":"pencil","✏️":"pencil","📱":"phone","🔑":"key","💌":"letter","🎲":"dice","🙈":"eyeoff","👀":"eye","🚀":"star","🎉":"confetti","🏞️":"tree","💾":"save","🧽":"eraser","↩️":"undo","🗑️":"trash","🎪":"tent","👑":"crown","👤":"person","🎮":"gamepad","💪":"arm","🌸":"blossom","🌻":"sunflower","🌹":"rose","🌷":"tulip","🌼":"daisy","💜":"lavender","💠":"hydrangea","🦴":"bone","🐟":"fish","🥕":"carrot","🥬":"lettuce","🍓":"strawberry","🥜":"peanut","🍎":"apple","🎾":"tennis","🧶":"yarn","🫧":"bubbles","🎡":"wheel","⚽":"soccer","👉":"point","🍽️":"bowl","🍽":"bowl","🎯":"star","🌐":"letter","📲":"phone","🟢":"phone","🏊":"swim","🎣":"rod","❗":"alert","🪙":"coin","✋":"hand","⛲":"fountain","🍿":"popcorn","🛋️":"sofa","🛋":"sofa","🚪":"door","⏸️":"pause","⏸":"pause","▶️":"play","▶":"play","🕯️":"candle","💡":"bulb","🎬":"clapper","🐠":"fish","😅":"face_sweat","😎":"face_cool","🥰":"face_love","😍":"face_love","🔥":"fire","🤔":"face_think","😏":"face_smirk","😋":"face_yum","😤":"face_huff","🥺":"face_plead","🥹":"face_plead","😢":"face_sad","😭":"face_sad","😄":"face_grin","😂":"face_grin","😆":"face_grin","🤩":"face_love","🤭":"face_wink","😱":"face_shock","🤯":"face_shock","😳":"face_shock","😮":"face_wow","🙄":"face_smirk","😜":"face_wink","😉":"face_wink","🙃":"face_wink","😊":"face_smile","✅":"check","👏":"clap","💨":"wind","⏳":"hourglass","🥵":"face_huff","❄":"snow","❄️":"snow","😈":"devil","🔁":"repeat","🤷":"shrug","💅":"nails","🤏":"pinch","😽":"face_cat","💫":"sparkle","🤎":"heartbrown","🍪":"cookie","☕":"coffee","🌅":"sunset","💑":"couple","☔":"umbrella","📍":"pin","🎂":"cake","🏖":"beach","🏖️":"beach","🔮":"crystal","🍕":"pizza","🌈":"rainbow","📺":"tv"};
 Object.assign(ICONS,{
   moon:`<path d="M30 6 A18 18 0 1 0 42 32 A14 14 0 1 1 30 6Z" fill="#ffd34d" ${SW}/><circle cx="11" cy="11" r="2" fill="#fff3b0"/><circle cx="41" cy="11" r="1.6" fill="#fff3b0"/>`,
   mailbox:`<path d="M8 20 Q8 10 18 10 H32 Q40 10 40 20 V32 H8Z" fill="#e8607f" ${SW}/><path d="M18 10 Q26 10 26 20 V32" fill="none" ${SW}/><rect x="21" y="32" width="6" height="12" fill="#a87346" ${SW}/><path d="M34 6 V20 M34 6 H42 V11 H34" fill="#ffd34d" ${SW}/>`,
@@ -1233,11 +1266,11 @@ function iconTexture(e){
 /* =================== SONS (sintetizados, sem arquivos) =================== */
 const SFX={ctx:null, master:null, musicGain:null, musicOn:false, mt:0};
 function ac(){
-  if(!SFX.ctx){ try{ const C=window.AudioContext||window.webkitAudioContext; if(!C) return null; SFX.ctx=new C(); SFX.master=SFX.ctx.createGain(); SFX.master.gain.value=.42; SFX.master.connect(SFX.ctx.destination); }catch(e){ return null; } }
+  if(!SFX.ctx){ try{ const C=window.AudioContext||window.webkitAudioContext; if(!C) return null; SFX.ctx=new C(); SFX.master=SFX.ctx.createGain(); SFX.master.gain.value=.42*(S.gameVol==null?1:S.gameVol); SFX.master.connect(SFX.ctx.destination); }catch(e){ return null; } }
   if(SFX.ctx.state==="suspended") SFX.ctx.resume().catch(()=>{});
   return SFX.ctx;
 }
-document.addEventListener("pointerdown",()=>{ ac(); if(S.music!==false) startMusic(); },{passive:true});
+document.addEventListener("pointerdown",()=>{ ac(); startMusic(); },{passive:true});
 function tone(f, d=.15, type="sine", v=.14, at=0, f2=null, out){
   const c=ac(); if(!c||S.mute) return; const t=c.currentTime+at, o=c.createOscillator(), g=c.createGain();
   o.type=type; o.frequency.setValueAtTime(f,t); if(f2) o.frequency.exponentialRampToValueAtTime(f2,t+d);
@@ -1342,7 +1375,7 @@ const THEME={bpm:72,
        [[76,0,2],[73,3,.5],[76,3.5,.5]]]};
 const PICK=[0,1,2,3,2,1,3,2];
 function startMusic(){
-  if(SFX.musicOn || SFX.ytHold || S.mute || S.music===false) return; const c=ac(); if(!c) return;
+  if(SFX.musicOn || SFX.ytHold || S.mute) return; const c=ac(); if(!c) return;
   SFX.musicOn=true; SFX.musicGain=c.createGain(); SFX.musicGain.gain.value=.0001; SFX.musicGain.connect(SFX.master);
   SFX.musicGain.gain.exponentialRampToValueAtTime(.22,c.currentTime+2.5);
   const beat=60/THEME.bpm, out=SFX.musicGain; let bar=0;
@@ -1357,20 +1390,15 @@ function startMusic(){
   sched();
 }
 function stopMusic(){ SFX.musicOn=false; clearTimeout(SFX.mt); if(SFX.musicGain){ try{ SFX.musicGain.gain.exponentialRampToValueAtTime(.0001,SFX.ctx.currentTime+.6); }catch(e){} } }
-// "nossa música": o clipe oficial não deixa tocar fora do YouTube, então toca a versão com letra (dá pra cantar junto) e, se nada tocar, abre o oficial no YouTube
-const OUR_OFFICIAL="dWpGsK8Md28", OUR_IDS=["O0MU-tzvrNs","B0gFMJ_dThY"], OUR_SONG=OUR_IDS[0];
-const isOurSong=id=>id===OUR_OFFICIAL||OUR_IDS.includes(id);
-function playOurSong(){ if(!HUB){ hub(); return setTimeout(playOurSong,800); } document.querySelectorAll(".modalBg").forEach(m=>m.remove());
-  openYT(OUR_SONG,0,true,true); cineSendQuiet({k:"yt",id:OUR_SONG,st:"play",pos:0}); snd("chime"); }
 function soundModal(){
+  const v=S.gameVol==null?1:S.gameVol;
   const m=modal(`<h2>🎵 Sons</h2>
-    <div class="stack"><button class="btn pink" id="ours">💞 Tocar a nossa música</button><a class="link" style="text-align:center" href="https://www.youtube.com/watch?v=${OUR_OFFICIAL}" target="_blank" rel="noopener">Ver o clipe oficial no YouTube</a><button class="btn ${S.mute?"alt":""}" id="sfx">${S.mute?"Sons desligados":"Sons ligados ✓"}</button>
-    <button class="btn ${S.music===false||S.mute?"alt":"blue"}" id="mus">${S.music===false?"Musiquinha de fundo desligada":"Musiquinha de fundo ligada ✓"}</button>
-    <p style="font-size:.85rem;text-align:center">No iPhone, a chavinha de silencioso também desliga os sons do jogo.</p>
+    <div class="stack"><button class="btn ${S.mute?"alt":""}" id="sfx">${S.mute?"Sons desligados":"Sons ligados ✓"}</button>
+    <div class="volRow"><button class="btn alt small" id="vd">${icon("vol_down")}</button><div class="volBar"><i style="width:${Math.round(v*100)}%"></i></div><button class="btn alt small" id="vu">${icon("vol_up")}</button></div>
+    <p style="font-size:.85rem;text-align:center">No iPhone, a chavinha de silencioso também desliga os sons do jogo. A playlist fica na TV da sala.</p>
     <button class="btn alt" data-close>Fechar</button></div>`);
-  m.querySelector("#ours").onclick=playOurSong;
   m.querySelector("#sfx").onclick=()=>{ S.mute=!S.mute; save(); if(S.mute) stopMusic(); else { snd("pop"); startMusic(); } m.remove(); soundModal(); };
-  m.querySelector("#mus").onclick=()=>{ S.music=S.music===false; save(); if(S.music===false) stopMusic(); else startMusic(); m.remove(); soundModal(); };
+  ["vd","vu"].forEach(k=>m.querySelector("#"+k).onclick=()=>{ S.gameVol=Math.max(0,Math.min(1,Math.round(((S.gameVol==null?1:S.gameVol)+(k==="vu"?.2:-.2))*10)/10)); save(); gameVolApply(); tvVolUI(); m.remove(); soundModal(); });
 }
 document.addEventListener("click",e=>{ if(e.target.closest(".btn,.key,.chip,.ibtn,.emo,.ctx button,.sw,.ptools button")) snd(e.target.closest(".key")?"key":"tap"); },true);
 
@@ -1493,7 +1521,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "4.8";
+const VERSION = "4.9";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -2624,6 +2652,10 @@ function rugTex(){ const c=document.createElement("canvas"); c.width=c.height=25
   for(let k=0;k<12;k++){ const a=k/12*Math.PI*2; x.fillStyle="#e98aa0"; x.beginPath(); x.ellipse(128+Math.cos(a)*40,128+Math.sin(a)*40,9,5,a,0,7); x.fill(); } x.fillStyle="#f3c26b"; x.beginPath(); x.arc(128,128,16,0,7); x.fill();
   return new THREE.CanvasTexture(c); }
 function screenTex(mode){ const c=document.createElement("canvas"); c.width=512; c.height=288; const x=c.getContext("2d");
+  if(typeof mode==="string" && mode.startsWith("sp|")){ const t=tvTrack(+mode.slice(3)||0), g2=x.createLinearGradient(0,0,512,288); g2.addColorStop(0,"#3a1830"); g2.addColorStop(1,"#7a2a4a"); x.fillStyle=g2; x.fillRect(0,0,512,288);
+    x.fillStyle="#ff9ab0"; x.font="600 26px Fredoka, sans-serif"; x.textAlign="center"; x.fillText("♪ nossa playlist ♪",256,78); x.fillStyle="#fff"; x.font="700 40px Fredoka, sans-serif";
+    let tt=t[1]; while(x.measureText(tt).width>470&&tt.length>4) tt=tt.slice(0,-2); if(tt!==t[1]) tt+="…"; x.fillText(tt,256,150); x.fillStyle="rgba(255,255,255,.75)"; x.font="500 28px Fredoka, sans-serif"; x.fillText(t[2].slice(0,34),256,198);
+    const tx=new THREE.CanvasTexture(c); return tx; }
   const g=x.createLinearGradient(0,0,512,288); if(mode==="nf"){ g.addColorStop(0,"#2a0f18"); g.addColorStop(1,"#5a1a2a"); } else if(mode==="yt"){ g.addColorStop(0,"#1a1a24"); g.addColorStop(1,"#3a2030"); } else { g.addColorStop(0,"#12131a"); g.addColorStop(1,"#1d2030"); }
   x.fillStyle=g; x.fillRect(0,0,512,288);
   x.fillStyle="#fff"; x.textAlign="center"; x.font="700 44px Fredoka, sans-serif";
@@ -2712,17 +2744,95 @@ function sofaSit(i,fromNet){
 }
 function standUp(C){ if(!C.sofa) return; C.sofa=false; C.pose="idle"; C.root.position.y=0; C.root.position.z=SOFA3.z-.95; }
 /* cinema */
-function updateCineBtn(){ if(!HUB||!HUB.root) return; const inside=HUB.wasInside; let b=HUB.root.querySelector("#bCine"); if(inside&&!b){ b=document.createElement("button"); b.id="bCine"; b.className="cineFab"; b.innerHTML=artify("🍿 Cinema"); b.onclick=()=>cineMenu(); HUB.scene.appendChild(b); } if(!inside&&b){ b.remove(); closeYT(); } }
+function updateCineBtn(){ if(!HUB||!HUB.root) return; const inside=HUB.wasInside; let b=HUB.root.querySelector("#bCine"); if(inside&&!b){ b=document.createElement("button"); b.id="bCine"; b.className="cineFab"; b.innerHTML=artify("📺 TV"); b.onclick=()=>cineMenu(); HUB.scene.appendChild(b); } if(!inside&&b){ b.remove(); closeYT(); } }
+/* =================== TV DA SALA: A NOSSA PLAYLIST (Spotify), TOCANDO JUNTO NOS DOIS CELULARES =================== */
+const PLAYLIST={id:"4sMDGaFXs0FrfhNuuGQDZe", name:"He", tracks:[["21s0M7whZIwaGESlHv5fAH","Na Linha do Tempo","Victor & Leo"],["2ndzFVbVxeA4vcEphzdx2X","Meu Eu em Você - Ao Vivo","Victor & Leo"],["7HX9fGR4ETkpYTyW1NbhcZ","Te Vivo - Ao Vivo","Luan Santana"],["52SYWEp5qz0SRwmejwwHKn","É por você que canto - The Sound of Silence","Leandro & Leonardo, Continental"],["2Wg5y0uqhixTS7Jv7jZTMn","O Amor Coloriu","Luan Santana"],["3UStHHOyFXetR5621bKJBz","Duas Metades - Ao Vivo","Jorge & Mateus"],["7CRIoOb5ViF1CBFLcyTfMw","Eu Sei Que Vou Te Amar","Antônio Carlos Jobim"],["5gc0OywuL1BWNhY01YcIxp","Se Eu Não Te Amasse Tanto Assim - Ao Vivo","Caetano Veloso, Gilberto Gil, Ivete Sangalo"],["13UY9fXJBE32mR6GUhYIfO","Incondicional","Luan Santana"],["3WVBQjDRoUUTJnWVaUUEHL","Partilhar","Rubel"],["0lGOYi4wZiVc1arJJ4do0a","BB (Garupa de Moto Amarela)","Tim Bernardes"],["3AJwUDP919kvQ9QcozQPxg","Yellow","Coldplay"],["2MRJ3Oqb5yAONPvQyoWnQ9","Can't Help Falling In Love - with The Royal Philharmonic Orchestra","Elvis Presley, Royal Philharmonic Orchestra"],["7Ewz6bJ97vUqk5HdkvguFQ","Heaven","Bryan Adams"],["4BqIT4j2xzROrC9dMlgXPT","You Love Me","Kimya Dawson"],["2TEQvxxQabwLQMqWMg1qGu","Wi$h Li$t","Taylor Swift"],["6Qyc6fS4DsZjB2mRW9DsQs","Iris","The Goo Goo Dolls"],["7D0RhFcb3CrfPuTJ0obrod","Sparks","Coldplay"],["2kfGoV9a5dbSKCNmUWH2ZF","Turning Page","Sleeping At Last"],["6BcqNZ7D3gI0ALivZMAvux","Levo Comigo","Restart"],["68A5qckWB3WYNg2mJSbtMA","Enquanto o sol brilhar (Amor sem fim) - Ao vivo","Matogrosso & Mathias"],["40XwcZVS7Oh7VvBuOWrgkk","In Luv With U","Finn"],["1Kj2S2YdEgXJZp4OQHQ7hM","Como É Grande o Meu Amor Por Você - Versão Remasterizada","Roberto Carlos"],["3vit743HobxF9rQxrMZf1c","Vejo Enfim a Luz Brilhar","Sylvia Salustti, Raphael Rossato"],["5lvvqOEWpUvs2jaFkQTFWJ","Quando Bate Aquela Saudade","Rubel"],["67lKBSgStRs1CLh8qlhUA4","Varinha de Condão","Maisa"],["1wzBbuHRzc9TlYgI0ZlkpH","O Que É Que Tem - Ao Vivo","Jorge & Mateus"],["1MnUXXQEuzlJFNF5xMH1XQ","Nessas Horas - Ao Vivo","Matheus & Kauan"],["2TE9rkhJYDctxgzak0AnSb","Seu Astral - Ao Vivo","Jorge & Mateus"],["2aHjU9ctGgkFU56TLqR560","Vida Boa (Ao Vivo)","Victor & Leo"]]};
+const TV={ctrl:null, box:null, i:-1, paused:true, pos:0, dur:0, quiet:0, want:null, owner:false, endT:0, loadT:0};
+function spApi(cb){ if(window.__spApi) return cb(window.__spApi); (window.__spQ=window.__spQ||[]).push(cb); if(window.__spLoading) return; window.__spLoading=1;
+  window.onSpotifyIframeApiReady=api=>{ window.__spApi=api; (window.__spQ||[]).splice(0).forEach(f=>f(api)); };
+  const s=document.createElement("script"); s.src="https://open.spotify.com/embed/iframe-api/v1"; s.async=true; document.head.appendChild(s); }
+const tvTrack=i=>PLAYLIST.tracks[((i%PLAYLIST.tracks.length)+PLAYLIST.tracks.length)%PLAYLIST.tracks.length];
+function tvSend(st,extra={}){ if(!online()) return; const o=Object.assign({i:TV.i,st,pos:TV.pos,t:Date.now(),by:S.me},extra); pushMe({tv:o}); }
+function tvOpen(){
+  if(!HUB) return null; if(TV.box && HUB.scene.contains(TV.box)) return TV.box;
+  closeYT(); SFX.ytHold=true; stopMusic();
+  const b=document.createElement("div"); b.className="tvBox";
+  b.innerHTML=`<div class="tvTop"><span>${icon("tv")} TV da sala · <b>${esc(PLAYLIST.name)}</b></span><button class="tvX" aria-label="Desligar a TV">${icon("close")}</button></div>
+    <div class="tvPlayer"><div id="spP"></div></div>
+    <div class="tvNow" id="tvNow"></div>
+    <div class="tvRemote">
+      <button data-r="prev" aria-label="Anterior">${icon("prev")}</button><button data-r="play" class="big" aria-label="Tocar ou pausar">${icon("play")}</button><button data-r="next" aria-label="Próxima">${icon("next")}</button>
+      <button data-r="list" aria-label="Lista">${icon("list")}</button>
+      <span class="tvVol"><button data-r="vd" aria-label="Diminuir volume do jogo">${icon("vol_down")}</button><i id="tvVolBar"></i><button data-r="vu" aria-label="Aumentar volume do jogo">${icon("vol_up")}</button></span>
+    </div>
+    <div class="tvTap" id="tvTap" hidden>Toque aqui pra tocar junto ▶</div>
+    <div class="tvPrev" id="tvPrev" hidden>Tocando só 30 segundos de cada música. <a href="https://accounts.spotify.com/login?continue=https%3A%2F%2Fopen.spotify.com%2F" target="_blank" rel="noopener">Entrar no Spotify</a> pra ouvir inteira.</div>`;
+  HUB.scene.appendChild(b); TV.box=b; tvVolUI(); setScreen("sp|"+Math.max(0,TV.i));
+  b.querySelector(".tvX").onclick=()=>{ snd("close"); tvClose(true); };
+  b.querySelector("#tvTap").onclick=()=>{ b.querySelector("#tvTap").hidden=true; const w=TV.want; if(w&&w.st==="play") tvPlay(w.i, w.pos+(Date.now()-w.t)/1000, false); else tvToggle(); };
+  b.querySelectorAll("[data-r]").forEach(x=>x.onclick=e=>{ e.stopPropagation(); const r=x.dataset.r; snd("tap");
+    if(r==="play") tvToggle(); if(r==="next") tvPlay(TV.i+1,0,true); if(r==="prev") tvPlay(TV.pos>4?TV.i:TV.i-1,0,true); if(r==="list") tvList();
+    if(r==="vd"||r==="vu"){ S.gameVol=Math.max(0,Math.min(1,Math.round(((S.gameVol==null?1:S.gameVol)+(r==="vu"?.2:-.2))*10)/10)); save(); gameVolApply(); tvVolUI(); } });
+  b.addEventListener("pointerdown",e=>e.stopPropagation());
+  spApi(api=>{ if(TV.box!==b) return; const el=b.querySelector("#spP");
+    api.createController(el,{uri:"spotify:track:"+tvTrack(Math.max(0,TV.i))[0], width:"100%", height:80},ctrl=>{
+      if(TV.box!==b){ try{ ctrl.destroy(); }catch(e){} return; } TV.ctrl=ctrl;
+      ctrl.addListener("playback_update",e=>tvUpdate(e.data||{}));
+      ctrl.addListener("ready",()=>{ if(TV.want) tvApplyWant(); }); }); });
+  return b;
+}
+function tvClose(send){ if(TV.ctrl){ try{ TV.ctrl.destroy(); }catch(e){} } TV.ctrl=null; if(TV.box){ TV.box.remove(); TV.box=null; } TV.i=-1; TV.paused=true; TV.want=null; setScreen("off");
+  if(send) tvSend("off"); if(SFX.ytHold){ SFX.ytHold=false; startMusic(); } }
+function tvNowUI(){ if(!TV.box) return; const t=tvTrack(Math.max(0,TV.i)), el=TV.box.querySelector("#tvNow");
+  el.innerHTML=`${icon("note")} <b>${esc(t[1])}</b> <span>${esc(t[2])}</span>`; const pb=TV.box.querySelector('[data-r="play"]'); pb.innerHTML=icon(TV.paused?"play":"pause"); }
+function tvVolUI(){ if(!TV.box) return; const v=S.gameVol==null?1:S.gameVol, bar=TV.box.querySelector("#tvVolBar"); bar.style.setProperty("--v",v); bar.title=`Sons do jogo: ${Math.round(v*100)}%`; }
+function gameVolApply(){ if(SFX.master) SFX.master.gain.value=.42*(S.gameVol==null?1:S.gameVol); }
+// toca a faixa i a partir de pos (segundos); send=avisa o outro celular
+function tvPlay(i,pos=0,send=true){
+  if(!tvOpen()) return; const n=PLAYLIST.tracks.length; TV.i=((i%n)+n)%n; TV.pos=pos; TV.paused=false; TV.endT=0; TV.owner=!!send; TV.quiet=Date.now()+2500; TV.loadT=Date.now();
+  setScreen("sp|"+TV.i); tvNowUI(); if(send) tvSend("play",{pos});
+  const c=TV.ctrl; if(!c){ TV.want={i:TV.i,st:"play",pos,t:Date.now()}; return; }
+  c.loadUri("spotify:track:"+tvTrack(TV.i)[0]); setTimeout(()=>{ if(TV.ctrl!==c) return; c.play(); if(pos>1.5) setTimeout(()=>{ if(TV.ctrl===c) c.seek(pos+.8); },700); },500);
+  setTimeout(()=>{ if(TV.box && TV.paused && !send) TV.box.querySelector("#tvTap").hidden=false; },2600);
+}
+function tvToggle(){ if(TV.i<0) return tvPlay(0,0,true); const c=TV.ctrl; if(!c) return; TV.quiet=Date.now()+1500;
+  if(TV.paused){ c.resume? c.resume() : c.togglePlay(); TV.paused=false; TV.owner=true; tvSend("play"); } else { c.pause(); TV.paused=true; tvSend("pause"); } tvNowUI(); }
+function tvUpdate(d){
+  const was=TV.paused; if(typeof d.position==="number") TV.pos=d.position/1000; if(typeof d.duration==="number") TV.dur=d.duration/1000; if(typeof d.isPaused==="boolean") TV.paused=d.isPaused;
+  if(!TV.paused && TV.box) TV.box.querySelector("#tvTap").hidden=true;
+  if(TV.box && TV.dur>0) TV.box.querySelector("#tvPrev").hidden= !(TV.dur<=31 && tvTrack(Math.max(0,TV.i))[3]!==1);
+  if(was!==TV.paused){ tvNowUI(); if(Date.now()>TV.quiet && !d.isBuffering){ TV.owner=!TV.paused; tvSend(TV.paused?"pause":"play"); } }   // apertou play/pause dentro do player do Spotify
+  // acabou a música: quem deu o play passa pra próxima (o outro segue junto)
+  if(TV.owner && TV.dur>5 && TV.pos>=TV.dur-.9 && !TV.endT && Date.now()-TV.loadT>4000){ TV.endT=Date.now(); setTimeout(()=>{ if(TV.box) tvPlay(TV.i+1,0,true); },900); }
+}
+function tvApplyWant(){ const w=TV.want; if(!w) return; TV.want=null; if(w.st==="play") tvPlay(w.i, w.pos+(Date.now()-w.t)/1000, false); }
+function tvRemote(o){
+  if(o.st==="off"){ if(TV.box){ tvClose(false); toast(`${nmRaw(o.by)} desligou a TV`); } return; }
+  const fresh=!TV.box; if(fresh){ tvOpen(); toast(`${nmRaw(o.by)} ligou a TV com a playlist de vocês 📺`); }
+  const target=(+o.pos||0)+(o.st==="play"?(Date.now()-o.t)/1000:0); TV.owner=false;
+  if(o.st==="play"){ TV.want={i:o.i,st:"play",pos:+o.pos||0,t:o.t};
+    if(!TV.ctrl) return; if(TV.i!==o.i || fresh){ TV.want=null; tvPlay(o.i,target,false); return; }
+    TV.want=null; TV.quiet=Date.now()+1800; if(Math.abs(TV.pos-target)>2.5) TV.ctrl.seek(target); if(TV.paused){ TV.ctrl.resume? TV.ctrl.resume() : TV.ctrl.play(); TV.paused=false; } tvNowUI();
+    setTimeout(()=>{ if(TV.box && TV.paused){ TV.want={i:o.i,st:"play",pos:target,t:Date.now()}; TV.box.querySelector("#tvTap").hidden=false; } },1800); }
+  if(o.st==="pause" && TV.ctrl){ TV.quiet=Date.now()+1500; TV.ctrl.pause(); TV.paused=true; tvNowUI(); }
+}
+function tvList(){
+  const m=modal(`<h2>${icon("list")} ${esc(PLAYLIST.name)}</h2><div class="tvList">${PLAYLIST.tracks.map((t,k)=>`<button class="${k===TV.i?"on":""}" data-k="${k}"><b>${esc(t[1])}</b><small>${esc(t[2])}</small></button>`).join("")}</div><button class="btn alt" data-close>Fechar</button>`);
+  m.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ m.remove(); tvPlay(+b.dataset.k,0,true); });
+  const on=m.querySelector(".tvList .on"); if(on) on.scrollIntoView({block:"center"});
+}
 const CINE_R=["😂","😍","😱","😭","🔥","💕"];
 function cineMenu(){
   snd("pop");
-  const m=modal(`<h2>🍿 Cinema do casal</h2>
+  const m=modal(`<h2>📺 TV da sala</h2>
+    <button class="btn pink" data-c="tv">💞 Ligar a TV com a nossa playlist</button>
     <div class="cineBox"><b>Vídeo do YouTube juntos</b><p class="small" style="margin:4px 0 8px">Cola o link: o vídeo abre na tela dos dois, e play, pause e pulos ficam sincronizados.</p>
       <div style="display:flex;gap:6px"><input id="ytUrl" class="inp" placeholder="https://youtu.be/..." style="flex:1;min-width:0"><button class="btn small" data-c="yt" style="width:auto">Abrir</button></div></div>
     <div class="cineBox"><b>Reações</b><div class="reacts">${CINE_R.map((e,k)=>`<button data-r="${k}">${e}</button>`).join("")}</div></div>
     <button class="btn alt" data-c="sofa">🛋️ Sentar no sofá</button>`);
   m.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{ const c=b.dataset.c;
     if(c==="sofa"){ m.remove(); sofaSit(actor()); }
+    if(c==="tv"){ m.remove(); const C=W3.chars[actor()]; if(!C.sofa && isIn(C.root.position.x)) sofaSit(actor()); tvPlay(TV.i>=0?TV.i:0,0,true); }
     if(c==="yt"){ const id=ytId(m.querySelector("#ytUrl").value); if(!id){ toast("Não reconheci esse link 😅"); return; } m.remove(); openYT(id,0,false,true); cineSend({k:"yt",id,st:"load",pos:0}); } });
   m.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{ cineSend({k:"react",e:CINE_R[+b.dataset.r]}); });
 }
@@ -2744,21 +2854,19 @@ function ytId(u){ u=(u||"").trim(); let m=u.match(/(?:youtu\.be\/|v=|shorts\/|em
 function ytApi(cb){ if(window.YT&&YT.Player) return cb(); (window._ytq=window._ytq||[]).push(cb); if(window._ytLoading) return; window._ytLoading=1; window.onYouTubeIframeAPIReady=()=>{ (window._ytq||[]).forEach(f=>f()); window._ytq=[]; }; const s=document.createElement("script"); s.src="https://www.youtube.com/iframe_api"; s.onerror=()=>toast("Não consegui carregar o YouTube aqui 😕"); document.head.appendChild(s); }
 function openYT(id,pos,play,mine){
   if(!HUB) return; setScreen("yt"); const C=W3.chars[actor()]; if(!C.sofa && isIn(C.root.position.x)) sofaSit(actor());
-  let box=HUB.ytBox; if(box && box.dataset.id===id){ return; } closeYT(); SFX.ytHold=true; stopMusic(); box=document.createElement("div"); box.className="ytBox"; box.dataset.id=id; box.innerHTML=`<div class="ytBar"><span>${artText(isOurSong(id)?"💞 Nossa música":"▶ Vendo juntos")}</span><button class="ytX">✕</button></div><div class="ytFrame"><div id="ytP"></div></div><div class="ytTap" style="display:none">Toque aqui pra sincronizar ▶</div>`; HUB.scene.appendChild(box); HUB.ytBox=box;
+  let box=HUB.ytBox; if(box && box.dataset.id===id){ return; } closeYT(); SFX.ytHold=true; stopMusic(); if(TV.box) tvClose(true); box=document.createElement("div"); box.className="ytBox"; box.dataset.id=id; box.innerHTML=`<div class="ytBar"><span>${artText("▶ Vendo juntos")}</span><button class="ytX">✕</button></div><div class="ytFrame"><div id="ytP"></div></div><div class="ytTap" style="display:none">Toque aqui pra sincronizar ▶</div>`; HUB.scene.appendChild(box); HUB.ytBox=box;
   box.querySelector(".ytX").onclick=()=>{ snd("close"); closeYT(); };
   box.querySelector(".ytTap").onclick=()=>{ box.querySelector(".ytTap").style.display="none"; if(HUB.yt&&HUB.ytWant){ HUB.ytQuiet=Date.now()+1200; HUB.yt.seekTo(HUB.ytWant.pos+(Date.now()-HUB.ytWant.t)/1000,true); HUB.yt.playVideo(); } };
   ytApi(()=>{ if(!HUB||HUB.ytBox!==box) return; HUB.yt=new YT.Player("ytP",{videoId:id,playerVars:{playsinline:1,rel:0,modestbranding:1,start:Math.floor(pos||0)},events:{
     onReady:()=>{ if(play){ HUB.ytQuiet=Date.now()+1500; HUB.yt.playVideo(); setTimeout(()=>{ if(HUB&&HUB.yt&&HUB.yt.getPlayerState&&HUB.yt.getPlayerState()!==1) box.querySelector(".ytTap").style.display=""; },1800); } },
-    onError:e=>{ if(!HUB||HUB.ytBox!==box) return; const nx=OUR_IDS[OUR_IDS.indexOf(id)+1];
-      if((e.data===101||e.data===150) && nx){ closeYT(); openYT(nx,0,true,mine); if(mine) cineSendQuiet({k:"yt",id:nx,st:"play",pos:0}); return; }
-      const t=box.querySelector(".ytTap"); t.style.display=""; t.innerHTML=artText(isOurSong(id)?"Não deu pra tocar aqui: toca pra abrir no YouTube 💞":"Esse vídeo não deixa tocar aqui: toca pra abrir no YouTube"); t.onclick=()=>window.open("https://www.youtube.com/watch?v="+(isOurSong(id)?OUR_OFFICIAL:id),"_blank"); },
+    onError:e=>{ if(!HUB||HUB.ytBox!==box) return; const t=box.querySelector(".ytTap"); t.style.display=""; t.innerHTML=artText("Esse vídeo não deixa tocar aqui: toca pra abrir no YouTube"); t.onclick=()=>window.open("https://www.youtube.com/watch?v="+id,"_blank"); },
     onStateChange:e=>{ if(!HUB||Date.now()<(HUB.ytQuiet||0)) return; const st=e.data; if(st===1) cineSendQuiet({k:"yt",id,st:"play",pos:HUB.yt.getCurrentTime()}); if(st===2) cineSendQuiet({k:"yt",id,st:"pause",pos:HUB.yt.getCurrentTime()}); } }}); });
 }
 function cineSendQuiet(o){ o.t=Date.now(); o.by=actor(); if(online()) pushMe({cine:o}); }
 function closeYT(){ if(!HUB) return; if(HUB.yt&&HUB.yt.destroy){ try{ HUB.yt.destroy(); }catch(e){} } HUB.yt=null; if(HUB.ytBox){ HUB.ytBox.remove(); HUB.ytBox=null; } if(SFX.ytHold){ SFX.ytHold=false; startMusic(); } }
 function ytRemote(o){
   HUB.ytWant={pos:+o.pos||0,t:o.t};
-  if(!HUB.ytBox || HUB.ytBox.dataset.id!==o.id){ toast(isOurSong(o.id)?`${nmRaw(o.by)} colocou a nossa música 💞`:`${nmRaw(o.by)} abriu um vídeo pra vocês ▶`); openYT(o.id,(+o.pos||0)+(o.st==="play"?(Date.now()-o.t)/1000:0),o.st==="play",false); return; }
+  if(!HUB.ytBox || HUB.ytBox.dataset.id!==o.id){ toast(`${nmRaw(o.by)} abriu um vídeo pra vocês ▶`); openYT(o.id,(+o.pos||0)+(o.st==="play"?(Date.now()-o.t)/1000:0),o.st==="play",false); return; }
   const P=HUB.yt; if(!P||!P.seekTo) return; HUB.ytQuiet=Date.now()+1200;
   if(o.st==="play"){ const target=(+o.pos||0)+(Date.now()-o.t)/1000; if(Math.abs(P.getCurrentTime()-target)>1) P.seekTo(target,true); P.playVideo(); setTimeout(()=>{ if(HUB&&HUB.yt&&HUB.yt.getPlayerState&&HUB.yt.getPlayerState()!==1&&HUB.ytBox) HUB.ytBox.querySelector(".ytTap").style.display=""; },1500); }
   if(o.st==="pause"){ P.pauseVideo(); P.seekTo(+o.pos||0,true); }
@@ -3232,7 +3340,7 @@ function hub(){
   // personagens: posição e overlays
   [0,1].forEach(i=>{
     const C=W3.chars[i]; let p=HUB.pos[i];
-    if(i===other() && online()){ const d=NET.docs[hubPath(i)]; if(d&&typeof d.x==="number") p={x:d.x,y:d.y}; HUB.lastEmote[i]=d&&d.emote&&d.emote.t; HUB.lastCouple[i]=d&&d.couple&&d.couple.t; HUB.lastPet=d&&d.petAct&&d.petAct.t||0; HUB.lastFish=d&&d.fish&&d.fish.t; HUB.lastCine=d&&d.cine&&d.cine.t; HUB.lastJump=d&&d.jump&&d.jump.t; }
+    if(i===other() && online()){ const d=NET.docs[hubPath(i)]; if(d&&typeof d.x==="number") p={x:d.x,y:d.y}; HUB.lastEmote[i]=d&&d.emote&&d.emote.t; HUB.lastCouple[i]=d&&d.couple&&d.couple.t; HUB.lastPet=d&&d.petAct&&d.petAct.t||0; HUB.lastFish=d&&d.fish&&d.fish.t; HUB.lastCine=d&&d.cine&&d.cine.t; HUB.lastJump=d&&d.jump&&d.jump.t; HUB.lastTv=d&&d.tv&&d.tv.t; if(d&&d.tv&&d.tv.st==="play"&&Date.now()-d.tv.t<10*60e3) setTimeout(()=>{ if(HUB&&!TV.box) tvRemote(d.tv); },1500); }
     const q=clampW(wx(p.x),wx(p.y)); if(!C.path||!C.path.length||fresh){ C.root.position.set(q.x,0,q.z); C.path=[]; }
     HUB.pos[i]={x:fw(C.root.position.x),y:fw(C.root.position.z)};
     const o=document.createElement("div"); o.className="ov3"; o.dataset.p=i; o.innerHTML=`<div class="bubble"></div><div class="tag" id="tag${i}">${nm(i)}</div>`; ov.appendChild(o); C.ov=o;
@@ -3257,7 +3365,7 @@ function hub(){
     if(e.code==="Space"){ e.preventDefault(); if(e.type==="keydown"&&!e.repeat) jumpMe(); return; }
     const k=JOYKEYS[e.key]; if(!k) return; HUB.keys[k]=e.type==="keydown"; e.preventDefault(); };
   window.addEventListener("keydown",kd); window.addEventListener("keyup",kd);
-  screenCleanup=()=>{ cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
+  screenCleanup=()=>{ cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); if(TV.box) tvClose(false); HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
   bindActs3(root);
   mailTick(); refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags(); SKY.force=true; refreshSkyBtn(); starsChanged();
   root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook;
@@ -3461,7 +3569,7 @@ function nearThing(){
   if(isIn(p.x)){
     cand(SOFA3.x,SOFA3.z,2.6,"🛋️","Sofá",()=>hitMenu("sofa"));
     cand(DOOR_IN.x,DOOR_IN.z,2.2,"🚪","Sair",()=>walkW(a,DOOR_OUT.x,DOOR_OUT.z+.8));
-    cand(IN3.x,IN3.z-4.4,2.6,"🍿","Cinema",cineMenu,.3);
+    cand(IN3.x,IN3.z-4.4,2.6,"📺","TV",cineMenu,.3);
   } else {
     for(const [k,b] of Object.entries(BOOTH3)){ const f=boothFront(b,1.6); cand(f.x,f.z,2.3,STATIONS[k].emoji,`Jogar ${GAME_NAMES[k]}`,()=>{ faceW(a,b.x,b.z); openStation(k); }); }
     cand(MAIL3.x,MAIL3.z,2.3,"📬","Correio",mailMenu);
@@ -4136,6 +4244,7 @@ function hubNet(path){
     if(d.cine && d.cine.t && d.cine.t!==HUB.lastCine){ const fresh=Date.now()-d.cine.t<30000; HUB.lastCine=d.cine.t; if(fresh) cineApply(d.cine,true); }
     if(d.fish && d.fish.t && d.fish.t!==HUB.lastFish){ const fresh=Date.now()-d.fish.t<30000; HUB.lastFish=d.fish.t; if(fresh) setTimeout(()=>fishRemote(o,d.fish),W3.chars[o].path&&W3.chars[o].path.length?2200:0); }
     if(typeof d.x==="number"){ const dst=(HUB.dest&&HUB.dest[o])||HUB.pos[o]; if(Math.abs(dst.x-d.x)>.002||Math.abs(dst.y-d.y)>.002) walkTo(o, d.x, d.y, null, true); }
+    if(d.tv && d.tv.t && d.tv.t!==HUB.lastTv){ const fresh=Date.now()-d.tv.t<15*60e3; HUB.lastTv=d.tv.t; if(fresh) tvRemote(d.tv); }
     if(d.jump && d.jump.t && d.jump.t!==HUB.lastJump){ const fresh=Date.now()-d.jump.t<4000; HUB.lastJump=d.jump.t; if(fresh) jumpChar(o,true); }
     if(d.emote && d.emote.t && d.emote.t!==HUB.lastEmote[o]){ const fresh=Date.now()-d.emote.t<20000; HUB.lastEmote[o]=d.emote.t; if(fresh) showEmote(o, d.emote.e); }
     refreshStatus();
