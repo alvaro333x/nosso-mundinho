@@ -1073,7 +1073,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "4.0";
+const VERSION = "4.1";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -1218,6 +1218,15 @@ function lineHTML(L, hidden){
 function shake(el){ const r=el.querySelector(".brow")||el; r.classList.remove("shake"); void r.offsetWidth; r.classList.add("shake"); }
 
 /* =================== 3D: MATERIAIS, ROSTOS, PERSONAGENS E BICHINHOS =================== */
+/* visual 2.0: luz suave (sem faixas de desenho), cores corretas e tom de cinema */
+const GFX2=true;
+if(GFX2 && window.THREE){
+  if(THREE.ColorManagement) THREE.ColorManagement.legacyMode=false;
+  const Std=THREE.MeshStandardMaterial;
+  THREE.MeshToonMaterial=class SoftMat extends Std{ constructor(p={}){ const q=Object.assign({roughness:.86,metalness:0},p); delete q.gradientMap; super(q); } };
+  const CT=THREE.CanvasTexture; THREE.CanvasTexture=class extends CT{ constructor(...a){ super(...a); this.encoding=THREE.sRGBEncoding; } };
+}
+const LIN=v=>GFX2?Math.pow(v,2.2):v;
 const T3={};
 function toonGrad(){ if(T3.grad) return T3.grad; const c=document.createElement("canvas"); c.width=4; c.height=1; const x=c.getContext("2d"); ["#6a6a6a","#a8a8a8","#dcdcdc","#ffffff"].forEach((col,i)=>{ x.fillStyle=col; x.fillRect(i,0,1,1); });
   const t=new THREE.CanvasTexture(c); t.minFilter=t.magFilter=THREE.NearestFilter; t.generateMipmaps=false; T3.grad=t; return t; }
@@ -1712,6 +1721,7 @@ function buildWorld(){
   W3={chars:[null,null], pets:{}, clouds:[], swans:[], pick:[], t:0};
   const R=new THREE.WebGLRenderer({antialias:true, powerPreference:"high-performance"});
   R.setPixelRatio(Math.min(2,window.devicePixelRatio||1)); R.shadowMap.enabled=true; R.shadowMap.type=THREE.PCFSoftShadowMap;
+  if(GFX2){ R.outputEncoding=THREE.sRGBEncoding; R.toneMapping=THREE.ACESFilmicToneMapping; R.toneMappingExposure=.98; }
   W3.R=R;
   const sc=new THREE.Scene(); W3.scene=sc;
   const bg=document.createElement("canvas"); bg.width=4; bg.height=256; const bx=bg.getContext("2d"); const gr=bx.createLinearGradient(0,0,0,256);
@@ -1719,15 +1729,15 @@ function buildWorld(){
   sc.background=new THREE.CanvasTexture(bg);
   sc.fog=new THREE.Fog("#ffd9b8", 38, 90);
   const cam=new THREE.PerspectiveCamera(48,1,.1,200); W3.cam=cam;
-  W3.hemi=new THREE.HemisphereLight("#fff0e0","#7a9a60",.42); sc.add(W3.hemi);
-  const sun=new THREE.DirectionalLight("#fff3e0",.62); sun.position.set(18,30,14); sun.castShadow=true;
+  W3.hemiBase=GFX2?.8:.42; W3.sunBase=GFX2?1.35:.62; W3.hemi=new THREE.HemisphereLight(GFX2?"#eaf3ff":"#fff0e0","#7a9a60",W3.hemiBase); sc.add(W3.hemi);
+  const sun=new THREE.DirectionalLight("#fff1dc",W3.sunBase); sun.position.set(18,30,14); sun.castShadow=true;
   sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-34,right:34,top:34,bottom:-34,near:1,far:90}); sun.shadow.bias=-.0006; sc.add(sun); W3.sun=sun;
   // chão com colinas nas bordas
   const geo=new THREE.PlaneGeometry(170,170,170,170); geo.rotateX(-Math.PI/2); const pos=geo.attributes.position, cols=[]; const rr=rng(7);
   for(let i=0;i<pos.count;i++){ const x=pos.getX(i), z=pos.getZ(i), d=Math.hypot(x,z); let y=0; if(d>29) y=Math.pow(d-29,1.35)*.22+Math.sin(x*.15)*Math.cos(z*.12)*1.5*Math.min(1,(d-29)/10);
     const lr=Math.hypot((x-LAKE3.x)/LAKE3.rx,(z-LAKE3.z)/LAKE3.rz); let s=0; if(lr<1){ const k=Math.min(1,Math.max(0,(.97-lr)/.55)); s=k*k*(3-2*k); y=-1.9*s; }
     pos.setY(i,y);
-    const v=.92+rr()*.12; let base=d>29? [.52,.72,.38] : [.55,.79,.4]; if(lr<1.12) base=[.9,.83,.64]; if(lr<.97) base=[.9-.5*s,.83-.38*s,.64-.34*s]; cols.push(base[0]*v,base[1]*v,base[2]*v); }
+    const v=.92+rr()*.12; let base=d>29? [.52,.72,.38] : [.55,.79,.4]; if(lr<1.12) base=[.9,.83,.64]; if(lr<.97) base=[.9-.5*s,.83-.38*s,.64-.34*s]; cols.push(LIN(base[0]*v),LIN(base[1]*v),LIN(base[2]*v)); }
   geo.setAttribute("color",new THREE.Float32BufferAttribute(cols,3)); geo.computeVertexNormals();
   const ground=mesh(geo,new THREE.MeshToonMaterial({vertexColors:true,gradientMap:toonGrad(),map:groundTex()}),0,0,0,false); ground.userData.ground=true; sc.add(ground); W3.ground=ground;
   // caminhos
@@ -1809,9 +1819,11 @@ const M4=(x,y,z,sx=1,sy=1,sz=1,rx=0,ry=0,rz=0)=>new THREE.Matrix4().compose(V3(x
 
 /* ---------- árvores (juntas em poucos meshes, com vento) ---------- */
 function treeGroup(x,z,s=1,seed=1){ (W3.treeQ=W3.treeQ||[]).push({x,z,s,seed}); return new THREE.Group(); }
+function mergeV(g){ const pos=g.attributes.position, map=new Map(), P=[], I=[]; for(let i=0;i<pos.count;i++){ const x=pos.getX(i), y=pos.getY(i), z=pos.getZ(i), k=Math.round(x*1e4)+"_"+Math.round(y*1e4)+"_"+Math.round(z*1e4); let id=map.get(k); if(id==null){ id=P.length/3; P.push(x,y,z); map.set(k,id); } I.push(id); }
+  const o=new THREE.BufferGeometry(); o.setAttribute("position",new THREE.Float32BufferAttribute(P,3)); o.setIndex(I); return o; }
 function flushTrees(sc){
   const Q=W3.treeQ||[]; W3.treeQ=[]; if(!Q.length) return;
-  const sph=new THREE.SphereGeometry(1,12,9), cyl=new THREE.CylinderGeometry(.6,1,1,8), cone=new THREE.ConeGeometry(1,1,9), disc=new THREE.CircleGeometry(1,7);
+  const sph=(()=>{ const g=new THREE.IcosahedronGeometry(1,3), pos=g.attributes.position, v=new THREE.Vector3(); for(let i=0;i<pos.count;i++){ v.fromBufferAttribute(pos,i); const n=Math.sin(v.x*5.1+v.y*3.3)*.5+Math.sin(v.y*6.7+v.z*4.1)*.35+Math.sin(v.z*7.3-v.x*2.9)*.3; v.multiplyScalar(1+n*.07); pos.setXYZ(i,v.x,v.y,v.z); } g.deleteAttribute("normal"); const m=mergeV(g); m.computeVertexNormals(); return m; })(), cyl=new THREE.CylinderGeometry(.6,1,1,8), cone=new THREE.ConeGeometry(1,1,9), disc=new THREE.CircleGeometry(1,7);
   const trunk=[], leaf=[], petal=[];
   const GREENS=["#5fae4b","#4f9d3f","#6dbd57","#7cc862","#4a9440"], PINK=["#f39cc4","#ec7fb3","#f7b5d4","#e66aa3"], YEL=["#ffd84a","#ffc928","#ffe27a","#f5bb1c"], PINE=["#3f7f4a","#356f40","#4a8c55"];
   Q.forEach(({x,z,s,seed})=>{ const r=rng(seed*7+3); const kind= seed%9===0?"pink": seed%9===4?"yel": (seed%5===2 && Math.hypot(x,z)>26)?"pine":"round";
@@ -1857,7 +1869,7 @@ function buildGrass(sc){
   for(let b=0;b<6;b++){ const a=b/6*Math.PI*2+r(), d=.03+r()*.08, h=.15+r()*.13, w=.03+r()*.015, bx=Math.cos(a)*d, bz=Math.sin(a)*d, lean=.04+r()*.06, la=a+r();
     const px=Math.cos(la+Math.PI/2)*w, pz=Math.sin(la+Math.PI/2)*w;
     P.push(bx-px,0,bz-pz, bx+px,0,bz+pz, bx+Math.cos(la)*lean,h,bz+Math.sin(la)*lean);
-    C.push(.6,.86,.4, .6,.86,.4, 1.15,1.32,.72); N.push(0,1,0,0,1,0,0,1,0); }
+    C.push(LIN(.5),LIN(.76),LIN(.34), LIN(.5),LIN(.76),LIN(.34), LIN(.92),LIN(1.0),LIN(.6)); N.push(0,1,0,0,1,0,0,1,0); }
   const g=new THREE.BufferGeometry(); g.setAttribute("position",new THREE.Float32BufferAttribute(P,3)); g.setAttribute("color",new THREE.Float32BufferAttribute(C,3)); g.setAttribute("normal",new THREE.Float32BufferAttribute(N,3));
   const mat=windify(new THREE.MeshLambertMaterial({vertexColors:true,side:THREE.DoubleSide}),.7,0);
   const COUNT=7500, im=new THREE.InstancedMesh(g,mat,COUNT), d=new THREE.Object3D(), tint=["#ffffff","#e8f5d8","#f4ffe0","#d8ecc0","#fff8dc"]; let n=0, guard=0;
@@ -2117,7 +2129,7 @@ function screenTex(mode){ const c=document.createElement("canvas"); c.width=512;
   else if(mode==="yt"){ x.fillText("Vídeo juntos ▶",256,150); }
   else { x.fillStyle="rgba(255,255,255,.18)"; x.font="700 36px Fredoka, sans-serif"; x.fillText("toque pra ver um filme",256,155); }
   const t=new THREE.CanvasTexture(c); return t; }
-function paintTex(img){ const t=new THREE.TextureLoader().load(img); return t; }
+function paintTex(img){ const t=new THREE.TextureLoader().load(img); t.encoding=THREE.sRGBEncoding; return t; }
 function buildInterior(sc){
   const H=grp(IN3.x,0,IN3.z); W3.inside={g:H, walls:[], frames:[]};
   const floor=mesh(new THREE.PlaneGeometry(IN3.w*2,IN3.d*2),new THREE.MeshToonMaterial({map:woodTex(),gradientMap:toonGradSoft()}),0,.001,0,false); floor.rotation.x=-Math.PI/2; floor.userData.ground=true; H.add(floor);
@@ -2184,7 +2196,7 @@ function refreshFrames(){ if(!W3||!W3.inside) return; const g=galleryList().slic
 function insideTick(dt){
   const IS=W3.inside; if(!IS) return; const me=W3.chars[actor()].root.position, inside=isIn(me.x);
   if(HUB && HUB.wasInside!==inside){ HUB.wasInside=inside; W3.scene.fog=inside? null : W3.fogOut; W3.scene.background=inside? W3.bgIn : W3.bgOut; HUB.camInit=false; if(inside){ HUB.distT=Math.min(HUB.distT,9); HUB.pitchT=Math.max(HUB.pitchT,.62); refreshFrames(); } updateCineBtn(); }
-  { const tgS=inside?(HUB.lightsOff?.08:.3):.62, tgH=inside?(HUB.lightsOff?.16:.34):.42; W3.sun.intensity+=(tgS-W3.sun.intensity)*Math.min(1,dt*4); if(W3.hemi) W3.hemi.intensity+=(tgH-W3.hemi.intensity)*Math.min(1,dt*4); }
+  { const kS=W3.sunBase/.62, kH=W3.hemiBase/.42, tgS=(inside?(HUB.lightsOff?.08:.3):.62)*kS, tgH=(inside?(HUB.lightsOff?.16:.34):.42)*kH; W3.sun.intensity+=(tgS-W3.sun.intensity)*Math.min(1,dt*4); if(W3.hemi) W3.hemi.intensity+=(tgH-W3.hemi.intensity)*Math.min(1,dt*4); }
   const on=inside && !HUB.lightsOff, L=IS.L; L[0].intensity+=((on?.75:(inside?.12:0))-L[0].intensity)*Math.min(1,dt*4); L[1].intensity+=((inside?(HUB.lightsOff?.9:.55):0)-L[1].intensity)*Math.min(1,dt*4);
   if(inside){ const cam=W3.cam.position; IS.walls.forEach(w=>{ const wp=w.g.position, nrm=V3(0,0,1).applyAxisAngle(V3(0,1,0),w.g.rotation.y); const rel=V3(cam.x-(IN3.x+wp.x),0,cam.z-(IN3.z+wp.z)); w.g.visible=rel.dot(nrm)>-.2; }); }
   if(IS.flame) IS.flame.scale.set(1+Math.sin(W3.t*13)*.12,1.6+Math.sin(W3.t*9)*.25,1);
@@ -3135,8 +3147,8 @@ function poseInstant(C,name){
 function portrait(p, mood, o={}){
   const head=!!o.vb, key=JSON.stringify([p.skin,p.hair,p.hairColor,p.shirt,p.build,p.acc,mood,head,!!o.crown,o.sign||"",!!o.revealed,o.hold||""]);
   if(PORT.cache[key]) return PORT.cache[key];
-  if(!PORT.R){ const R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}); R.setPixelRatio(1); R.setClearColor(0x000000,0);
-    const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight("#fff0e0","#9a8a80",.5)); const d=new THREE.DirectionalLight("#fff3e0",.62); d.position.set(2.5,4,6); sc.add(d); const d2=new THREE.DirectionalLight("#ffd6e0",.18); d2.position.set(-4,2,2); sc.add(d2);
+  if(!PORT.R){ const R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}); R.setPixelRatio(1); R.setClearColor(0x000000,0); if(GFX2){ R.outputEncoding=THREE.sRGBEncoding; R.toneMapping=THREE.ACESFilmicToneMapping; R.toneMappingExposure=1.1; }
+    const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight("#fff0e0","#9a8a80",GFX2?.9:.5)); const d=new THREE.DirectionalLight("#fff3e0",GFX2?1.3:.62); d.position.set(2.5,4,6); sc.add(d); const d2=new THREE.DirectionalLight("#ffd6e0",.18); d2.position.set(-4,2,2); sc.add(d2);
     PORT.R=R; PORT.sc=sc; PORT.cam=new THREE.PerspectiveCamera(30,.5,.1,60); }
   const R=PORT.R, cam=PORT.cam, W=head?192:256, H=head?192:512; R.setSize(W,H,false);
   const C=buildChar(p); setFace(C, PORT_FACE[mood]||"idle"); poseInstant(C, PORT_POSE[mood]||"idle");
