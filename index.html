@@ -267,7 +267,7 @@ textarea.copyFallback{width:100%;height:110px;border-radius:12px;padding:10px;fo
 .petItem{background:#f1e6eb;border-radius:16px;padding:6px 4px;text-align:center;cursor:pointer;font-weight:600;font-size:.88rem}
 .petItem .pfig{width:100%;height:78px}
 .petItem small{display:block;color:#8b7682;font-size:.72rem}
-.spPick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.spPick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .spPick .opt{background:#f1e6eb;border-radius:14px;padding:4px 2px;border:3px solid transparent;text-align:center;font-size:.78rem;font-weight:600;cursor:pointer}
 .spPick .opt.on{border-color:#ff7a93;background:#ffe3ea}
 .spPick .pfig{width:100%;height:62px}
@@ -1572,6 +1572,12 @@ const SPECIES={
   bunny:{nome:"Coelhinho",emoji:"🐰",food:"🥕",toy:"🥬",
     colors:[["Branquinho","#fdf8f3","#eadcd0"],["Cinza","#c1bcc6","#9a94a0"],["Marrom","#cfa07a","#a8784f"],["Malhado","#fdf8f3","#8a6a55"]],
     sounds:["*nhac nhac* 🥕","*pulinho* 💫","*mexe o narizinho*","🐰💕"]},
+  turtle:{nome:"Tartaruga",emoji:"🐢",food:"🥬",toy:"🫧",
+    colors:[["Verdinha","#6cc070","#3f8f4a","#b6e39a"],["Azulzinha","#5fb3d9","#2f7aa3","#bfe8c4"],["Amarelinha","#e6c25a","#b08a2a","#c9e7a0"]],
+    sounds:["*nada feliz* 🐢","Blub blub 🫧","*pisca devagarinho*","🐢💕"]},
+  jabuti:{nome:"Jabuti",emoji:"🐢",food:"🍓",toy:"🌼",
+    colors:[["Clássico","#6b4426","#e0a040","#c96a4a"],["Escurinho","#3e2a1c","#d9902f","#b8533a"],["Douradinho","#8a5a2b","#f0c060","#d4744f"]],
+    sounds:["*come morango* 🍓","Devagar e sempre 🐢","*esticou o pescoço*","Hmm... 🍓"]},
   parrot:{nome:"Papagaio",emoji:"🦜",food:"🌻",toy:"🎵",
     colors:[["Verde","#55c460","#2f8f3d","#f7d046"],["Arara azul","#3f90e2","#2a62a8","#f7c63e"],["Arara vermelha","#ea4a40","#b52d26","#4f9be0"]],
     sounds:["Currupaco! 🦜","Te amo! 💕","Cadê o biscoito? 🍪","Quero café! ☕"]}
@@ -1635,6 +1641,27 @@ function petSVG(p, mood="idle"){
       ${pEyes(42,58,51,mood)}${cheeks(35,65,58)}
       <path d="M48 57 L52 57 L50 59.6Z" fill="#ff8fa3"/>
       ${eat?`<ellipse cx="50" cy="63" rx="3" ry="2.6" fill="#6b2b34"/>`:`<path d="M50 59.6 L50 61.6 M50 61.6 Q47.5 63.6 45.8 62.2 M50 61.6 Q52.5 63.6 54.2 62.2" stroke="${INK}" stroke-width="1.6" fill="none" stroke-linecap="round"/><rect x="48.4" y="62" width="3.2" height="3.4" rx="1" fill="#fff" stroke="#e2d6cc" stroke-width=".6"/>`}`;
+  } else if(p.sp==="turtle"){
+    const sk2=a;
+    g=`<ellipse cx="22" cy="86" rx="10" ry="5" fill="${sk2}" stroke="${shade(sk2,-50)}" stroke-width="1.1" transform="rotate(-25 22 86)"/><ellipse cx="78" cy="86" rx="10" ry="5" fill="${sk2}" stroke="${shade(sk2,-50)}" stroke-width="1.1" transform="rotate(25 78 86)"/>
+      <path d="M18 80 Q20 46 50 44 Q80 46 82 80 Z" fill="${c}" stroke="${ln}" stroke-width="1.2"/>
+      <path d="M38 52 L50 48 L62 52 L64 64 L50 70 L36 64 Z" fill="${shade(c,25)}" stroke="${d}" stroke-width="1.4"/>
+      <path d="M36 64 L24 72 M64 64 L76 72 M38 52 L28 56 M62 52 L72 56 M50 70 L50 79" stroke="${d}" stroke-width="1.4"/>
+      <ellipse cx="50" cy="80" rx="33" ry="6" fill="${d}"/>
+      <circle cx="50" cy="78" r="15" fill="${sk2}" stroke="${shade(sk2,-50)}" stroke-width="1.2"/>
+      ${pEyes(44,56,76,mood,3)}${cheeks(40.5,59.5,82)}
+      ${eat?`<ellipse cx="50" cy="85" rx="2.6" ry="2" fill="#6b2b34"/>`:`<path d="M46.5 84 Q50 87 53.5 84" stroke="${INK}" stroke-width="1.5" fill="none" stroke-linecap="round"/>`}`;
+  } else if(p.sp==="jabuti"){
+    const sk2="#8f7a5c", spot=a;
+    g=`<ellipse cx="27" cy="90" rx="7" ry="6" fill="${sk2}" stroke="${shade(sk2,-40)}" stroke-width="1.1"/><ellipse cx="73" cy="90" rx="7" ry="6" fill="${sk2}" stroke="${shade(sk2,-40)}" stroke-width="1.1"/>
+      <circle cx="25" cy="89" r="1.6" fill="${spot}"/><circle cx="75" cy="89" r="1.6" fill="${spot}"/>
+      <path d="M18 84 Q19 32 50 30 Q81 32 82 84 Z" fill="${c}" stroke="${shade(c,-30)}" stroke-width="1.2"/>
+      ${[[50,44],[36,58],[64,58],[50,70],[28,74],[72,74]].map(([x,y])=>`<path d="M${x} ${y-7} L${x+7} ${y-3} L${x+6} ${y+5} L${x-6} ${y+5} L${x-7} ${y-3}Z" fill="${shade(c,-12)}" stroke="${d}" stroke-width="1.6"/><circle cx="${x}" cy="${y}" r="2.2" fill="${d}" opacity=".9"/>`).join("")}
+      <path d="M18 84 Q50 90 82 84 L80 88 Q50 94 20 88Z" fill="${shade(c,-25)}"/>
+      <circle cx="50" cy="84" r="13" fill="${sk2}" stroke="${shade(sk2,-40)}" stroke-width="1.2"/>
+      <circle cx="43" cy="77" r="1.8" fill="${spot}"/><circle cx="57" cy="77" r="1.8" fill="${spot}"/><circle cx="50" cy="74" r="1.6" fill="${spot}"/>
+      ${pEyes(45,55,83,mood,2.8)}${cheeks(41,59,88)}
+      ${eat?`<ellipse cx="50" cy="90" rx="2.4" ry="1.8" fill="#6b2b34"/>`:`<path d="M47 89 Q50 91.5 53 89" stroke="${INK}" stroke-width="1.4" fill="none" stroke-linecap="round"/>`}`;
   } else {
     const belly=shade(c,45), tip=p.c===0?"#e8453c":p.c===1?"#2d4f86":"#4f9be0";
     g=`<path d="M44 85 L39 99 L47 92 L50 101 L53 92 L61 99 L56 85Z" fill="${d}"/>
