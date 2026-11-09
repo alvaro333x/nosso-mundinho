@@ -52,7 +52,7 @@ Pedido: começar sem nada mesmo, só o trabalho e a casinha pobre, e ir evoluind
 - Números: consulta paga ~15 🪙 no começo e ~100 no fim; equipamentos de 120 a 5000 🪙; salários de 30 a 120 🪙/dia.
 
 ## Trabalho do Alvaro
-Ele pediu pra não ter trabalho de programador: é o braço direito do consultório (pré-consulta na balança, cesta saudável), com nível próprio. O texto abaixo era o plano antigo e ficou só de registro.
+O trabalho dele é dele (não é assistente do consultório) e é no PC, mas sem exigir programação de verdade: estúdio de apps com IA. Cada cliente: montar o pedido pra IA com os blocos certos, testar achando o que saiu bugado, publicar na hora certa. Crescer com clientes fixos, upgrades do PC, equipe e empresa. O texto abaixo era o plano antigo e ficou só de registro.
 
 ## (antigo) Estúdio do Alvaro
 - Mural de freelas (cliente, tipo, tarefas, prazo de verdade, pagamento). Cada tarefa é um minijogo curto: caça-bug, montar o código, ligar os canos (deploy) e revisão relâmpago (verdadeiro ou falso de JS).
