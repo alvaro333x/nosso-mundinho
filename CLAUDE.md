@@ -5,7 +5,7 @@ Tudo em português do Brasil. O Alvaro não quer ter que escolher entre opções
 
 ## Estrutura
 - `src/hub_template.html`: **o código-fonte de verdade** (HTML + CSS + JS num arquivo só, ~530 KB). Edite aqui.
-- `src/build.py`: gera `index.html` e `version.json` na raiz. Rode da raiz: `python3 src/build.py`.
+- `src/build.py`: gera `index.html` e `version.json` na raiz. Rode da raiz: `python src/build.py` (neste PC não existe `python3`).
   - Troca os marcadores `__VALID__`, `__ACC__` e `__ANSWERS__` (dicionário do Termo, a partir de `src/palavras.json` e `src/respostas.txt`), `__THREE__`, `__PEERJS__` e `"__ROOM__"` (`src/room.txt`).
 - `index.html`: arquivo gerado. **Nunca edite à mão.**
 - `three.min.js` (Three.js r149, UMD, `THREE` global), `peerjs.min.js` e `mqtt.min.js`: bibliotecas locais.
@@ -13,7 +13,7 @@ Tudo em português do Brasil. O Alvaro não quer ter que escolher entre opções
 
 ## Publicar
 1. Edite `src/hub_template.html` e suba `const VERSION = "X.Y"`.
-2. `python3 src/build.py`
+2. `python src/build.py`
 3. `node --check` no `<script>` principal (extraia o bloco que começa em `<script>\n` para um .js e confira).
 4. `git add -A && git commit -m "..." && git push origin main && git push origin main:gh-pages` (o Pages serve a branch gh-pages).
 
@@ -32,8 +32,13 @@ Tudo em português do Brasil. O Alvaro não quer ter que escolher entre opções
   - Mundo: `buildWorld()`, com árvores agrupadas por `flushTrees`, grama instanciada com vento (`windify`), lago com shader de água (`waterMaterial`, `rippleW`), fonte (`buildFountain`) e a casa do filme Diário de uma Paixão (`houseGroup`).
   - Interior da casa: fica em x=200 (`IN3`). O caminho atravessa a porta com nós de teleporte `{tp:true}`. Cinema só com YouTube sincronizado.
   - Andar: `walkW(i,x,z,onArrive,fromNet)`, que decide se vai nadar, andar no píer ou entrar em casa.
-  - Joystick (v4.2): `joyBind`/`joyStep`/`joySolid`/`joyEdge`. Anda relativo à câmera, desliza nas bordas e, quando você empurra contra o lago, a porta ou a margem, chama `walkW` (com `HUB.joyAuto`). Manda a posição a cada 0,3 s (`joySync`). No PC funciona com WASD/setas.
-  - Câmera (v4.2): órbita em volta de um alvo suavizado (`HUB.camT`), com `camClampP`/`camClampD`, embalo no giro e na inclinação, 2 dedos com pinça + giro e o chão das colinas (`groundH`). `HUB.skyMode` (botão 🌙) olha pro céu.
+  - Controles (v4.3, celular deitado, estilo jogo 3D de celular): `bindTouch3` dá um papel a cada dedo quando encosta: na metade esquerda (42%) vira o joystick flutuante (`#joy` aparece onde o polegar encosta), no resto gira a câmera; 2 dedos de câmera = pinça. Toque rápido sem arrastar ainda chama `tap3`. No PC: WASD/setas, Shift corre, Espaço pula.
+  - Andar (`joyStep`): velocidade com embalo em `HUB.mv` (acelera e freia suave), corre com o joystick > 90% (6,4 contra 3,7), escorrega pelas quinas testando ângulos (`SLIDE_A`) e colide com troncos (`W3.treeCol`). `joySolid`/`joyEdge` como antes (empurrar contra lago/porta chama `walkW` com `HUB.joyAuto`). `joySync` manda a posição a cada 0,3 s; o boneco do outro celular acelera no caminho pra acompanhar quem corre.
+  - Pulo (`jumpChar`/`jumpMe`): `C.jy`/`C.jv` com gravidade em `charAnimTick` (altura separada da base: chão, píer, sofá), pose no ar e amortecida em `animChar`. Sincroniza pelo campo `jump:{t}` do `hub/pN`.
+  - Botões de ação (`bindActs3`, `actsTick`, `nearThing`): pular (grande), 😊 emotes (`EMO_TRAY`), 💋/🤗 só quando vocês estão a menos de 3,4 m, e o botão rosa de interagir com o que estiver na frente (barraquinhas, correio, fonte, cavalete, pets, píer, porta, sofá…).
+  - Câmera: órbita em volta de `HUB.camT` (`camClampP`/`camClampD`). Volta sozinha pra trás do personagem enquanto ele anda (pausa 0,9 s depois que você mexe nela). Não atravessa casa, copas das árvores nem barraquinhas (`camOccluders`: anda do personagem pra fora e para antes do 1º obstáculo). `HUB.skyMode` (🌙) olha pro céu.
+  - Resolução adaptativa: `prFor` limita a ~1,45 milhão de pixels e `perfTick` baixa o pixel ratio se a média passar de 21 ms por quadro (e sobe de novo devagar).
+- **Celular deitado (v4.3)**: o mundinho é tela cheia (`#app[data-s="hub"]` sem padding; a HUD usa `--sl/--sr/--st/--sb` = safe areas). `render()` grava o nome da tela em `#app[data-s]` e `.screen[data-s]`; o CSS `@media (orientation:landscape)` arruma cada minijogo lado a lado (`play`, `coop`, `pick`, `bingo`, `caca`, `quiz`, `stop`, `desenho`, `paint`, `custom`, `result`). Bingo e Caça medem pela altura (`LAND()`, `appH()`). Em pé (toque) aparece `#rot` (“Deita o celular”). `manifest.webmanifest` (landscape, fullscreen) + ícones `icon-180/192/512.png` + metas da Apple; `a2hsHint`/`a2hsModal` ensinam a pôr na Tela de Início uma vez (`S.a2hs`). Atenção: o app da Tela de Início tem localStorage separado do Safari.
 - **Céu de verdade (v4.2)** (`SKY`, `skyTick`, `SKY_KEYS`): as cores do céu, da neblina, das luzes e da água (`WATER_MATS`, `uSky`/`uDay`) seguem a hora do celular. Tem estrelas (um único `Points`), constelação de coração, lua com a fase real, estrela cadente, vaga-lumes e postes acesos à noite. As 14 estrelas brilhantes (`SKY.bright`) podem ser batizadas (doc `ceu/estrelas`). Pra testar outro horário, use `?hora=21.5` na URL.
 - **Caixinha de correio (v4.2)** (`MAIL3`, `buildMailbox`, `mailModal`, `mailCompose`, `mailView`): bilhete, desenho (jpeg) e carta selada (`at` = meia-noite do dia escolhido). Coleção `cartas` e leitura em `correio/lido-p0|p1`. Os avisos ficam em `mailBanners`.
 - **Jogos**: Termo (duelo, juntos, por código), Bingo, Caça-palavras, Quiz do casal (`quizGame`), Stop (`stopGame`), Desenha e adivinha (`drawGame`). Ficam nas barraquinhas `BOOTH3`, em volta da pracinha `GP3`, e abrem por `openStation`/`startOnline`.
@@ -44,9 +49,10 @@ Tudo em português do Brasil. O Alvaro não quer ter que escolher entre opções
 - No Playwright (Chrome headless) use `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader`. O headless é lento (FPS baixo), então dê tempo para as animações.
 - Para testar dois celulares, abra duas abas com servidores locais: PeerJS (`peer --port 9000 --path /myapp`) e um broker MQTT por websocket (aedes). Antes do app carregar, injete `window.__PEER_OPTS={host:'127.0.0.1',port:9000,path:'/myapp',secure:false}; window.__MQTT_URL='ws://127.0.0.1:8884/mqtt'`.
 - Mantenha o `version.json` local igual à `VERSION`, senão a página recarrega sozinha no meio do teste.
+- Teste sempre em paisagem 926x428 (iPhone 13 Pro Max deitado). Pra simular o notch, defina `--sl/--sr` = 47px e `--sb` = 21px no `:root`. Neste PC não tem `python3`: use `python src/build.py`.
 
 ## Cuidados
-- iPhone: zoom de toque duplo está bloqueado; câmera com 1 dedo gira, 2 dedos dão zoom (`ptrs` limpa “dedos fantasma”). Use `touch-action` e `pointer events`.
+- iPhone: zoom de toque duplo está bloqueado. No mundinho cada dedo tem papel (joystick ou câmera) e `e.isPrimary` limpa “dedos fantasma”. Use `touch-action` e `pointer events`. O Safari não deixa travar a rotação: por isso a tela `#rot`.
 - Performance: o jogo roda no celular, então evite muitos draw calls (use instancing/merge, como em `flushTrees` e `buildGrass`).
 - Não edite `index.html` direto. Sempre `src/` → `build.py`.
 - Netflix foi removida a pedido (não dá para integrar). Não recoloque.
