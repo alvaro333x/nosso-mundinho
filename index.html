@@ -1578,6 +1578,12 @@ const SPECIES={
   jabuti:{nome:"Jabuti",emoji:"🐢",food:"🍓",toy:"🌼",
     colors:[["Clássico","#6b4426","#e0a040","#c96a4a"],["Escurinho","#3e2a1c","#d9902f","#b8533a"],["Douradinho","#8a5a2b","#f0c060","#d4744f"]],
     sounds:["*come morango* 🍓","Devagar e sempre 🐢","*esticou o pescoço*","Hmm... 🍓"]},
+  hamster:{nome:"Hamster",emoji:"🐹",food:"🥜",toy:"🎡",
+    colors:[["Dourado","#f2b56b","#fff4e6"],["Cinza","#bdb8c3","#f7f3f8"],["Branquinho","#fbf3ea","#ffffff"]],
+    sounds:["*rói rói* 🥜","*enche as bochechas*","Squeak! 🐹","*corre na rodinha* 🎡"]},
+  pig:{nome:"Porquinho",emoji:"🐷",food:"🍎",toy:"⚽",
+    colors:[["Rosinha","#ffb7c5","#ec8aa2"],["Malhado","#ffcad3","#5b4a4f"],["Pretinho","#4f4449","#2e262a"]],
+    sounds:["Oinc oinc! 🐷","*rola na lama* 🤎","Oinc! 🍎","🐷💕"]},
   parrot:{nome:"Papagaio",emoji:"🦜",food:"🌻",toy:"🎵",
     colors:[["Verde","#55c460","#2f8f3d","#f7d046"],["Arara azul","#3f90e2","#2a62a8","#f7c63e"],["Arara vermelha","#ea4a40","#b52d26","#4f9be0"]],
     sounds:["Currupaco! 🦜","Te amo! 💕","Cadê o biscoito? 🍪","Quero café! ☕"]}
@@ -1662,6 +1668,32 @@ function petSVG(p, mood="idle"){
       <circle cx="43" cy="77" r="1.8" fill="${spot}"/><circle cx="57" cy="77" r="1.8" fill="${spot}"/><circle cx="50" cy="74" r="1.6" fill="${spot}"/>
       ${pEyes(45,55,83,mood,2.8)}${cheeks(41,59,88)}
       ${eat?`<ellipse cx="50" cy="90" rx="2.4" ry="1.8" fill="#6b2b34"/>`:`<path d="M47 89 Q50 91.5 53 89" stroke="${INK}" stroke-width="1.4" fill="none" stroke-linecap="round"/>`}`;
+  } else if(p.sp==="hamster"){
+    g=`<ellipse cx="38" cy="95" rx="6" ry="3.4" fill="#f4a6b4"/><ellipse cx="62" cy="95" rx="6" ry="3.4" fill="#f4a6b4"/>
+      <circle cx="31" cy="44" r="7.5" fill="${c}" stroke="${ln}" stroke-width="1.2"/><circle cx="69" cy="44" r="7.5" fill="${c}" stroke="${ln}" stroke-width="1.2"/>
+      <circle cx="31" cy="44" r="4" fill="#ffb3c1"/><circle cx="69" cy="44" r="4" fill="#ffb3c1"/>
+      <path d="M50 40 C72 40 80 58 78 74 C76 90 64 96 50 96 C36 96 24 90 22 74 C20 58 28 40 50 40Z" fill="${c}" stroke="${ln}" stroke-width="1.2"/>
+      <ellipse cx="50" cy="80" rx="17" ry="14" fill="${d}"/>
+      <ellipse cx="34" cy="68" rx="9" ry="7" fill="${d}"/><ellipse cx="66" cy="68" rx="9" ry="7" fill="${d}"/>
+      ${pEyes(42,58,59,mood,3.4)}${cheeks(34,66,69)}
+      <ellipse cx="50" cy="65" rx="2.4" ry="1.8" fill="#ff8fa3"/>
+      ${eat?`<ellipse cx="50" cy="71" rx="2.6" ry="2.2" fill="#6b2b34"/>`:`<path d="M50 66.5 Q47.5 70 45.5 68.5 M50 66.5 Q52.5 70 54.5 68.5" stroke="${INK}" stroke-width="1.4" fill="none" stroke-linecap="round"/>`}
+      <ellipse cx="45" cy="82" rx="4" ry="3" fill="#f4a6b4"/><ellipse cx="55" cy="82" rx="4" ry="3" fill="#f4a6b4"/>
+      ${eat||mood==="happy"?`<ellipse cx="50" cy="81" rx="3" ry="4" fill="#a8743e" stroke="#7a522a" stroke-width=".8"/>`:""}`;
+  } else if(p.sp==="pig"){
+    const snout=shade(c,-14);
+    g=`<g class="wag" style="transform-origin:73px 74px"><path d="M73 74 q9 -3 7 -9 q-2 -4 -5 0 q-2 4 3 4" stroke="${d}" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>
+      <ellipse cx="50" cy="77" rx="26" ry="17" fill="${c}" stroke="${ln}" stroke-width="1.2"/>
+      ${p.c===1?`<ellipse cx="62" cy="76" rx="8" ry="6" fill="${d}" opacity=".85"/><ellipse cx="38" cy="84" rx="5" ry="4" fill="${d}" opacity=".85"/>`:""}
+      <rect x="32" y="86" width="9" height="10" rx="4" fill="${c}" stroke="${ln}" stroke-width="1.1"/><rect x="59" y="86" width="9" height="10" rx="4" fill="${c}" stroke="${ln}" stroke-width="1.1"/>
+      <path d="M32 93 L41 93 M59 93 L68 93" stroke="${shade(c,-50)}" stroke-width="2.2"/>
+      <path d="M31 40 L26 22 L43 32Z" fill="${d}" stroke="${ln}" stroke-width="1.1" stroke-linejoin="round"/><path d="M69 40 L74 22 L57 32Z" fill="${d}" stroke="${ln}" stroke-width="1.1" stroke-linejoin="round"/>
+      <circle cx="50" cy="52" r="21" fill="${c}" stroke="${ln}" stroke-width="1.2"/>
+      ${p.c===1?`<ellipse cx="58" cy="44" rx="6" ry="5" fill="${d}" opacity=".85"/>`:""}
+      ${pEyes(41.5,58.5,48,mood,3.2,p.c===2?"#1a1416":INK)}${cheeks(34,66,57)}
+      <ellipse cx="50" cy="59" rx="9.5" ry="6.6" fill="${snout}" stroke="${shade(c,-45)}" stroke-width="1.1"/>
+      <ellipse cx="46.8" cy="59" rx="1.6" ry="2.4" fill="${shade(c,-70)}"/><ellipse cx="53.2" cy="59" rx="1.6" ry="2.4" fill="${shade(c,-70)}"/>
+      ${eat?`<ellipse cx="50" cy="68.5" rx="3" ry="2.2" fill="#6b2b34"/>`:`<path d="M46 67.5 Q50 70.5 54 67.5" stroke="${INK}" stroke-width="1.4" fill="none" stroke-linecap="round"/>`}`;
   } else {
     const belly=shade(c,45), tip=p.c===0?"#e8453c":p.c===1?"#2d4f86":"#4f9be0";
     g=`<path d="M44 85 L39 99 L47 92 L50 101 L53 92 L61 99 L56 85Z" fill="${d}"/>
