@@ -1695,7 +1695,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "6.3";
+const VERSION = "6.4";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -4294,7 +4294,7 @@ function obLevPush(){ if(online()) push("dupla/lev",Object.assign({},OB.lev)); }
 function obbyMenu(cid){
   if(!window.THREE) return; cid=OB_COURSES[cid]?cid:"nuvens";
   if(OB_COURSES[cid].arena){ const o=other(), m=modal(`<div class="obMenu"><h2>⭐ Chão que Cai</h2>
-      <p>Três andares de hexágonos no céu. Cada um cai logo depois que alguém pisa, e depois de 25 s eles começam a cair sozinhos. Quem cair lá embaixo perde a rodada. Ganha quem fizer 3 primeiro.</p>
+      <p>Três andares de hexágonos no céu. Cada um cai logo depois que alguém pisa, e depois de 25 s eles começam a cair sozinhos. Tem chão especial: <b>mola</b> te joga pro alto, <b>gelo</b> escorrega, o <b>laranja</b> cai na hora, a <b>pedra</b> aguenta 3 s e o <b>verde</b> volta depois de cair. Quem cair lá embaixo perde a rodada. Ganha quem fizer 3 primeiro.</p>
       <p class="small">${online()?(partnerHere()?`Entrem os dois e apertem “Começar rodada”.`:`Sem ${nm(o)} online vira treino: quanto tempo você aguenta? Recorde: ${(+S.qdBest||0).toFixed(1)} s`):`No mesmo celular vira treino: quanto tempo você aguenta? Recorde: ${(+S.qdBest||0).toFixed(1)} s`}</p>
       <div class="obBtns"><button class="btn pink" data-o="go">Jogar</button><button class="btn alt" data-close>Agora não</button></div></div>`);
     m.querySelector('[data-o="go"]').onclick=()=>{ m.remove(); obbyEnter(true,cid); }; return; }
@@ -4526,52 +4526,80 @@ function obHud(force){ if(!OB.hud) return; const P=OB.P, st=obState(), H=OB.hud;
 
 
 /* =================== CHÃO QUE CAI: três andares de hexágonos que caem quando alguém pisa; quem cair lá embaixo perde =================== */
-const QD={R:4, layers:[0,-5,-10], cols:["#ff8fb0","#b9a7ff","#7fd8b8"], warn:"#ffd15c"};
+const QD={R:4, S:1.45, layers:[0,-6,-12], cols:["#ff8fb0","#b9a7ff","#7fd8b8"], warn:"#ffffff",
+  types:{normal:{d:1.0}, mola:{d:1.2,c:"#ffd15c",sym:"↑"}, gelo:{d:1.0,c:"#bfe9ff",sym:"❄"}, fragil:{d:.3,c:"#ff9a5a",sym:"!"}, firme:{d:3.0,c:"#9d8fc4",sym:"◆"}, renasce:{d:1.0,c:"#7fe0a0",sym:"↻"}}};
 function qdBuild(sc,CC){
   const dummy={map:{offset:{x:0,y:0}}};
   Object.assign(OB,{arena:true, coop:false, solids:[], kills:[], spins:[], hearts:[], dyn:[], flags:[], pends:[], lasers:[], spikes:[], plates:{}, gates:[], levers:[], saws:[], lifts:[], mates:[], beltR:dummy, beltL:dummy, beltF:dummy, beltB:dummy, lavaMat:{}, goalHeart:null, backPortal:null, syms:null});
   OB_ORDER=["arena"]; OB_PER=1; OB_N=1; OB.cps=[{x:0,y:-1.5,z:0}];
-  OB.tiles=[]; const s3=Math.sqrt(3), geo=new THREE.CylinderGeometry(.97,.97,.5,6); geo.rotateY(Math.PI/2);
+  OB.tiles=[]; const s3=Math.sqrt(3), SZ=QD.S, geo=new THREE.CylinderGeometry(.97*SZ,.97*SZ,.5,6); geo.rotateY(Math.PI/2);
   QD.layers.forEach((ly,L)=>{ const list=[]; for(let q=-QD.R;q<=QD.R;q++) for(let r=-QD.R;r<=QD.R;r++){ if(Math.abs(q+r)>QD.R) continue; list.push({q,r}); }
     const im=new THREE.InstancedMesh(geo,new THREE.MeshStandardMaterial({roughness:.5}),list.length); im.frustumCulled=false; im.receiveShadow=true; sc.add(im);
     // borda branquinha embaixo de cada andar, pra dar volume
-    list.forEach((h,k)=>{ const x=1.5*h.q, z=s3*(h.r+h.q/2), T={L,k,im,x,z,top:ly,y:ly,st:0,t:0,rot:0,col:new THREE.Color(QD.cols[L])}; T.s={k:"c",x,z,r:.92,h:.5,y:ly-.25,top:ly,bot:ly-.5,tile:T}; OB.tiles.push(T); qdDraw(T); });
+    list.forEach((h,k)=>{ const x=1.5*SZ*h.q, z=s3*SZ*(h.r+h.q/2), T={L,k,im,x,z,top:ly,y:ly,st:0,t:0,rot:0,type:"normal",base:new THREE.Color(QD.cols[L]),col:new THREE.Color(QD.cols[L]),spawn:L===0&&h.r===0&&Math.abs(h.q)===2}; T.s={k:"c",x,z,r:.92*SZ,h:.5,y:ly-.25,top:ly,bot:ly-.5,tile:T}; OB.tiles.push(T); qdDraw(T); });
     im.instanceColor.needsUpdate=true; });
   // nuvens de fundo e bordinha do andar de cima
   const IC=new THREE.IcosahedronGeometry(1,2), cl=[], R2=rng(91);
   for(let k=0;k<40;k++){ const a=R2()*6.28, d=16+R2()*26, y=-18+R2()*16, sz=2+R2()*3.5; for(let j=0;j<3;j++) cl.push({g:IC,m:M4(Math.cos(a)*d+(j-1)*sz*.8,y+R2()*sz*.3,Math.sin(a)*d+(R2()-.5)*sz,sz,sz*.6,sz),c:CC.cloud[j%2]}); }
   sc.add(new THREE.Mesh(mergeGeos(cl),new THREE.MeshStandardMaterial({vertexColors:true,emissive:new THREE.Color(CC.cloudE),roughness:1})));
   OB.blob=[0,1].map(()=>{ const b=new THREE.Mesh(new THREE.CircleGeometry(.4,20),new THREE.MeshBasicMaterial({color:0x2a1830,transparent:true,opacity:.3,depthWrite:false})); b.rotation.x=-Math.PI/2; b.renderOrder=2; sc.add(b); return b; });
-  OB.dust=makeDust(sc,30); OB.zEnd=0;
+  OB.dust=makeDust(sc,40); OB.zEnd=0;
+  // lanternas em volta de cada andar (giram devagar)
+  OB.qdRings=QD.layers.map((ly,L)=>{ const it=[], N=20, R0=QD.S*1.5*QD.R+3.2, SPH=new THREE.SphereGeometry(.28,10,8), CYL=new THREE.CylinderGeometry(.02,.02,1.2,4), lc=["#ffd15c","#ff8fb0","#fff1c9","#b9a7ff"];
+    for(let k=0;k<N;k++){ const a=k/N*Math.PI*2, x=Math.cos(a)*R0, z=Math.sin(a)*R0, y=ly+1.6+Math.sin(k*1.7)*.4; it.push({g:SPH,m:M4(x,y,z,1,1.25,1),c:lc[k%4]}); it.push({g:CYL,m:M4(x,y+.85,z,1,1,1),c:"#ffffff"}); }
+    const m=new THREE.Mesh(mergeGeos(it),new THREE.MeshBasicMaterial({vertexColors:true,toneMapped:false})); sc.add(m); return m; });
+  // ilhas flutuantes com arvorezinhas
+  { const it=[], CN=new THREE.ConeGeometry(1,1,7), CY2=new THREE.CylinderGeometry(1,1,1,7), SP=new THREE.IcosahedronGeometry(1,1), R3=rng(55);
+    for(let k=0;k<9;k++){ const a=k/9*Math.PI*2+R3()*.4, d=24+R3()*10, x=Math.cos(a)*d, z=Math.sin(a)*d, y=-3-R3()*12, r=2+R3()*2.2;
+      it.push({g:CN,m:M4(x,y-r*.8,z,r,r*1.6,r,Math.PI,0,0),c:"#b58463"}); it.push({g:CY2,m:M4(x,y,z,r,.35,r),c:"#7cc862"});
+      for(let j=0;j<2;j++){ const tx=x+(R3()-.5)*r, tz=z+(R3()-.5)*r; it.push({g:CY2,m:M4(tx,y+.7,tz,.12,1.2,.12),c:"#8a5a3b"}); it.push({g:SP,m:M4(tx,y+1.6,tz,.7,.7,.7),c:j?"#ffb3c6":"#6dbd57"}); } }
+    const im=new THREE.Mesh(mergeGeos(it),toonM("#ffffff",{vertexColors:true})); sc.add(im); }
+  // placar gigante no céu
+  const bc=document.createElement("canvas"); bc.width=512; bc.height=192; OB.qdBoardC=bc; const bt=new THREE.CanvasTexture(bc); bt.encoding=THREE.sRGBEncoding; OB.qdBoardT=bt;
+  const bs=new THREE.Sprite(new THREE.SpriteMaterial({map:bt,transparent:true,depthWrite:false})); bs.position.set(0,6.2,0); bs.scale.set(6.4,2.4,1); sc.add(bs); OB.qdBoard=bs;
+  // símbolos dos chãos especiais
+  OB.qdSymTex={}; for(const [k,v] of Object.entries(QD.types)){ if(!v.sym) continue; const c=document.createElement("canvas"); c.width=c.height=96; const x=c.getContext("2d"); x.fillStyle="rgba(255,255,255,.92)"; x.beginPath(); x.arc(48,48,40,0,7); x.fill();
+    x.font="700 54px Fredoka, ui-rounded, system-ui, sans-serif"; x.textAlign="center"; x.textBaseline="middle"; x.fillStyle=v.c==="#bfe9ff"?"#3f8fd0":v.c; x.strokeStyle="#5c3a52"; x.lineWidth=3; x.fillText(v.sym,48,52); const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; OB.qdSymTex[k]=t; }
+  OB.qdSyms=[];
 }
+function qdBoard(){ if(!OB.qdBoardC||!OB.qd) return; const c=OB.qdBoardC, x=c.getContext("2d"), Q=OB.qd, solo=qdSolo(); x.clearRect(0,0,512,192);
+  x.fillStyle="rgba(45,28,41,.72)"; x.beginPath(); x.roundRect?x.roundRect(8,8,496,176,40):x.rect(8,8,496,176); x.fill();
+  x.textAlign="center"; x.textBaseline="middle"; x.fillStyle="#ffd15c"; x.font="700 34px Fredoka, ui-rounded, system-ui, sans-serif"; x.fillText(solo?"Treino":`Rodada ${Math.max(1,Q.round)} · melhor de 5`,256,52);
+  x.fillStyle="#ffffff"; x.font="700 62px Fredoka, ui-rounded, system-ui, sans-serif"; x.fillText(solo?`recorde ${(+Q.best||0).toFixed(1)} s`:`${nmRaw(0)} ${Q.score[0]} × ${Q.score[1]} ${nmRaw(1)}`,256,124); OB.qdBoardT.needsUpdate=true; }
 const QD_M=new (window.THREE?THREE.Matrix4:Object)(), QD_Q=window.THREE?new THREE.Quaternion():null, QD_E=window.THREE?new THREE.Euler():null;
 function qdDraw(T){ const m=new THREE.Matrix4(), q=new THREE.Quaternion(), e=new THREE.Euler(T.rot*.6,0,T.rot), v=V3(T.x+(T.st===1?(Math.random()-.5)*.08:0),T.y-.25,T.z+(T.st===1?(Math.random()-.5)*.08:0)), sc=T.st===3?1e-4:1;
   q.setFromEuler(e); m.compose(v,q,V3(sc,sc,sc)); T.im.setMatrixAt(T.k,m); T.im.setColorAt(T.k,T.st===1?new THREE.Color(QD.warn).lerp(T.col,.5+.5*Math.sin(OB.t*30)):T.col); T.im.instanceMatrix.needsUpdate=true; if(T.im.instanceColor) T.im.instanceColor.needsUpdate=true; }
-function qdTouch(T){ if(!T||T.st!==0||OB.qd.phase!=="play") return; T.st=1; T.t=1.0; OB.qdAnim.add(T); }
-function qdReset(){ for(const T of OB.tiles){ T.st=0; T.t=0; T.y=T.top; T.rot=0; T.s.off=false; qdDraw(T); } OB.qdAnim=new Set(); }
-function qdSpawn(P){ const sx=P.i?4.5:-4.5; Object.assign(P,{x:sx,y:.02,z:0,vx:0,vz:0,vy:0,gr:null,dead:0,cp:0}); const C=OB.chars[P.i]; C.root.visible=true; C.root.position.set(P.x,P.y,P.z); C.root.rotation.y=P.i?-Math.PI/2:Math.PI/2; P.yawT=C.root.rotation.y; }
+function qdTouch(T){ if(!T||T.st!==0||OB.qd.phase!=="play") return; T.st=1; T.t=QD.types[T.type].d; OB.qdAnim.add(T); }
+function qdReset(seed){ const r=rng((seed||OB.qd&&OB.qd.seed||1)%2147483647||1); (OB.qdSyms||[]).forEach(sp=>OB.scene.remove(sp)); OB.qdSyms=[];
+  for(const T of OB.tiles){ const v=r(); T.type=T.spawn?"normal":v<.58?"normal":v<.68?"mola":v<.79?"gelo":v<.89?"fragil":v<.95?"firme":"renasce";
+    const ty=QD.types[T.type]; T.col=ty.c?new THREE.Color(ty.c):T.base.clone(); T.s.pad=T.type==="mola"?15.5:undefined; T.s.ice=T.type==="gelo"?1:undefined;
+    T.st=0; T.t=0; T.y=T.top; T.rot=0; T.s.off=false; T.sp=null;
+    if(ty.sym && OB.qdSymTex[T.type]){ const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:OB.qdSymTex[T.type],transparent:true,depthWrite:false})); sp.position.set(T.x,T.top+.75,T.z); sp.scale.set(.75,.75,.75); OB.scene.add(sp); OB.qdSyms.push(sp); T.sp=sp; }
+    qdDraw(T); }
+  OB.qdAnim=new Set(); qdBoard(); }
+function qdSpawn(P){ const sx=(P.i?1:-1)*QD.S*3; Object.assign(P,{x:sx,y:.02,z:0,vx:0,vz:0,vy:0,gr:null,dead:0,cp:0}); const C=OB.chars[P.i]; C.root.visible=true; C.root.position.set(P.x,P.y,P.z); C.root.rotation.y=P.i?-Math.PI/2:Math.PI/2; P.yawT=C.root.rotation.y; }
 function qdSolo(){ return !online() || !OB.rem; }
 function qdInit(){ OB.qd={phase:"idle", round:0, score:[0,0], fell:[false,false], t0:0, seed:1, playT:0, best:+S.qdBest||0}; OB.qdAnim=new Set(); qdReset(); OB.Ps.forEach(q=>qdSpawn(q));
-  HUB.yaw=HUB.yawT=OB.me?Math.PI/2:-Math.PI/2; HUB.pitch=HUB.pitchT=.5; HUB.dist=HUB.distT=10;
+  HUB.yaw=HUB.yawT=OB.me?Math.PI/2:-Math.PI/2; HUB.pitch=HUB.pitchT=.48; HUB.dist=HUB.distT=12; qdBoard();
   const b=document.createElement("button"); b.className="qdStart"; b.innerHTML=artify("⭐ Começar rodada"); b.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); qdStart(); }); HUB.scene.appendChild(b); OB.qdBtn=b;
   const sala=NET.docs["queda/sala"]; if(online() && sala && sala.score && Date.now()-(sala.at||0)<10*60e3){ OB.qd.score=sala.score.slice(0,2).map(n=>+n||0); OB.qd.round=+sala.round||0; } }
 function qdStart(){ if(!OB.qd||OB.qd.phase==="count"||OB.qd.phase==="play") return;
   const over=OB.qd.score[0]>=3||OB.qd.score[1]>=3, d={round:OB.qd.round+1, at:Date.now(), seed:Math.floor(Math.random()*1e9), score:over?[0,0]:OB.qd.score.slice(), by:S.me};
   if(online()&&!qdSolo()) push("queda/sala",d); qdBegin(d); }
 function qdBegin(d){ const Q=OB.qd; Q.round=d.round; Q.seed=d.seed; Q.score=(d.score||[0,0]).slice(); Q.fell=[false,false]; Q.phase="count"; Q.t0=performance.now()+3000; Q.dropK=-1;
-  qdReset(); OB.Ps.forEach(q=>{ if(obLocal(q.i)) qdSpawn(q); }); OB.camT=null; HUB.yaw=HUB.yawT=OB.me?Math.PI/2:-Math.PI/2;
+  qdReset(d.seed); OB.Ps.forEach(q=>{ if(obLocal(q.i)) qdSpawn(q); }); OB.camT=null; HUB.yaw=HUB.yawT=OB.me?Math.PI/2:-Math.PI/2; HUB.pitch=HUB.pitchT=.48; HUB.dist=HUB.distT=12;
   [3,2,1].forEach((n,k)=>setTimeout(()=>{ if(OB.on&&OB.qd&&OB.qd.round===Q.round) { bigToast(String(n),k?"":qdSolo()?"Treino: aguenta o máximo!":`Rodada ${Q.round}`); snd("tap"); } },k*1000));
   if(OB.qdBtn) OB.qdBtn.hidden=true; obHud(true); }
 function qdFell(P){ const Q=OB.qd; P.dead=1e9; if(!Q||Q.phase!=="play"||P!==OB.P) return; Q.fell[P.i]=true; snd("meh");
   if(qdSolo()){ const tt=(performance.now()-Q.t0)/1000; Q.phase="end"; const rec=tt>Q.best; if(rec){ Q.best=tt; S.qdBest=+tt.toFixed(1); save(); }
-    bigToast(`Aguentou ${tt.toFixed(1)} s`,rec?"recorde novo!":`recorde ${Q.best.toFixed(1)} s`); setTimeout(()=>{ if(OB.qdBtn) OB.qdBtn.hidden=false; },1600); obHud(true); return; }
+    bigToast(`Aguentou ${tt.toFixed(1)} s`,rec?"recorde novo!":`recorde ${Q.best.toFixed(1)} s`); qdBoard(); setTimeout(()=>{ if(OB.qdBtn) OB.qdBtn.hidden=false; },1600); obHud(true); return; }
   push("queda/p"+S.me,{round:Q.round,fell:1,t:Date.now()}); qdCheck(); }
 function qdCheck(){ const Q=OB.qd, o=other(), d=NET.docs["queda/p"+o]||{}; if(!Q||Q.phase!=="play") return;
   const oFell=d.round===Q.round&&d.fell, iFell=Q.fell[S.me];
   if(oFell && !iFell){ Q.score[S.me]++; Q.phase="end"; push("queda/sala",{round:Q.round,at:Date.now(),seed:Q.seed,score:Q.score.slice(),win:S.me,by:S.me}); qdEnd(S.me); } }
 function qdEnd(win){ const Q=OB.qd; Q.phase="end"; const over=Q.score[win]>=3;
   bigToast(win===S.me?(over?"Você ganhou a partida!":"Você ganhou a rodada!"):(over?`${nmRaw(win)} ganhou a partida!`:`${nmRaw(win)} ganhou a rodada`),`${nmRaw(0)} ${Q.score[0]} × ${Q.score[1]} ${nmRaw(1)}`);
-  snd(win===S.me?"fanfare":"chime"); obHud(true);
+  snd(win===S.me?"fanfare":"chime"); obHud(true); qdBoard();
   if(over){ setTimeout(()=>{ if(OB.on){ for(let k=0;k<4;k++) setTimeout(()=>heartsW(OB.P.x,OB.P.y+2.5,OB.P.z,["⭐","💖","✨"],8),k*250); if(OB.qdBtn){ OB.qdBtn.innerHTML=artify("⭐ Nova partida"); OB.qdBtn.hidden=false; } } },1800); }
   else if(win===S.me) setTimeout(()=>{ if(OB.on&&OB.qd&&OB.qd.phase==="end") qdStart(); },3200);
   else setTimeout(()=>{ if(OB.on&&OB.qdBtn&&OB.qd.phase==="end") OB.qdBtn.hidden=false; },3600); }
@@ -4585,12 +4613,15 @@ function qdTick(dt){ const Q=OB.qd; if(!Q) return; const now=performance.now();
   if(Q.phase==="play"){ const el=now-Q.t0; if(el>25000){ const k=Math.floor((el-25000)/550); while(Q.dropK<k){ Q.dropK++; const r=rng(Q.seed+Q.dropK*7919)(); qdTouch(OB.tiles[Math.floor(r*OB.tiles.length)]); } } }
   // pisou, começa a cair (eu e o outro)
   for(const q of OB.Ps) if(obLocal(q.i) && q.gr && q.gr.tile) qdTouch(q.gr.tile);
-  const Rm=OB.rem; if(Rm && !OB.remDead){ for(const T of OB.tiles) if(T.st===0 && Math.abs(Rm.y-T.top)<.4 && Math.abs(Rm.x-T.x)<1 && Math.abs(Rm.z-T.z)<1 && Math.hypot(Rm.x-T.x,Rm.z-T.z)<.92) qdTouch(T); }
-  for(const T of [...OB.qdAnim]){ T.t-=dt; if(T.st===1){ if(T.t<=0){ T.st=2; T.t=.8; T.s.off=true; for(const q of OB.Ps) if(q.gr===T.s) q.gr=null; } }
-    else if(T.st===2){ T.y-=dt*(6+(.8-T.t)*14); T.rot+=dt*2; if(T.t<=0){ T.st=3; OB.qdAnim.delete(T); } }
+  const Rm=OB.rem; if(Rm && !OB.remDead){ for(const T of OB.tiles) if(T.st===0 && Math.abs(Rm.y-T.top)<.4 && Math.abs(Rm.x-T.x)<1.4 && Math.abs(Rm.z-T.z)<1.4 && Math.hypot(Rm.x-T.x,Rm.z-T.z)<1.3) qdTouch(T); }
+  for(const T of [...OB.qdAnim]){ T.t-=dt; if(T.st===1){ if(T.t<=0){ T.st=2; T.t=.8; T.s.off=true; for(const q of OB.Ps) if(q.gr===T.s) q.gr=null; OB.dust.burst(T.x,T.top,T.z,7,"#"+T.col.getHexString()); if(T.sp) T.sp.visible=false; } }
+    else if(T.st===2){ T.y-=dt*(6+(.8-T.t)*14); T.rot+=dt*2; if(T.t<=0){ T.st=3; if(T.type==="renasce"){ T.t=5; } else OB.qdAnim.delete(T); } }
+    else if(T.st===3 && T.type==="renasce"){ if(T.t<=0){ T.st=0; T.y=T.top; T.rot=0; T.s.off=false; if(T.sp) T.sp.visible=true; OB.dust.burst(T.x,T.top,T.z,6,"#7fe0a0"); OB.qdAnim.delete(T); } }
     qdDraw(T); }
+  if(OB.qdRings) OB.qdRings.forEach((m,L)=>{ m.rotation.y=OB.t*(L%2?-.05:.06); m.position.y=Math.sin(OB.t*.8+L)*.15; });
+  if(OB.qdSyms) for(const sp of OB.qdSyms) sp.position.y+=(Math.sin(OB.t*2.4+sp.position.x)*.0015);
   // só os hexágonos perto de quem tá jogando entram na física
-  const near=[]; for(const q of OB.Ps){ if(!obLocal(q.i)||q.dead) continue; for(const T of OB.tiles){ if(T.st>=2) continue; if(Math.abs(T.x-q.x)<2.6&&Math.abs(T.z-q.z)<2.6&&q.y>T.top-4) near.push(T.s); } }
+  const near=[]; for(const q of OB.Ps){ if(!obLocal(q.i)||q.dead) continue; for(const T of OB.tiles){ if(T.st>=2) continue; if(Math.abs(T.x-q.x)<3.4&&Math.abs(T.z-q.z)<3.4&&q.y>T.top-4) near.push(T.s); } }
   OB.solids=near; }
 
 /* =================== PULO E BOTÕES DE AÇÃO =================== */
