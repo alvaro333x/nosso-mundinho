@@ -1746,7 +1746,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "7.0";
+const VERSION = "7.1";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -4213,9 +4213,9 @@ function obBuild(cid){
   const ghost=(g,x,y,z,w,d,inv)=>{ const m=new THREE.MeshStandardMaterial({color:new THREE.Color(OB_LINK[g.c]),emissive:new THREE.Color(OB_LINK[g.c]),emissiveIntensity:.2,roughness:.5,transparent:true,opacity:.25,depthWrite:false});
     const s=box(x,y-.25,z,w,.5,d,OB_LINK[g.c],{dynv:1,gate:g,kind:inv?"hide":"show",mat:m,capMat:m}); s.off=true; g.items.push(s); return s; };
   const plate=(id,c,x,y,z,o)=>{ const s=box(x,y,z,1.5,.1,1.5,"#5c4a66",Object.assign({noMesh:true,plate:id},o||{})); const g=grp(x,y,z);
-    g.add(mesh(BX,MT("#4b3a57"),0,-.02,0)).scale.set(1.5,.1,1.5); const dm=new THREE.MeshStandardMaterial({color:new THREE.Color(OB_LINK[c]),emissive:new THREE.Color(OB_LINK[c]),emissiveIntensity:.15,roughness:.4});
-    const disc=mesh(new THREE.CylinderGeometry(.55,.6,.12,24),dm,0,.08,0,false); g.add(disc); sc.add(g); OB.plates[id]={s,c,need2:!!(o&&o.need2),pressed:false,disc,dm,occ:0}; return s; };
-  const lever=(key,c,x,y,z)=>{ const g=grp(x,y,z); g.add(mesh(BX,MT(OB_LINK[c]),0,.18,0)).scale.set(.6,.36,.6); const pv=grp(0,.36,0); g.add(pv);
+    { const b=mesh(BX,MT("#4b3a57"),0,-.02,0); b.scale.set(1.5,.1,1.5); g.add(b); } const dm=new THREE.MeshStandardMaterial({color:new THREE.Color(OB_LINK[c]),emissive:new THREE.Color(OB_LINK[c]),emissiveIntensity:.15,roughness:.4});
+    const disc=mesh(new THREE.CylinderGeometry(.55,.6,.05,24),dm,0,.05,0,false); g.add(disc); sc.add(g); OB.plates[id]={s,c,need2:!!(o&&o.need2),pressed:false,disc,dm,occ:0}; return s; };
+  const lever=(key,c,x,y,z)=>{ const g=grp(x,y,z); { const b=mesh(BX,MT(OB_LINK[c]),0,.18,0); b.scale.set(.6,.36,.6); g.add(b); } const pv=grp(0,.36,0); g.add(pv);
     pv.add(mesh(new THREE.CylinderGeometry(.05,.05,.9,8),MT("#d9d2e6"),0,.45,0,false)); pv.add(mesh(new THREE.SphereGeometry(.16,14,10),MT("#ff6f91"),0,.92,0,false)); sc.add(g);
     box(x,y+.18,z,.6,.36,.6,"#ffffff",{noMesh:true}); OB.levers.push({key,x,y,z,pv,a:0}); };
   const only=(i,x,y,z,w,h,d,swap)=>box(x,y,z,w,h,d,OB_PCOL[i],{only:i,dynv:1,mat:OB.onlyMat[i],capMat:OB.onlyMat[i],swap});
@@ -4868,7 +4868,7 @@ function kzBuild(lv){
   KZ.knives={}; for(const k in KZ.cells){ const cl=KZ.cells[k]; if(cl.ch!=="C") continue; const g=grp(cl.x+.38,1.05,cl.z+.18); g.userData.home=g.position.clone(); g.add(mesh(new THREE.BoxGeometry(.42,.03,.09),MT("#dfe6f2"),.1,0,0,false)); g.add(mesh(new THREE.BoxGeometry(.18,.06,.07),MT("#8e5a34"),-.18,0,0,false)); sc.add(g); KZ.knives[k]=g; }
   // pilhas de pratos limpos e sujos
   KZ.plateMeshes=[]; KZ.dirtyMeshes=[]; for(const k in KZ.cells){ const cl=KZ.cells[k];
-    if(cl.ch==="P") for(let i=0;i<6;i++){ const m=mesh(new THREE.CylinderGeometry(.34,.3,.05,20),MT(i%2?"#8fd0ff":"#6db8ef"),cl.x,1.0+i*.06,cl.z,false); m.add(mesh(new THREE.TorusGeometry(.33,.02,5,24),MT("#2f7fc4"),0,.026,0,false)).rotation.x=Math.PI/2; sc.add(m); KZ.plateMeshes.push(m); }
+    if(cl.ch==="P") for(let i=0;i<6;i++){ const m=mesh(new THREE.CylinderGeometry(.34,.3,.05,20),MT(i%2?"#8fd0ff":"#6db8ef"),cl.x,1.0+i*.06,cl.z,false); { const rim=mesh(new THREE.TorusGeometry(.33,.02,5,24),MT("#2f7fc4"),0,.026,0,false); rim.rotation.x=Math.PI/2; m.add(rim); } sc.add(m); KZ.plateMeshes.push(m); }
     if(cl.ch==="W") for(let i=0;i<6;i++){ const m=mesh(new THREE.CylinderGeometry(.32,.28,.05,18),MT("#d8cfc0"),cl.x+.05*(i%2),1.0+i*.06,cl.z+.1,false); m.add(mesh(new THREE.CylinderGeometry(.12,.12,.012,10),MT("#b98a5a"),.06,.03,0,false)); sc.add(m); KZ.dirtyMeshes.push(m); } }
   // alvo (onde você vai pegar/soltar)
   KZ.hl=mesh(new THREE.BoxGeometry(KZ_C+.04,.06,KZ_C+.04),new THREE.MeshBasicMaterial({color:new THREE.Color("#ffffff"),transparent:true,opacity:.35,depthWrite:false,toneMapped:false}),0,1.0,0,false); sc.add(KZ.hl);
@@ -4899,7 +4899,7 @@ function kzItemMesh(it){ if(!it) return null; const g0=kzItemMesh0(it); g0.scale
 function kzItemMesh0(it){
   if(it.k!=="plate") return kzIngMesh(it.k,it.s||0);
   const g=new THREE.Group(); if(!T3.kzPlate) T3.kzPlate=new THREE.LatheGeometry([[0,0],[.26,0],[.3,.01],[.36,.05],[.37,.065],[.34,.06],[.27,.025],[0,.025]].map(([a,b])=>new THREE.Vector2(a,b)),28);
-  g.add(mesh(T3.kzPlate,new THREE.MeshStandardMaterial({color:new THREE.Color("#8fd0ff"),roughness:.25}),0,0,0,true)); g.add(mesh(new THREE.TorusGeometry(.355,.028,6,28),MT("#2f7fc4"),0,.06,0,false)).rotation.x=Math.PI/2; g.add(mesh(new THREE.CylinderGeometry(.22,.22,.012,24),MT("#e9f6ff"),0,.03,0,false));
+  g.add(mesh(T3.kzPlate,new THREE.MeshStandardMaterial({color:new THREE.Color("#8fd0ff"),roughness:.25}),0,0,0,true)); { const rim=mesh(new THREE.TorusGeometry(.355,.028,6,28),MT("#2f7fc4"),0,.06,0,false); rim.rotation.x=Math.PI/2; g.add(rim); } g.add(mesh(new THREE.CylinderGeometry(.22,.22,.012,24),MT("#e9f6ff"),0,.03,0,false));
   const order=["p0","c2","q1","a1","t1"]; let y=.05; [...it.parts].sort((a,b)=>order.indexOf(a)-order.indexOf(b)).forEach(pt=>{ const m=kzIngMesh(pt[0],+pt[1]); m.position.y=y; m.scale.setScalar(.85); g.add(m); y+=pt[0]==="p"?.06:.05; });
   if(it.parts.includes("p0") && it.parts.length>1){ const top=mesh(new THREE.SphereGeometry(.2,14,8,0,Math.PI*2,0,Math.PI/2),MT("#e8b066"),0,y+.02,0,false); g.add(top); }
   return g; }
@@ -4911,8 +4911,24 @@ function kzHat(C){ const g=grp(0,.42,0); g.add(mesh(new THREE.CylinderGeometry(.
 function kzNewState(lv){ const L=kzL(lv), K={lv, run:true, t0:Date.now()+3500, dur:L.time*1000, score:0, served:0, lost:0, orders:[], nextO:0, plates:L.dishes?3:4, dirty:0, back:[], it:{}, pg:{}, ck:{}, wash:{}, fire:{}, held:[null,null], msg:null, msgT:0, over:false, seq:[0,0], up:Object.assign({},kzSave().up), by:S.me, oid:0, combo:0, best:0, fx:[], fxN:0, rush:false};
   for(const k in KZ.cells) if(KZ.cells[k].ch==="E") K.it[k]={k:"ext"}; if(L.tut){ K.tut=true; K.tutI=0; } return K; }
 function kzFx(type,key,txt,extra){ const K=KZ.K; K.fxN++; K.fx.push(Object.assign({n:K.fxN,type,key,txt,t:Date.now()},extra||{})); if(K.fx.length>8) K.fx.shift(); }
-function kzTargetFor(x,z,yaw){ let best=null, bs=9; const fx=Math.sin(yaw), fz=Math.cos(yaw);
-  for(const k in KZ.cells){ const cl=KZ.cells[k], dx=cl.x-x, dz=cl.z-z, d=Math.hypot(dx,dz); if(d>1.6) continue; const front=(dx*fx+dz*fz)/(d||1); if(front<.2) continue; const sc=d-front*.8; if(sc<bs){ bs=sc; best=k; } }
+function kzUseful(key){ const K=KZ.K, cl=KZ.cells[key], ch=cl.ch, h=K.held&&K.held[KZ.me], on=K.it&&K.it[key];
+  if(K.fire&&K.fire[key]) return h&&h.k==="ext"?2.5:0;
+  if(!h){ if(on) return on.k==="ext"?.8:1.4; if("tapcqP".includes(ch)) return ch==="P"&&!(K.plates>0)?0:1; if(ch==="W"&&K.dirty>0) return 1.2; return 0; }
+  if(h.k==="plate"){ if(ch==="D") return h.parts.length?2.5:0; if(on&&on.k!=="plate"&&on.k!=="ext") return 1.8; if(ch==="X") return h.parts.length?.3:0; if((ch==="#"||ch==="C")&&!on) return .7; return 0; }
+  if(h.k==="ext") return ch==="#"&&!on?.6:0;
+  if(on&&on.k==="plate") return 2;
+  if(ch==="C"&&!on) return KZ_CHOP[h.k]&&h.s===0?2.2:.5;
+  if(ch==="S"&&!on) return h.k==="c"&&h.s===0?2.2:0;
+  if(ch==="X") return h.s===3?2.2:.3;
+  if(ch==="#"&&!on) return .7;
+  return 0; }
+// mira: perto + na frente (ou pra onde o joystick aponta) + útil pro que você tá segurando; gruda no alvo atual
+function kzTargetFor(x,z,yaw,vx,vz,loose){ const mv=Math.hypot(vx||0,vz||0)>.6, fx=mv?vx/Math.hypot(vx,vz):Math.sin(yaw), fz=mv?vz/Math.hypot(vx,vz):Math.cos(yaw);
+  let best=null, bs=1e9, cur=null;
+  for(const k in KZ.cells){ const cl=KZ.cells[k], dx=cl.x-x, dz=cl.z-z, d=Math.hypot(dx,dz); if(d>(loose?2.1:1.75)) continue; const front=(dx*fx+dz*fz)/(d||1);
+    if(!loose&&(mv?front<(d<1.05?-.35:.15):(d>1.5&&front<.15))) continue; const u=kzUseful(k), sc=d*1.1-front*(mv?.85:.45)-u*.4+(u===0?.9:0);
+    if(k===KZ.tgt) cur=sc; if(sc<bs){ bs=sc; best=k; } }
+  if(cur!=null&&best!==KZ.tgt&&cur<bs+.3) return KZ.tgt;
   return best; }
 function kzAllowed(parts){ const L=kzL(KZ.K.lv); return L.rec.some(r=>parts.every(p=>KZ_REC[r].parts.includes(p))); }
 function kzSay(t){ const K=KZ.K; K.msg=t; K.msgT=Date.now(); }
@@ -4973,7 +4989,7 @@ function kzNet(path){ if(!KZ.on) return; const d=NET.docs[path]; if(!d) return; 
   if(path==="cozinha/estado" && !KZ.guest && d.by!==S.me && d.run && d.by<S.me && Date.now()-(d.at||0)<4000){ KZ.guest=true; KZ.K=d; toast(`Entrando na cozinha de ${nmRaw(d.by)}`); }
   if(path==="cozinha/acao-p"+other() && kzHost() && KZ.K){ const o=other(); if((d.seq||0)>(KZ.K.seq[o]||0)){ KZ.K.seq[o]=d.seq; kzAct(o,d.key); kzPush(true); } }
   if(path==="cozinha/p"+other()){ KZ.use[other()]={on:!!d.use,key:d.key}; } }
-function kzPick(){ if(!KZ.on||!KZ.K) return; const key=KZ.tgt; if(!key) return; KZ.chars[KZ.me].pose="give";
+function kzPick(){ if(!KZ.on||!KZ.K) return; const P=KZ.P; const key=KZ.tgt||kzTargetFor(P.x,P.z,P.yaw,0,0,true); if(!key) return; KZ.tgt=key; KZ.chars[KZ.me].pose="give";
   if(kzHost()){ kzAct(KZ.me,key); kzPush(true); } else { KZ.seq=(KZ.seq||0)+1; push("cozinha/acao-p"+S.me,{seq:KZ.seq,key,t:Date.now()}); } }
 
 /* ---------- entrar / sair ---------- */
@@ -5127,7 +5143,7 @@ function kzSense(dt){ const K=KZ.K, sig=it=>it?kzSig(it):"", pv=KZ.pv; KZ.fly=KZ
 /* ---------- quadro a quadro ---------- */
 function kzStep(dt){ const K=KZ.K, P=KZ.P, me=KZ.me, C=KZ.chars[me]; if(!K) return; KZ.t=(KZ.t||0)+dt;
   if(kzHost()){ KZ.use[me]={on:KZ.chopHeld,key:KZ.tgt}; kzHostTick(dt); kzPush(false); }
-  const v=joyVec(), spd=5.0*(1+.08*((K.up&&K.up.tenis)||0)); let tx=0,tz=0; if(v&&!document.querySelector(".modalBg")){ const m=Math.min(1,Math.hypot(v.x,v.y)); tx=v.x/(m||1)*spd*m; tz=v.y/(m||1)*spd*m; }
+  const v=joyVec(), spd=5.0*(1+.08*((K.up&&K.up.tenis)||0)); let tx=0,tz=0; if(v&&!document.querySelector(".modalBg")){ const m=Math.min(1,Math.hypot(v.x,v.y)); const mc=Math.pow(m,1.35); tx=v.x/(m||1)*spd*mc; tz=v.y/(m||1)*spd*mc; }
   const k=1-Math.exp(-dt*(v?14:12)); P.vx+=(tx-P.vx)*k; P.vz+=(tz-P.vz)*k; const sp=Math.hypot(P.vx,P.vz);
   const solid=(x,z)=>{ const c=Math.round(x/KZ_C+(KZ.W-1)/2), r=Math.round(z/KZ_C+(KZ.H-1)/2); if(c<0||r<0||c>=KZ.W||r>=KZ.H) return true; return kzL(KZ.lv).map[r][c]!=="."; };
   const R=.32, tryMove=(nx,nz)=>![[R,0],[-R,0],[0,R],[0,-R],[R*.7,R*.7],[-R*.7,R*.7],[R*.7,-R*.7],[-R*.7,-R*.7]].some(([a,b])=>solid(nx+a,nz+b));
@@ -5137,7 +5153,8 @@ function kzStep(dt){ const K=KZ.K, P=KZ.P, me=KZ.me, C=KZ.chars[me]; if(!K) retu
   if(sp>3.5){ KZ.dT=(KZ.dT||0)-dt; if(KZ.dT<=0){ KZ.dT=.14; KZ.dust.puff(P.x-P.vx*.05,.05,P.z-P.vz*.05,.2,0,.25,0,.35); } }
   C.root.position.set(P.x,0,P.z); C.root.rotation.y=P.yaw; C.walk=Math.min(1,sp/2.4); C.gait=Math.max(.8,sp/3.7); C.jv=null;
   const held=K.held&&K.held[me], tc0=KZ.tgt&&KZ.cells[KZ.tgt]; C.pose=KZ.chopHeld&&tc0&&!held&&tc0.ch==="C"?"chop":KZ.chopHeld&&tc0&&!held&&tc0.ch==="W"?"reach":KZ.chopHeld&&held&&held.k==="ext"?"reach":(held?"give":"idle"); animChar(C,dt,KZ.t);
-  KZ.tgt=kzTargetFor(P.x,P.z,P.yaw); const tc=KZ.tgt&&KZ.cells[KZ.tgt]; KZ.hl.visible=!!tc; if(tc){ KZ.hl.position.set(tc.x,1.0,tc.z); KZ.hl.material.opacity=.25+.15*Math.sin(KZ.t*6); KZ.hl.material.color.set(K.fire&&K.fire[KZ.tgt]?"#ff5a4f":"#ffffff"); }
+  KZ.tgt=kzTargetFor(P.x,P.z,P.yaw,P.vx,P.vz);
+  if(KZ.tgt&&sp<.5){ const tc1=KZ.cells[KZ.tgt]; let a=Math.atan2(tc1.x-P.x,tc1.z-P.z)-P.yaw; a=Math.atan2(Math.sin(a),Math.cos(a)); P.yaw+=a*Math.min(1,dt*10); C.root.rotation.y=P.yaw; } const tc=KZ.tgt&&KZ.cells[KZ.tgt]; KZ.hl.visible=!!tc; if(tc){ KZ.hl.position.set(tc.x,1.0,tc.z); KZ.hl.material.opacity=.32+.14*Math.sin(KZ.t*6); KZ.hl.material.color.set(K.fire&&K.fire[KZ.tgt]?"#ff5a4f":kzUseful(KZ.tgt)>=1?"#7dffb8":"#ffffff"); }
   kzPosPush();
   // o outro
   const o=1-me, Co=KZ.chars[o], d=online()?NET.docs["cozinha/p"+o]:null, fresh=d&&!d.out&&d.lv===KZ.lv&&performance.now()-(KZ.rx["cozinha/p"+o]||0)<5000;
