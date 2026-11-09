@@ -1032,7 +1032,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "3.9";
+const VERSION = "3.9.1";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -2060,7 +2060,7 @@ function screenTex(mode){ const c=document.createElement("canvas"); c.width=512;
   const g=x.createLinearGradient(0,0,512,288); if(mode==="nf"){ g.addColorStop(0,"#2a0f18"); g.addColorStop(1,"#5a1a2a"); } else if(mode==="yt"){ g.addColorStop(0,"#1a1a24"); g.addColorStop(1,"#3a2030"); } else { g.addColorStop(0,"#12131a"); g.addColorStop(1,"#1d2030"); }
   x.fillStyle=g; x.fillRect(0,0,512,288);
   x.fillStyle="#fff"; x.textAlign="center"; x.font="700 44px Fredoka, sans-serif";
-  if(mode==="nf"){ x.fillText("Sessão de cinema",256,130); x.font="500 26px Fredoka, sans-serif"; x.fillStyle="#ffd0dc"; x.fillText("pipoca pronta? 🍿",256,180); }
+  if(mode==="nf"){ }
   else if(mode==="yt"){ x.fillText("Vídeo juntos ▶",256,150); }
   else { x.fillStyle="rgba(255,255,255,.18)"; x.font="700 36px Fredoka, sans-serif"; x.fillText("toque pra ver um filme",256,155); }
   const t=new THREE.CanvasTexture(c); return t; }
@@ -2150,15 +2150,11 @@ const CINE_R=["😂","😍","😱","😭","🔥","💕"];
 function cineMenu(){
   snd("pop");
   const m=modal(`<h2>🍿 Cinema do casal</h2>
-    <div class="cineBox"><b>Filme na Netflix juntos</b><p class="small" style="margin:4px 0 8px">A Netflix não deixa colocar o filme dentro de outro app, então cada um abre o <b>mesmo filme</b> no seu celular ou TV e deixa pausado no começo. Aqui vocês dão o play juntos, pausam juntos e mandam reações.</p>
-      <div class="row2"><button class="btn" data-c="count">▶️ 3, 2, 1… Play!</button><button class="btn alt" data-c="pause">⏸️ Pausar</button></div></div>
     <div class="cineBox"><b>Vídeo do YouTube juntos</b><p class="small" style="margin:4px 0 8px">Cola o link: o vídeo abre na tela dos dois, e play, pause e pulos ficam sincronizados.</p>
       <div style="display:flex;gap:6px"><input id="ytUrl" class="inp" placeholder="https://youtu.be/..." style="flex:1;min-width:0"><button class="btn small" data-c="yt" style="width:auto">Abrir</button></div></div>
     <div class="cineBox"><b>Reações</b><div class="reacts">${CINE_R.map((e,k)=>`<button data-r="${k}">${e}</button>`).join("")}</div></div>
     <button class="btn alt" data-c="sofa">🛋️ Sentar no sofá</button>`);
   m.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{ const c=b.dataset.c;
-    if(c==="count"){ m.remove(); cineSend({k:"count",at:Date.now()+3600}); }
-    if(c==="pause"){ m.remove(); cineSend({k:"pause"}); }
     if(c==="sofa"){ m.remove(); sofaSit(actor()); }
     if(c==="yt"){ const id=ytId(m.querySelector("#ytUrl").value); if(!id){ toast("Não reconheci esse link 😅"); return; } m.remove(); openYT(id,0,false,true); cineSend({k:"yt",id,st:"load",pos:0}); } });
   m.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{ cineSend({k:"react",e:CINE_R[+b.dataset.r]}); });
@@ -2166,11 +2162,11 @@ function cineMenu(){
 function cineSend(o){ o.t=Date.now(); o.by=actor(); cineApply(o,false); if(online()) pushMe({cine:o}); }
 function cineApply(o,remote){
   if(!HUB) return; const who=nmRaw(o.by==null?other():o.by);
-  if(o.k==="count"){ setScreen("nf"); const C=W3.chars[actor()]; if(!C.sofa && isIn(C.root.position.x)) sofaSit(actor());
+  if(o.k==="count"&&false){ setScreen("nf"); const C=W3.chars[actor()]; if(!C.sofa && isIn(C.root.position.x)) sofaSit(actor());
     const ov=document.createElement("div"); ov.className="countOv"; HUB.scene.appendChild(ov); let last=null;
     const tick=()=>{ const r=o.at-Date.now(); const n=Math.ceil(r/1000); if(r<=-900){ ov.remove(); return; } const txt=r<=0?"PLAY!":String(Math.min(3,n)); if(txt!==last){ last=txt; ov.innerHTML=`<span>${txt}</span><small>${r>0?"preparem o dedo no play":"apertem o play agora!"}</small>`; ov.firstChild.classList.remove("pp"); void ov.offsetWidth; ov.firstChild.classList.add("pp"); if(n<=3&&r>0) tone(NOTE(72),.15,"sine",.1); if(r<=0) { tone(NOTE(84),.35,"triangle",.12); tone(NOTE(88),.35,"triangle",.08,.05); } } requestAnimationFrame(tick); };
     if(remote) toast(`${who} chamou pra dar o play 🍿`); tick(); }
-  if(o.k==="pause"){ snd("ding"); const ov=document.createElement("div"); ov.className="countOv small2"; ov.innerHTML=`<span>⏸</span><small>${remote?who+" pausou":"Você pausou"}: pausem aí também</small>`; ov.firstChild.innerHTML=artify("⏸️"); HUB.scene.appendChild(ov); setTimeout(()=>ov.remove(),3500);
+  if(o.k==="pause"&&false){ snd("ding"); const ov=document.createElement("div"); ov.className="countOv small2"; ov.innerHTML=`<span>⏸</span><small>${remote?who+" pausou":"Você pausou"}: pausem aí também</small>`; ov.firstChild.innerHTML=artify("⏸️"); HUB.scene.appendChild(ov); setTimeout(()=>ov.remove(),3500);
     if(remote){ setTimeout(()=>{ if(!HUB) return; const m=modal(`<h2>⏸️ ${esc(who)} pausou</h2><p>Quando estiverem prontos:</p><button class="btn" id="go">▶️ 3, 2, 1… Play!</button><button class="link" data-close>Fechar</button>`); m.querySelector("#go").onclick=()=>{ m.remove(); cineSend({k:"count",at:Date.now()+3600}); }; },600); } }
   if(o.k==="react"){ snd("pop"); const p=W3.inside&&W3.inside.screen? proj(W3.inside.screen.getWorldPosition(V3(0,0,0))) : {x:200,y:200,vis:true}; const x=p.vis?p.x:HUB.scene.clientWidth/2, y=p.vis?p.y:120; hearts(HUB.ov,x-20+Math.random()*40,y,[o.e],6); if(remote) say(o.by,o.e,1500); }
   if(o.k==="yt"){ if(remote) ytRemote(o); }
@@ -3216,7 +3212,7 @@ function showHelp(){
   modal(`<h2>Como funciona</h2>
    <p><b>No mundinho 3D:</b> toque no chão pra andar, arraste pra girar a câmera e faça pinça pra aproximar/afastar. Toque em qualquer coisa pra interagir: na ${nm(other())} (beijo, abraço, dançar, barquinho), nos bichinhos (carinho, comida, brincar, banho), nos canteiros do jardim, no cavalete do ateliê, na casa e nas barraquinhas de jogos. O 🗺️ leva você direto pros lugares.</p>
    <p><b>Lago 🏊🎣:</b> toque na água pra <b>nadar</b> (dá pra pular do píer!). No píer, toque em <b>Pescar</b>: espere a boia afundar, aperte <b>PUXA!</b> e segure o dedo na tela pra manter o peixe dentro da barrinha verde. Tem 15 peixes de Comum a Lendário na <b>Coleção</b>.</p>
-   <p><b>Nossa casa 🏡:</b> toque na casa e em <b>Entrar</b>. Lá dentro tem sofá, a galeria com os quadros que vocês pintaram e o <b>Cinema</b>: Netflix juntos (contagem 3, 2, 1 pra dar play junto, pausa avisada e reações) e vídeo do YouTube sincronizado. O abajur deixa a sala no clima de cinema.</p>
+   <p><b>Nossa casa 🏡:</b> toque na casa e em <b>Entrar</b>. Lá dentro tem sofá, a galeria com os quadros que vocês pintaram e o <b>Cinema</b>: vídeo do YouTube sincronizado na tela dos dois, com reações. O abajur deixa a sala no clima de cinema.</p>
    <p><b>Fonte ⛲:</b> toque nela pra jogar uma moedinha e fazer um pedido.</p>
    <p><b>Online:</b> cada um abre o jogo no seu celular pelo mesmo link. Vocês se veem andando no parque e jogam juntos ao vivo.</p>
    <p><b>Mesmo celular:</b> se estiverem juntos, joguem passando o celular.</p>
