@@ -859,6 +859,45 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .obAct[hidden]{display:none}.obAct b{font-size:.68rem;font-weight:700}.obAct .ico{width:24px!important;height:24px!important;--ia:#fff}
 .obAct:active{transform:translateY(2px);box-shadow:0 2px 0 var(--pinkD)}
 @keyframes obPulse{50%{box-shadow:0 4px 0 var(--pinkD),0 0 0 8px rgba(255,111,145,.25)}}
+/* conversa (v6.0) */
+.chatHb{position:relative}
+.chatBadge{position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--pink);color:#fff;font:700 .66rem/17px Fredoka,system-ui,sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px rgba(45,28,41,.6)}
+.chatBadge[hidden]{display:none}
+.chatSheet{position:fixed;right:calc(var(--sr) + 10px);top:calc(var(--st) + 8px);bottom:calc(var(--sb) + 8px);width:min(380px,calc(100vw - var(--sl) - var(--sr) - 20px));z-index:3000;display:flex;flex-direction:column;
+  background:var(--paper);color:var(--ink2);border-radius:22px;box-shadow:0 18px 44px rgba(20,8,16,.45),inset 0 0 0 1px rgba(58,42,51,.06);overflow:hidden;transform:translateX(24px);opacity:0;transition:transform .2s ease,opacity .2s ease}
+.chatSheet.on{transform:none;opacity:1}
+@media (orientation:landscape){ .chatSheet{width:min(400px,46vw)} }
+.chHead{display:flex;align-items:center;gap:10px;padding:10px 10px 10px 12px;background:linear-gradient(180deg,#fff,#fbf1f5);box-shadow:0 1px 0 #f0e2e8}
+.chAv{position:relative;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--pink),#ffb36b);color:#fff;font-weight:700;display:grid;place-items:center;flex-shrink:0}
+.chDotS{position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#b9aab3;box-shadow:0 0 0 2px #fff}.chDotS.on{background:#4ade80}
+.chWho{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.15}.chWho b{font-size:.98rem}.chWho span{font-size:.74rem;color:var(--inkSoft)}.chWho span.typing{color:var(--pinkD);font-weight:600}
+.chX{border:0;background:#f3e8ed;color:#6e5866;width:32px;height:32px;border-radius:50%;font-size:.9rem;cursor:pointer}
+.chList{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 10px 6px;display:flex;flex-direction:column;gap:2px;overscroll-behavior:contain}
+.chDay{display:flex;justify-content:center;margin:8px 0 6px}.chDay span{font-size:.68rem;color:var(--inkSoft);background:#f3e8ed;padding:2px 10px;border-radius:999px}
+.chMsg{display:flex;margin-top:6px}.chMsg.grp{margin-top:2px}.chMsg.me{justify-content:flex-end}
+.chB{max-width:78%;padding:7px 11px 6px;border-radius:18px;font-size:.92rem;line-height:1.3;word-wrap:break-word;overflow-wrap:anywhere;white-space:pre-wrap}
+.chMsg.them .chB{background:#fff;box-shadow:0 1px 2px rgba(58,42,51,.12),inset 0 0 0 1px #f0e2e8}
+.chMsg.me .chB{background:var(--pink);color:#fff;--ia:#fff}
+.chMsg.them.tail .chB{border-bottom-left-radius:6px}.chMsg.me.tail .chB{border-bottom-right-radius:6px}
+.chB .ico{width:1.15em!important;height:1.15em!important;vertical-align:-.2em}
+.chMsg.big .chB{background:none!important;box-shadow:none!important;padding:0 2px;font-size:2rem;color:var(--ink2)}.chMsg.big .chB .ico{width:1.4em!important;height:1.4em!important}.chMsg.big .chT{color:var(--inkSoft)}
+.chT{font-size:.62rem;opacity:.72;margin-left:7px;vertical-align:-1px;white-space:nowrap}
+.chSeen{align-self:flex-end;font-size:.66rem;color:var(--inkSoft);margin:2px 4px 0}
+.chEmpty{margin:auto;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--inkSoft);text-align:center;font-size:.85rem}.chEmpty .ico{width:40px!important;height:40px!important;opacity:.8}.chEmpty b{color:var(--ink2)}
+.chQuick{display:flex;gap:6px;padding:4px 10px 2px;overflow-x:auto}
+.chQuick button{border:0;background:#f6ecf1;border-radius:12px;min-width:40px;height:34px;display:grid;place-items:center;cursor:pointer;flex-shrink:0}.chQuick .ico{width:22px!important;height:22px!important}
+.chQuick button:active{transform:scale(.9)}
+.chForm{display:flex;gap:8px;padding:8px 10px 10px}
+.chIn{flex:1;min-width:0;border:2px solid #ead9e1;border-radius:999px;padding:9px 14px;font:inherit;font-size:16px;background:#fff;color:var(--ink2)}.chIn:focus{outline:none;border-color:var(--pink)}
+.chSend{border:0;width:42px;height:42px;border-radius:50%;background:var(--pink);box-shadow:0 3px 0 var(--pinkD);display:grid;place-items:center;color:#fff;--ia:#fff;cursor:pointer;flex-shrink:0}.chSend .ico{width:22px!important;height:22px!important}
+.chSend:active{transform:translateY(2px);box-shadow:0 1px 0 var(--pinkD)}
+.chatSheet.kb .chQuick{display:none}.chatSheet.kb .chHead{padding:6px 10px}.chatSheet.kb .chAv{width:28px;height:28px}
+.chatPop{position:fixed;left:50%;top:calc(var(--st) + 48px);transform:translateX(-50%);z-index:2990;display:flex;align-items:center;gap:9px;max-width:min(420px,70vw);padding:8px 14px 8px 9px;border:0;border-radius:18px;background:var(--paper);color:var(--ink2);text-align:left;font:inherit;
+  box-shadow:0 10px 26px rgba(20,8,16,.35);animation:chPop .35s cubic-bezier(.2,1.4,.4,1);cursor:pointer;transition:opacity .4s,transform .4s}
+.chatPop.out{opacity:0;transform:translate(-50%,-10px)}
+.chatPop>span:last-child{display:flex;flex-direction:column;min-width:0}.chatPop b{font-size:.8rem}.chatPop span span{font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chatPopI{width:32px;height:32px;border-radius:50%;background:var(--pink);display:grid;place-items:center;flex-shrink:0;color:#fff;--ia:#fff}.chatPopI .ico{width:20px!important;height:20px!important}
+@keyframes chPop{from{opacity:0;transform:translate(-50%,-14px) scale(.9)}}
 /* adicionar à Tela de Início */
 .a2hs{text-align:left}
 .a2hs ol{margin:6px 0 12px;padding-left:22px;line-height:1.55;color:#5a4652}
@@ -1356,7 +1395,9 @@ Object.assign(ICONS,{
   moon:`<path d="M30 6 A18 18 0 1 0 42 32 A14 14 0 1 1 30 6Z" fill="#ffd34d" ${SW}/><circle cx="11" cy="11" r="2" fill="#fff3b0"/><circle cx="41" cy="11" r="1.6" fill="#fff3b0"/>`,
   mailbox:`<path d="M8 20 Q8 10 18 10 H32 Q40 10 40 20 V32 H8Z" fill="#e8607f" ${SW}/><path d="M18 10 Q26 10 26 20 V32" fill="none" ${SW}/><rect x="21" y="32" width="6" height="12" fill="#a87346" ${SW}/><path d="M34 6 V20 M34 6 H42 V11 H34" fill="#ffd34d" ${SW}/>`,
   lock:`<rect x="10" y="21" width="28" height="22" rx="4" fill="#ffcc33" ${SW}/><path d="M16 21 V15 Q16 7 24 7 Q32 7 32 15 V21" fill="none" ${SW} stroke-width="3.4"/><circle cx="24" cy="31" r="3" fill="#3a2a33"/><path d="M24 33 V37" stroke="#3a2a33" stroke-width="2.6" stroke-linecap="round"/>`});
-Object.assign(EMO2ICO,{"🌙":"moon","📬":"mailbox","📭":"mailbox","🔒":"lock"});
+Object.assign(EMO2ICO,{"🌙":"moon","📬":"mailbox","📭":"mailbox","🔒":"lock","💬":"chat","📨":"send"});
+Object.assign(UIC,{ chat: uD("M4.5 6.6A2.6 2.6 0 0 1 7.1 4h9.8a2.6 2.6 0 0 1 2.6 2.6v6.3a2.6 2.6 0 0 1-2.6 2.6h-5.6L7 19.2v-3.7a2.6 2.6 0 0 1-2.5-2.6z")+uH(12,9.9,.4),
+  send: uD("M3.6 11.3 20.2 4.2l-6.7 16.2-2.7-6.6z")+uP("M10.8 13.8 20.2 4.2") });
 // figurinha colorida: só pros efeitos que voam no mundo (corações subindo, beijo estourando)
 function iconArt(name, cls="ico"){
   if(PET_ICON_SP[name]) return `<span class="${cls}">${petSVG({sp:PET_ICON_SP[name],c:0},"happy")}</span>`;
@@ -1533,6 +1574,7 @@ const SAMPLES={"bird1": "SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAA
 const app=document.getElementById("app");
 let keyHandler=null, screenNet=null, screenCleanup=null, curScreen="";
 function render(html, name=""){
+  try{ if(CHAT.el) chatClose(); }catch(e){}
   keyHandler=null; screenNet=null; if(screenCleanup){ try{screenCleanup();}catch(e){} } screenCleanup=null; curScreen=name;
   document.querySelectorAll(".modalBg").forEach(m=>m.remove());
   app.dataset.s=name; app.innerHTML=`<div class="screen" data-s="${name}">${artify(html)}</div>`; return app.firstChild;
@@ -1615,13 +1657,14 @@ async function initNet(){
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
-      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev"];
+      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1"];
     paths.forEach(p=>{ NET.subs[p]=db.doc(p).onSnapshot(s=>{ NET.docs[p]=s.exists?s.data():null; netChanged(p); }, e=>{}); });
-    NET.ready=true; initPetsNet(); initMailNet(); refreshStatus();
+    NET.ready=true; initPetsNet(); initMailNet(); initChatNet(); refreshStatus();
   }catch(e){}
 }
 function netChanged(path){
   if(path.startsWith("obby/")) OB.rx[path]=performance.now();
+  if(path.startsWith("papo-lido/") && CHAT.el) chatRender();
   if(path==="dupla/lev" && OB.coop){ const d=NET.docs[path]; OB.lev=Object.assign({},d||{}); }
   if(path===hubPath(other())){
     const d=NET.docs[path];
@@ -1647,7 +1690,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "5.9";
+const VERSION = "6.0";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -3741,7 +3784,7 @@ function hub(){
     <div class="scene" id="scene"><div id="gl" style="position:absolute;inset:0;z-index:1"></div><div class="ov" id="ov"></div>
       <div class="hudTop"><div class="hudG"><button class="hb" id="bMap" aria-label="Lugares">🗺️</button><button class="hb" id="bSky" aria-label="Céu">🌙</button></div>
         <div class="pill" id="status"></div>
-        <div class="hudG"><button class="hb" id="bSnd" aria-label="Sons">🎵</button><button class="hb" id="bTrophy" aria-label="Placar">🏆</button></div></div>
+        <div class="hudG"><button class="hb chatHb" id="bChat" aria-label="Conversa">💬<i class="chatBadge" hidden></i></button><button class="hb" id="bSnd" aria-label="Sons">🎵</button><button class="hb" id="bTrophy" aria-label="Placar">🏆</button></div></div>
       <div class="bannerBox" id="banners"></div><div class="ctrlChip" id="ctrlBar"></div><div class="joy" id="joy"><div class="joyK"></div></div>
       <div class="acts3" id="acts3">
         <button class="aBtn aInt" id="aInt" hidden aria-label="Interagir"><span class="aIc"></span><b></b></button>
@@ -3788,7 +3831,7 @@ function hub(){
   bindActs3(root);
   mailTick(); refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags(); SKY.force=true; refreshSkyBtn(); starsChanged();
   root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook;
-  root.querySelector("#bTrophy").onclick=trophyModal; root.querySelector("#bSnd").onclick=soundModal;
+  root.querySelector("#bTrophy").onclick=trophyModal; root.querySelector("#bSnd").onclick=soundModal; root.querySelector("#bChat").onclick=chatOpen; chatBadge();
   root.querySelector("#status").onclick=()=>{ const i=NET.p2p?NET.p2p.info():{}; modal(`<h2>Conexão</h2><p>Versão <b>${VERSION}</b> · você é <b>${nm(S.me)}</b></p>
     <p>Direta: <b>${esc(i.p2p||"-")}</b>${i.p2pOpen?" ✅":""}<br>Pela internet: <b>${esc(i.relay||"-")}</b><br>${nm(other())} visto: <b>${i.visto?ago(i.visto):"ainda não"}</b></p>
     <div class="stack"><button class="btn alt" id="bWho">👤 Trocar de personagem</button><button class="btn" data-close>OK</button></div>`).querySelector("#bWho").onclick=whoModal; };
@@ -3970,13 +4013,13 @@ const OB_COURSES={
       "some","helice","gelo","paredes","lava","disco","nuvens","pulos","laser","pendulo",
       "espinhos","viga","some","helice","esteira","gelo","paredes","lava","disco","helice"],
     sky:["#140c2e","#3b1d5e","#a33b7a","#ff8a6b"], fog:"#3a2350", pal:["#ff4f7a","#7c5cff","#2ed3b7","#ffb020","#3fa9ff","#ff7ad9"], cloud:["#6b4e8f","#7d5a9e"], cloudE:"#1c1030", cpCol:"#e9defa", ring:"#b98cff"},
-  dupla:{name:"Dupla do Céu", seed:4242, d0:0, d1:0, per:1, coop:true, order:["d1","d2","d3","d4","d5","d6","d7","d8"],
+  dupla:{name:"Dupla do Céu", seed:4242, d0:0, d1:0, per:1, coop:true, order:["d1","d2","d3","pontes","d4","d5","d6","cruz","combina","fragil","contra","inverte","d7","alterna","lasercab","d8"],
     sky:["#5b8def","#9cc7ff","#ffd6e8","#fff2e0"], fog:"#d6e6ff", pal:["#ffc2d4","#c2dcff","#d6c8ff","#ffe1a0","#bdeedb"], cloud:["#ffffff","#f3f8ff"], cloudE:"#4d5a7a", cpCol:"#fff6ef", ring:"#ff6f91"}
 };
 const OB_PCOL=["#4f9dff","#ff6f91"], OB_PNAME=["azul","rosa"], OB_LINK=["#ffd15c","#36d1c4","#b38cff","#9fd36b","#ffa86b"];
 let OB_ORDER=OB_COURSES.nuvens.order, OB_N=40, OB_PER=1;
 const OB_NAMES={pulos:"Pulinhos",escada:"Escadinha",viga:"Ponte fina",moveis:"Plataformas que andam",some:"Chão que some",tramp:"Trampolim",lava:"Chão de lava",helice:"Hélice",elev:"Elevador",
-  d1:"Um segura, o outro passa",d2:"Cada um na sua cor",d3:"Sobe em mim",d4:"Balança",d5:"Alavanca na hora certa",d6:"Laser que desliga",d7:"Os dois botões juntos",d8:"Elevador do amor",
+  d1:"Um segura, o outro passa",d2:"Cada um na sua cor",d3:"Sobe em mim",d4:"Balança",d5:"Alavanca na hora certa",d6:"Laser que desliga",d7:"Os dois botões juntos",d8:"Elevador do amor",pontes:"Ponte que aparece",cruz:"Elevadores cruzados",combina:"Coração e estrela",fragil:"Só aguenta um",contra:"Esteira do contra",inverte:"Inverte as cores",alterna:"Dois botões, duas pontes",lasercab:"Laser lá de cima",
   esteira:"Esteiras",disco:"Discos que giram",gelo:"Gelo escorregadio",pendulo:"Pêndulos",laser:"Lasers",espinhos:"Espinhos",paredes:"Paredes que empurram",nuvens:"Nuvens que sobem e descem",cogumelos:"Cogumelos saltitantes"};
 function obClock(){ return (Date.now()%3600000)/1000; }
 function obState(cid){ cid=cid||OB.cid; if(!S.obby2||typeof S.obby2!=="object") S.obby2={}; const s=S.obby2[cid]||(S.obby2[cid]={cp:0,done:false}); if(!Number.isInteger(s.cp)) s.cp=0; return s; }
@@ -4009,7 +4052,7 @@ function obBuild(cid){
   const sun=new THREE.DirectionalLight(new THREE.Color("#fff1dc"),GFX2?1.25:.6); sun.position.set(14,30,-8); sc.add(sun);
   const R=rng(CC.seed), st=[], cl=(v,a,b)=>Math.max(a,Math.min(b,v)); let curD=0; const BX=new THREE.BoxGeometry(1,1,1), CY=new THREE.CylinderGeometry(1,1,1,28);
   OB.solids=[]; OB.kills=[]; OB.spins=[]; OB.hearts=[]; OB.cps=[]; OB.dyn=[]; OB.flags=[]; OB.coop=!!CC.coop;
-  OB.plates={}; OB.gates=[]; OB.levers=[]; OB.saws=[]; OB.lifts=[]; OB.mates=[0,1].map(()=>({k:"c",x:0,y:-99,z:0,r:.42,h:1.78,top:-98,bot:-99,off:true,mate:true,dx:0,dy:0,dz:0}));
+  OB.plates={}; OB.gates=[]; OB.levers=[]; OB.saws=[]; OB.lifts=[]; OB.mates=[0,1].map(()=>({k:"c",x:0,y:-99,z:0,r:.36,h:1.66,top:-98,bot:-99,off:true,mate:true,dx:0,dy:0,dz:0}));
   OB.onlyMat=OB_PCOL.map(c=>new THREE.MeshStandardMaterial({color:new THREE.Color(c),emissive:new THREE.Color(c),emissiveIntensity:.25,roughness:.45,transparent:true,opacity:1}));
   const cur={x:0,y:0,z:0};
   const dynMesh=(s)=>{ const g=grp(s.x,s.y,s.z); if(s.k==="b"){ const a=mesh(BX,s.mat||MT(s.col)); a.scale.set(s.w,s.h,s.d); g.add(a); const b=mesh(BX,s.capMat||s.mat||MT(obLight(s.col,.5)),0,s.h/2-.04,0); b.scale.set(s.w+.06,.1,s.d+.06); g.add(b); }
@@ -4030,6 +4073,10 @@ function obBuild(cid){
     x.beginPath(); if(dir>0){ x.moveTo(20,14); x.lineTo(40,32); x.lineTo(20,50); } else { x.moveTo(44,14); x.lineTo(24,32); x.lineTo(44,50); } x.stroke();
     const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(2,4); return new THREE.MeshStandardMaterial({map:t,roughness:.8}); };
   OB.beltR=belt(1); OB.beltL=belt(-1);
+  const beltV=dir=>{ const c=document.createElement("canvas"); c.width=c.height=64; const x=c.getContext("2d"); x.fillStyle="#4b3a57"; x.fillRect(0,0,64,64); x.strokeStyle="#ffd15c"; x.lineWidth=7; x.lineCap="round"; x.lineJoin="round";
+    x.beginPath(); if(dir>0){ x.moveTo(14,44); x.lineTo(32,24); x.lineTo(50,44); } else { x.moveTo(14,20); x.lineTo(32,40); x.lineTo(50,20); } x.stroke();
+    const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(2,5); return new THREE.MeshStandardMaterial({map:t,roughness:.8}); };
+  OB.beltF=beltV(1); OB.beltB=beltV(-1);
   const lavaMat=new THREE.MeshStandardMaterial({color:new THREE.Color("#ff3d6e"),emissive:new THREE.Color("#ff2a55"),emissiveIntensity:1,roughness:.4}); OB.lavaMat=lavaMat;
   const kill=(x,y,z,w,h,d)=>{ const k={x,y,z,w,h,d,top:y+h/2,bot:y-h/2}; OB.kills.push(k); const m=mesh(BX,lavaMat,x,y,z,false); m.scale.set(w,h,d); sc.add(m); };
   const pad=(col)=>{ const z=cl(2.2-curD*.5,1.5,2.2); cur.z+=1.4; box(cur.x,cur.y-.4,cur.z+z/2,z,.8,z,col); cur.z+=z; };
@@ -4078,8 +4125,48 @@ function obBuild(cid){
   const lever=(key,c,x,y,z)=>{ const g=grp(x,y,z); g.add(mesh(BX,MT(OB_LINK[c]),0,.18,0)).scale.set(.6,.36,.6); const pv=grp(0,.36,0); g.add(pv);
     pv.add(mesh(new THREE.CylinderGeometry(.05,.05,.9,8),MT("#d9d2e6"),0,.45,0,false)); pv.add(mesh(new THREE.SphereGeometry(.16,14,10),MT("#ff6f91"),0,.92,0,false)); sc.add(g);
     box(x,y+.18,z,.6,.36,.6,"#ffffff",{noMesh:true}); OB.levers.push({key,x,y,z,pv,a:0}); };
-  const only=(i,x,y,z,w,h,d)=>box(x,y,z,w,h,d,OB_PCOL[i],{only:i,dynv:1,mat:OB.onlyMat[i],capMat:OB.onlyMat[i]});
+  const only=(i,x,y,z,w,h,d,swap)=>box(x,y,z,w,h,d,OB_PCOL[i],{only:i,dynv:1,mat:OB.onlyMat[i],capMat:OB.onlyMat[i],swap});
+  const symSprite=(sym,c,x,y,z)=>{ const cv=document.createElement("canvas"); cv.width=cv.height=128; const q=cv.getContext("2d"); q.font="700 92px Fredoka, ui-rounded, system-ui, sans-serif"; q.textAlign="center"; q.textBaseline="middle"; q.lineWidth=12; q.strokeStyle="#ffffff"; q.strokeText(sym,64,70); q.fillStyle=c; q.fillText(sym,64,70);
+    const t=new THREE.CanvasTexture(cv); t.encoding=THREE.sRGBEncoding; const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthWrite:false})); sp.position.set(x,y,z); sp.scale.set(.9,.9,.9); sc.add(sp); (OB.syms=OB.syms||[]).push({sp,y}); };
+  const wallDoor=(g,x,y,z,W,H)=>{ const side=(W-2.4)/2; box(x-1.2-side/2,y+H/2,z,side,H,.6,"#e6dcff"); box(x+1.2+side/2,y+H/2,z,side,H,.6,"#e6dcff"); return door(g,x,y,z,2.4,H,.5); };
   const DUP={
+    pontes(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+2.5,6,.8,5,col); sign("Um segura o botão, o outro atravessa",x,y+2.4,z0+.9);
+      const g1=gate({c:1,plates:["ps4","pm4"],mode:"any"}); plate("ps4",1,x+1.9,y,z0+3.4); ghost(g1,x,y,z0+7.6,1.6,5.4);
+      box(x,y-.4,z0+12.2,5.2,.8,4.4,col); plate("pm4",1,x-1.7,y,z0+11.3);
+      const g2=gate({c:3,plates:["pn4"],mode:"any",timer:4.5}); plate("pn4",3,x+1.4,y,z0+13,{need2:true}); symSprite("2",OB_LINK[3],x+1.4,y+1.4,z0+13);
+      ghost(g2,x,y,z0+16.9,1.1,5.2); box(x,y-.4,z0+21,6,.8,3,col); cur.z=z0+22.5; },
+    cruz(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+3.3,7.2,.8,6.6,col); sign("Um segura, o outro sobe",x,y+2.4,z0+.9);
+      const gB=gate({c:0,plates:["cb8"],mode:"any"}), gP=gate({c:4,plates:["ct8"],mode:"any"}); plate("cb8",0,x+2.2,y,z0+3.6);
+      const LB=box(x-2.2,y-.2,z0+7.7,2.1,.4,2.1,OB_LINK[0],{dynv:1,loose:1}); LB.y0=LB.y; OB.lifts.push({s:LB,up:3.6,o:0,g:gB});
+      const LP=box(x+2.2,y-.2,z0+7.7,2.1,.4,2.1,OB_LINK[4],{dynv:1,loose:1}); LP.y0=LP.y; OB.lifts.push({s:LP,up:3.6,o:0,g:gP});
+      [-2.2,2.2].forEach(px=>[-1.15,1.15].forEach(ox=>st.push({g:BX,m:M4(x+px+ox,y+1.9,z0+8.8,.1,3.9,.1),c:"#ffffff"})));
+      box(x,y+3.2,z0+11.4,7.2,.8,4.8,col); plate("ct8",4,x-2.2,y+3.6,z0+10.4); cur.y+=3.6; cur.z=z0+13.8; },
+    combina(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+3.5,8,.8,7,col); sign("Coração e estrela juntos. Lua não!",x,y+2.4,z0+.9);
+      const g=gate({c:2,plates:["h9","s9"],mode:"all",not:["m9"],timer:4});
+      [["h9","♥","#ff6f91",x-2.9,z0+4.4],["m9","☾","#9583ec",x,z0+5.4],["s9","★","#ffb020",x+2.9,z0+4.4]].forEach(([id,sym,c,px,pz])=>{ plate(id,2,px,y,pz); symSprite(sym,c,px,y+1.35,pz); });
+      ghost(g,x,y,z0+9.8,1.4,5.6); box(x,y-.4,z0+14.1,6,.8,3,col); cur.z=z0+15.6; },
+    fragil(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+2,6,.8,4,col); sign("Só aguenta um de cada vez!",x,y+2.4,z0+.9);
+      let zc=z0+4; [0,-1.2,.3,1.4,0,-1].forEach(ox=>{ zc+=.9+.65; box(x+ox,y-.2,zc,1.3,.4,1.3,"#ffc29a",{van:{st:0,t:0,dl:.35},max1:1}); zc+=.65; });
+      zc+=.9; box(x,y-.4,zc+2,6,.8,4,col); const g=gate({c:3,plates:["f10"],mode:"any",timer:3.5}); plate("f10",3,x,y,zc+1.7,{need2:true}); symSprite("2",OB_LINK[3],x,y+1.4,zc+1.7);
+      wallDoor(g,x,y,zc+4.3,6,3.2); box(x,y-.4,zc+6.1,6,.8,3.6,col); cur.z=zc+7.9; },
+    contra(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+2,6,.8,4,col); sign("A alavanca vira as esteiras",x,y+2.4,z0+.9); lever("c11",0,x+2.3,y,z0+2.6);
+      box(x,y-.3,z0+7.5,3,.6,7,"#5c4a66",{conv:{vz:7.8,lev:"c11",inv:false,mats:[OB.beltF,OB.beltB]},capMat:OB.beltB});
+      box(x,y-.4,z0+12.5,4.4,.8,3,col);
+      box(x,y-.3,z0+17.5,3,.6,7,"#5c4a66",{conv:{vz:7.8,lev:"c11",inv:true,mats:[OB.beltF,OB.beltB]},capMat:OB.beltF});
+      box(x,y-.4,z0+23,6,.8,4,col); lever("c11",0,x-2.3,y,z0+22.4); cur.z=z0+25; },
+    inverte(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+2,6,.8,4,col); sign("A alavanca troca as cores!",x,y+2.4,z0+.9); lever("sw12",3,x+2.3,y,z0+2.6);
+      let zc=z0+4; ["N",0,0,"N",1,1,"N",0,1,"N",1,0,"N"].forEach((k,i)=>{ zc+=.8+.7; const ox=i%2?.7:-.7; if(k==="N") box(x+ox,y-.3,zc,1.4,.6,1.4,"#fff0c9"); else only(k,x+ox,y-.3,zc,1.4,.6,1.4,"sw12"); zc+=.7; });
+      zc+=.8; box(x,y-.4,zc+2,6,.8,4,col); lever("sw12",3,x-2.3,y,zc+1.4); cur.z=zc+4; },
+    alterna(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+2.5,6,.8,5,col); sign("Cada botão mostra uma ponte",x,y+2.4,z0+.9);
+      const gX=gate({c:3,plates:["ax14","ax14b"],mode:"any"}), gY=gate({c:4,plates:["ay14","ay14b"],mode:"any"});
+      plate("ax14",3,x-.95,y,z0+3.4); plate("ay14",4,x+.95,y,z0+3.4);
+      let zc=z0+5; ["r","x","y","r","y","x","r"].forEach((k,i)=>{ zc+=.9+.8; const ox=[-1,0,1,0,-1,0,1][i]*1.1; if(k==="r") box(x+ox,y-.3,zc,1.6,.6,1.6,"#fff0c9"); else ghost(k==="x"?gX:gY,x+ox,y,zc,1.6,1.6); zc+=.8; });
+      zc+=.9; box(x,y-.4,zc+2.5,6,.8,5,col); plate("ax14b",3,x-.95,y,zc+1.8); plate("ay14b",4,x+.95,y,zc+1.8); cur.z=zc+5; },
+    lasercab(col){ const z0=cur.z, x=cur.x, y=cur.y, L=13; box(x,y-.4,z0+3,7,.8,6,col); sign("Sobe no outro e segura lá em cima",x,y+2.4,z0+.9);
+      box(x+2.6,y+1.5,z0+4.4,1.8,3.0,1.8,"#e6dcff"); plate("lc15",0,x+2.6,y+3.0,z0+4.4);
+      box(x,y-.4,z0+6+L/2,3.2,.8,L,col); const g=gate({c:0,plates:["lc15","le15"],mode:"any"});
+      for(let k=0;k<6;k++){ const zz=z0+7.5+k*1.8, hy=[.5,1.25,.85][k%3]; const q={x,y:y+hy,z:zz,w:3.2,per:1,on:1,ph:0,act:false,gate:g}; OB.lasers.push(q); g.lasers.push(q); [-1,1].forEach(sd=>st.push({g:BX,m:M4(x+sd*1.72,y+.8,zz,.2,1.6,.2),c:"#5c3a52"})); }
+      box(x-2.7,y-.4,z0+6+L-1.6,2.2,.8,2.2,col); plate("le15",0,x-2.7,y,z0+6+L-1.6); cur.z=z0+6+L; },
     d1(col){ const z0=cur.z, x=cur.x, y=cur.y; box(x,y-.4,z0+8,6,.8,16,col); sign("Um segura o botão, o outro passa",x,y+2.4,z0+1.2);
       const g=gate({c:0,plates:["a1","b1"],mode:"any"}); box(x-2.05,y+1.5,z0+8,1.9,3,.6,"#e6dcff"); box(x+2.05,y+1.5,z0+8,1.9,3,.6,"#e6dcff"); door(g,x,y,z0+8,2.2,3,.5);
       plate("a1",0,x-1.9,y,z0+4.2); plate("b1",0,x+1.9,y,z0+12); cur.z=z0+16; },
@@ -4168,6 +4255,7 @@ function obBuild(cid){
 }
 function obFlags(){ const P=OB.P; if(!OB.flags) return; OB.flags.forEach((f,i)=>{ if(!f) return; f.m.color.set(i<=P.cp?"#ffc65c":"#ff8fa8"); f.m.emissive.set(i<=P.cp?"#7a4a00":"#000000"); }); }
 function obPlace(P,i){ const c=OB.cps[Math.max(0,Math.min(OB_N,i))]; P.x=c.x+(OB.coop?(P.i?1.1:-1.1):0); P.y=c.y+.02; P.z=c.z; P.vx=P.vz=P.vy=0; P.gr=null; P.coy=0; }
+function obOwn(s){ return s.swap&&OB.lev&&OB.lev[s.swap]?1-s.only:s.only; }
 function obLocal(i){ return i===OB.me || (OB.coop && !online()); }
 function obOnlyMats(){ if(!OB.onlyMat) return; OB.onlyMat.forEach((m,i)=>{ const mine=i===OB.me; m.opacity=mine?1:.38; m.depthWrite=mine; m.needsUpdate=true; }); }
 function obLevPush(){ if(online()) push("dupla/lev",Object.assign({},OB.lev)); }
@@ -4201,14 +4289,14 @@ function obbyEnter(fromZero,cid){
   HUB.scene.classList.add("obMode");
   const hud=document.createElement("div"); hud.className="obHud";
   hud.innerHTML=artify(`<button class="hb" id="obX" aria-label="Sair do parkour">↩️</button><div class="pill obPill">${OB.coop?`<i class="obDot"></i>`:""}<b id="obSt"></b><span id="obT"></span></div>
-    <div class="hudG">${OB.coop&&!online()?`<button class="hb" id="obSwap" aria-label="Trocar de personagem">🎮</button>`:""}<button class="hb" id="obMate" aria-label="Ir até o outro" hidden>💞</button><button class="hb" id="obCp" aria-label="Voltar pro checkpoint">🚩</button><button class="hb" id="obZero" aria-label="Voltar pro começo">🔁</button></div>`);
+    <div class="hudG">${OB.coop&&!online()?`<button class="hb" id="obSwap" aria-label="Trocar de personagem">🎮</button>`:""}<button class="hb chatHb" id="obChat" aria-label="Conversa">💬<i class="chatBadge" hidden></i></button><button class="hb" id="obMate" aria-label="Ir até o outro" hidden>💞</button><button class="hb" id="obCp" aria-label="Voltar pro checkpoint">🚩</button><button class="hb" id="obZero" aria-label="Voltar pro começo">🔁</button></div>`);
   if(OB.coop) hud.insertAdjacentHTML("beforeend",`<div class="obWait" id="obWait" hidden></div>`);
   HUB.scene.appendChild(hud); OB.hud=hud;
   const act=document.createElement("button"); act.className="obAct"; act.hidden=true; act.innerHTML=artify(`✋<b>Puxar</b>`); act.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); obPull(); }); HUB.scene.appendChild(act); OB.actBtn=act;
   const sw=hud.querySelector("#obSwap"); if(sw) sw.onclick=obSwap;
   hud.querySelector("#obX").onclick=()=>confirmBox("Sair do parkour?",`Seu checkpoint fica salvo na fase ${OB.P.cp+1}.`,"Sair",()=>obbyExit());
   hud.querySelector("#obCp").onclick=()=>{ if(!OB.P.dead) obDie(OB.P,true); };
-  hud.querySelector("#obMate").onclick=obToMate;
+  hud.querySelector("#obMate").onclick=obToMate; hud.querySelector("#obChat").onclick=chatOpen; chatBadge();
   hud.querySelector("#obZero").onclick=()=>confirmBox("Voltar pro começo?",`Você volta pra fase 1 do ${OB_COURSES[OB.cid].name}.`,"Voltar pro começo",()=>obRestart());
   const tg=document.createElement("div"); tg.className="obTagW"; tg.innerHTML=`<div class="tag"></div>`; HUB.ov.appendChild(tg); OB.tag=tg;
   OB.on=true; doorFade(); snd("go"); obFlags(); obHud(true);
@@ -4235,21 +4323,21 @@ function obToMate(){ if(OB.coop&&!online()){ const P=OB.P, Q=OB.Ps[1-OB.me]; P.x
 function obPhys(P,h){
   const RAD=.3, HT=1.75, L=P.list||OB.solids;
   P.x+=P.vx*h; P.z+=P.vz*h;
-  for(const s of L){ if(s.off||(s.only!=null&&s.only!==P.i)||Math.abs(s.z-P.z)>12) continue; if(P.y>=s.top-.06||P.y+HT<=s.bot) continue;
+  for(const s of L){ if(s.off||(s.only!=null&&obOwn(s)!==P.i)||Math.abs(s.z-P.z)>12) continue; if(P.y>=s.top-.06||P.y+HT<=s.bot) continue; if(s.mate&&(P.y>s.top-.85||P.vy>1)) continue;
     if(s.k==="b"){ const hw=s.w/2, hd=s.d/2, cx=Math.max(s.x-hw,Math.min(s.x+hw,P.x)), cz=Math.max(s.z-hd,Math.min(s.z+hd,P.z)), dx=P.x-cx, dz=P.z-cz, d=Math.hypot(dx,dz);
       if(d<RAD){ if(d>1e-4){ P.x=cx+dx/d*RAD; P.z=cz+dz/d*RAD; } else { const ex=[s.x-hw-RAD-P.x,s.x+hw+RAD-P.x,s.z-hd-RAD-P.z,s.z+hd+RAD-P.z], ai=ex.map(Math.abs), mi=ai.indexOf(Math.min(...ai)); if(mi<2) P.x+=ex[mi]; else P.z+=ex[mi]; } } }
     else { const dx=P.x-s.x, dz=P.z-s.z, d=Math.hypot(dx,dz), L=s.r+RAD; if(d<L&&d>1e-4){ P.x=s.x+dx/d*L; P.z=s.z+dz/d*L; } } }
   const g= P.vy>0 && P.jumping && HUB.jumpHeld===false ? 64 : (P.vy>0?28:36);
   P.vy=Math.max(-32,P.vy-g*h); const ny=P.y+P.vy*h; let land=null, lt=-1e9;
-  if(P.vy<=0){ for(const s of L){ if(s.off||(s.only!=null&&s.only!==P.i)||Math.abs(s.z-P.z)>12) continue; if(s.top>P.y+(s.mate?.3:.14)||s.top<ny-.02) continue; if(!obOver(s,P.x,P.z,.12)) continue; if(s.top>lt){ lt=s.top; land=s; } } }
-  else for(const s of L){ if(s.off||s.mate||(s.only!=null&&s.only!==P.i)||Math.abs(s.z-P.z)>12) continue; if(s.bot<P.y+HT-.05||s.bot>ny+HT) continue; if(!obOver(s,P.x,P.z,-.05)) continue; P.vy=0; break; }
+  if(P.vy<=0){ for(const s of L){ if(s.off||(s.only!=null&&obOwn(s)!==P.i)||Math.abs(s.z-P.z)>12) continue; if(s.top>P.y+(s.mate?.3:.14)||s.top<ny-.02) continue; if(!obOver(s,P.x,P.z,s.mate?.4:.12)) continue; if(s.top>lt){ lt=s.top; land=s; } } }
+  else for(const s of L){ if(s.off||s.mate||(s.only!=null&&obOwn(s)!==P.i)||Math.abs(s.z-P.z)>12) continue; if(s.bot<P.y+HT-.05||s.bot>ny+HT) continue; if(!obOver(s,P.x,P.z,-.05)) continue; P.vy=0; break; }
   if(land){ const fall=P.fallV||0, was=!P.gr; P.y=lt; P.vy=0; P.gr=land; P.coy=.12; P.jumping=false; if(was) obLand(P,land,fall); }
   else { P.fallV=P.vy; P.y=ny; P.gr=null; }
 }
 function obLand(P,s,fall){ const C=OB.chars[P.i];
   C.land=.2; C.squash=Math.min(1,-fall/18); if(fall<-6) OB.dust.burst(P.x,P.y,P.z,fall<-14?9:5); if(fall<-8&&P===OB.P) snd("step");
   if(s.pad){ P.vy=s.pad; P.gr=null; P.jumping=false; snd("boing"); OB.dust.burst(P.x,P.y,P.z,8,"#ffd0dc"); C.stretch=1; return; }
-  if(s.van && s.van.st===0){ s.van.st=1; s.van.t=s.van.dl||.45; }
+  if(s.van && s.van.st===0 && !s.max1){ s.van.st=1; s.van.t=s.van.dl||.45; }
   if(s.cp!=null) obCheckpoint(s.cp,P);
 }
 function obCheckpoint(i,P){ P=P||OB.P; const st=obState(); if(i<=P.cp) return; P.cp=i; if(i<OB_N){ st.cp=Math.max(i,OB.coop&&!online()?Math.min(OB.Ps[0].cp,OB.Ps[1].cp):0); if(!(OB.coop&&!online())) st.cp=i; save(); }
@@ -4287,7 +4375,7 @@ function obStep(dt){
       else if(v.st===2){ v.t-=dt; if(v.t<=0){ v.st=0; s.off=false; s.m.visible=true; s.m.position.set(s.x,s.y,s.z); } } } }
   for(const sp of OB.spins){ sp.a=sp.ph+t*sp.sp; sp.m.rotation.y=sp.a; }
   for(const s of OB.dyn) if(s.rot){ const a=t*s.rot.sp+s.rot.ph; s.dA=s.ang==null?0:a-s.ang; if(Math.abs(s.dA)>1) s.dA=0; s.ang=a; s.m.rotation.y=a; }
-  OB.beltR.map.offset.x-=dt*.9; OB.beltL.map.offset.x+=dt*.9;
+  OB.beltR.map.offset.x-=dt*.9; OB.beltL.map.offset.x+=dt*.9; if(OB.beltF){ OB.beltF.map.offset.y-=dt*1.4; OB.beltB.map.offset.y+=dt*1.4; }
   for(const q of OB.pends){ q.a=q.A*Math.sin(t*q.sp+q.ph); q.m.rotation.z=q.a; }
   for(const q of OB.lasers){ const act=q.gate? !q.gate.act : ((t+q.ph)%q.per)/q.per<q.on; if(act!==q.act){ q.act=act; q.m.material=act?OB.laserOn:OB.laserOff; } }
   for(const q of OB.spikes){ const v=Math.sin(t*q.sp+q.ph); q.up=v>.25?1:v>-.05?(v+.05)/.3:0; q.m.position.y=q.y-.6+.6*q.up; }
@@ -4325,7 +4413,7 @@ function obSim(P,dt){
     const spd=m>.55? 7.2 : 2.6+Math.max(0,m-.14)/.41*4.2; tx=dx*spd; tz=dz*spd; P.yawT=Math.atan2(dx,dz); HUB.fwd=-v.y/(m||1); }
   const acc=P.gr?(P.gr.ice?(v?2.2:.5):(v?16:13)):(v?6:1.2), k=1-Math.exp(-dt*acc); P.vx+=(tx-P.vx)*k; P.vz+=(tz-P.vz)*k;
   if(P.gr&&(P.gr.mov||P.gr.dynY||P.gr.mate)){ P.x+=P.gr.dx||0; P.y+=P.gr.dy||0; P.z+=P.gr.dz||0; }
-  if(P.gr&&P.gr.conv){ P.x+=P.gr.conv.vx*dt; }
+  if(P.gr&&P.gr.conv){ const cv=P.gr.conv, sg=cv.lev?((OB.lev[cv.lev]?1:-1)*(cv.inv?-1:1)):1; P.x+=(cv.vx||0)*sg*dt; P.z+=(cv.vz||0)*sg*dt; }
   if(P.gr&&P.gr.rot&&P.gr.dA){ const g=P.gr, a=g.dA, dx=P.x-g.x, dz=P.z-g.z; P.x=g.x+dx*Math.cos(a)+dz*Math.sin(a); P.z=g.z-dx*Math.sin(a)+dz*Math.cos(a); C.root.rotation.y+=a; P.yawT+=a; }
   if(active){ OB.buf-=dt; } P.coy-=dt;
   if(active && OB.buf>0 && (P.gr||P.coy>0)){ P.vy=10.4; P.gr=null; P.coy=0; OB.buf=0; P.jumping=true; snd("jump"); C.stretch=1; OB.dust.burst(P.x,P.y,P.z,4); }
@@ -4350,18 +4438,25 @@ function obWho(i){ if(obLocal(i)){ const q=OB.Ps[i]; return q.dead?null:{x:q.x,y
 function obOcc(s,W){ let n=0; const S2=s; for(const q of W){ if(!q) continue; if(q.loc){ if(q.gr===S2) n++; } else if(obOver(S2,q.x,q.z,.05)&&Math.abs(q.y-S2.top)<(S2.loose?.7:.3)) n++; } return n; }
 function obCoopTick(dt){
   const W=[obWho(0),obWho(1)];
-  W.forEach((q,i)=>{ const M=OB.mates[i]; if(!q){ M.off=true; M.px=null; return; } M.off=false; M.dx=M.px==null?0:q.x-M.px; M.dy=M.py==null?0:q.y-M.py; M.dz=M.pz==null?0:q.z-M.pz; M.px=q.x; M.py=q.y; M.pz=q.z; M.x=q.x; M.z=q.z; M.y=q.y+.89; M.top=q.y+1.78; M.bot=q.y; });
+  W.forEach((q,i)=>{ const M=OB.mates[i]; if(!q){ M.off=true; M.px=null; return; } M.off=false; M.dx=M.px==null?0:q.x-M.px; M.dy=M.py==null?0:q.y-M.py; M.dz=M.pz==null?0:q.z-M.pz; M.px=q.x; M.py=q.y; M.pz=q.z; M.x=q.x; M.z=q.z; M.y=q.y+.85; M.top=q.y+1.66; M.bot=q.y; });
   for(const id in OB.plates){ const pl=OB.plates[id], s=pl.proxy?pl.proxy:pl.s; if(pl.s.proxy) pl.proxy=pl.s.proxy; const n=obOcc(pl.proxy||pl.s,W), pr=pl.need2?n>=2:n>=1;
     if(pr!==pl.pressed){ pl.pressed=pr; if(!pl.proxy){ pl.disc.position.y=pr?.03:.08; pl.dm.emissiveIntensity=pr?.9:.15; snd(pr?"click2":"tap"); } } }
   for(const g of OB.gates){ let ok=true;
     if(g.plates){ const st=g.plates.map(id=>OB.plates[id]&&OB.plates[id].pressed); ok=g.mode==="all"?st.every(Boolean):st.some(Boolean); }
     if(g.lev) ok=!!OB.lev[g.lev]!==!!g.inv;
+    if(g.not && g.not.some(id=>OB.plates[id]&&OB.plates[id].pressed)) ok=false;
+    g.raw=ok; if(g.timer){ if(ok) g.tl=g.timer; else if(g.tl>0){ const pv=Math.ceil(g.tl); g.tl=Math.max(0,g.tl-dt); if(g.tl>0&&Math.ceil(g.tl)!==pv) snd("tap"); ok=g.tl>0; } }
     if(g.latch){ g.hold=ok?g.hold+dt:0; if(g.hold>.35 && !OB.lev[g.latch]){ OB.lev[g.latch]=1; obLevPush(); snd("fanfare"); } ok=!!OB.lev[g.latch]; }
     if(ok!==g.act){ g.act=ok; if(g.items.length) snd(g.items[0].kind==="open"?"door":"pop"); }
     g.amt+=((g.act?1:0)-g.amt)*Math.min(1,dt*7);
     for(const s of g.items){
       if(s.kind==="open"){ s.off=g.amt>.55; s.m.position.y=s.y0-g.amt*(s.h+.05); }
-      else { const vis=s.kind==="show"?g.act:!g.act; s.off=!vis; s.mat.opacity=vis?.95:.22; s.mat.depthWrite=vis; } } }
+      else { const vis=s.kind==="show"?g.act:!g.act; s.off=!vis; s.mat.opacity=vis?(g.timer&&!g.raw&&g.tl<1.6?.45+.45*Math.abs(Math.sin(OB.t*11)):.95):.22; s.mat.depthWrite=vis; } } }
+  for(const s of OB.solids){
+    if(s.max1 && s.van && s.van.st===0 && obOcc(s,W)>=2){ s.van.st=1; s.van.t=s.van.dl||.35; snd("pop"); }
+    if(s.conv && s.conv.lev){ const sg=(OB.lev[s.conv.lev]?1:-1)*(s.conv.inv?-1:1); if(sg!==s.conv.sg){ s.conv.sg=sg; s.m.children[1].material=s.conv.mats[sg>0?0:1]; } }
+    if(s.swap){ const ow=obOwn(s); if(ow!==s.ownV){ s.ownV=ow; s.m.children.forEach(c=>{ if(c.isMesh) c.material=OB.onlyMat[ow]; }); } } }
+  if(OB.syms) for(const q of OB.syms) q.sp.position.y=q.y+Math.sin(OB.t*2.2+q.y)*.08;
   for(const L of OB.lifts){ const s=L.s, tg=L.g.act?L.up:0; L.o+=Math.max(-dt*1.7,Math.min(dt*1.7,tg-L.o)); const ny=s.y0+L.o; s.dynY=1; s.dy=ny-s.y; s.dx=s.dz=0; s.y=ny; s.top=ny+s.h/2; s.bot=ny-s.h/2; s.m.position.y=ny; }
   for(const sw of OB.saws){ const wa=obOcc(sw.a,W), wb=obOcc(sw.b,W), tg=wa>wb?1:wb>wa?-1:0; sw.o+=Math.max(-dt*1.3,Math.min(dt*1.3,tg-sw.o));
     [[sw.a,-1],[sw.b,1]].forEach(([s,sg])=>{ const ny=s.y0+sg*sw.o*sw.amp; s.dynY=1; s.dy=ny-s.y; s.dx=s.dz=0; s.y=ny; s.top=ny+s.h/2; s.bot=ny-s.h/2; s.m.position.y=ny; });
@@ -4612,6 +4707,70 @@ function starNameModal(k){ const cur=starName(k);
   const del=m.querySelector("#sDel"); if(del) del.onclick=()=>{ m.remove(); starSet(k,null); }; }
 
 /* =================== CAIXINHA DE CORREIO =================== */
+/* =================== CONVERSA (chat do casal) =================== */
+const CHAT={list:[], seen:null, el:null, typingAt:0, lastTypingSent:0, typT:0};
+const CHAT_QUICK=[["❤️","te amo ❤️"],["😘","😘"],["🥺","saudade 🥺"],["😂","KKKKKK 😂"],["🤗","🤗"],["👍","👍"]];
+function chatSan(m){ if(!m||typeof m!=="object") return null; const txt=String(m.txt||"").slice(0,300).trim(); if(!txt) return null; return {id:String(m.id||""), from:m.from===1?1:0, txt, t:+m.t||0}; }
+function initChatNet(){ try{ NET.db.collection("papo").onSnapshot(qs=>{ CHAT.list=qs.docs.map(x=>chatSan(x.data())).filter(Boolean).sort((a,b)=>a.t-b.t); chatChanged(); },e=>{}); }catch(e){} }
+function chatUnread(){ const rd=S.chatRead||0; return CHAT.list.filter(m=>m.from!==S.me && m.t>rd).length; }
+function chatChanged(){ const fresh=[];
+  if(CHAT.seen==null) CHAT.seen=new Set(CHAT.list.map(m=>m.id));
+  else for(const m of CHAT.list){ if(!CHAT.seen.has(m.id)){ CHAT.seen.add(m.id); if(m.from!==S.me) fresh.push(m); } }
+  if(CHAT.el){ chatRender(); if(fresh.length){ chatMarkRead(); snd("pop"); } }
+  else fresh.forEach(m=>{ if(Date.now()-m.t<120000) chatNotify(m); });
+  chatBadge(); }
+const chatShort=t=>t.length>64?t.slice(0,62)+"…":t;
+function chatNotify(m){ if(curScreen!=="hub") return; snd("ding"); if(HUB&&!OB.on) say(m.from,chatShort(m.txt),5000);
+  document.querySelectorAll(".chatPop").forEach(x=>x.remove());
+  const n=document.createElement("button"); n.className="chatPop"; n.innerHTML=`<span class="chatPopI">${icon("💬")}</span><span><b>${nm(m.from)}</b><span>${artText(chatShort(m.txt))}</span></span>`;
+  n.onclick=()=>{ n.remove(); chatOpen(); }; document.body.appendChild(n); setTimeout(()=>n.classList.add("out"),4200); setTimeout(()=>n.remove(),4700); }
+function chatBadge(){ const n=chatUnread(); document.querySelectorAll(".chatBadge").forEach(b=>{ b.textContent=n>9?"9+":String(n); b.hidden=!n; }); }
+function chatMarkRead(){ S.chatRead=Date.now(); save(); chatBadge(); if(online()) push("papo-lido/p"+S.me,{t:S.chatRead}); }
+function chatSend(txt){ txt=String(txt||"").replace(/\s+/g," ").trim().slice(0,300); if(!txt) return false;
+  if(!online()){ toast("O chat funciona com vocês dois online, cada um no seu celular"); return false; }
+  const m={id:"m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), from:S.me, txt, t:Date.now()};
+  CHAT.list=[...CHAT.list,m]; if(CHAT.seen) CHAT.seen.add(m.id); push("papo/"+m.id,m); snd("pop");
+  if(curScreen==="hub"&&HUB&&!OB.on) say(S.me,chatShort(txt),3800);
+  if(CHAT.list.length>170){ CHAT.list.slice(0,CHAT.list.length-150).forEach(o=>{ try{ NET.db.doc("papo/"+o.id).delete(); }catch(e){} }); CHAT.list=CHAT.list.slice(-150); }
+  chatRender(true); return true; }
+function chatDay(d){ const t=new Date(); t.setHours(0,0,0,0); const k=new Date(d); k.setHours(0,0,0,0); const dd=Math.round((t-k)/864e5);
+  return dd===0?"Hoje":dd===1?"Ontem":dd<7?["domingo","segunda","terça","quarta","quinta","sexta","sábado"][d.getDay()]:`${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}`; }
+const chatHM=d=>`${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+function chatRender(toEnd){ const el=CHAT.el; if(!el) return; if(!el.isConnected){ CHAT.el=null; return; }
+  const L=el.querySelector(".chList"), me=S.me, o=1-me, rdO=+((NET.docs["papo-lido/p"+o]||{}).t)||0, atEnd=toEnd||!L.dataset.r||L.scrollHeight-L.scrollTop-L.clientHeight<60;
+  const items=CHAT.list.slice(-120); let h="", day="", lf=-1, lt=0, lastMine=null; items.forEach(m=>{ if(m.from===me) lastMine=m; });
+  if(!items.length) h=`<div class="chEmpty">${icon("💬")}<b>Ainda não tem mensagem</b><span>Manda um oi pra ${nm(o)} 💕</span></div>`;
+  items.forEach((m,k)=>{ const d=new Date(m.t), dk=d.toDateString(); if(dk!==day){ day=dk; h+=`<div class="chDay"><span>${chatDay(d)}</span></div>`; lf=-1; }
+    const mine=m.from===me, grp=m.from===lf&&m.t-lt<180000, nx=items[k+1], tail=!nx||nx.from!==m.from||nx.t-m.t>=180000||new Date(nx.t).toDateString()!==dk; lf=m.from; lt=m.t;
+    const big=m.txt.length<=8 && /^(?:\p{Extended_Pictographic}|\uFE0F|\u200D|\s)+$/u.test(m.txt);
+    h+=`<div class="chMsg ${mine?"me":"them"}${grp?" grp":""}${tail?" tail":""}${big?" big":""}"><div class="chB">${artText(m.txt)}<span class="chT">${chatHM(d)}</span></div></div>`;
+    if(m===lastMine && rdO>=m.t && (k===items.length-1||items.slice(k+1).every(x=>x.from===me))) h+=`<div class="chSeen">visto</div>`; });
+  L.innerHTML=h; L.dataset.r="1"; if(atEnd) L.scrollTop=L.scrollHeight; chatTypingUI(); }
+function chatTypingUI(){ const el=CHAT.el; if(!el) return; const sub=el.querySelector("#chSub"), o=other(), typing=performance.now()-CHAT.typingAt<3800;
+  const txt=typing?"digitando…":(online()&&partnerHere()?"tá online":(()=>{ const d=NET.docs[hubPath(o)]; return d&&d.act?`visto ${ago(d.act)}`:""; })());
+  sub.textContent=txt; sub.classList.toggle("typing",typing); el.querySelector(".chDotS").classList.toggle("on",online()&&partnerHere());
+  clearTimeout(CHAT.typT); if(typing) CHAT.typT=setTimeout(chatTypingUI,3900); }
+function chatOpen(){
+  if(CHAT.el&&CHAT.el.isConnected){ CHAT.el.querySelector(".chIn").focus(); return; }
+  if(!online()){ toast("O chat funciona com vocês dois online, cada um no seu celular",2600); return; }
+  const o=other(), el=document.createElement("div"); el.className="chatSheet";
+  el.innerHTML=`<div class="chHead"><div class="chAv">${esc(nmRaw(o).slice(0,1).toUpperCase())}<i class="chDotS"></i></div><div class="chWho"><b>${nm(o)}</b><span id="chSub"></span></div><button class="chX" aria-label="Fechar conversa">✕</button></div>
+    <div class="chList"></div>
+    <div class="chQuick">${CHAT_QUICK.map((q,k)=>`<button type="button" data-q="${k}" aria-label="Mandar ${esc(q[1])}">${icon(q[0])}</button>`).join("")}</div>
+    <form class="chForm"><input class="chIn" maxlength="300" placeholder="Escreve pra ${esc(nmRaw(o))}…" enterkeyhint="send" autocomplete="off" autocapitalize="sentences"><button class="chSend" aria-label="Enviar">${icon("📨")}</button></form>`;
+  document.body.appendChild(el); CHAT.el=el; if(HUB){ HUB.joyV=null; HUB.keys={}; }
+  const inp=el.querySelector(".chIn");
+  el.querySelector(".chForm").onsubmit=e=>{ e.preventDefault(); if(chatSend(inp.value)){ inp.value=""; } inp.focus(); };
+  el.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>chatSend(CHAT_QUICK[+b.dataset.q][1]));
+  el.querySelector(".chX").onclick=chatClose;
+  inp.addEventListener("input",()=>{ const now=Date.now(); if(online()&&inp.value.trim()&&now-CHAT.lastTypingSent>2000){ CHAT.lastTypingSent=now; pushMe({typing:now}); } });
+  ["pointerdown","touchstart","keydown"].forEach(ev=>el.addEventListener(ev,e=>e.stopPropagation()));
+  const vv=window.visualViewport; const fit=()=>{ if(!vv||!CHAT.el) return; const kb=window.innerHeight-vv.height>80; el.classList.toggle("kb",kb); if(kb){ el.style.top=(vv.offsetTop+6)+"px"; el.style.height=(vv.height-12)+"px"; el.style.bottom="auto"; } else { el.style.top=el.style.height=el.style.bottom=""; } const L=el.querySelector(".chList"); L.scrollTop=L.scrollHeight; };
+  if(vv){ vv.addEventListener("resize",fit); vv.addEventListener("scroll",fit); } el._fit=fit;
+  requestAnimationFrame(()=>el.classList.add("on")); chatRender(true); chatMarkRead(); snd("pop");
+}
+function chatClose(){ const el=CHAT.el; if(!el) return; CHAT.el=null; const vv=window.visualViewport; if(vv&&el._fit){ vv.removeEventListener("resize",el._fit); vv.removeEventListener("scroll",el._fit); }
+  const inp=el.querySelector(".chIn"); if(inp) inp.blur(); el.classList.remove("on"); setTimeout(()=>el.remove(),220); chatBadge(); }
 const MAIL={list:[], sheet:null, unreadN:0};
 const PAPERS=["#fff8ee","#ffe9ef","#eaf6ff","#f1ffe8"];
 const meNow=()=> online()? S.me : actor();
@@ -5114,6 +5273,7 @@ function hubNet(path){
     if(d.cine && d.cine.t && d.cine.t!==HUB.lastCine){ const fresh=Date.now()-d.cine.t<30000; HUB.lastCine=d.cine.t; if(fresh) cineApply(d.cine,true); }
     if(d.fish && d.fish.t && d.fish.t!==HUB.lastFish){ const fresh=Date.now()-d.fish.t<30000; HUB.lastFish=d.fish.t; if(fresh) setTimeout(()=>fishRemote(o,d.fish),W3.chars[o].path&&W3.chars[o].path.length?2200:0); }
     if(d.place!==HUB.lastPlaceO){ HUB.lastPlaceO=d.place; refreshBanners(); }
+    if(d.typing && d.typing!==HUB.lastTyping){ const first=HUB.lastTyping===undefined; HUB.lastTyping=d.typing; if(!first||Date.now()-d.typing<6000){ CHAT.typingAt=performance.now(); chatTypingUI(); } }
     if(typeof d.x==="number"){ const dst=(HUB.dest&&HUB.dest[o])||HUB.pos[o]; if(Math.abs(dst.x-d.x)>.002||Math.abs(dst.y-d.y)>.002) walkTo(o, d.x, d.y, null, true); }
     if(d.tv && d.tv.t && d.tv.t!==HUB.lastTv){ const fresh=Date.now()-d.tv.t<15*60e3; HUB.lastTv=d.tv.t; if(fresh) tvRemote(d.tv); }
     if(d.jump && d.jump.t && d.jump.t!==HUB.lastJump){ const fresh=Date.now()-d.jump.t<4000; HUB.lastJump=d.jump.t; if(fresh) jumpChar(o,true); }
