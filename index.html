@@ -789,7 +789,7 @@ let S;
 try{ const saved=JSON.parse(localStorage.getItem(KEY)||"null")||{}; S=Object.assign(JSON.parse(JSON.stringify(DEF)), saved); S.wins=Object.assign(JSON.parse(JSON.stringify(DEF.wins)),saved.wins||{}); }
 catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
-if(!S.look45){ S.look44=S.look45=true; [0,1].forEach(i=>{ const n=S.players[i]&&S.players[i].name; S.players[i]=Object.assign({},DEF.players[i],{name:n||DEF.players[i].name}); }); save(); }
+if(!S.look51){ S.look44=S.look45=S.look46=S.look51=true; [0,1].forEach(i=>{ const n=S.players[i]&&S.players[i].name; S.players[i]=Object.assign({},DEF.players[i],{name:n||DEF.players[i].name}); }); save(); }
 [0,1].forEach(i=>{ const q=S.players[i]; if(q && q.wrist==null){ q.wrist= q.acc===3?1:0; save(); } });
 if(!S.look46){ S.look46=true; const q=S.players[0]; if(q && q.hair===6) q.hair=8; save(); }   // v4.4: bonequinhos parecidos com vocês
 const nm = i => esc(S.players[i].name || (i? "Jogador 2":"Jogador 1"));
@@ -1497,7 +1497,7 @@ async function flush(path){
 }
 function goOffline(msg){ if(NET.ro) return; NET.ro=true; toast(msg,3200); refreshStatus(); }
 function pushMe(extra={}){
-  myHub=Object.assign({}, myHub, {look:S.players[S.me], act:Date.now()}, extra);
+  myHub=Object.assign({}, myHub, {look:S.players[S.me], lookV:LOOK_V, act:Date.now()}, extra);
   push(hubPath(S.me), myHub);
 }
 async function initNet(){
@@ -1511,7 +1511,7 @@ async function initNet(){
     if(!db) return;
     NET.db=db;
     // testa escrita: se não puder escrever, fica no modo mesmo celular
-    const me=S.me; myHub={look:S.players[me], act:Date.now(), x:S.pos[me].x, y:S.pos[me].y, place:"hub"};
+    const me=S.me; myHub={look:S.players[me], lookV:LOOK_V, act:Date.now(), x:S.pos[me].x, y:S.pos[me].y, place:"hub"};
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
@@ -1523,7 +1523,7 @@ async function initNet(){
 function netChanged(path){
   if(path===hubPath(other())){
     const d=NET.docs[path];
-    if(d && d.look && typeof d.look==="object"){ const L=sanitizeLook(d.look); if(JSON.stringify(L)!==JSON.stringify(S.players[other()])){ S.players[other()]=L; save(); if(curScreen==="hub") redrawChars(); } }
+    if(d && d.look && typeof d.look==="object" && (d.lookV||0)>=LOOK_V){ /* visual salvo por uma versão antiga do jogo não desfaz o visual novo */ const L=sanitizeLook(d.look); if(JSON.stringify(L)!==JSON.stringify(S.players[other()])){ S.players[other()]=L; save(); if(curScreen==="hub") redrawChars(); } }
   }
   if(screenNet) screenNet(path, NET.docs[path]);
   if(curScreen==="hub") hubNet(path);
@@ -1545,7 +1545,8 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "5.0";
+const VERSION = "5.1";
+const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
