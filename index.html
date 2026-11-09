@@ -497,7 +497,7 @@ const NET={db:null, on:false, ro:false, docs:{}, subs:{}, w:{}, ready:false};
 const hubPath = i => "hub/p"+i;
 let myHub={};
 function online(){ return NET.on && !NET.ro; }
-function partnerHere(){ if(NET.p2p) return online() && NET.p2p.connected(); const d=NET.docs[hubPath(other())]; return !!(online() && d && d.act && Date.now()-d.act < 3*60e3); }
+function partnerHere(){ if(NET.p2p) return online() && NET.p2p.connected() && NET.partnerRole!==S.me; const d=NET.docs[hubPath(other())]; return !!(online() && d && d.act && Date.now()-d.act < 3*60e3); }
 function push(path, data){
   if(!online()) return;
   const w=NET.w[path]||(NET.w[path]={busy:false,next:null}); w.next=data;
@@ -524,7 +524,7 @@ async function initNet(){
     let db=null;
     if(window.claude && typeof window.claude.use==="function") db=await window.claude.use("db");
     else if(window.Peer && ROOM.indexOf("__")!==0){
-      NET.p2p=makeP2PDB(); NET.p2p.onState=()=>{ refreshStatus(); if(curScreen==="hub") refreshBanners(); };
+      NET.p2p=makeP2PDB(); NET.p2p.onState=()=>{ refreshStatus(); if(curScreen==="hub") refreshBanners(); if(S.picked && NET.p2p.connected() && NET.partnerRole===S.me && !document.querySelector(".roleFix")) roleConflict(); };
       if(S.picked) NET.p2p.start(S.me); db=NET.p2p.db;
     }
     if(!db) return;
@@ -581,27 +581,59 @@ function makeP2PDB(){
   function onData(m){
     if(!m||typeof m!=="object") return;
     if(m.t==="set" && typeof m.p==="string") apply(m.p, m.d, m.ts);
+    if(m.t==="hello"){ NET.partnerRole=m.role; onState(); }
     if(m.t==="sync" && m.s && typeof m.s==="object") for(const [p,e] of Object.entries(m.s)) if(e&&typeof e.ts==="number") apply(p,e.d,e.ts);
   }
   function setupConn(c){
-    c.on("open",()=>{ conns=[...conns.filter(x=>x!==c && x.open), c]; c.send({t:"sync", s:store}); onState(); });
+    c.on("open",()=>{ conns=[...conns.filter(x=>x!==c && x.open), c]; lastOpen=Date.now(); clearTimeout(pendT); c.send({t:"sync", s:store}); c.send({t:"hello",role}); setSt("conectado"); });
     c.on("data",onData);
-    const drop=()=>{ conns=conns.filter(x=>x!==c); onState(); };
+    const drop=()=>{ conns=conns.filter(x=>x!==c); lastOpen=Date.now(); if(!connected()) setSt(isHost?"esperando":"procurando"); };
     c.on("close",drop); c.on("error",drop);
   }
   const connected=()=>conns.some(c=>c.open);
-  function tryConnect(){ if(!peer||peer.destroyed||peer.disconnected||connected()) return; try{ setupConn(peer.connect(`mundinho-${ROOM}-p${1-role}`,{reliable:true})); }catch(e){} }
-  function start(r){
-    if(peer && role===r) return; stop(); role=r;
-    try{ peer=new window.Peer(`mundinho-${ROOM}-p${r}`, Object.assign({debug:0}, window.__PEER_OPTS||{})); }catch(e){ return; }
-    peer.on("open",()=>{ tryConnect(); onState(); });
-    peer.on("connection",c=>setupConn(c));
-    peer.on("disconnected",()=>{ try{ peer.reconnect(); }catch(e){} });
-    peer.on("error",e=>{ if(e&&e.type==="unavailable-id"){ NET.dupRole=true; onState(); } });
-    clearInterval(tryT); tryT=setInterval(tryConnect,4000);
+  const HOST=`mundinho-${ROOM}-host`;
+  let isHost=false, st="iniciando", pendT=0, lastOpen=0;
+  const setSt=s=>{ st=s; onState(); };
+  function mkPeer(id){
+    try{ return new window.Peer(id, Object.assign({debug:0, config:{iceServers:[
+      {urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"},
+      {urls:"turn:eu-0.turn.peerjs.com:3478",username:"peerjs",credential:"peerjsp"},
+      {urls:"turn:us-0.turn.peerjs.com:3478",username:"peerjs",credential:"peerjsp"}]}}, window.__PEER_OPTS||{})); }catch(e){ setSt("erro"); return null; }
   }
-  function stop(){ clearInterval(tryT); conns.forEach(c=>{ try{c.close();}catch(e){} }); conns=[]; if(peer){ try{ peer.destroy(); }catch(e){} } peer=null; }
-  document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ if(peer&&peer.disconnected){ try{peer.reconnect();}catch(e){} } tryConnect(); } });
+  function killPeer(){ if(peer){ try{ peer.destroy(); }catch(e){} } peer=null; }
+  function becomeHost(){
+    killPeer(); isHost=true; setSt("conectando");
+    const pr=mkPeer(HOST); if(!pr) return; peer=pr;
+    pr.on("open",()=>{ if(peer!==pr) return; setSt("esperando"); });
+    pr.on("connection",c=>setupConn(c));
+    pr.on("disconnected",()=>{ if(peer===pr) try{ pr.reconnect(); }catch(e){} });
+    pr.on("error",e=>{ if(peer!==pr) return; if(e&&e.type==="unavailable-id") becomeGuest(); else setSt("erro "+(e&&e.type||"")); });
+  }
+  function becomeGuest(){
+    killPeer(); isHost=false; setSt("conectando");
+    const pr=mkPeer(undefined); if(!pr) return; peer=pr;
+    pr.on("open",()=>{ if(peer!==pr) return; setSt("procurando"); dial(); });
+    pr.on("connection",c=>setupConn(c));
+    pr.on("disconnected",()=>{ if(peer===pr) try{ pr.reconnect(); }catch(e){} });
+    pr.on("error",e=>{ if(peer!==pr) return; if(e&&e.type==="peer-unavailable") becomeHost(); else setSt("erro "+(e&&e.type||"")); });
+  }
+  function dial(){
+    if(!peer||peer.destroyed||peer.disconnected||connected()||isHost) return;
+    try{ const c=peer.connect(HOST,{reliable:true}); setupConn(c); clearTimeout(pendT); pendT=setTimeout(()=>{ if(!c.open && !connected()){ try{c.close();}catch(e){} becomeHost(); } },9000); }catch(e){}
+  }
+  function tick(){
+    if(connected()) return;
+    if(!peer||peer.destroyed){ becomeHost(); return; }
+    if(isHost){ if(st==="esperando" && Date.now()-lastOpen>25000 && Math.random()<.25){ /* pode ser host "fantasma": tenta como convidado */ becomeGuest(); } }
+    else dial();
+  }
+  function start(r){
+    role=r; send({t:"hello",role:r});
+    if(peer) return;
+    becomeHost(); clearInterval(tryT); tryT=setInterval(tick,5000);
+  }
+  function stop(){ clearInterval(tryT); conns.forEach(c=>{ try{c.close();}catch(e){} }); conns=[]; killPeer(); }
+  document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ if(peer&&peer.disconnected){ try{peer.reconnect();}catch(e){} } tick(); } });
   const db={
     doc:(p)=>({path:p, get:async()=>snap(p), set:async(d)=>write(p,d), update:async(d)=>write(p,Object.assign({},store[p]&&store[p].d,d)),
       delete:async()=>write(p,null), onSnapshot:(next)=>{ (docL[p]=docL[p]||[]).push(next); setTimeout(()=>next(snap(p)),0); return ()=>{ docL[p]=docL[p].filter(f=>f!==next); }; },
@@ -609,7 +641,7 @@ function makeP2PDB(){
     collection:(c)=>({path:c, doc:(id)=>db.doc(c+"/"+(id||Math.random().toString(36).slice(2))),
       onSnapshot:(next)=>{ (colL[c]=colL[c]||[]).push(next); setTimeout(()=>next(qsnap(c)),0); return ()=>{ colL[c]=colL[c].filter(f=>f!==next); }; }})
   };
-  return {db, start, connected, set onState(f){ onState=f; }};
+  return {db, start, connected, status:()=>st, set onState(f){ onState=f; }};
 }
 
 /* =================== TECLADO =================== */
@@ -822,7 +854,7 @@ function refreshStatus(){
   if(online()){
     const d=NET.docs[hubPath(other())];
     if(partnerHere()) el.innerHTML=`<span class="dot on"></span>${nm(other())} tá online`;
-    else if(NET.p2p) el.innerHTML= NET.dupRole? `<span class="dot"></span>${nm(S.me)} já está aberto em outro celular` : `<span class="dot"></span>Esperando ${nm(other())} entrar… ${d&&d.act?`(visto ${ago(d.act)})`:""}`;
+    else if(NET.p2p){ const s=NET.p2p.status(); el.innerHTML=`<span class="dot"></span>${s.startsWith("erro")?`Sem conexão (${esc(s.slice(5)||"rede")}) · tentando de novo…`: s==="conectando"?"Conectando…":`Esperando ${nm(other())} abrir o jogo… ${d&&d.act?`(visto ${ago(d.act)})`:""}`}`; }
     else el.innerHTML=`<span class="dot"></span>Online · ${nm(other())} ${d&&d.act?`visto ${ago(d.act)}`:"ainda não entrou"}`;
   } else el.innerHTML=`<span class="dot"></span>Modo mesmo celular`;
   refreshTags(); refreshCtrl();
@@ -914,6 +946,11 @@ function whoModal(){
   m.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{ const i=+o.dataset.i; if(i===S.me) return;
     S.me=i; save(); myHub={}; m.remove(); if(NET.p2p) NET.p2p.start(S.me); if(online()) pushMe({x:S.pos[S.me].x,y:S.pos[S.me].y,place:"hub"}); hub(); });
   m.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{ m.remove(); customize(+b.dataset.c); });
+}
+function roleConflict(){
+  const m=modal(`<div class="roleFix"></div><h2>Ops! Os dois escolheram ${nm(S.me)} 😅</h2><p>Cada celular precisa ser um personagem. Quem é você neste celular?</p>
+    <div class="whoPick">${[0,1].map(i=>`<div class="opt" data-i="${i}">${av(i,"wave")}<div class="nm">Sou ${nm(i)}</div></div>`).join("")}</div>`);
+  m.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{ S.me=+o.dataset.i; save(); m.remove(); myHub={}; if(NET.p2p) NET.p2p.start(S.me); pushMe({x:S.pos[S.me].x,y:S.pos[S.me].y,place:"hub"}); hub(); });
 }
 function firstRun(){
   const m=modal(`<h2>Oi! Quem tá jogando aqui? 💞</h2><p>Escolha o seu bonequinho. Dá pra trocar depois no 🎨.</p>
