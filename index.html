@@ -564,7 +564,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "1.3";
+const VERSION = "1.3.1";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -1954,6 +1954,18 @@ function customize(i){
   root.querySelector("#save").onclick=()=>{ p.name=root.querySelector("#name").value.trim().slice(0,12)||(i?"Jogador 2":"Jogador 1"); S.players[i]=p; save(); if(online()&&i===S.me) pushMe({}); hub(); };
 }
 
+/* =================== ATUALIZAÇÃO AUTOMÁTICA (site) =================== */
+function checkUpdate(){
+  if(window.claude || location.protocol==="file:") return;
+  fetch("version.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(j=>{
+    if(j && j.v && j.v!==VERSION){
+      const u=location.pathname+"?v="+encodeURIComponent(j.v);
+      if(!sessionStorage.getItem("upd-"+j.v)){ try{ sessionStorage.setItem("upd-"+j.v,"1"); }catch(e){} location.replace(u); }
+    }
+  }).catch(()=>{});
+}
+checkUpdate(); setInterval(checkUpdate, 90000);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden) checkUpdate(); });
 /* =================== INÍCIO =================== */
 hub();
 if(!S.picked) firstRun();
