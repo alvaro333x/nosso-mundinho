@@ -962,6 +962,14 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .misL{display:flex;flex-direction:column;gap:7px}.mis{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:9px;background:#fff;border-radius:14px;padding:8px 11px;box-shadow:inset 0 0 0 1.5px #f2dfe5}
 .mis i{font-style:normal;font-size:1.2rem;text-align:center}.mis b{font-size:.86rem;font-weight:600;display:block;margin-bottom:4px}.mis u{display:block;height:6px;border-radius:9px;background:#f4e6eb;overflow:hidden;text-decoration:none}.mis s{display:block;height:100%;background:#ff7a93;text-decoration:none;border-radius:9px}
 .mis span{font-weight:700;color:#8a7a80;font-size:.85rem}.mis.ok{box-shadow:inset 0 0 0 2px #7fd1a6;background:#f2fbf6}.mis.ok s{background:#58b394}.mis.ok span{color:#3f9a72;font-size:1.1rem}
+.usSt{position:absolute;bottom:-3px;right:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#ff8a3d;color:#fff;font:700 .62rem/17px Fredoka,sans-serif;font-style:normal;box-shadow:0 0 0 2px #fff7f2}.usSt[hidden]{display:none}.usSt.risk{animation:stkP 1.2s ease-in-out infinite}
+@keyframes stkP{50%{transform:scale(1.18);background:#ff5a3d}}
+.stk{margin-top:10px;background:linear-gradient(135deg,#fff3e6,#ffe9ef);border-radius:16px;padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center;box-shadow:inset 0 0 0 1.5px #ffd9b8}
+.stk.risk{box-shadow:inset 0 0 0 2px #ff8a3d}.stkN{display:flex;flex-direction:column;align-items:center;line-height:1.05}.stkN b{font-size:1.7rem;color:#e8622e}.stkN span{font-size:.72rem;font-weight:600}.stkN small{font-size:.66rem;color:#8a7a80}
+.stkW{display:flex;gap:4px;justify-content:space-between}.stkW span{display:flex;flex-direction:column;align-items:center;gap:1px;flex:1}.stkW i{font-style:normal;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;box-shadow:inset 0 0 0 1.5px #f2dfe5;font-size:.9rem;color:#c9a7b3}
+.stkW .on i{background:#ffe1cc;box-shadow:inset 0 0 0 2px #ff8a3d}.stkW .frz i{background:#e3f4ff;box-shadow:inset 0 0 0 2px #7ec8ff}.stkW .now i{box-shadow:inset 0 0 0 2px #ff8a3d;animation:stkP 1.4s ease-in-out infinite}.stkW u{text-decoration:none;font-size:.6rem;color:#8a7a80;font-weight:700}
+.stkS{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;font-size:.78rem;flex-wrap:wrap}.stkR{grid-column:1/-1;font-size:.8rem;font-weight:700;color:#e8622e}
+.stkB{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}.stkB .btn{width:auto;margin:0;flex:1;padding:7px 8px;font-size:.78rem}
 .usGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.usGrid .btn{padding:10px 6px;font-size:.84rem;margin:0}
 .shopTabs{display:flex;gap:6px;margin:4px 0 10px;flex-wrap:wrap}.shopG{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:7px}
 .shopI{background:#fff;border:0;border-radius:14px;padding:9px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:inset 0 0 0 1.5px #f2dfe5;font:inherit;color:inherit;cursor:pointer}
@@ -1792,7 +1800,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "7.2";
+const VERSION = "7.3";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2953,13 +2961,13 @@ function ambientTick(dt){
 /* =================== NÓS DOIS: missões do dia, moedinhas, sequência, datas, "pensei em você", foto/álbum, lojinha e decoração =================== */
 const dayKey=(d=new Date())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 // carteira e missões: cada celular escreve só o próprio "casal/pN" (sem briga de escrita); o saldo e o progresso somam os dois
-function csGet(){ const c=S.cs&&typeof S.cs==="object"?S.cs:(S.cs={}); c.earned=+c.earned||0; c.spent=+c.spent||0; c.c=c.c&&typeof c.c==="object"?c.c:{}; c.days=Array.isArray(c.days)?c.days:[]; c.done=c.done&&typeof c.done==="object"?c.done:{};
+function csGet(){ const c=S.cs&&typeof S.cs==="object"?S.cs:(S.cs={}); c.earned=+c.earned||0; c.spent=+c.spent||0; c.c=c.c&&typeof c.c==="object"?c.c:{}; c.days=Array.isArray(c.days)?c.days:[]; c.done=c.done&&typeof c.done==="object"?c.done:{}; c.frz=+c.frz||0; c.fd=Array.isArray(c.fd)?c.fd:[]; c.ms=Array.isArray(c.ms)?c.ms:[]; c.best=+c.best||0;
   if(!c.hats||typeof c.hats!=="object") c.hats={0:[0],1:[0]}; [0,1].forEach(i=>{ if(!Array.isArray(c.hats[i])) c.hats[i]=[0]; });
   if(c.day!==dayKey()){ c.day=dayKey(); c.c={}; c.done={}; }
   if(!c.mig){ c.mig=1; const z=S.kz&&+S.kz.coins||0; if(z>0){ c.earned+=z; S.kz.coins=0; } save(); } return c; }
 function csOther(){ if(!online()) return null; const d=NET.docs["casal/p"+other()]; return d&&typeof d==="object"?d:null; }
 let csT=0, csTm=null;
-function csPush(){ if(!online()) return; clearTimeout(csTm); const go=()=>{ csT=Date.now(); const c=csGet(); push("casal/p"+S.me,{earned:c.earned,spent:c.spent,day:c.day,c:c.c,days:c.days.slice(-60),done:c.done,hats:c.hats,t:Date.now()}); };
+function csPush(){ if(!online()) return; clearTimeout(csTm); const go=()=>{ csT=Date.now(); const c=csGet(); push("casal/p"+S.me,{earned:c.earned,spent:c.spent,day:c.day,c:c.c,days:c.days.slice(-90),done:c.done,hats:c.hats,frz:c.frz,fd:c.fd.slice(-40),ms:c.ms,best:c.best,t:Date.now()}); };
   if(Date.now()-csT>1200) go(); else csTm=setTimeout(go,1200); }
 function cBal(){ const c=csGet(), o=csOther(); return Math.max(0,c.earned-c.spent+(o?(+o.earned||0)-(+o.spent||0):0)); }
 function cEarn(n,why){ n=Math.round(n); if(!(n>0)) return; const c=csGet(); c.earned+=n; save(); csPush(); coinPop(n,why); csRefresh(); }
@@ -2990,17 +2998,48 @@ function misToday(){ const day=dayKey(); if(MIS_CACHE.day===day) return MIS_CACH
   MIS_CACHE={day,list}; return list; }
 function misProg(m){ const c=csGet(), o=csOther(); return (+c.c[m.ev]||0)+(o&&o.day===c.day&&o.c?(+o.c[m.ev]||0):0); }
 function misAllDone(){ return misToday().every(m=>misProg(m)>=m.n); }
-function csStreak(){ const c=csGet(), o=csOther(), D=new Set([...c.days,...(o&&Array.isArray(o.days)?o.days:[])]); const d=new Date(); let n=0; if(!D.has(dayKey(d))) d.setDate(d.getDate()-1); while(D.has(dayKey(d))){ n++; d.setDate(d.getDate()-1); } return n; }
+function csSet(key){ const c=csGet(), o=csOther(); return new Set([...(c[key]||[]),...(o&&Array.isArray(o[key])?o[key]:[])]); }
+function csStreak(){ const D=csSet("days"), F=csSet("fd"), d=new Date(); let n=0; if(!D.has(dayKey(d))) d.setDate(d.getDate()-1); while(D.has(dayKey(d))||F.has(dayKey(d))){ n++; d.setDate(d.getDate()-1); } return n; }
+function csBest(){ const c=csGet(), o=csOther(); return Math.max(c.best,o?+o.best||0:0,csStreak()); }
+function frzLeft(){ const c=csGet(), o=csOther(); return Math.max(0,c.frz+(o?+o.frz||0:0)-csSet("fd").size); }
+// marcos da sequência: moedinhas e protetores de presente
+const STREAK_MS=[[3,50,0],[7,120,1],[14,200,1],[21,250,0],[30,400,2],[50,600,1],[75,800,1],[100,1500,3]];
+function streakMilestones(){ const st=csStreak(), c=csGet(), got=csSet("ms"); c.best=Math.max(c.best,st);
+  STREAK_MS.forEach(([n,coins,fz],k)=>{ if(st>=n&&!got.has(n)){ c.ms.push(n); c.frz+=fz; setTimeout(()=>{ usToast(`🔥 ${n} dias seguidos!`,fz?`conquista nova + ${fz} protetor${fz>1?"es":""} ❄️`:"conquista nova!"); snd("fanfare"); cEarn(coins,`${n} dias`); if(HUB&&W3) [0,1].forEach(i=>{ const C=W3.chars[i]; heartsW(C.root.position.x,2.3,C.root.position.z,["🔥","✨","💖"],12); }); },3400+k*900); } });
+  save(); csPush(); }
+// se um dia passou em branco e vocês têm protetor, ele segura a sequência sozinho
+function frzCheck(){ const D=csSet("days"), F=csSet("fd"), c=csGet(); const miss=[]; const d=new Date(); d.setDate(d.getDate()-1);
+  for(let k=0;k<7;k++){ const key=dayKey(d); if(D.has(key)||F.has(key)) break; miss.push(key); d.setDate(d.getDate()-1); }
+  if(!miss.length) return; const prev=dayKey(d); if(!(D.has(prev)||F.has(prev))) return; if(miss.length>frzLeft()) return;
+  miss.forEach(k=>c.fd.push(k)); save(); csPush(); setTimeout(()=>usToast("❄️ Protetor usado!",`a sequência de ${csStreak()} dias tá salva`),900); }
 function usToast(a,b){ if(HUB&&curScreen==="hub"||KZ.on||OB.on) bigToast(a,b); else toast(`${a} ${b||""}`,2600); }
 function mis(ev,n=1){ try{ const c=csGet(), L=misToday(), before=L.map(m=>misProg(m)>=m.n), allB=before.every(Boolean); c.c[ev]=(+c.c[ev]||0)+n; save();
     L.forEach((m,k)=>{ if(m.ev===ev&&!before[k]&&misProg(m)>=m.n){ c.done[m.id]=1; setTimeout(()=>{ usToast("Missão cumprida! 🎉",m.t); snd("fanfare"); cEarn(30,"missão"); },500); } });
-    if(!allB&&misAllDone()){ const day=dayKey(); if(!c.days.includes(day)) c.days.push(day); setTimeout(()=>{ const st=csStreak(); usToast(`${st} ${st===1?"dia":"dias"} seguidos 🔥`,"as 3 missões de hoje!"); cEarn(40+Math.min(7,st)*10,"bônus do dia"); },2300); }
+    if(!allB&&misAllDone()){ const day=dayKey(); if(!c.days.includes(day)) c.days.push(day); setTimeout(()=>{ const st=csStreak(); usToast(`${st} ${st===1?"dia":"dias"} seguidos 🔥`,"a sequência tá viva por hoje!"); cEarn(40+Math.min(7,st)*10,"bônus do dia"); streakMilestones(); },2300); }
     save(); csPush(); csRefresh(); }catch(e){} }
 function csRefresh(){ const c=csGet(); let ch=false; misToday().forEach(m=>{ if(misProg(m)>=m.n&&!c.done[m.id]){ c.done[m.id]=1; ch=true; toast(`Missão cumprida juntos: ${m.t} 🎉`,2600); } });
-  if(misAllDone()&&!c.days.includes(c.day)){ c.days.push(c.day); ch=true; } if(ch){ save(); csPush(); }
-  const b=document.querySelector("#bUs .usDot"); if(b) b.hidden=misAllDone();
+  if(misAllDone()&&!c.days.includes(c.day)){ c.days.push(c.day); ch=true; streakMilestones(); } if(ch){ save(); csPush(); }
+  const b=document.querySelector("#bUs .usDot"); if(b) b.hidden=misAllDone(); const bs=document.querySelector("#bUs .usSt"); if(bs){ const st=csStreak(); bs.textContent=st; bs.hidden=!st; bs.classList.toggle("risk",!misAllDone()); }
   if(US.el&&document.body.contains(US.el)) US.draw(); }
 function csNet(path){ csRefresh(); }
+function hoursLeft(){ const d=new Date(), m=new Date(d); m.setHours(24,0,0,0); return (m-d)/36e5; }
+function streakNag(){ if(!HUB) return; const st=csStreak(), left=misToday().filter(m=>misProg(m)<m.n).length; if(!left) return;
+  const h=hoursLeft(), when=h<1?`${Math.max(1,Math.round(h*60))} min`:`${Math.floor(h)}h`;
+  if(st>0) bigToast(`🔥 ${st} ${st===1?"dia":"dias"} em jogo!`,`falta${left>1?"m":""} ${left} ${left>1?"missões":"missão"} · acaba em ${when}`);
+  else if(S.nagDay!==dayKey()){ S.nagDay=dayKey(); save(); toast("💞 Tem 3 missões novas hoje. Toca no 💞 pra ver",3000); } }
+function nudgeSend(){ if(!online()){ toast("Cutucar funciona com vocês dois online"); return; } if(Date.now()-(S.nudgeT||0)<60000){ toast("Já cutucou! Espera um pouquinho 😅"); return; } S.nudgeT=Date.now(); save();
+  const left=misToday().filter(m=>misProg(m)<m.n).map(m=>m.t); push("toque/p"+S.me,{t:Date.now(),by:S.me,k:"nudge",left:left.slice(0,3)}); snd("pop"); toast(`Cutucou ${nmRaw(other())} 👉🔥`); }
+// lembrete diário: um evento repetido no calendário do celular avisa todo dia na hora escolhida (não precisa de servidor)
+function remindModal(){ const m=modal(`<div class="usM"><h2>🔔 Lembrete todo dia</h2><p>Coloca um aviso no calendário do celular pra vocês não perderem a sequência 🔥. Ele toca todo dia na hora que escolherem, mesmo com o jogo fechado.</p>
+    <label class="lb">Que horas?</label><input class="txt" type="time" id="rT" value="${esc(S.remT||"20:30")}">
+    <div class="obBtns"><button class="btn pink" id="rGo">Colocar no calendário</button><button class="btn alt" data-close>Agora não</button></div>
+    <p class="small">No iPhone abre a tela do Calendário: toca em "Adicionar". Cada um faz no seu celular.</p></div>`);
+  m.querySelector("#rGo").onclick=()=>{ const t=(m.querySelector("#rT").value||"20:30").split(":"), hh=String(+t[0]||20).padStart(2,"0"), mm=String(+t[1]||0).padStart(2,"0"); S.remT=`${hh}:${mm}`; save();
+    const d=dayKey().replace(/-/g,""), url=location.href.split("?")[0].split("#")[0];
+    const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Nosso Mundinho//PT","CALSCALE:GREGORIAN","BEGIN:VEVENT",`UID:nm-sequencia-${S.me}@nosso-mundinho`,`DTSTAMP:${d}T000000Z`,`DTSTART:${d}T${hh}${mm}00`,"DURATION:PT10M","RRULE:FREQ=DAILY",
+      "SUMMARY:💞 Missões do Nosso Mundinho","DESCRIPTION:Já fizeram as 3 missões de hoje? Não deixa a sequência 🔥 apagar!",`URL:${url}`,"BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:PT0M","DESCRIPTION:Missões do dia no Nosso Mundinho 🔥","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([ics],{type:"text/calendar;charset=utf-8"})); a.download="lembrete-nosso-mundinho.ics"; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },4000);
+    S.remSet=true; save(); m.remove(); toast("Abre o arquivo e toca em Adicionar 🔔",3200); }; }
 const US={el:null,draw:()=>{}};
 
 /* ---------- datas do casal ---------- */
@@ -3029,10 +3068,11 @@ function datesModal(){ const v=JSON.parse(JSON.stringify(dtGet())); v.list=Array
   m.querySelector("#dOk").onclick=()=>{ grab(); dtSave(v); m.remove(); toast("Datas salvas 💕"); usModal(); }; }
 
 /* ---------- "pensei em você" ---------- */
-function thinkSend(){ if(Date.now()-(S.thinkT||0)<4000){ toast("Já foi! 💕"); return; } S.thinkT=Date.now(); save(); if(online()) push("toque/p"+S.me,{t:Date.now(),by:S.me}); mis("pensei"); snd("chime");
+function thinkSend(){ if(Date.now()-(S.thinkT||0)<4000){ toast("Já foi! 💕"); return; } S.thinkT=Date.now(); save(); if(online()) push("toque/p"+S.me,{t:Date.now(),by:S.me,k:"think"}); mis("pensei"); snd("chime");
   if(HUB&&W3){ const C=W3.chars[actor()]; heartsW(C.root.position.x,2.2,C.root.position.z,["💭","💕","💗"],9); charMood(actor(),"happy","kiss",1500); }
   toast(online()?`${nmRaw(other())} vai receber agorinha 💌`:"Pensamento guardado 💕",2200); }
 function thinkCheck(){ if(!online()) return; const d=NET.docs["toque/p"+other()]; if(!d||!(+d.t)) return; if((S.thinkSeen||0)>=d.t) return; S.thinkSeen=+d.t; save();
+  if(d.k==="nudge"){ const who=nmRaw(other()), st=csStreak(); if(HUB&&curScreen==="hub"&&!KZ.on&&!OB.on){ bigToast(`${who} te cutucou 👉`,st?`bora salvar os ${st} dias 🔥`:"bora fazer as missões 💞"); } else toast(`👉 ${who} te cutucou: bora fazer as missões 🔥`,3200); snd("pop"); try{ navigator.vibrate&&navigator.vibrate([80,60,80]); }catch(e){} return; }
   const who=nmRaw(other()), ago=Date.now()-d.t, hh=new Date(+d.t).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
   if(HUB&&curScreen==="hub"&&!KZ.on&&!OB.on){ bigToast(`${who} pensou em você`,ago<90000?"agorinha 💭💕":`às ${hh} 💭💕`); const C=W3.chars[S.me]; heartsW(C.root.position.x,2.3,C.root.position.z,["💭","💕","💗","💖"],12); charMood(S.me,"happy","happy",1800); }
   else toast(`💭 ${who} pensou em você ${ago<90000?"agora":"às "+hh} 💕`,3200);
@@ -3042,14 +3082,20 @@ function thinkCheck(){ if(!online()) return; const d=NET.docs["toque/p"+other()]
 function usModal(){ const m=modal(`<div class="usM" id="usM"></div>`); US.el=m;
   US.draw=()=>{ const box=m.querySelector("#usM"); if(!box) return; const dt=daysTogether(), st=csStreak(), nx=nextDates()[0], L=misToday();
     box.innerHTML=artify(`<div class="usHead">${dt!=null?`<div class="usDays"><b>${dt}</b><span>${dt===1?"dia":"dias"} juntos 💕</span></div>`:`<button class="btn gold small" id="uStart">📅 Quando vocês começaram a namorar?</button>`}
-      <div class="usStats"><span title="dias seguidos">🔥 ${st}</span><span title="moedinhas do casal">🪙 ${cBal()}</span></div></div>
+      <div class="usStats"><span title="moedinhas do casal">🪙 ${cBal()}</span></div></div>
+      <div class="stk ${st&&!misAllDone()?"risk":""}"><div class="stkN"><b>🔥 ${st}</b><span>${st===1?"dia seguido":"dias seguidos"}</span><small>recorde ${csBest()}</small></div>
+        <div class="stkW">${(()=>{ const D=csSet("days"), F=csSet("fd"), out=[]; for(let k=6;k>=0;k--){ const d=new Date(); d.setDate(d.getDate()-k); const key=dayKey(d), today=!k; out.push(`<span class="${D.has(key)?"on":F.has(key)?"frz":today?"now":"off"}"><i>${D.has(key)?"🔥":F.has(key)?"❄️":today?"…":"·"}</i><u>${"DSTQQSS"[d.getDay()]}</u></span>`); } return out.join(""); })()}</div>
+        <div class="stkS">${(()=>{ const nx=STREAK_MS.find(([n])=>n>st); return nx?`<span>Próximo marco: <b>${nx[0]} dias</b> (🪙 ${nx[1]}${nx[2]?` + ❄️`:""})</span>`:""; })()}<span>❄️ ${frzLeft()} ${frzLeft()===1?"protetor":"protetores"}</span></div>
+        ${st&&!misAllDone()?`<div class="stkR">Falta${misToday().filter(m=>misProg(m)<m.n).length>1?"m":""} ${misToday().filter(m=>misProg(m)<m.n).length} pra manter · acaba em ${hoursLeft()<1?Math.max(1,Math.round(hoursLeft()*60))+" min":Math.floor(hoursLeft())+"h"}</div>`:""}
+        <div class="stkB"><button class="btn small alt" id="uFrz">❄️ Protetor 🪙 80</button><button class="btn small alt" id="uRem">🔔 Lembrete diário${S.remSet?" ✓":""}</button>${online()?`<button class="btn small alt" id="uNudge">👉 Cutucar ${esc(nmRaw(other()))}</button>`:""}</div></div>
       ${nx?`<div class="usNext">${nx.ic} ${nx.left===0?`<b>Hoje:</b> ${esc(nx.n)}!`:`${esc(nx.n)} ${nx.left===1?"<b>amanhã</b>":`em <b>${nx.left} dias</b>`} <small>(${fmtD(nx.d)})</small>`}</div>`:""}
       <h3>Missões de hoje</h3><div class="misL">${L.map(mm=>{ const p=Math.min(mm.n,misProg(mm)), ok=p>=mm.n; return `<div class="mis ${ok?"ok":""}"><i>${MIS_G[mm.g][0]}</i><div><b>${esc(mm.t)}</b><u><s style="width:${p/mm.n*100}%"></s></u></div><span>${ok?"✓":`${p}/${mm.n}`}</span></div>`; }).join("")}</div>
-      <p class="small">Cada missão dá 🪙 30. As 3 no mesmo dia dão bônus e aumentam a sequência 🔥. Vale o que cada um fizer, no celular de cada um.</p>
+      <p class="small">Cada missão dá 🪙 30. As 3 no mesmo dia mantêm a sequência 🔥 e dão bônus. Se um dia passar em branco, um protetor ❄️ segura sozinho.</p>
       <div class="usGrid"><button class="btn pink" id="uThink">💭 Pensei em você</button><button class="btn" id="uShop">🛍️ Lojinha</button><button class="btn blue" id="uDecor">🛋️ Decorar a casa</button><button class="btn gold" id="uAlb">📸 Álbum</button><button class="btn alt" id="uDates">📅 Datas</button><button class="btn alt" id="uPh">📷 Tirar foto</button></div>`);
     const on=(id,fn)=>{ const e=box.querySelector(id); if(e) e.onclick=fn; };
     on("#uStart",()=>{ m.remove(); datesModal(); }); on("#uThink",()=>{ thinkSend(); }); on("#uShop",()=>{ m.remove(); shopModal(); }); on("#uDecor",()=>{ m.remove(); decorEdit(); });
-    on("#uAlb",()=>{ m.remove(); albumModal(); }); on("#uDates",()=>{ m.remove(); datesModal(); }); on("#uPh",()=>{ m.remove(); photoOn(); }); };
+    on("#uAlb",()=>{ m.remove(); albumModal(); }); on("#uRem",()=>{ m.remove(); remindModal(); }); on("#uNudge",nudgeSend);
+    on("#uFrz",()=>{ if(frzLeft()>=3){ toast("Já tem 3 protetores ❄️ (o máximo)"); return; } if(!cSpend(80)){ toast("Faltam moedinhas 🪙"); return; } const c=csGet(); c.frz++; save(); csPush(); snd("fanfare"); toast("❄️ Protetor guardado! Ele salva a sequência se um dia passar em branco",3000); US.draw(); }); on("#uDates",()=>{ m.remove(); datesModal(); }); on("#uPh",()=>{ m.remove(); photoOn(); }); };
   US.draw(); }
 
 /* ---------- chapéus ---------- */
@@ -4194,7 +4240,7 @@ function hub(){
   pushMe({place:"hub", x:S.pos[S.me].x, y:S.pos[S.me].y});
   const root=render(`
     <div class="scene" id="scene"><div id="gl" style="position:absolute;inset:0;z-index:1"></div><div class="ov" id="ov"></div>
-      <div class="hudTop"><div class="hudG"><button class="hb" id="bMap" aria-label="Lugares">🗺️</button><button class="hb" id="bSky" aria-label="Céu">🌙</button><button class="hb usHb" id="bUs" aria-label="Nós dois: missões, lojinha e datas">💞<i class="usDot"></i></button><button class="hb" id="bPh" aria-label="Tirar foto">📷</button></div>
+      <div class="hudTop"><div class="hudG"><button class="hb" id="bMap" aria-label="Lugares">🗺️</button><button class="hb" id="bSky" aria-label="Céu">🌙</button><button class="hb usHb" id="bUs" aria-label="Nós dois: missões, lojinha e datas">💞<i class="usDot"></i><i class="usSt" hidden></i></button><button class="hb" id="bPh" aria-label="Tirar foto">📷</button></div>
         <div class="pill" id="status"></div>
         <div class="hudG"><button class="hb chatHb" id="bChat" aria-label="Conversa">💬<i class="chatBadge" hidden></i></button><button class="hb" id="bSnd" aria-label="Sons">🎵</button><button class="hb" id="bTrophy" aria-label="Placar">🏆</button></div></div>
       <div class="bannerBox" id="banners"></div><div class="ctrlChip" id="ctrlBar"></div><div class="joy" id="joy"><div class="joyK"></div></div>
@@ -4242,7 +4288,7 @@ function hub(){
   screenCleanup=()=>{ if(OB.on) obbyExit(true); if(KZ.on) kzExit(true); cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); if(TV.mode) tvOff(false); TV.scr=null; TV.rem=null; HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
   bindActs3(root);
   mailTick(); refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags(); SKY.force=true; refreshSkyBtn(); starsChanged();
-  root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook; root.querySelector("#bUs").onclick=usModal; root.querySelector("#bPh").onclick=photoOn; PH.on=false; DEC.edit=false; DEC.el=null; DEC.drag=null; setTimeout(()=>{ if(!HUB) return; csRefresh(); thinkCheck(); celebrateCheck(); renderDecor(); photoWall(); },1800);
+  root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook; root.querySelector("#bUs").onclick=usModal; root.querySelector("#bPh").onclick=photoOn; PH.on=false; DEC.edit=false; DEC.el=null; DEC.drag=null; setTimeout(()=>{ if(!HUB) return; csRefresh(); thinkCheck(); celebrateCheck(); renderDecor(); photoWall(); },1800); setTimeout(()=>{ if(!HUB) return; frzCheck(); streakMilestones(); csRefresh(); if(!S.nagT||Date.now()-S.nagT>3*36e5){ S.nagT=Date.now(); save(); streakNag(); } },online()?6500:2600);
   root.querySelector("#bTrophy").onclick=trophyModal; root.querySelector("#bSnd").onclick=soundModal; root.querySelector("#bChat").onclick=chatOpen; chatBadge();
   root.querySelector("#status").onclick=()=>{ const i=NET.p2p?NET.p2p.info():{}; modal(`<h2>Conexão</h2><p>Versão <b>${VERSION}</b> · você é <b>${nm(S.me)}</b></p>
     <p>Direta: <b>${esc(i.p2p||"-")}</b>${i.p2pOpen?" ✅":""}<br>Pela internet: <b>${esc(i.relay||"-")}</b><br>${nm(other())} visto: <b>${i.visto?ago(i.visto):"ainda não"}</b></p>
