@@ -898,6 +898,10 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .chatPop>span:last-child{display:flex;flex-direction:column;min-width:0}.chatPop b{font-size:.8rem}.chatPop span span{font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .chatPopI{width:32px;height:32px;border-radius:50%;background:var(--pink);display:grid;place-items:center;flex-shrink:0;color:#fff;--ia:#fff}.chatPopI .ico{width:20px!important;height:20px!important}
 @keyframes chPop{from{opacity:0;transform:translate(-50%,-14px) scale(.9)}}
+/* chão que cai (v6.2) */
+.qdStart{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(var(--sb) + 26px);z-index:2452;border:0;border-radius:999px;padding:12px 26px;font:inherit;font-weight:700;font-size:1.05rem;color:#fff;background:var(--pink);box-shadow:0 4px 0 var(--pinkD),0 10px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;animation:obPulse 1.4s ease-in-out infinite}
+.qdStart[hidden]{display:none}.qdStart .ico{width:22px!important;height:22px!important;--ia:#fff;--ig:#fff}
+.qdStart:active{transform:translate(-50%,2px);box-shadow:0 2px 0 var(--pinkD)}
 /* adicionar à Tela de Início */
 .a2hs{text-align:left}
 .a2hs ol{margin:6px 0 12px;padding-left:22px;line-height:1.55;color:#5a4652}
@@ -1657,7 +1661,7 @@ async function initNet(){
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
-      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1"];
+      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1"];
     paths.forEach(p=>{ NET.subs[p]=db.doc(p).onSnapshot(s=>{ NET.docs[p]=s.exists?s.data():null; netChanged(p); }, e=>{}); });
     NET.ready=true; initPetsNet(); initMailNet(); initChatNet(); refreshStatus();
   }catch(e){}
@@ -1665,6 +1669,7 @@ async function initNet(){
 function netChanged(path){
   if(path.startsWith("obby/")) OB.rx[path]=performance.now();
   if(path.startsWith("papo-lido/") && CHAT.el) chatRender();
+  if(path.startsWith("queda/")) qdNet(path);
   if(path==="dupla/lev" && OB.coop){ const d=NET.docs[path]; OB.lev=Object.assign({},d||{}); }
   if(path===hubPath(other())){
     const d=NET.docs[path];
@@ -1690,7 +1695,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "6.1";
+const VERSION = "6.2";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2199,9 +2204,10 @@ const MAIL3={x:2.1,z:-5.0};
 const GP3={x:0,z:13.6,r:4.6};
 const BOOTH3={}; ["termo","bingo","caca","quiz","stop","desenho"].forEach((k,i)=>{ const a=(-90+i*36)*Math.PI/180, R=7.0, x=GP3.x+Math.sin(a)*R, z=GP3.z+Math.cos(a)*R; BOOTH3[k]={x,z,r:Math.atan2(GP3.x-x,GP3.z-z)}; });
 const boothFront=(b,d=1.7)=>({x:b.x+Math.sin(b.r)*d, z:b.z+Math.cos(b.r)*d});
-const PLOT3=Array.from({length:8},(_,i)=>({x:-17.2+(i%4)*2.7, z:(i<4?.5:3.6)}));
+const GARDEN3={x0:13.6,x1:19.8,z0:-14.6,z1:-5.2,gx:16.7};   // jardim do lado direito da casa
+const PLOT3=Array.from({length:8},(_,i)=>({x:15.2+(i%2)*3.0, z:-6.8-Math.floor(i/2)*2.2}));
 const EASELS=[{x:-10.4,z:-6.95},{x:-12.8,z:-6.95}], EASEL3={x:-11.6,z:-6.9}, DOG3={x:-15,z:-8}, DOCK3={x:4.3,z:5.2}, DOCK_LEN=4.5, BENCH3={x:11,z:-4.6};
-const PLACES3=[["🌷","Jardim",-13,6.8],["🎨","Ateliê",-11.6,-5.6],["🏡","Casa",0,-7.6],["🛶","Lago",3.2,5.2],["🎣","Pescar",8.3,4.9],["🎪","Jogos",0,11.5],["📬","Caixinha de correio",1.2,-5.0],["🎡","Parque Radical",-29,2]];
+const PLACES3=[["🌷","Jardim",16.7,-3.9],["🎨","Ateliê",-11.6,-5.6],["🏡","Casa",0,-7.6],["🛶","Lago",3.2,5.2],["🎣","Pescar",8.3,4.9],["🎪","Jogos",0,11.5],["📬","Caixinha de correio",1.2,-5.0],["🎡","Parque Radical",-29,2]];
 const STATIONS={quiz:{emoji:"💞",label:"QUIZ DO CASAL",c1:"#e8607f"},stop:{emoji:"✋",label:"STOP",c1:"#4a7bd6"},desenho:{emoji:"✏️",label:"DESENHA E ADIVINHA",c1:"#8a63d2"},termo:{emoji:"🟩",label:"TERMO",c1:"#3aa394"},bingo:{emoji:"🎱",label:"BINGO",c1:"#ff7a93"},caca:{emoji:"🔎",label:"CAÇA-PALAVRAS",c1:"#d9a54a"}};
 const GAME_NAMES={obby:"Parkour",quiz:"Quiz do casal",stop:"Stop",desenho:"Desenha e adivinha",termo:"Termo",bingo:"Bingo",caca:"Caça-palavras",coop:"Termo juntos"};
 const FLOWERS={girassol:{n:"Girassol",e:"🌻"},rosa:{n:"Rosa",e:"🌹"},tulipa:{n:"Tulipa",e:"🌷"},margarida:{n:"Margarida",e:"🌼"},lavanda:{n:"Lavanda",e:"💜"},hortensia:{n:"Hortênsia",e:"💠"}};
@@ -2484,7 +2490,7 @@ function buildWorld(){
   // caminhos
   const pathM=pathMat(); W3.paths=[];
   const pathSeg=(x1,z1,x2,z2,w=2)=>{ W3.paths.push({x1,z1,x2,z2,w}); const L=Math.hypot(x2-x1,z2-z1); const p=mesh(uvScale(new THREE.PlaneGeometry(w,L),w/2.2,L/2.2),pathM,(x1+x2)/2,.02,(z1+z2)/2,false); p.rotation.x=-Math.PI/2; p.rotation.z=-Math.atan2(x2-x1,z2-z1); p.userData.ground=true; sc.add(p); const c=mesh(uvScale(new THREE.CircleGeometry(w/2,20),w/2.2,w/2.2),pathM,x2,.021,z2,false); c.rotation.x=-Math.PI/2; c.userData.ground=true; sc.add(c); };
-  pathSeg(0,-7.4,0,4.5,2.4); pathSeg(0,4.5,0,GP3.z-GP3.r+.4,2.2); pathSeg(-2.3,2.2,-12.5,2.2,1.8); pathSeg(-12.5,2.2,-24.6,2.0,1.8); pathSeg(2.9,DOCK3.z,DOCK3.x-.6,DOCK3.z,1.8); pathSeg(-1.2,-5.6,-14.2,-5.6,1.6);
+  pathSeg(0,-7.4,0,4.5,2.4); pathSeg(0,4.5,0,GP3.z-GP3.r+.4,2.2); pathSeg(-2.3,2.2,-12.5,2.2,1.8); pathSeg(-12.5,2.2,-24.6,2.0,1.8); pathSeg(3.2,-5.9,12.6,-5.9,1.5); pathSeg(12.6,-5.9,GARDEN3.gx,-4.3,1.5); pathSeg(2.9,DOCK3.z,DOCK3.x-.6,DOCK3.z,1.8); pathSeg(-1.2,-5.6,-14.2,-5.6,1.6);
   { const gp=mesh(uvScale(new THREE.CircleGeometry(GP3.r,48),GP3.r/1.1,GP3.r/1.1),pathM,GP3.x,.023,GP3.z,false); gp.rotation.x=-Math.PI/2; gp.userData.ground=true; sc.add(gp);
     Object.values(BOOTH3).forEach(b=>{ const a=Math.atan2(b.x-GP3.x,b.z-GP3.z), s=Math.sin(a), c=Math.cos(a); pathSeg(GP3.x+s*(GP3.r-.4),GP3.z+c*(GP3.r-.4),GP3.x+s*5.5,GP3.z+c*5.5,1.6); }); }
   const plaza=mesh(uvScale(new THREE.CircleGeometry(3.4,40),3,3),pathM,0,.025,4.5,false); plaza.rotation.x=-Math.PI/2; plaza.userData.ground=true; sc.add(plaza);
@@ -2510,10 +2516,12 @@ function buildWorld(){
   // banco
   const bench=grp(BENCH3.x,0,BENCH3.z); bench.rotation.y=Math.PI*.85; [[0,.45,0,1.8,.1,.5],[0,.8,-.22,1.8,.4,.08]].forEach(([x,y,z,a,b,c])=>bench.add(mesh(new THREE.BoxGeometry(a,b,c),MT("#a87346"),x,y,z))); [-.75,.75].forEach(x=>bench.add(mesh(new THREE.BoxGeometry(.08,.45,.45),MT("#6e4528"),x,.22,0))); sc.add(bench);
   // jardim: cerca + placa + canteiros
-  const fence=MT("#c8935f"); const fx0=-19.2, fx1=-6.8, fz0=-1.4, fz1=5.6;
+  const fence=MT("#c8935f"); const fx0=GARDEN3.x0, fx1=GARDEN3.x1, fz0=GARDEN3.z0, fz1=GARDEN3.z1;
   const rail=(x1,z1,x2,z2)=>{ const L=Math.hypot(x2-x1,z2-z1), a=Math.atan2(x2-x1,z2-z1); for(const y of [.35,.7]){ const r=mesh(new THREE.BoxGeometry(.08,.08,L),fence,(x1+x2)/2,y,(z1+z2)/2); r.rotation.y=a; sc.add(r); } const n=Math.ceil(L/1.2); for(let k=0;k<=n;k++) sc.add(mesh(new THREE.BoxGeometry(.14,.95,.14),fence,x1+(x2-x1)*k/n,.47,z1+(z2-z1)*k/n)); };
-  rail(fx0,fz0,fx1,fz0); rail(fx0,fz0,fx0,fz1); rail(fx0,fz1,-13.6,fz1); rail(-11.4,fz1,fx1,fz1); rail(fx1,fz0,fx1,1.4);
-  const gs=mesh(new THREE.PlaneGeometry(2.6,.62),new THREE.MeshBasicMaterial({map:woodSignTex("Nosso Jardim",512,128,58),transparent:true}),-13,1.6,fz0-.05,false); sc.add(gs);
+  rail(fx0,fz0,fx1,fz0); rail(fx0,fz0,fx0,fz1); rail(fx1,fz0,fx1,fz1); rail(fx0,fz1,GARDEN3.gx-1,fz1); rail(GARDEN3.gx+1,fz1,fx1,fz1);
+  [-1.15,1.15].forEach(dx=>sc.add(mesh(new THREE.BoxGeometry(.16,1.9,.16),MT("#a2734c"),GARDEN3.gx+dx,.95,fz1)));
+  const gs=mesh(new THREE.PlaneGeometry(2.4,.58),new THREE.MeshBasicMaterial({map:woodSignTex("Nosso Jardim",512,128,58),transparent:true}),GARDEN3.gx,1.75,fz1+.1,false); sc.add(gs);
+  const gb=gs.clone(); gb.rotation.y=Math.PI; gb.position.z=fz1-.1; sc.add(gb);
   W3.garden=grp(); sc.add(W3.garden); redrawGarden();
   W3.easels=[]; sc.add(easelGroup(0)); sc.add(easelGroup(1)); sc.add(doghouseGroup());
   Object.keys(BOOTH3).forEach(k=>{ const bg=boothGroup(k); sc.add(bg); if(bg.userData.cage) W3.cage=bg.userData.cage; });
@@ -2521,12 +2529,12 @@ function buildWorld(){
   const rt=rng(99);
   for(let k=0;k<70;k++){ const a=rt()*Math.PI*2, d=27+rt()*14, tx=Math.cos(a)*d, tz=Math.sin(a)*d, ts=1+rt()*.6; if(arenaFlat(tx,tz)>=1) sc.add(treeGroup(tx,tz,ts,k+3)); }
   [[-14,-24],[-9,-25.5],[-3,-26],[3,-25.5],[9,-25],[15,-23.5],[-17,-19],[17,-18]].forEach(([x,z],k)=>sc.add(treeGroup(x,z,1.7,k+400)));
-  [[-20,-12],[-21,9],[20,-12],[-10,21],[14,-14],[-11,-15],[22,12],[17,17],[-17,14]].forEach(([x,z],k)=>sc.add(treeGroup(x,z,1.1,k+200)));
+  [[-20,-12],[-21,9],[22,-9],[-10,21],[-11,-15],[22,12],[17,17],[-17,14],[-19,-2],[-16,6.5]].forEach(([x,z],k)=>sc.add(treeGroup(x,z,1.1,k+200)));
   [[-1,333],[1,335]].forEach(([q,sd])=>{ const t=hamPt(0,0,1.95*q); sc.add(treeGroup(t.x,t.z,1.05,sd)); }); sc.add(hammockGroup()); sc.add(W3.zzz); sc.add(arenaGroup());
   { const rt2=rng(515); const ring=[]; for(let z=-10;z<=14;z+=3.4) ring.push([-49+rt2()*1.5,z]); for(let x=-46;x<=-28;x+=3.6){ ring.push([x,-11+rt2()*1.2]); ring.push([x,15-rt2()*1.2]); }
     ring.forEach(([x,z],k)=>sc.add(treeGroup(x,z,1+rt2()*.4,600+k))); }
-  for(let k=0;k<26;k++) sc.add(sunflower3(-19+k*.5+(k%2)*.2, -2.2-(k%3)*.4, 1+rt()*.3));
-  for(let k=0;k<16;k++) sc.add(sunflower3(14+ (k%8)*.6, -11-(k>7?.9:0), 1.1));
+  for(let k=0;k<22;k++) sc.add(sunflower3(GARDEN3.x0+.3+k*.27, GARDEN3.z0+.45+(k%2)*.3, 1+rt()*.3));
+  for(let k=0;k<6;k++){ sc.add(sunflower3(GARDEN3.x0+.5+k*.3, GARDEN3.z1+.5+(k%2)*.2, 1.05)); sc.add(sunflower3(GARDEN3.gx+1.5+k*.3, GARDEN3.z1+.5+(k%2)*.2, 1.05)); }
   buildGrass(sc); buildFlowers(sc); buildButterflies(sc);
   [[-1.8,-2],[1.8,-2],[-2.6,8.6],[2.6,8.6],[3.3,2.4],[-5.2,3.6],[-5.2,.8],[-5.2,-4.3],[-9.2,-4.3]].forEach(([x,z])=>sc.add(lampPost(x,z)));
   buildMailbox(sc);
@@ -2607,7 +2615,7 @@ function nearPath(x,z){ for(const p of (W3.paths||[])){ const dx=p.x2-p.x1, dz=p
 function blockedDeco(x,z){ if(inArena(x,z)) return arenaDecoBlocked(x,z); if(inGate(x,z)) return true;
   if(lakeR(x,z)<1.14) return true; if(Math.hypot(x,z-4.5)<3.6) return true; if(nearPath(x,z)) return true;
   if(x>HOUSE3.x0-.6&&x<HOUSE3.x1+.6&&z>HOUSE3.z0&&z<HOUSE3.z1+1.6) return true;
-  if(x>-19.4&&x<-6.6&&z>-1.6&&z<5.8) return true;
+  if(x>GARDEN3.x0-.4&&x<GARDEN3.x1+.4&&z>GARDEN3.z0-.4&&z<GARDEN3.z1+.9) return true;
   for(const b of Object.values(BOOTH3)) if(Math.hypot(x-b.x,z-b.z)<2.1) return true; if(Math.hypot(x-GP3.x,z-GP3.z)<GP3.r+.2) return true;
   if(EASELS.some(E=>Math.hypot(x-E.x,z-E.z)<1.3)||Math.hypot(x-DOG3.x,z-DOG3.z)<1.6) return true;
   return false;
@@ -2967,7 +2975,7 @@ function standUp(C){ if(!C.sofa) return; C.sofa=false; C.pose="idle"; C.root.pos
 const HAM3={x:-12.8,z:11.2,r:Math.PI/2+.12}, HAM_ROOT_Y=1.15;
 /* Parque Radical: área dos minigames de ação (parkours). Fica a oeste, fora do círculo do mundinho, com chão plano e entrada pelo arco */
 const ARENA={x0:-46,x1:-25.5,z0:-8,z1:12};
-const AR_PORTALS=[{id:"nuvens",x:-41.8,z:-3.4,r:Math.PI/2},{id:"dupla",x:-42.6,z:2,r:Math.PI/2},{id:"extremo",x:-41.8,z:7.4,r:Math.PI/2}];
+const AR_PORTALS=[{id:"nuvens",x:-41.8,z:-3.4,r:Math.PI/2},{id:"dupla",x:-42.6,z:2,r:Math.PI/2},{id:"extremo",x:-41.8,z:7.4,r:Math.PI/2},{id:"queda",x:-34.6,z:-5.8,r:0}];
 const AR_BLOCKS=[[-45.5,-43.6,-7.5,-5.6],[-45.5,-43.6,9.6,11.5],[-30.6,-28.6,-7.5,-5.6],[-30.6,-28.6,9.6,11.5]];
 function inArena(x,z){ return x>=ARENA.x0&&x<=ARENA.x1&&z>=ARENA.z0&&z<=ARENA.z1; }
 function inGate(x,z){ return x>=-26.6&&x<=-22&&z>=.5&&z<=3.5; }
@@ -3015,6 +3023,16 @@ function portalGroup(P){
     g.add(mesh(new THREE.CylinderGeometry(.14,.18,.62,10),MT("#3b2a4a"),0,.31,1.75,false)); g.add(hel);
     anims.push(t=>{ hel.rotation.y=t*2.4; lavaM.color.setRGB(1,.22+.14*Math.sin(t*4),.18); fl.forEach((f,k)=>{ const q=1+Math.sin(t*13+k*2)*.16; f.scale.set(q,1.25*q,q); }); });
     signP(textTex("Parkour Extremo",512,128,"#2a1838","#ffd0e8","#ff4f7a",56));
+  } else if(id==="queda"){
+    // pilha de hexágonos coloridos, um caindo e voltando, aro laranja
+    const HX=new THREE.CylinderGeometry(.5,.5,.22,6); HX.rotateY(Math.PI/2); const hx=[], cs=["#ff8fb0","#b9a7ff","#7fd8b8","#ffd15c"];
+    [[0,0],[.87,.5],[-.87,.5],[.87,-.5],[-.87,-.5],[0,1],[0,-1]].forEach(([a,b],k)=>hx.push({g:HX,m:M4(a*1.05,.11,b*1.05,1,1,1),c:cs[k%3]}));
+    g.add(new THREE.Mesh(mergeGeos(hx),toonM("#ffffff",{vertexColors:true})));
+    g.add(mesh(new THREE.TorusGeometry(1.25,.16,10,44),new THREE.MeshStandardMaterial({color:new THREE.Color("#ffb020"),emissive:new THREE.Color("#a85a00"),emissiveIntensity:.35,roughness:.35,metalness:.2}),0,1.6,0));
+    disc([["#fff4dc",0],["#ffb3c6",.4],["#b9a7ff",.72],["#7fd8b8",1]]);
+    const fly=[[-1.9,1.0,"#ff8fb0"],[1.9,1.6,"#7fd8b8"],[-1.6,2.5,"#ffd15c"]].map(([x,y,c],k)=>{ const m=mesh(new THREE.CylinderGeometry(.34,.34,.16,6),MT(c),x,y,.3); g.add(m); return {m,y,k}; });
+    anims.push(t=>fly.forEach(o=>{ const ph=(t*.5+o.k*.33)%1; o.m.position.y=o.y+(ph<.7?Math.sin(t*2+o.k)*.08:-(ph-.7)*6); o.m.rotation.x=ph<.7?0:(ph-.7)*6; o.m.visible=ph<.95; }));
+    signP(textTex("Chão que Cai",512,128,"#ffb020","#ffffff","#ff6f91",60));
   } else {
     // dupla: chão de coração, aro metade azul (Alvaro) e metade rosa (Leticia), os dois botões na frente e coraçõezinhos em cima
     const hb=new THREE.Mesh(heartGeo(3.6,.05),MT("#ffd9e3")); hb.rotation.x=-Math.PI/2; hb.position.set(0,.12,.25); g.add(hb);
@@ -3034,10 +3052,18 @@ function arenaGroup(){
   const seg=(x1,z1,x2,z2,w)=>{ const L=Math.hypot(x2-x1,z2-z1); const q=mesh(uvScale(new THREE.PlaneGeometry(w,L),w/2.2,L/2.2),pm,(x1+x2)/2,.022,(z1+z2)/2,false); q.rotation.x=-Math.PI/2; q.rotation.z=-Math.atan2(x2-x1,z2-z1); q.receiveShadow=true; q.userData.ground=true; g.add(q); };
   const circ=(x,z,r,y=.024)=>{ const q=mesh(uvScale(new THREE.CircleGeometry(r,40),r/1.1,r/1.1),pm,x,y,z,false); q.rotation.x=-Math.PI/2; q.receiveShadow=true; q.userData.ground=true; g.add(q); };
   AR_PATHS.forEach(([x1,z1,x2,z2,w])=>seg(x1,z1,x2,z2,w)); circ(cx,cz,3.6,.026); AR_PORTALS.forEach(q=>circ(q.x+Math.sin(q.r)*.4,q.z+Math.cos(q.r)*.4,2.5));
+  { const cb=[], BXc=new THREE.BoxGeometry(1,1,1), stone="#d8c9b1";
+    AR_PATHS.forEach(([x1,z1,x2,z2,w],k)=>{ const ang=Math.atan2(x2-x1,z2-z1), L=Math.hypot(x2-x1,z2-z1), nx=Math.cos(ang), nz=-Math.sin(ang), r0=k?3.7:0, r1=2.6;
+      [-1,1].forEach(sd=>{ const a0=k?Math.sqrt(Math.max(0,r0*r0-(w/2)**2)):0, a1=k?L-Math.sqrt(Math.max(0,r1*r1-(w/2)**2)):L-Math.sqrt(Math.max(0,3.7*3.7-(w/2)**2)); if(a1<=a0) return;
+        const mx=x1+(x2-x1)/L*((a0+a1)/2)+nx*sd*(w/2+.06), mz=z1+(z2-z1)/L*((a0+a1)/2)+nz*sd*(w/2+.06); cb.push({g:BXc,m:M4(mx,.05,mz,.14,.1,a1-a0,0,ang,0),c:stone}); }); });
+    const onPath=(x,z)=>AR_PATHS.some(([x1,z1,x2,z2,w])=>{ const L2=(x2-x1)**2+(z2-z1)**2, u=Math.max(0,Math.min(1,((x-x1)*(x2-x1)+(z-z1)*(z2-z1))/L2)); return Math.hypot(x-(x1+u*(x2-x1)),z-(z1+u*(z2-z1)))<w/2+.12; });
+    const ring=(x,z,r)=>{ for(let k=0;k<40;k++){ const a=k/40*Math.PI*2, L2=2*Math.PI*r/40; if(onPath(x+Math.cos(a)*r,z+Math.sin(a)*r)) continue; cb.push({g:BXc,m:M4(x+Math.cos(a)*r,.05,z+Math.sin(a)*r,.14,.1,L2+.02,0,-a,0),c:stone}); } };
+    ring(cx,cz,3.68); AR_PORTALS.forEach(q=>ring(q.x+Math.sin(q.r)*.4,q.z+Math.cos(q.r)*.4,2.58));
+    const cm=new THREE.Mesh(mergeGeos(cb),toonM("#ffffff",{vertexColors:true})); cm.receiveShadow=true; g.add(cm); }
   // placa no meio apontando pros três portais
   const it=[], BX=new THREE.BoxGeometry(1,1,1), CN=new THREE.ConeGeometry(.2,.32,3), cols=["#ff6f91","#ffc65c","#58b394","#9583ec","#6fb8ff"];
   it.push({g:BX,m:M4(cx,1.3,cz,.16,2.6,.16),c:"#8e5a34"}); it.push({g:new THREE.SphereGeometry(.16,10,8),m:M4(cx,2.65,cz,1,1,1),c:"#ffc65c"});
-  [["nuvens","Nuvens",2.05],["dupla","Dupla",1.55],["extremo","Extremo",1.05]].forEach(([id,txt,y])=>{ const q=AR_PORTALS.find(o=>o.id===id), ang=Math.atan2(q.x-cx,q.z-cz)-Math.PI/2;
+  [["nuvens","Nuvens",2.05],["dupla","Dupla",1.55],["extremo","Extremo",1.05],["queda","Chão que Cai",.55]].forEach(([id,txt,y])=>{ const q=AR_PORTALS.find(o=>o.id===id), ang=Math.atan2(q.x-cx,q.z-cz)-Math.PI/2;
     const bd=grp(cx,y,cz); bd.rotation.y=ang; const tx=woodSignTex(txt+" →",384,96,46); const f=mesh(new THREE.PlaneGeometry(1.5,.38),new THREE.MeshBasicMaterial({map:tx,transparent:true}),.78,0,.03,false); bd.add(f);
     const bk=mesh(new THREE.PlaneGeometry(1.5,.38),new THREE.MeshBasicMaterial({map:woodSignTex("← "+txt,384,96,46),transparent:true}),.78,0,-.03,false); bk.rotation.y=Math.PI; bd.add(bk); g.add(bd); });
   // canteirinhos de flor encostados na cerca
@@ -4016,6 +4042,8 @@ const OB_COURSES={
   dupla:{name:"Dupla do Céu", seed:4242, d0:0, d1:0, per:1, coop:true, order:["d1","d2","d3","pontes","d4","d5","d6","cruz","combina","fragil","contra","inverte","d7","alterna","lasercab","d8"],
     sky:["#5b8def","#9cc7ff","#ffd6e8","#fff2e0"], fog:"#d6e6ff", pal:["#ffc2d4","#c2dcff","#d6c8ff","#ffe1a0","#bdeedb"], cloud:["#ffffff","#f3f8ff"], cloudE:"#4d5a7a", cpCol:"#fff6ef", ring:"#ff6f91"}
 };
+OB_COURSES.queda={name:"Chão que Cai", seed:777, d0:0, d1:0, per:1, arena:true, order:["arena"],
+  sky:["#ff9a6b","#ffc3a0","#ffe1c7","#fff3e6"], fog:"#ffd9c4", pal:["#ff8fb0"], cloud:["#ffffff","#fff1e8"], cloudE:"#6a4a40", cpCol:"#fff6ef", ring:"#ffb020"};
 const OB_PCOL=["#4f9dff","#ff6f91"], OB_PNAME=["azul","rosa"], OB_LINK=["#ffd15c","#36d1c4","#b38cff","#9fd36b","#ffa86b"];
 let OB_ORDER=OB_COURSES.nuvens.order, OB_N=40, OB_PER=1;
 const OB_NAMES={pulos:"Pulinhos",escada:"Escadinha",viga:"Ponte fina",moveis:"Plataformas que andam",some:"Chão que some",tramp:"Trampolim",lava:"Chão de lava",helice:"Hélice",elev:"Elevador",
@@ -4050,6 +4078,7 @@ function obBuild(cid){
   sc.fog=new THREE.Fog(new THREE.Color(CC.fog),45,135);
   sc.add(new THREE.HemisphereLight(new THREE.Color("#fff3f6"),new THREE.Color("#a58ac4"),GFX2?1.0:.55));
   const sun=new THREE.DirectionalLight(new THREE.Color("#fff1dc"),GFX2?1.25:.6); sun.position.set(14,30,-8); sc.add(sun);
+  if(CC.arena){ qdBuild(sc,CC); return; }
   const R=rng(CC.seed), st=[], cl=(v,a,b)=>Math.max(a,Math.min(b,v)); let curD=0; const BX=new THREE.BoxGeometry(1,1,1), CY=new THREE.CylinderGeometry(1,1,1,28);
   OB.solids=[]; OB.kills=[]; OB.spins=[]; OB.hearts=[]; OB.cps=[]; OB.dyn=[]; OB.flags=[]; OB.coop=!!CC.coop;
   OB.plates={}; OB.gates=[]; OB.levers=[]; OB.saws=[]; OB.lifts=[]; OB.mates=[0,1].map(()=>({k:"c",x:0,y:-99,z:0,r:.36,h:1.66,top:-98,bot:-99,off:true,mate:true,dx:0,dy:0,dz:0}));
@@ -4262,7 +4291,13 @@ function obLevPush(){ if(online()) push("dupla/lev",Object.assign({},OB.lev)); }
 
 /* ---------- entrar / sair ---------- */
 function obbyMenu(cid){
-  if(!window.THREE) return; cid=OB_COURSES[cid]?cid:"nuvens"; const CC=OB_COURSES[cid], nF=CC.order.length/CC.per;
+  if(!window.THREE) return; cid=OB_COURSES[cid]?cid:"nuvens";
+  if(OB_COURSES[cid].arena){ const o=other(), m=modal(`<div class="obMenu"><h2>⭐ Chão que Cai</h2>
+      <p>Três andares de hexágonos no céu. Cada um cai logo depois que alguém pisa, e depois de 20 s eles começam a cair sozinhos. Quem cair lá embaixo perde a rodada. Ganha quem fizer 3 primeiro.</p>
+      <p class="small">${online()?(partnerHere()?`Entrem os dois e apertem “Começar rodada”.`:`Sem ${nm(o)} online vira treino: quanto tempo você aguenta? Recorde: ${(+S.qdBest||0).toFixed(1)} s`):`No mesmo celular vira treino: quanto tempo você aguenta? Recorde: ${(+S.qdBest||0).toFixed(1)} s`}</p>
+      <div class="obBtns"><button class="btn pink" data-o="go">Jogar</button><button class="btn alt" data-close>Agora não</button></div></div>`);
+    m.querySelector('[data-o="go"]').onclick=()=>{ m.remove(); obbyEnter(true,cid); }; return; }
+  const CC=OB_COURSES[cid], nF=CC.order.length/CC.per;
   const st=obState(cid), o=other(), dO=NET.docs["obby/p"+o]||{}, pO=dO.prog&&dO.prog[cid];
   const where=(cp,done)=>cp>0?`parou na fase ${Math.min(nF,cp+1)}`:done?"já chegou lá em cima 🏆":"ainda não começou";
   const m=modal(`<div class="obMenu"><h2>🚀 ${CC.name}</h2>
@@ -4295,17 +4330,18 @@ function obbyEnter(fromZero,cid){
   const act=document.createElement("button"); act.className="obAct"; act.hidden=true; act.innerHTML=artify(`✋<b>Puxar</b>`); act.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); obPull(); }); HUB.scene.appendChild(act); OB.actBtn=act;
   const sw=hud.querySelector("#obSwap"); if(sw) sw.onclick=obSwap;
   hud.querySelector("#obX").onclick=()=>confirmBox("Sair do parkour?",`Seu checkpoint fica salvo na fase ${OB.P.cp+1}.`,"Sair",()=>obbyExit());
-  hud.querySelector("#obCp").onclick=()=>{ if(!OB.P.dead) obDie(OB.P,true); };
+  const cpB=hud.querySelector("#obCp"); if(cpB) cpB.onclick=()=>{ if(!OB.P.dead) obDie(OB.P,true); };
   hud.querySelector("#obMate").onclick=obToMate; hud.querySelector("#obChat").onclick=chatOpen; chatBadge();
-  hud.querySelector("#obZero").onclick=()=>confirmBox("Voltar pro começo?",`Você volta pra fase 1 do ${OB_COURSES[OB.cid].name}.`,"Voltar pro começo",()=>obRestart());
+  if(!OB_COURSES[cid].arena) hud.querySelector("#obZero").onclick=()=>confirmBox("Voltar pro começo?",`Você volta pra fase 1 do ${OB_COURSES[OB.cid].name}.`,"Voltar pro começo",()=>obRestart());
   const tg=document.createElement("div"); tg.className="obTagW"; tg.innerHTML=`<div class="tag"></div>`; HUB.ov.appendChild(tg); OB.tag=tg;
   OB.on=true; doorFade(); snd("go"); obFlags(); obHud(true);
+  if(OB.arena){ ["#obCp","#obZero","#obMate"].forEach(q=>{ const e=hud.querySelector(q); if(e) e.remove(); }); qdInit(); obHud(true); }
   if(online()){ obPush(true); pushMe({place:"obby"}); }
   setTimeout(()=>{ if(OB.on && !S.obTut){ S.obTut=true; save(); toast("Segura o pulo pra pular mais alto. Caiu? Volta no último checkpoint 🚩",4200); } },900);
 }
 function obbyExit(quiet){
   if(!OB.on) return; OB.on=false;
-  if(OB.hud) OB.hud.remove(); if(OB.tag) OB.tag.remove(); if(OB.actBtn) OB.actBtn.remove(); OB.hud=OB.tag=OB.actBtn=null;
+  if(OB.hud) OB.hud.remove(); if(OB.tag) OB.tag.remove(); if(OB.actBtn) OB.actBtn.remove(); if(OB.qdBtn) OB.qdBtn.remove(); OB.hud=OB.tag=OB.actBtn=OB.qdBtn=null;
   const st=obState(), cpN=OB.coop&&!online()?Math.max(OB.Ps[0].cp,OB.Ps[1].cp):OB.P.cp; if(!OB.fin){ st.cp=cpN>=OB_N?0:cpN; } save();
   if(online()) push("obby/p"+S.me,{out:1,t:Date.now(),c:OB.cid,cp:st.cp,done:!!st.done,prog:obProg()});
   if(quiet||!HUB) return;
@@ -4347,7 +4383,8 @@ function obCheckpoint(i,P){ P=P||OB.P; const st=obState(); if(i<=P.cp) return; P
   bigToast(`Fase ${i+1}`,obStageName(i)); obPush(true); }
 function obRestart(){ const P=OB.P, st=obState(); st.cp=0; save(); OB.fin=false; (OB.coop&&!online()?OB.Ps:[P]).forEach(q=>{ q.cp=0; q.dead=0; obDie(q,true); }); obFlags(); bigToast("De volta pro começo!",OB_COURSES[OB.cid].name); obPush(true); }
 function bigToast(a,b){ if(!HUB) return; const e=document.createElement("div"); e.className="obBig"; e.innerHTML=`<b>${esc(a)}</b>${b?`<span>${esc(b)}</span>`:""}`; HUB.scene.appendChild(e); setTimeout(()=>e.remove(),1900); }
-function obDie(P,manual){ const C=OB.chars[P.i]; if(P.dead) return; P.dead=manual?.35:.8; if(!manual){ OB.deaths++; snd("meh"); } else snd("pop");
+function obDie(P,manual){ const C=OB.chars[P.i]; if(P.dead) return;
+  if(OB.arena&&!manual){ OB.dust.burst(P.x,P.y+.8,P.z,10,"#ffb3c6"); C.root.visible=false; return qdFell(P); } P.dead=manual?.35:.8; if(!manual){ OB.deaths++; snd("meh"); } else snd("pop");
   OB.dust.burst(P.x,P.y+.8,P.z,10,manual?"#ffffff":"#ffb3c6"); C.root.visible=false; if(P===OB.P) OB.buf=0; P.gr=null; }
 function obRespawn(P){ const C=OB.chars[P.i]; obPlace(P,P.cp); C.root.visible=true; C.root.position.set(P.x,P.y,P.z); OB.dust.burst(P.x,P.y,P.z,7,"#fff3c2"); if(P===OB.P) snd("pop"); }
 function obFinish(){ const st=obState(); OB.fin=true;
@@ -4368,6 +4405,7 @@ function obPush(force){ if(!online()||!OB.P) return; const P=OB.P, C=OB.chars[OB
 /* ---------- quadro a quadro ---------- */
 function obStep(dt){
   OB.t+=dt; const t=obClock(), P=OB.P, me=OB.me, C=OB.chars[me];
+  if(OB.arena) qdTick(dt);
   for(const s of OB.dyn){
     if(s.mov){ const m=s.mov, o=Math.sin(t*m.sp+m.ph)*m.amp, nx=m.ax==="x"?s.x0+o:s.x0, ny=m.ax==="y"?s.y0+o:s.y0, nz=m.ax==="z"?s.z0+o:s.z0;
       s.dx=nx-s.x; s.dy=ny-s.y; s.dz=nz-s.z; s.x=nx; s.y=ny; s.z=nz; s.top=ny+s.h/2; s.bot=ny-s.h/2; s.m.position.set(nx,ny,nz); }
@@ -4393,7 +4431,7 @@ function obStep(dt){
     if(Math.abs(HUB.yawV||0)>.0004){ HUB.yawT+=HUB.yawV; HUB.yawV*=Math.pow(.04,dt); }
     if(Math.abs(HUB.pitchV||0)>.0004){ HUB.pitchT=camClampP(HUB.pitchT+HUB.pitchV); HUB.pitchV*=Math.pow(.01,dt); }
     const k=1-Math.exp(-dt*16); HUB.yaw+=(HUB.yawT-HUB.yaw)*k; HUB.pitch+=(HUB.pitchT-HUB.pitch)*k; HUB.dist+=(Math.min(14,HUB.distT)-HUB.dist)*(1-Math.exp(-dt*10));
-    const tp=V3(P.x,P.y,P.z); if(!OB.camT) OB.camT=tp.clone(); else { const kx=1-Math.exp(-dt*12), ky=1-Math.exp(-dt*(P.gr?8:3.2)); OB.camT.x+=(tp.x-OB.camT.x)*kx; OB.camT.z+=(tp.z-OB.camT.z)*kx; OB.camT.y+=(tp.y-OB.camT.y)*ky; }
+    const tp=(OB.arena&&P.dead&&OB.rem)?V3(OB.rem.x,OB.rem.y,OB.rem.z):V3(P.x,P.y,P.z); if(!OB.camT) OB.camT=tp.clone(); else { const kx=1-Math.exp(-dt*12), ky=1-Math.exp(-dt*(P.gr?8:3.2)); OB.camT.x+=(tp.x-OB.camT.x)*kx; OB.camT.z+=(tp.z-OB.camT.z)*kx; OB.camT.y+=(tp.y-OB.camT.y)*ky; }
     const T=OB.camT, cp=Math.cos(HUB.pitch), sp2=Math.sin(HUB.pitch), cam=W3.cam;
     cam.position.set(T.x+Math.sin(HUB.yaw)*HUB.dist*cp, T.y+1.2+sp2*HUB.dist, T.z+Math.cos(HUB.yaw)*HUB.dist*cp); cam.lookAt(T.x,T.y+1.2,T.z); }
   // sombrinhas
@@ -4407,7 +4445,7 @@ function obStep(dt){
 }
 function obSim(P,dt){
   const C=OB.chars[P.i], active=P===OB.P;
-  if(P.dead){ P.dead-=dt; if(P.dead<=0){ P.dead=0; obRespawn(P); } return; }
+  if(P.dead){ if(OB.arena) return; P.dead-=dt; if(P.dead<=0){ P.dead=0; obRespawn(P); } return; }
   const v=active?joyVec():null; let tx=0, tz=0;
   if(v){ const sy=Math.sin(HUB.yaw), cy=Math.cos(HUB.yaw), m=Math.min(1,Math.hypot(v.x,v.y)); let dx=cy*v.x+sy*v.y, dz=-sy*v.x+cy*v.y; const l=Math.hypot(dx,dz)||1; dx/=l; dz/=l;
     const spd=m>.55? 7.2 : 2.6+Math.max(0,m-.14)/.41*4.2; tx=dx*spd; tz=dz*spd; P.yawT=Math.atan2(dx,dz); HUB.fwd=-v.y/(m||1); }
@@ -4474,13 +4512,85 @@ function obRemote(dt){
   const R=OB.rem, k=1-Math.exp(-dt*12); R.x+=(d.x-R.x)*k; R.y+=(d.y-R.y)*k; R.z+=(d.z-R.z)*k;
   OB.remDead=!!d.dead; Co.root.visible=!d.dead; Co.root.position.set(R.x,R.y,R.z); let a=(d.r||0)-Co.root.rotation.y; a=Math.atan2(Math.sin(a),Math.cos(a)); Co.root.rotation.y+=a*Math.min(1,dt*12);
   Co.walk=d.w||0; Co.jv=d.a?(d.y>R.y?3:-3):null; animChar(Co,dt,OB.t);
-  if(OB.tag){ const tg=OB.tag.firstChild, s=`${nmRaw(o)} · fase ${Math.min(OB_N,(d.cp||0)+1)}`; if(tg.textContent!==s) tg.textContent=s; }
+  if(OB.tag){ const tg=OB.tag.firstChild, s=OB.arena?nmRaw(o):`${nmRaw(o)} · fase ${Math.min(OB_N,(d.cp||0)+1)}`; if(tg.textContent!==s) tg.textContent=s; }
 }
 function obHud(force){ if(!OB.hud) return; const P=OB.P, st=obState(), H=OB.hud;
+  if(OB.arena){ const Q=OB.qd||{score:[0,0]}, e1=H.querySelector("#obSt"), e2=H.querySelector("#obT"), solo=qdSolo();
+    const a=solo?"Treino":`${nmRaw(0)} ${Q.score[0]} × ${Q.score[1]} ${nmRaw(1)}`, b=solo?(Q.phase==="play"?`${((performance.now()-Q.t0)/1000).toFixed(0)} s`:`recorde ${(+Q.best||0).toFixed(1)} s`):(Q.phase==="play"?`rodada ${Q.round}`:"melhor de 5");
+    if(e1.textContent!==a) e1.textContent=a; if(e2.textContent!==b) e2.textContent=b; return; }
   if(OB.coop){ const dot=H.querySelector(".obDot"); if(dot) dot.style.background=OB_PCOL[OB.me]; const w=H.querySelector("#obWait"); if(w){ const txt=online()?(OB.rem?"":`Chama ${nmRaw(other())} pra entrar na Dupla do Céu 💞`):`Mesmo celular: o 🎮 troca de personagem (agora: ${nmRaw(OB.me)})`; if(w.dataset.t!==txt){ w.dataset.t=txt; w.innerHTML=artText(txt); } w.hidden=!txt; } }
   const a=P.cp>=OB_N?"Chegada!":`Fase ${P.cp+1}/${OB_N}`; const e1=H.querySelector("#obSt"); if(e1.textContent!==a) e1.textContent=a;
   const nmS=P.cp>=OB_N?"":obStageName(P.cp), e2=H.querySelector("#obT"); if(e2.textContent!==nmS) e2.textContent=nmS;
   const mb=H.querySelector("#obMate"), can=!!OB.rem; if(mb.hidden===can) mb.hidden=!can; }
+
+
+/* =================== CHÃO QUE CAI: três andares de hexágonos que caem quando alguém pisa; quem cair lá embaixo perde =================== */
+const QD={R:4, layers:[0,-5,-10], cols:["#ff8fb0","#b9a7ff","#7fd8b8"], warn:"#ffd15c"};
+function qdBuild(sc,CC){
+  const dummy={map:{offset:{x:0,y:0}}};
+  Object.assign(OB,{arena:true, coop:false, solids:[], kills:[], spins:[], hearts:[], dyn:[], flags:[], pends:[], lasers:[], spikes:[], plates:{}, gates:[], levers:[], saws:[], lifts:[], mates:[], beltR:dummy, beltL:dummy, beltF:dummy, beltB:dummy, lavaMat:{}, goalHeart:null, backPortal:null, syms:null});
+  OB_ORDER=["arena"]; OB_PER=1; OB_N=1; OB.cps=[{x:0,y:-1.5,z:0}];
+  OB.tiles=[]; const s3=Math.sqrt(3), geo=new THREE.CylinderGeometry(.97,.97,.5,6); geo.rotateY(Math.PI/2);
+  QD.layers.forEach((ly,L)=>{ const list=[]; for(let q=-QD.R;q<=QD.R;q++) for(let r=-QD.R;r<=QD.R;r++){ if(Math.abs(q+r)>QD.R) continue; list.push({q,r}); }
+    const im=new THREE.InstancedMesh(geo,new THREE.MeshStandardMaterial({roughness:.5}),list.length); im.frustumCulled=false; im.receiveShadow=true; sc.add(im);
+    // borda branquinha embaixo de cada andar, pra dar volume
+    list.forEach((h,k)=>{ const x=1.5*h.q, z=s3*(h.r+h.q/2), T={L,k,im,x,z,top:ly,y:ly,st:0,t:0,rot:0,col:new THREE.Color(QD.cols[L])}; T.s={k:"c",x,z,r:.92,h:.5,y:ly-.25,top:ly,bot:ly-.5,tile:T}; OB.tiles.push(T); qdDraw(T); });
+    im.instanceColor.needsUpdate=true; });
+  // nuvens de fundo e bordinha do andar de cima
+  const IC=new THREE.IcosahedronGeometry(1,2), cl=[], R2=rng(91);
+  for(let k=0;k<40;k++){ const a=R2()*6.28, d=16+R2()*26, y=-18+R2()*16, sz=2+R2()*3.5; for(let j=0;j<3;j++) cl.push({g:IC,m:M4(Math.cos(a)*d+(j-1)*sz*.8,y+R2()*sz*.3,Math.sin(a)*d+(R2()-.5)*sz,sz,sz*.6,sz),c:CC.cloud[j%2]}); }
+  sc.add(new THREE.Mesh(mergeGeos(cl),new THREE.MeshStandardMaterial({vertexColors:true,emissive:new THREE.Color(CC.cloudE),roughness:1})));
+  OB.blob=[0,1].map(()=>{ const b=new THREE.Mesh(new THREE.CircleGeometry(.4,20),new THREE.MeshBasicMaterial({color:0x2a1830,transparent:true,opacity:.3,depthWrite:false})); b.rotation.x=-Math.PI/2; b.renderOrder=2; sc.add(b); return b; });
+  OB.dust=makeDust(sc,30); OB.zEnd=0;
+}
+const QD_M=new (window.THREE?THREE.Matrix4:Object)(), QD_Q=window.THREE?new THREE.Quaternion():null, QD_E=window.THREE?new THREE.Euler():null;
+function qdDraw(T){ const m=new THREE.Matrix4(), q=new THREE.Quaternion(), e=new THREE.Euler(T.rot*.6,0,T.rot), v=V3(T.x+(T.st===1?(Math.random()-.5)*.08:0),T.y-.25,T.z+(T.st===1?(Math.random()-.5)*.08:0)), sc=T.st===3?1e-4:1;
+  q.setFromEuler(e); m.compose(v,q,V3(sc,sc,sc)); T.im.setMatrixAt(T.k,m); T.im.setColorAt(T.k,T.st===1?new THREE.Color(QD.warn).lerp(T.col,.5+.5*Math.sin(OB.t*30)):T.col); T.im.instanceMatrix.needsUpdate=true; if(T.im.instanceColor) T.im.instanceColor.needsUpdate=true; }
+function qdTouch(T){ if(!T||T.st!==0||OB.qd.phase!=="play") return; T.st=1; T.t=.5; OB.qdAnim.add(T); }
+function qdReset(){ for(const T of OB.tiles){ T.st=0; T.t=0; T.y=T.top; T.rot=0; T.s.off=false; qdDraw(T); } OB.qdAnim=new Set(); }
+function qdSpawn(P){ const sx=P.i?4.5:-4.5; Object.assign(P,{x:sx,y:.02,z:0,vx:0,vz:0,vy:0,gr:null,dead:0,cp:0}); const C=OB.chars[P.i]; C.root.visible=true; C.root.position.set(P.x,P.y,P.z); C.root.rotation.y=P.i?-Math.PI/2:Math.PI/2; P.yawT=C.root.rotation.y; }
+function qdSolo(){ return !online() || !OB.rem; }
+function qdInit(){ OB.qd={phase:"idle", round:0, score:[0,0], fell:[false,false], t0:0, seed:1, playT:0, best:+S.qdBest||0}; OB.qdAnim=new Set(); qdReset(); OB.Ps.forEach(q=>qdSpawn(q));
+  HUB.yaw=HUB.yawT=OB.me?Math.PI/2:-Math.PI/2; HUB.pitch=HUB.pitchT=.5; HUB.dist=HUB.distT=10;
+  const b=document.createElement("button"); b.className="qdStart"; b.innerHTML=artify("⭐ Começar rodada"); b.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); qdStart(); }); HUB.scene.appendChild(b); OB.qdBtn=b;
+  const sala=NET.docs["queda/sala"]; if(online() && sala && sala.score && Date.now()-(sala.at||0)<10*60e3){ OB.qd.score=sala.score.slice(0,2).map(n=>+n||0); OB.qd.round=+sala.round||0; } }
+function qdStart(){ if(!OB.qd||OB.qd.phase==="count"||OB.qd.phase==="play") return;
+  const over=OB.qd.score[0]>=3||OB.qd.score[1]>=3, d={round:OB.qd.round+1, at:Date.now(), seed:Math.floor(Math.random()*1e9), score:over?[0,0]:OB.qd.score.slice(), by:S.me};
+  if(online()&&!qdSolo()) push("queda/sala",d); qdBegin(d); }
+function qdBegin(d){ const Q=OB.qd; Q.round=d.round; Q.seed=d.seed; Q.score=(d.score||[0,0]).slice(); Q.fell=[false,false]; Q.phase="count"; Q.t0=performance.now()+3000; Q.dropK=-1;
+  qdReset(); OB.Ps.forEach(q=>{ if(obLocal(q.i)) qdSpawn(q); }); OB.camT=null; HUB.yaw=HUB.yawT=OB.me?Math.PI/2:-Math.PI/2;
+  [3,2,1].forEach((n,k)=>setTimeout(()=>{ if(OB.on&&OB.qd&&OB.qd.round===Q.round) { bigToast(String(n),k?"":qdSolo()?"Treino: aguenta o máximo!":`Rodada ${Q.round}`); snd("tap"); } },k*1000));
+  if(OB.qdBtn) OB.qdBtn.hidden=true; obHud(true); }
+function qdFell(P){ const Q=OB.qd; P.dead=1e9; if(!Q||Q.phase!=="play"||P!==OB.P) return; Q.fell[P.i]=true; snd("meh");
+  if(qdSolo()){ const tt=(performance.now()-Q.t0)/1000; Q.phase="end"; const rec=tt>Q.best; if(rec){ Q.best=tt; S.qdBest=+tt.toFixed(1); save(); }
+    bigToast(`Aguentou ${tt.toFixed(1)} s`,rec?"recorde novo!":`recorde ${Q.best.toFixed(1)} s`); setTimeout(()=>{ if(OB.qdBtn) OB.qdBtn.hidden=false; },1600); obHud(true); return; }
+  push("queda/p"+S.me,{round:Q.round,fell:1,t:Date.now()}); qdCheck(); }
+function qdCheck(){ const Q=OB.qd, o=other(), d=NET.docs["queda/p"+o]||{}; if(!Q||Q.phase!=="play") return;
+  const oFell=d.round===Q.round&&d.fell, iFell=Q.fell[S.me];
+  if(oFell && !iFell){ Q.score[S.me]++; Q.phase="end"; push("queda/sala",{round:Q.round,at:Date.now(),seed:Q.seed,score:Q.score.slice(),win:S.me,by:S.me}); qdEnd(S.me); } }
+function qdEnd(win){ const Q=OB.qd; Q.phase="end"; const over=Q.score[win]>=3;
+  bigToast(win===S.me?(over?"Você ganhou a partida!":"Você ganhou a rodada!"):(over?`${nmRaw(win)} ganhou a partida!`:`${nmRaw(win)} ganhou a rodada`),`${nmRaw(0)} ${Q.score[0]} × ${Q.score[1]} ${nmRaw(1)}`);
+  snd(win===S.me?"fanfare":"chime"); obHud(true);
+  if(over){ setTimeout(()=>{ if(OB.on){ for(let k=0;k<4;k++) setTimeout(()=>heartsW(OB.P.x,OB.P.y+2.5,OB.P.z,["⭐","💖","✨"],8),k*250); if(OB.qdBtn){ OB.qdBtn.innerHTML=artify("⭐ Nova partida"); OB.qdBtn.hidden=false; } } },1800); }
+  else if(win===S.me) setTimeout(()=>{ if(OB.on&&OB.qd&&OB.qd.phase==="end") qdStart(); },3200);
+  else setTimeout(()=>{ if(OB.on&&OB.qdBtn&&OB.qd.phase==="end") OB.qdBtn.hidden=false; },3600); }
+function qdNet(path){ if(!OB.on||!OB.arena||!OB.qd) return; const d=NET.docs[path]; if(!d) return; const Q=OB.qd;
+  if(path==="queda/sala"){ if(d.by===S.me) return; if(d.round>Q.round||(d.round===Q.round&&Q.phase==="idle")){ if(Date.now()-(d.at||0)<15000||d.win==null) qdBegin(d); }
+    else if(d.round===Q.round && d.win!=null && Q.phase!=="end"){ Q.score=d.score.slice(); qdEnd(d.win); } }
+  if(path==="queda/p"+other()) qdCheck(); }
+function qdTick(dt){ const Q=OB.qd; if(!Q) return; const now=performance.now();
+  if(Q.phase==="count" && now>=Q.t0){ Q.phase="play"; snd("go"); bigToast("Vai!",""); }
+  // depois de 20 s, um hexágono por vez cai sozinho (mesma ordem nos dois celulares)
+  if(Q.phase==="play"){ const el=now-Q.t0; if(el>20000){ const k=Math.floor((el-20000)/380); while(Q.dropK<k){ Q.dropK++; const r=rng(Q.seed+Q.dropK*7919)(); qdTouch(OB.tiles[Math.floor(r*OB.tiles.length)]); } } }
+  // pisou, começa a cair (eu e o outro)
+  for(const q of OB.Ps) if(obLocal(q.i) && q.gr && q.gr.tile) qdTouch(q.gr.tile);
+  const Rm=OB.rem; if(Rm && !OB.remDead){ for(const T of OB.tiles) if(T.st===0 && Math.abs(Rm.y-T.top)<.4 && Math.abs(Rm.x-T.x)<1 && Math.abs(Rm.z-T.z)<1 && Math.hypot(Rm.x-T.x,Rm.z-T.z)<.92) qdTouch(T); }
+  for(const T of [...OB.qdAnim]){ T.t-=dt; if(T.st===1){ if(T.t<=0){ T.st=2; T.t=.8; T.s.off=true; for(const q of OB.Ps) if(q.gr===T.s) q.gr=null; } }
+    else if(T.st===2){ T.y-=dt*(6+(.8-T.t)*14); T.rot+=dt*2; if(T.t<=0){ T.st=3; OB.qdAnim.delete(T); } }
+    qdDraw(T); }
+  // só os hexágonos perto de quem tá jogando entram na física
+  const near=[]; for(const q of OB.Ps){ if(!obLocal(q.i)||q.dead) continue; for(const T of OB.tiles){ if(T.st>=2) continue; if(Math.abs(T.x-q.x)<2.6&&Math.abs(T.z-q.z)<2.6&&q.y>T.top-4) near.push(T.s); } }
+  OB.solids=near; }
 
 /* =================== PULO E BOTÕES DE AÇÃO =================== */
 function jumpChar(i, fromNet){ if(!W3) return false; const C=W3.chars[i];
@@ -4525,7 +4635,7 @@ function nearThing(){
   } else {
     for(const [k,b] of Object.entries(BOOTH3)){ const f=boothFront(b,1.6); cand(f.x,f.z,2.3,STATIONS[k].emoji,`Jogar ${GAME_NAMES[k]}`,()=>{ faceW(a,b.x,b.z); openStation(k); }); }
     cand(MAIL3.x,MAIL3.z,2.3,"📬","Correio",mailMenu);
-    for(const q of AR_PORTALS) cand(q.x+Math.sin(q.r)*1.3,q.z+Math.cos(q.r)*1.3,2.6,"🚀",q.id==="extremo"?"Extremo":q.id==="dupla"?"Dupla":"Parkour",()=>obbyMenu(q.id));
+    for(const q of AR_PORTALS) cand(q.x+Math.sin(q.r)*1.3,q.z+Math.cos(q.r)*1.3,2.6,"🚀",q.id==="extremo"?"Extremo":q.id==="dupla"?"Dupla":q.id==="queda"?"Chão que Cai":"Parkour",()=>obbyMenu(q.id));
     { const nap=W3.napper; cand(HAM3.x,HAM3.z,2.7,"🌙",nap!=null&&nap!==a?esc(nmRaw(nap)):"Cochilar",hammockMenu); }
     cand(FOUNT.x,FOUNT.z,3.5,"⛲","Fonte",fountainMenu,.6);
     EASELS.forEach((E,idx)=>cand(E.x,E.z+.7,1.9,"🎨","Pintar",()=>hitMenu("easel-"+idx)));
