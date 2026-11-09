@@ -932,7 +932,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "3.4";
+const VERSION = "3.4.1";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -1635,17 +1635,34 @@ function hub(){
   root.querySelector("#status").onclick=()=>{ const i=NET.p2p?NET.p2p.info():{}; modal(`<h2>Conexão</h2><p>Versão <b>${VERSION}</b> · você é <b>${nm(S.me)}</b></p>
     <p>Direta: <b>${esc(i.p2p||"-")}</b>${i.p2pOpen?" ✅":""}<br>Pela internet: <b>${esc(i.relay||"-")}</b><br>${nm(other())} visto: <b>${i.visto?ago(i.visto):"ainda não"}</b></p>
     <div class="stack"><button class="btn alt" id="bWho">👤 Trocar de personagem</button><button class="btn" data-close>OK</button></div>`).querySelector("#bWho").onclick=whoModal; };
-  // toque, arrastar (girar câmera) e pinça (zoom)
-  const ptrs=new Map(); let down=null, pinch=0;
+  // toque, arrastar (girar câmera) e pinça (zoom) — gesto robusto
+  const ptrs=new Map(); let down=null, pinch=0, pinchDist=0;
   const cv=W3.R.domElement;
-  cv.onpointerdown=e=>{ ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY}); if(ptrs.size===1) down={x:e.clientX,y:e.clientY,moved:false,yaw:HUB.yaw,pitch:HUB.pitch}; else { down&&(down.moved=true); const a=[...ptrs.values()]; pinch=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); } };
+  HUB.yawT=HUB.yaw; HUB.pitchT=HUB.pitch; HUB.distT=HUB.dist; HUB.yawV=0;
+  cv.onpointerdown=e=>{
+    if(e.isPrimary) ptrs.clear();               // começo de um gesto novo: limpa dedos "fantasmas"
+    try{ cv.setPointerCapture(e.pointerId); }catch(_){}
+    ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    HUB.yawV=0;
+    if(ptrs.size===1){ down={x:e.clientX,y:e.clientY,lx:e.clientX,ly:e.clientY,lt:performance.now(),t0:performance.now(),moved:false,axis:null}; pinch=0; }
+    else if(ptrs.size===2){ if(down) down.moved=true; const a=[...ptrs.values()]; pinchDist=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); pinch=1; }
+  };
   cv.onpointermove=e=>{ if(!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
-    if(ptrs.size>=2){ const a=[...ptrs.values()], d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); if(pinch){ HUB.dist=Math.max(6,Math.min(22,HUB.dist*pinch/d)); } pinch=d; return; }
-    if(!down) return; const dx=e.clientX-down.x, dy=e.clientY-down.y; if(Math.hypot(dx,dy)>10) down.moved=true;
-    if(down.moved){ closeCtx(); HUB.yaw=down.yaw-dx*.008; HUB.pitch=Math.max(.25,Math.min(1.25,down.pitch+dy*.005)); } };
-  const up=e=>{ ptrs.delete(e.pointerId); if(ptrs.size<2) pinch=0; if(ptrs.size) return; const d=down; down=null; if(!d||d.moved) return; tap3(e); };
-  cv.onpointerup=up; cv.onpointercancel=e=>{ ptrs.delete(e.pointerId); down=null; };
-  cv.addEventListener("wheel",e=>{ HUB.dist=Math.max(6,Math.min(22,HUB.dist*(1+e.deltaY*.001))); e.preventDefault(); },{passive:false});
+    if(ptrs.size>=2){ const a=[...ptrs.values()], d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); if(pinch&&pinchDist>20&&d>20){ HUB.distT=Math.max(6,Math.min(22,HUB.distT*pinchDist/d)); } pinchDist=d; closeCtx(); return; }
+    if(!down||pinch) return;
+    const dx=e.clientX-down.x, dy=e.clientY-down.y;
+    if(!down.moved && Math.hypot(dx,dy)>9){ down.moved=true; down.axis=Math.abs(dx)>=Math.abs(dy)*.7?"h":"v"; closeCtx(); }
+    if(down.moved){ const mx=e.clientX-down.lx, my=e.clientY-down.ly, now=performance.now();
+      HUB.yawT-=mx*.0085*(down.axis==="h"?1:.35);
+      HUB.pitchT=Math.max(.32,Math.min(1.1,HUB.pitchT+my*.0035*(down.axis==="v"?1:.25)));
+      const dtm=Math.max(1,now-down.lt); HUB.yawV=-mx*.0085/dtm*16; down.lx=e.clientX; down.ly=e.clientY; down.lt=now; } };
+  const up=e=>{ const had=ptrs.delete(e.pointerId); try{ cv.releasePointerCapture(e.pointerId); }catch(_){}
+    if(ptrs.size) return; const d=down; down=null; const wasPinch=pinch; pinch=0;
+    if(!had||!d||wasPinch) { HUB.yawV=0; return; }
+    if(d.moved){ if(performance.now()-d.lt>80) HUB.yawV=0; return; }
+    HUB.yawV=0; if(performance.now()-d.t0<700) tap3(e); };
+  cv.onpointerup=up; cv.onpointercancel=e=>{ ptrs.delete(e.pointerId); if(!ptrs.size){ down=null; pinch=0; } }; cv.onlostpointercapture=e=>{ if(ptrs.has(e.pointerId)){ ptrs.delete(e.pointerId); if(!ptrs.size){ down=null; pinch=0; } } };
+  cv.addEventListener("wheel",e=>{ HUB.distT=Math.max(6,Math.min(22,HUB.distT*(1+e.deltaY*.001))); e.preventDefault(); },{passive:false});
   setTimeout(()=>{ if(!S.tut3){ S.tut3=true; save(); say(actor(),"Toca no chão pra andar e nas coisas pra interagir ✨ Arrasta pra girar",4500); } else say(actor(), partnerHere()?`Oi, ${nmRaw(other())}! 👋`:"Oi! 😊",2200); },700);
 }
 function tap3(e){
@@ -1703,6 +1720,7 @@ function step(dt){
   if(W3.boatRide) W3.boatRide(dt);
   // câmera
   if(HUB){
+    if(HUB.yawT!=null){ if(Math.abs(HUB.yawV)>.0004){ HUB.yawT+=HUB.yawV; HUB.yawV*=Math.pow(.05,dt); } const k=Math.min(1,dt*14); HUB.yaw+=(HUB.yawT-HUB.yaw)*k; HUB.pitch+=(HUB.pitchT-HUB.pitch)*k; HUB.dist+=(HUB.distT-HUB.dist)*Math.min(1,dt*10); }
     const C=W3.chars[actor()], tp=C.root.position, cam=W3.cam;
     const want=V3(tp.x+Math.sin(HUB.yaw)*HUB.dist*Math.cos(HUB.pitch), tp.y+1.2+Math.sin(HUB.pitch)*HUB.dist, tp.z+Math.cos(HUB.yaw)*HUB.dist*Math.cos(HUB.pitch));
     const tgt=V3(tp.x,tp.y+1.2,tp.z);
