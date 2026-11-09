@@ -534,7 +534,7 @@ async function initNet(){
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
-      "jogos/bingo-p0","jogos/bingo-p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1"];
+      "jogos/bingo-p0","jogos/bingo-p1","jogos/coop","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1"];
     paths.forEach(p=>{ NET.subs[p]=db.doc(p).onSnapshot(s=>{ NET.docs[p]=s.exists?s.data():null; netChanged(p); }, e=>{}); });
     NET.ready=true; initPetsNet(); refreshStatus();
   }catch(e){}
@@ -564,7 +564,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "1.3.2";
+const VERSION = "1.4";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -586,7 +586,7 @@ function makeP2PDB(){
   function announceRe(){ if(mq&&mqOk&&role!=null){ try{ mq.publish(`${T}/hi`, JSON.stringify({role,id:MYID,t:Date.now(),re:1}), {qos:0}); }catch(e){} } }
   function startMQ(){
     if(!window.mqtt || mq) return;
-    try{ mq=window.mqtt.connect(window.__MQTT_URL||"wss://broker.emqx.io:8084/mqtt",{clientId:"mdn_"+MYID, keepalive:30, reconnectPeriod:3000, connectTimeout:12000, clean:true}); }catch(e){ mq=null; return; }
+    try{ mq=window.mqtt.connect(window.__MQTT_URL||"wss://broker.emqx.io:8084/mqtt",{clientId:"mdn_"+MYID, keepalive:20, reconnectPeriod:2000, connectTimeout:12000, clean:true}); }catch(e){ mq=null; return; }
     mq.on("connect",()=>{ mqOk=true; mq.subscribe(`${T}/#`,{qos:1}); for(const [pp,e] of Object.entries(store)) if(e&&typeof e.ts==="number") mqPub(pp,e.d,e.ts); announce(); onState(); });
     mq.on("close",()=>{ if(mqOk){ mqOk=false; onState(); } });
     mq.on("error",()=>{});
@@ -608,9 +608,10 @@ function makeP2PDB(){
     if(m.t==="hello"){ NET.partnerRole=m.role; onState(); }
     if(m.t==="sync" && m.s && typeof m.s==="object") for(const [p,e] of Object.entries(m.s)) if(e&&typeof e.ts==="number") apply(p,e.d,e.ts);
   }
+  setInterval(()=>{ const now=Date.now(); conns.forEach(c=>{ if(!c.open) return; try{ c.send({t:"ping"}); }catch(e){} if(c._last && now-c._last>16000){ try{c.close();}catch(e){} conns=conns.filter(x=>x!==c); onState(); } }); },5000);
   function setupConn(c){
     c.on("open",()=>{ conns=[...conns.filter(x=>x!==c && x.open), c]; lastOpen=Date.now(); clearTimeout(pendT); c.send({t:"sync", s:store}); c.send({t:"hello",role}); setSt("conectado"); });
-    c.on("data",onData);
+    c._last=Date.now(); c.on("data",m=>{ c._last=Date.now(); onData(m); });
     const drop=()=>{ conns=conns.filter(x=>x!==c); lastOpen=Date.now(); if(!connected()) setSt(isHost?"esperando":"procurando"); };
     c.on("close",drop); c.on("error",drop);
   }
@@ -657,7 +658,7 @@ function makeP2PDB(){
     becomeHost(); clearInterval(tryT); tryT=setInterval(tick,5000);
   }
   function stop(){ clearInterval(tryT); conns.forEach(c=>{ try{c.close();}catch(e){} }); conns=[]; killPeer(); }
-  document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ if(peer&&peer.disconnected){ try{peer.reconnect();}catch(e){} } tick(); } });
+  document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ if(peer&&peer.disconnected){ try{peer.reconnect();}catch(e){} } conns.forEach(c=>{ if(c.open) try{ c.send({t:"sync",s:store}); }catch(e){} }); if(mq&&!mqOk){ try{ mq.reconnect(); }catch(e){} } announce(); tick(); } });
   const db={
     doc:(p)=>({path:p, get:async()=>snap(p), set:async(d)=>write(p,d), update:async(d)=>write(p,Object.assign({},store[p]&&store[p].d,d)),
       delete:async()=>write(p,null), onSnapshot:(next)=>{ (docL[p]=docL[p]||[]).push(next); setTimeout(()=>next(snap(p)),0); return ()=>{ docL[p]=docL[p].filter(f=>f!==next); }; },
@@ -713,7 +714,7 @@ const STATIONS={
   bingo:{x:.5,y:.39,label:"BINGO",c1:"#ff7a93",c2:"#fff3e6",emoji:"🎱"},
   caca:{x:.81,y:.47,label:"CAÇA-PALAVRAS",c1:"#d9a54a",c2:"#fff7e6",emoji:"🔎"}
 };
-const GAME_NAMES={termo:"Termo",bingo:"Bingo",caca:"Caça-palavras"};
+const GAME_NAMES={termo:"Termo",bingo:"Bingo",caca:"Caça-palavras",coop:"Termo juntos"};
 function boothSVG(st, key){
   let icon="";
   if(key==="termo") icon=["#3aa394","#d9a54a","#3a2f34","#3aa394"].map((c,i)=>`<rect x="${25+i*18}" y="80" width="15" height="15" rx="3" fill="${c}"/><text x="${32.5+i*18}" y="92" font-size="11" font-weight="700" text-anchor="middle" fill="#fff" font-family="Fredoka,system-ui">${"AMOR"[i]}</text>`).join("");
@@ -737,6 +738,7 @@ function tree(x,y,s=1){ return `<g transform="translate(${x} ${y}) scale(${s})">
 
 let HUB=null;
 function hub(){
+  if(NET.pendingUpdate){ setTimeout(()=>{ if(typeof maybeUpdate==="function") maybeUpdate(); },1500); }
   pushMe({place:"hub", x:S.pos[S.me].x, y:S.pos[S.me].y});
   const root=render(`
     <div class="top"><button class="ibtn" id="bWho" aria-label="Personagens">🎨</button><h1>Nosso Parquinho 💞</h1><button class="ibtn" id="bTrophy" aria-label="Placar">🏆</button></div>
@@ -909,10 +911,10 @@ function refreshBanners(){
     if(sent && sent.res && !(S.seenRes||[]).includes(sent.code)){
       html+=`<div class="banner"><span>🎯 ${nm(o)} ${sent.res.solved?`acertou sua palavra em ${sent.res.tries}/6`:"não acertou sua palavra"} (${esc(disp(decodeWord(sent.code)||"").toUpperCase())})</span><button class="x" data-a="seen">✕</button></div>`;
     }
-    for(const g of ["bingo","caca","termo"]){
+    for(const g of ["bingo","caca","termo","coop"]){
       const s=NET.docs["jogos/"+g];
       if(s && s.by===o && !s.end && Date.now()-s.start<5*60e3 && !(S.seenInv||[]).includes(s.seed)){
-        html+=`<div class="banner"><span>${STATIONS[g].emoji} ${nm(o)} começou ${g==="caca"?"um Caça-palavras":g==="bingo"?"um Bingo":"um duelo de Termo"}!</span><button class="btn" data-a="join-${g}">Entrar</button><button class="x" data-a="no-${g}">✕</button></div>`;
+        html+=`<div class="banner"><span>${g==="coop"?"🤝":STATIONS[g].emoji} ${nm(o)} começou ${g==="caca"?"um Caça-palavras":g==="bingo"?"um Bingo":g==="coop"?"um Termo juntos":"um duelo de Termo"}!</span><button class="btn" data-a="join-${g}">Entrar</button><button class="x" data-a="no-${g}">✕</button></div>`;
       }
     }
   }
@@ -935,7 +937,7 @@ function openStation(g){
   const on=online(), o=other();
   let opts="";
   if(g==="termo"){
-    opts = (on?`<button class="btn pink" data-o="duel">⚔️ Duelo ao vivo com ${nm(o)}</button>
+    opts = `<button class="btn blue" data-o="coop">🤝 Termo juntos (a mesma palavra)</button>`+(on?`<button class="btn pink" data-o="duel">⚔️ Duelo ao vivo com ${nm(o)}</button>
                  <button class="btn gold" data-o="pickOnline">✍️ Escolher uma palavra pra ${nm(o)}</button>`:"")+
            `<button class="btn" data-o="local">📱 No mesmo celular</button>
             <button class="btn alt" data-o="code">🔑 Desafio por código (WhatsApp)</button>`;
@@ -950,7 +952,8 @@ function openStation(g){
   m.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{
     m.remove(); const o2=b.dataset.o;
     if(g==="termo"){
-      if(o2==="duel") startOnline("termo");
+      if(o2==="coop") termoCoop(on);
+      else if(o2==="duel") startOnline("termo");
       else if(o2==="pickOnline") pickScreen(S.me, other(), w=>sendInbox(w), hub);
       else if(o2==="local") newRound();
       else if(o2==="code") remoteMenu();
@@ -960,6 +963,7 @@ function openStation(g){
 }
 function startOnline(g){
   if(!online()){ toast("Sem conexão online agora"); return hub(); }
+  if(g==="coop") return termoCoop(true);
   if(g==="bingo") bingoGame(true);
   else if(g==="caca") cacaGame(true);
   else if(g==="termo") termoDuel();
@@ -989,7 +993,8 @@ function trophyModal(){
   const w=S.wins;
   modal(`<h2>🏆 Placar do casal</h2>
     <div class="trophy"><span></span><span style="text-align:center">${nm(0)}</span><span style="text-align:center">${nm(1)}</span>
-    ${Object.keys(GAME_NAMES).map(g=>`<span>${STATIONS[g].emoji} ${GAME_NAMES[g]}</span><span class="n">${w[g][0]}</span><span class="n">${w[g][1]}</span>`).join("")}
+    ${["termo","bingo","caca"].map(g=>`<span>${STATIONS[g].emoji} ${GAME_NAMES[g]}</span><span class="n">${w[g][0]}</span><span class="n">${w[g][1]}</span>`).join("")}
+    <span>🤝 Termo juntos</span><span class="n" style="grid-column:span 2">${(S.coop||{w:0}).w} acertos / ${(S.coop||{p:0}).p}</span>
     <span><b>Total</b></span><span class="n"><b>${w.termo[0]+w.bingo[0]+w.caca[0]}</b></span><span class="n"><b>${w.termo[1]+w.bingo[1]+w.caca[1]}</b></span></div>
     <div class="row2"><button class="btn alt small" id="zero">Zerar</button><button class="btn small" data-close>Fechar</button></div>`)
     .querySelector("#zero").onclick=()=>confirmBox("Zerar placar?","Todas as vitórias voltam pra zero neste celular.","Zerar",()=>{ S.wins=JSON.parse(JSON.stringify(DEF.wins)); save(); hub(); });
@@ -1332,6 +1337,112 @@ function remoteResult(r, sender){
   root.querySelector("#copy").onclick=()=>copyText(msg, root.querySelector("#holder"));
   root.querySelector("#back").onclick=()=>pickScreen(me, sender, w=>shareChallenge(w), remoteMenu);
   root.querySelector("#home").onclick=hub;
+}
+
+/* =================== TERMO JUNTOS (cooperativo) =================== */
+function termoCoop(isOnline){
+  let sess, joined=false;
+  if(isOnline){ ({sess,joined}=joinOrCreate("coop",{rows:[]})); pushMe({place:"coop"}); }
+  else sess={seed:newSeed(), start:Date.now(), by:S.me, rows:[]};
+  if(!Array.isArray(sess.rows)) sess.rows=[];
+  const answer=ANSWERS[(sess.seed*7+3) % ANSWERS.length];
+  const me=S.me, o=other();
+  const L=makeLine(); let busy=false, over=false, partnerTyping="", typT=0, counted=false;
+  const turnOf=()=> isOnline ? (sess.rows.length%2===0 ? sess.by : 1-sess.by) : (sess.rows.length%2===0 ? sess.by : 1-sess.by);
+  const myTurn=()=> !isOnline || turnOf()===me;
+  const root=render(`
+    ${topbar("Termo juntos 🤝", false)}
+    <div class="stage">
+      ${av(0,"think",{cls:"left"})}
+      <div class="turn" id="turnTxt"></div>
+      ${av(1,"think",{cls:"right"})}
+    </div>
+    <div class="boardWrap"><div class="board" id="board"></div></div>
+    ${kbHTML()}`,"coop");
+  const board=root.querySelector("#board");
+  bindTop(root, ()=>{ if(over) return hub(); confirmBox("Sair do Termo juntos?", isOnline?"A partida continua salva, dá pra voltar depois.":"O progresso vai ser perdido.","Sair",hub); });
+  const rowsEval=()=>sess.rows.map(r=>({g:r.g, by:r.by, res:evaluate(r.g,answer)}));
+  function draw(){
+    const rows=rowsEval();
+    let h="";
+    for(let r=0;r<6;r++){
+      if(r<rows.length){ const {g,res,by}=rows[r]; const d=[...disp(g)];
+        h+=`<div class="brow" style="position:relative">${res.map((s,i)=>`<div class="tile ${s}">${d[i]}</div>`).join("")}<div style="position:absolute;left:calc(-1 * var(--tile) * .62);top:50%;transform:translateY(-50%);width:calc(var(--tile)*.52)">${head(by)}</div></div>`; }
+      else if(r===rows.length && !over){
+        if(myTurn()) h+=lineHTML(L,false);
+        else h+=`<div class="brow current" style="opacity:.75">${[0,1,2,3,4].map(i=>`<div class="tile">${partnerTyping[i]||""}</div>`).join("")}</div>`;
+      } else h+=`<div class="brow future">${"<div class='tile'></div>".repeat(5)}</div>`;
+    }
+    board.innerHTML=h;
+    const cur=board.querySelector(".brow.current");
+    if(cur && myTurn()) cur.querySelectorAll(".tile").forEach(t=>t.onclick=()=>{ if(busy) return; L.pos=+t.dataset.i; draw(); });
+    // teclado
+    const ks={}, RK={absent:1,present:2,correct:3};
+    rows.forEach(({g,res})=>res.forEach((s,i)=>{ const k=g[i]; if(!ks[k]||RK[s]>RK[ks[k]]) ks[k]=s; }));
+    root.querySelectorAll(".key").forEach(b=>{ b.classList.remove("correct","present","absent"); if(ks[b.dataset.k]) b.classList.add(ks[b.dataset.k]); });
+    root.querySelector(".kb").style.opacity = myTurn()||over ? "1" : ".45";
+    const tt=root.querySelector("#turnTxt");
+    tt.innerHTML = over ? "" : isOnline ? (myTurn()? `sua vez<b>${nm(me)} ✍️</b>` : `vez de<b>${nm(turnOf())}</b>`) : `vez de<b>${nm(turnOf())}</b>`;
+    [0,1].forEach(i=>root.querySelectorAll(`.avatar[data-p="${i}"]`).forEach(a=>a.classList.toggle("active", !over && i===turnOf())));
+  }
+  draw();
+  function pushTyping(){ if(!isOnline) return; clearTimeout(typT); typT=setTimeout(()=>pushMe({typing:{s:sess.seed,n:sess.rows.length,c:L.cells.join("")}}),60); }
+  function checkEnd(){
+    const rows=rowsEval(); const last=rows[rows.length-1];
+    const won = last && last.res.every(s=>s==="correct"), lost=!won && rows.length>=6;
+    if(!(won||lost) || over) return;
+    over=true; keyHandler=null; draw();
+    if(!counted){ counted=true; S.coop=S.coop||{p:0,w:0}; S.coop.p++; if(won) S.coop.w++; save(); }
+    if(won){ board.querySelectorAll(".brow")[rows.length-1].querySelectorAll(".tile").forEach((t,i)=>{ t.style.animationDelay=(i*90)+"ms"; t.classList.add("win"); });
+      setMood(0,"happy"); setMood(1,"happy"); say(last.by, pick(["Acertamos!! 💞","Time perfeito! 🥰","Somos demais! ✨"]),4000);
+    } else { setMood(0,"sad"); setMood(1,"sad"); }
+    if(isOnline && sess.by===me && !sess.end) push("jogos/coop", Object.assign({}, sess, {end:Date.now()}));
+    setTimeout(()=>{
+      const card=document.createElement("div"); card.className="endCard";
+      card.innerHTML=`<h2>${won?`Acertamos juntos em ${rows.length}/6! 💞`:"Não foi dessa vez 😢"}</h2>
+        <p>${won?"":"A palavra era:"}</p>
+        <div class="word">${[...disp(answer)].map(c=>`<span>${c}</span>`).join("")}</div>
+        <p>Termo juntos: <b>${S.coop.w}</b> acertos em ${S.coop.p} partidas</p>
+        <div class="row2"><button class="btn alt" id="bk">Parque</button><button class="btn pink" id="again">Jogar de novo</button></div>`;
+      root.appendChild(card);
+      card.querySelector("#bk").onclick=hub;
+      card.querySelector("#again").onclick=()=>{ if(isOnline) newSession("coop",{rows:[]}); termoCoop(isOnline); };
+    }, won?900:600);
+  }
+  function submit(){
+    if(busy||over||!myTurn()) return;
+    const cur=board.querySelector(".brow.current");
+    if(!L.full()){ toast("Só palavras com 5 letras"); shake(cur); return; }
+    const g=L.word(); if(!VSET.has(g)){ toast("Essa palavra não é aceita"); shake(cur); return; }
+    const by = isOnline? me : turnOf();
+    sess=Object.assign({}, sess, {rows:[...sess.rows, {g,by}]});
+    if(isOnline){ NET.docs["jogos/coop"]=sess; push("jogos/coop", sess); }
+    L.cells=["","","","",""]; L.pos=0; partnerTyping="";
+    busy=true; draw();
+    const rowEl=board.querySelectorAll(".brow")[sess.rows.length-1];
+    rowEl.querySelectorAll(".tile").forEach((t,i)=>{ t.style.animationDelay=(i*160)+"ms"; t.classList.add("flip"); });
+    setTimeout(()=>{ busy=false; draw(); const res=evaluate(g,answer), gr=res.filter(s=>s==="correct").length;
+      if(gr<5) say(by, gr>=3?"Tá quase! 🔥": gr===0?"Ops, nada 😅":"Hmm... 🤔",1600);
+      if(!isOnline && gr<5) setTimeout(()=>say(turnOf(),"Minha vez! ✍️",1400),500);
+      checkEnd(); pushTyping(); }, 5*160+400);
+  }
+  bindKb(root,k=>{ if(over||busy) return; if(!myTurn()){ toast(`Espera a vez de ${nmRaw(turnOf())} 😉`,1200); return; } if(k==="enter") return submit(); if(L.key(k)){ draw(); pushTyping(); } });
+  if(isOnline){
+    screenNet=(path,d)=>{
+      if(path==="jogos/coop" && d && d.seed===sess.seed){
+        const n=(d.rows||[]).length, was=sess.rows.length; sess=d; if(!Array.isArray(sess.rows)) sess.rows=[];
+        if(n>was){ partnerTyping=""; draw(); const rowEl=board.querySelectorAll(".brow")[n-1]; if(rowEl) rowEl.querySelectorAll(".tile").forEach((t,i)=>{ t.style.animationDelay=(i*160)+"ms"; t.classList.add("flip"); });
+          const last=sess.rows[n-1]; const gr=evaluate(last.g,answer).filter(s=>s==="correct").length;
+          if(last.by!==me && gr<5) say(last.by, gr>=3?"Tá quase! 🔥":"Sua vez, amor 😘",1800);
+          setTimeout(checkEnd, 5*160+400); }
+        else draw();
+      } else if(path==="jogos/coop" && d && d.seed!==sess.seed && d.by===o && !over && Date.now()-d.start<60e3){ toast(`${nmRaw(o)} começou uma partida nova`); termoCoop(true); }
+      if(path===hubPath(o) && d && d.typing && d.typing.s===sess.seed && d.typing.n===sess.rows.length && !myTurn()){ partnerTyping=d.typing.c||""; draw(); }
+    };
+    if(!joined) setTimeout(()=>toast(`Convite enviado! ${nmRaw(o)} vê no parque 💌`,2400),300);
+    else say(o,"Bora descobrir juntos! 💞",2000);
+    checkEnd();
+  } else setTimeout(()=>say(turnOf(),"Eu começo! ✍️",1500),400);
 }
 
 /* =================== BINGO =================== */
@@ -1965,11 +2076,13 @@ function customize(i){
 function checkUpdate(){
   if(window.claude || location.protocol==="file:") return;
   fetch("version.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(j=>{
-    if(j && j.v && j.v!==VERSION){
-      const u=location.pathname+"?v="+encodeURIComponent(j.v);
-      if(!sessionStorage.getItem("upd-"+j.v)){ try{ sessionStorage.setItem("upd-"+j.v,"1"); }catch(e){} location.replace(u); }
-    }
+    if(j && j.v && j.v!==VERSION){ NET.pendingUpdate=j.v; maybeUpdate(); }
   }).catch(()=>{});
+}
+function maybeUpdate(){
+  const v=NET.pendingUpdate; if(!v || curScreen!=="hub" || document.querySelector(".modalBg")) return;
+  let done=false; try{ done=!!sessionStorage.getItem("upd-"+v); sessionStorage.setItem("upd-"+v,"1"); }catch(e){}
+  if(!done) location.replace(location.pathname+"?v="+encodeURIComponent(v));
 }
 checkUpdate(); setInterval(checkUpdate, 90000);
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden) checkUpdate(); });
