@@ -1079,6 +1079,33 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .pcT.lock{opacity:.5}.pcT.lock i{filter:grayscale(.7)}.pcT.lock span{display:flex;align-items:center;gap:3px;opacity:1;font-weight:700}.pcT.lock .ico{width:13px!important;height:13px!important}
 .pcOff{display:grid;place-items:center}
 .pcHint{text-align:center;font-size:.76rem;opacity:.85;margin:12px 0 0}
+/* nossa história: abertura e capítulos (v7.7) */
+.scene.cinMode .hudTop,.scene.cinMode #banners,.scene.cinMode #ctrlBar,.scene.cinMode .ov3,.scene.cinMode .ctx,.scene.cinMode .starTag,.scene.cinMode .enterBtn,.scene.cinMode #acts3,.scene.cinMode #emoTray,.scene.cinMode .tvRemote2,.scene.cinMode .tvScreen,.scene.cinMode .joy,.scene.cinMode .jobHud,.scene.cinMode .chatPop{display:none!important}
+.cnUI{position:absolute;inset:0;z-index:2600;overflow:hidden;font-family:Fredoka,ui-rounded,system-ui,sans-serif;color:#fff}
+.cnBar{position:absolute;left:0;right:0;height:11%;background:#120a14;animation:cnBarIn .9s ease both}.cnBar.t{top:0;transform-origin:top}.cnBar.b{bottom:0;transform-origin:bottom}
+@keyframes cnBarIn{from{transform:scaleY(0)}}
+.cnFade{position:absolute;inset:0;background:#1d1320;opacity:1;pointer-events:none}
+.cnSub{position:absolute;left:50%;bottom:calc(11% + 14px);transform:translateX(-50%);max-width:min(78%,640px);text-align:center;font-weight:600;font-size:1.02rem;line-height:1.3;text-shadow:0 2px 0 rgba(40,16,36,.7),0 0 14px rgba(40,16,36,.6);opacity:0;z-index:2}
+.cnSub.in{animation:cnSub .7s ease forwards}.cnSub.say{bottom:auto;top:calc(11% + 16px);background:var(--paper);color:var(--ink2);text-shadow:none;padding:10px 20px;border-radius:20px 20px 20px 6px;font-size:1.15rem;font-weight:700;box-shadow:0 10px 26px rgba(20,8,16,.35)}
+@keyframes cnSub{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+.cnCard{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;opacity:0;pointer-events:none;z-index:3}
+.cnCard.in{animation:cnCard 1.4s ease .5s forwards}.cnCard b{font-size:2.5rem;font-weight:700;letter-spacing:.5px;text-shadow:0 3px 0 rgba(92,58,82,.55)}.cnCard span{font-size:1rem;font-weight:500;opacity:.9}
+.cnCard.dark{color:var(--ink2)}.cnCard.dark b{color:var(--pink);text-shadow:0 3px 0 #ffd0dc}
+@keyframes cnCard{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+.cnAct{position:absolute;left:50%;bottom:calc(11% + 54px);transform:translateX(-50%);z-index:4;border:0;border-radius:999px;padding:14px 30px;font:700 1.15rem Fredoka,sans-serif;color:#fff;background:var(--pink);box-shadow:0 5px 0 var(--pinkD),0 0 0 0 rgba(255,111,145,.5);cursor:pointer;animation:cnPulse 1.3s ease-in-out infinite}
+.cnAct[hidden]{display:none}.cnAct:active{transform:translate(-50%,3px);box-shadow:0 2px 0 var(--pinkD)}
+@keyframes cnPulse{50%{box-shadow:0 5px 0 var(--pinkD),0 0 0 14px rgba(255,111,145,0)}}
+.cnSkip{position:absolute;right:calc(var(--sr) + 12px);top:calc(var(--st) + 8px);z-index:6;border:0;border-radius:999px;padding:6px 14px;font:600 .78rem Fredoka,sans-serif;color:#fff;background:rgba(255,255,255,.16);cursor:pointer}
+.cnStart{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;background:radial-gradient(120% 90% at 50% 0%,#7a4a66 0%,#3f2838 45%,#21141e 100%)}
+.cnStart b{font-size:2.2rem;font-weight:700;text-shadow:0 3px 0 rgba(92,58,82,.55)}.cnStart span{opacity:.85;margin-bottom:10px}.cnStart .btn{width:auto;padding:14px 34px;font-size:1.1rem}
+.modal:has(.stM){max-width:640px}
+.stCh{background:#fff;border-radius:16px;padding:9px 12px;margin-top:8px;box-shadow:inset 0 0 0 1.5px #f2dfe5;opacity:.72}.stCh.on,.stCh.wed{opacity:1}.stCh.on{box-shadow:inset 0 0 0 2px #ff9ab0}.stCh.wed{background:linear-gradient(135deg,#fffaf0,#fff0f4);box-shadow:inset 0 0 0 2px #ffd98a}
+.stHd{display:flex;align-items:center;gap:10px}.stHd i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--pink);color:#fff;font-weight:700;display:grid;place-items:center;flex:none}.stHd div{flex:1;min-width:0}.stHd b{display:block;font-size:.98rem}.stHd span{font-size:.74rem;color:var(--inkSoft)}.stHd em{font-style:normal;font-size:.74rem;font-weight:700;color:var(--pinkD);white-space:nowrap}
+.stCh ul{list-style:none;margin:7px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}.stCh li{font-size:.8rem;color:var(--ink2)}.stCh li.ok{color:#2f8a66;font-weight:600}.stCh li small{color:var(--inkSoft);font-weight:700}
+.stW{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.stI{display:flex;align-items:center;gap:7px;background:#fff;border-radius:12px;padding:6px 8px;box-shadow:inset 0 0 0 1.5px #f2dfe5}.stI>i{font-style:normal;font-size:1.4rem}.stI>div{flex:1;min-width:0}.stI b{font-size:.78rem;display:block;line-height:1.1}
+.stI u{display:block;height:6px;border-radius:9px;background:#f4e6eb;overflow:hidden;text-decoration:none;margin:3px 0 1px}.stI s{display:block;height:100%;background:var(--gold);border-radius:9px;text-decoration:none}.stI span{font-size:.66rem;color:var(--inkSoft);font-weight:700;display:flex;align-items:center;gap:3px}.stI span .ico{width:12px!important;height:12px!important}
+.stI .btn{margin:0;padding:6px 8px;font-size:.72rem;width:auto;flex:none}.stI.ok{box-shadow:inset 0 0 0 2px #7fd1a6;background:#f2fbf6}.stI.ok s{background:var(--sage)}.stI em{font-style:normal;color:#2f8a66;font-weight:700;font-size:1.1rem}
+@media (max-width:560px){ .stW,.stCh ul{grid-template-columns:1fr} }
 /* adicionar à Tela de Início */
 .a2hs{text-align:left}
 .a2hs ol{margin:6px 0 12px;padding-left:22px;line-height:1.55;color:#5a4652}
@@ -1866,7 +1893,7 @@ function netChanged(path){
 }
 function sanitizeLook(l){
   const n=(v,max)=>Number.isInteger(v)&&v>=0&&v<max?v:0;
-  return {name:String(l.name||"").slice(0,12), skin:n(l.skin,SKINS.length), hair:n(l.hair,HAIRS.length), hairColor:n(l.hairColor,HAIRC.length), shirt:n(l.shirt,SHIRTS.length), build:n(l.build,BUILDS.length), acc:n(l.acc,ACCS.length), pants:n(l.pants,PANTS.length), wrist:l.wrist==null?(l.acc===3?1:0):n(l.wrist,WRISTS.length), hat:n(l.hat,HATS.length)};
+  return {name:String(l.name||"").slice(0,12), skin:n(l.skin,SKINS.length), hair:n(l.hair,HAIRS.length), hairColor:n(l.hairColor,HAIRC.length), shirt:n(l.shirt,SHIRTS.length), build:n(l.build,BUILDS.length), acc:n(l.acc,ACCS.length), pants:n(l.pants,PANTS.length), wrist:l.wrist==null?(l.acc===3?1:0):n(l.wrist,WRISTS.length), hat:n(l.hat,HATS.length), ring:l.ring?1:0};
 }
 /* sessão compartilhada de cada jogo */
 function joinOrCreate(game, extra={}){
@@ -1881,7 +1908,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "7.6";
+const VERSION = "7.7";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2060,7 +2087,7 @@ function faceTex(kind, mood){
   const arcEye=(ex,up)=>{ x.strokeStyle=ink; x.lineWidth=pet?4:3.6; x.lineCap="round"; x.beginPath(); if(up){ x.moveTo(ex-8,cy+3); x.quadraticCurveTo(ex,cy-8,ex+8,cy+3); } else { x.moveTo(ex-8,cy-2); x.quadraticCurveTo(ex,cy+7,ex+8,cy-2); } x.stroke(); };
   // bochechas
   x.fillStyle="rgba(255,120,140,.38)"; [cx-gap-14,cx+gap+14].forEach(bx=>{ x.beginPath(); x.ellipse(bx,cy+17,10,6,0,0,7); x.fill(); });
-  if(mood==="happy"||mood==="dance"||mood==="give") { arcEye(cx-gap,true); arcEye(cx+gap,true); }
+  if(mood==="happy"||mood==="dance"||mood==="give"||mood==="cry") { arcEye(cx-gap,true); arcEye(cx+gap,true); }
   else if(mood==="blink") { arcEye(cx-gap,false); arcEye(cx+gap,false); }
   else if(mood==="kiss"||mood==="hug"||mood==="sleep") { arcEye(cx-gap,false); arcEye(cx+gap,false); x.fillStyle="rgba(255,100,130,.45)"; [cx-gap-14,cx+gap+14].forEach(bx=>{ x.beginPath(); x.ellipse(bx,cy+17,12,7,0,0,7); x.fill(); }); }
   else { eye(cx-gap); eye(cx+gap); }
@@ -2072,9 +2099,10 @@ function faceTex(kind, mood){
     x.strokeStyle="rgba(150,90,70,.55)"; x.lineWidth=2; x.beginPath(); x.moveTo(cx+1,cy+6); x.quadraticCurveTo(cx+4,cy+12,cx-1,cy+13); x.stroke();
   }
   if(mood==="sad"){ x.fillStyle="#7cc4f0"; x.beginPath(); x.ellipse(cx+gap+4,cy+16,3,5,0,0,7); x.fill(); }
+  if(mood==="cry"){ x.fillStyle="#7cc4f0"; [-1,1].forEach(q=>{ const ex=cx+q*gap; x.beginPath(); x.ellipse(ex+q*2,cy+14,3.4,7.5,0,0,7); x.fill(); x.beginPath(); x.ellipse(ex+q*5,cy+31,2.8,5.5,0,0,7); x.fill(); }); x.fillStyle="rgba(255,100,130,.45)"; [cx-gap-14,cx+gap+14].forEach(bx=>{ x.beginPath(); x.ellipse(bx,cy+17,12,7,0,0,7); x.fill(); }); }
   // boca
   const my=cy+(pet?20:25); x.lineCap="round";
-  if(mood==="happy"||mood==="dance"||mood==="give"){ x.fillStyle="#8a3a44"; x.beginPath(); x.moveTo(cx-9,my-2); x.quadraticCurveTo(cx,my+12,cx+9,my-2); x.closePath(); x.fill(); }
+  if(mood==="happy"||mood==="dance"||mood==="give"||mood==="cry"){ x.fillStyle="#8a3a44"; x.beginPath(); x.moveTo(cx-9,my-2); x.quadraticCurveTo(cx,my+12,cx+9,my-2); x.closePath(); x.fill(); }
   else if(mood==="kiss"){ x.fillStyle=fem?"#e2788a":"#c46a74"; x.beginPath(); x.ellipse(cx+3,my,4.5,4,0,0,7); x.fill(); }
   else if(mood==="sad"){ x.strokeStyle=ink; x.lineWidth=2.6; x.beginPath(); x.moveTo(cx-7,my+3); x.quadraticCurveTo(cx,my-4,cx+7,my+3); x.stroke(); }
   else if(mood==="think"||mood==="eat"){ x.fillStyle="#8a3a44"; x.beginPath(); x.ellipse(cx+(mood==="eat"?0:4),my,4,mood==="eat"?5:3.4,0,0,7); x.fill(); }
@@ -2188,6 +2216,7 @@ function buildChar(p){
       [-1,1].forEach(s2=>{ const rg=mesh(new THREE.CylinderGeometry(.0105,.0105,.012,10), silver, s2*.022,-.235,lr*1.05,false); rg.rotation.z=Math.PI/2; rg.rotation.y=s2*.5; elb.add(rg); });
       const ca=mesh(letterAGeo(.04), silver, -lr*1.05-.01,-.24,.012,false); ca.rotation.set(0,-Math.PI/2,0); elb.add(ca); }
     else if(fem && s<0){ const br=mesh(new THREE.TorusGeometry(.04,top?.006:.009,6,14), MT(top?"#e6e9ee":"#f2cf5a"), 0,-.22,0,false); br.rotation.x=Math.PI/2; elb.add(br); }
+    if(p.ring && s>0){ const rg=mesh(new THREE.TorusGeometry(lr*1.02,.009,6,18),new THREE.MeshStandardMaterial({color:"#e6e9ee",metalness:.8,roughness:.25,emissive:"#5a6068"}),0,-.262,0,false); rg.rotation.x=Math.PI/2; elb.add(rg); }
     sho.add(elb); body.add(sho); arms.push({sho,elb,hand});
   });
   // cabeça
@@ -2267,7 +2296,7 @@ const POSE={
   dance:[[0,2.3,-.6],[-.6,-.6,-1.2]], hug:[[-1.25,-.32,-.35],[-1.25,.32,-.35]],
   kiss:[[0,.1,-.15],[-1.05,.25,-.3]], reach:[[0,.12,-.15],[-1.2,-.1,-.1]], chop:[[-.95,.28,-.55],[-1.05,-.05,-.45]],
   give:[[0,.12,-.15],[-1.35,-.15,-.35]], think:[[0,.12,-.15],[-.5,.6,-2.3]], sad:[[.1,.05,-.05],[.1,-.05,-.05]], sit:[[-.4,.2,-.9],[-.4,-.2,-.9]], fish:[[0,.12,-.15],[-1.0,-.15,-.4]], cast:[[0,.12,-.15],[-2.7,-.2,-.3]], reel:[[-1.1,.3,-1.0],[-1.0,-.15,-.4]], show:[[0,2.5,-.3],[-1.0,-.15,-.4]], sign:[[-1.1,-.28,-.55],[-1.1,.28,-.55]],
-  type:[[-.75,.1,-1.0],[-.75,-.1,-1.0]], write:[[-.4,.2,-.9],[-.8,-.15,-1.15]], hold:[[-.85,-.3,-1.25],[-.95,.28,-1.2]], talk:[[0,.12,-.15],[-.55,-.25,-1.5]], cane:[[0,.12,-.15],[-.5,-.12,-.5]]
+  gasp:[[-.5,-.6,-2.3],[-.5,.6,-2.3]], type:[[-.75,.1,-1.0],[-.75,-.1,-1.0]], write:[[-.4,.2,-.9],[-.8,-.15,-1.15]], hold:[[-.85,-.3,-1.25],[-.95,.28,-1.2]], talk:[[0,.12,-.15],[-.55,-.25,-1.5]], cane:[[0,.12,-.15],[-.5,-.12,-.5]]
 };
 function animChar(C, dt, t){
   C.t+=dt;
@@ -3123,7 +3152,7 @@ function csGet(){ const c=S.cs&&typeof S.cs==="object"?S.cs:(S.cs={}); c.earned=
   if(!c.mig){ c.mig=1; const z=S.kz&&+S.kz.coins||0; if(z>0){ c.earned+=z; S.kz.coins=0; } save(); } return c; }
 function csOther(){ if(!online()) return null; const d=NET.docs["casal/p"+other()]; return d&&typeof d==="object"?d:null; }
 let csT=0, csTm=null;
-function csPush(){ if(!online()) return; clearTimeout(csTm); const go=()=>{ csT=Date.now(); const c=csGet(); push("casal/p"+S.me,{earned:c.earned,spent:c.spent,day:c.day,c:c.c,days:c.days.slice(-90),done:c.done,hats:c.hats,frz:c.frz,fd:c.fd.slice(-40),inv:c.inv,use:c.use,unl:c.unl,mi:c.mi||null,ms:c.ms,best:c.best,t:Date.now()}); };
+function csPush(){ if(!online()) return; clearTimeout(csTm); const go=()=>{ csT=Date.now(); const c=csGet(); push("casal/p"+S.me,{earned:c.earned,spent:c.spent,day:c.day,c:c.c,days:c.days.slice(-90),done:c.done,hats:c.hats,frz:c.frz,fd:c.fd.slice(-40),inv:c.inv,use:c.use,unl:c.unl,wed:c.wed||{},mi:c.mi||null,ms:c.ms,best:c.best,t:Date.now()}); };
   if(Date.now()-csT>1200) go(); else csTm=setTimeout(go,1200); }
 const PANTRY={racao:{n:"Ração",e:"🥣",p:20,q:5,d:"enche a barriga (e o comedouro)",fed:45,xp:4},petisco:{n:"Petisco",e:"🍪",p:18,q:3,d:"comida + carinho, eles amam",fed:20,love:35,xp:8},
   premium:{n:"Ração premium",e:"🥩",p:45,q:5,d:"enche tudo e dá mais nível",fed:80,fun:15,xp:12},shampoo:{n:"Shampoo cheiroso",e:"🧴",p:20,q:3,d:"banho com bônus de nível",xp:8},
@@ -3261,9 +3290,9 @@ function usModal(){ const m=modal(`<div class="usM" id="usM"></div>`); US.el=m;
       ${nx?`<div class="usNext">${nx.ic} ${nx.left===0?`<b>Hoje:</b> ${esc(nx.n)}!`:`${esc(nx.n)} ${nx.left===1?"<b>amanhã</b>":`em <b>${nx.left} dias</b>`} <small>(${fmtD(nx.d)})</small>`}</div>`:""}
       <h3>Missões de hoje</h3><div class="misL">${L.map(mm=>{ const p=Math.min(mm.n,misProg(mm)), ok=p>=mm.n; return `<div class="mis ${ok?"ok":""}"><i>${MIS_G[mm.g][0]}</i><div><b>${esc(mm.t)}</b><u><s style="width:${p/mm.n*100}%"></s></u></div><span>${ok?"✓":`${p}/${mm.n}`}</span></div>`; }).join("")}</div>
       <p class="small">Cada missão dá 🪙 40. As de 🤝 só contam com vocês dois online juntos. As 3 no mesmo dia mantêm a sequência 🔥 e dão bônus. Se um dia passar em branco, um protetor ❄️ segura sozinho.</p>
-      <div class="usGrid"><button class="btn pink" id="uThink">💭 Pensei em você</button><button class="btn" id="uShop">🛍️ Lojinha</button><button class="btn blue" id="uDecor">🛋️ Decorar a casa</button><button class="btn gold" id="uAlb">📸 Álbum</button><button class="btn alt" id="uDates">📅 Datas</button><button class="btn alt" id="uPh">📷 Tirar foto</button></div>`);
+      <button class="btn gold" id="uStory" style="margin-top:10px">📖 Nossa história e o casamento</button><div class="usGrid"><button class="btn pink" id="uThink">💭 Pensei em você</button><button class="btn" id="uShop">🛍️ Lojinha</button><button class="btn blue" id="uDecor">🛋️ Decorar a casa</button><button class="btn gold" id="uAlb">📸 Álbum</button><button class="btn alt" id="uDates">📅 Datas</button><button class="btn alt" id="uPh">📷 Tirar foto</button></div>`);
     const on=(id,fn)=>{ const e=box.querySelector(id); if(e) e.onclick=fn; };
-    on("#uStart",()=>{ m.remove(); datesModal(); }); on("#uThink",()=>{ thinkSend(); }); on("#uShop",()=>{ m.remove(); shopModal(); }); on("#uDecor",()=>{ m.remove(); decorEdit(); });
+    on("#uStory",()=>{ m.remove(); storyModal(); }); on("#uStart",()=>{ m.remove(); datesModal(); }); on("#uThink",()=>{ thinkSend(); }); on("#uShop",()=>{ m.remove(); shopModal(); }); on("#uDecor",()=>{ m.remove(); decorEdit(); });
     on("#uAlb",()=>{ m.remove(); albumModal(); }); on("#uRem",()=>{ m.remove(); remindModal(); }); on("#uNudge",nudgeSend);
     on("#uFrz",()=>{ if(frzLeft()>=3){ toast("Já tem 3 protetores ❄️ (o máximo)"); return; } if(!cSpend(80)){ toast("Faltam moedinhas 🪙"); return; } const c=csGet(); c.frz++; save(); csPush(); snd("fanfare"); toast("❄️ Protetor guardado! Ele salva a sequência se um dia passar em branco",3000); US.draw(); }); on("#uDates",()=>{ m.remove(); datesModal(); }); on("#uPh",()=>{ m.remove(); photoOn(); }); };
   US.draw(); }
@@ -4389,6 +4418,181 @@ function pcOpen(i,tab){ PC.i=i; if(tab) PC.tab=tab; let el=PC.el; if(!el){ el=do
   el.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{ snd("tap"); pcOpen(i,b.dataset.t); });
   el.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{ const k=b.dataset.g; snd("tap"); pcClose(); PC.back=true; PCG[k].go(); });
   el.querySelectorAll("[data-b]").forEach(b=>b.onclick=()=>{ const k=b.dataset.b, g=PCG[k]; if(!unlBuy("g:"+k,g.p,g.n)) return; toast(`${g.n} instalado! 🎮`,2200); pcOpen(i,"jogos"); }); }
+/* =================== NOSSA HISTÓRIA: a abertura (avião, aeroporto, dias felizes, pedido de namoro) e os capítulos do casal =================== */
+const CIN={on:false,fx:[]};
+const ez=k=>{ k=Math.max(0,Math.min(1,k)); return k*k*(3-2*k); }, lerp=(a,b,k)=>a+(b-a)*k, seg=(t,a,b)=>Math.max(0,Math.min(1,(t-a)/(b-a)));
+function stGet(){ const s=S.story&&typeof S.story==="object"?S.story:(S.story={}); return s; }
+function cinSky(sc,stops){ const c=document.createElement("canvas"); c.width=4; c.height=256; const x=c.getContext("2d"), g=x.createLinearGradient(0,0,0,256); stops.forEach((col,k)=>g.addColorStop(k/(stops.length-1),col)); x.fillStyle=g; x.fillRect(0,0,4,256); sc.background=new THREE.CanvasTexture(c); }
+function cinLight(sc,sky,ground,hi,sun,si,dir){ sc.add(new THREE.HemisphereLight(sky,ground,hi)); const d=new THREE.DirectionalLight(sun,si); d.position.set(dir[0],dir[1],dir[2]); sc.add(d); return d; }
+function cinChar(sc,i,over){ const C=buildChar(Object.assign({},S.players[i],{hat:0},over||{})); C.root.traverse(o=>{ if(o.isMesh){ o.castShadow=false; delete o.userData.charRoot; } });
+  const sh=new THREE.Mesh(new THREE.CircleGeometry(.32,16),new THREE.MeshBasicMaterial({color:"#2a1a22",transparent:true,opacity:.2,depthWrite:false})); sh.rotation.x=-Math.PI/2; sh.position.y=.016; C.root.add(sh); C.sh=sh; sc.add(C.root); CIN.chars.push(C); return C; }
+function cinCam(px,py,pz,tx,ty,tz,fov){ const cam=W3.cam; if(fov&&cam.fov!==fov){ cam.fov=fov; cam.updateProjectionMatrix(); } cam.position.set(px,py,pz); cam.lookAt(tx,ty,tz); }
+function cinGo(C,x0,z0,x1,z1,k,run){ k=Math.max(0,Math.min(1,k)); const p=C.root.position; p.x=lerp(x0,x1,k); p.z=lerp(z0,z1,k); const moving=k>0&&k<1; C.walk=moving?1:0; C.gait=moving&&run?1.6:1; if(moving) C.root.rotation.y=Math.atan2(x1-x0,z1-z0); }
+function cinFace(C,x,z,k=1){ const want=Math.atan2(x-C.root.position.x,z-C.root.position.z); let a=want-C.root.rotation.y; while(a>Math.PI) a-=Math.PI*2; while(a<-Math.PI) a+=Math.PI*2; C.root.rotation.y+=a*Math.min(1,k); }
+function cinSprite(sc,e,x,y,z,s=.5){ const sp=emojiSprite(e,s); sp.position.set(x,y,z); sp.material=sp.material.clone(); sp.material.depthTest=false; sp.renderOrder=5; sc.add(sp); return sp; }
+function cinHearts(sc,x,y,z,n=8,set=["💖","💕","💗"]){ for(let k=0;k<n;k++){ const sp=cinSprite(sc,set[k%set.length],x+(Math.random()-.5)*.8,y+Math.random()*.4,z+(Math.random()-.5)*.8,.3+Math.random()*.25); CIN.fx.push({o:sp,vx:(Math.random()-.5)*.7,vy:.9+Math.random()*.9,vz:(Math.random()-.5)*.7,life:1.6+Math.random()*1.2,t:0,s:sp.scale.x}); } }
+function cinFxTick(dt){ CIN.fx=CIN.fx.filter(f=>{ f.t+=dt; f.o.position.x+=f.vx*dt; f.o.position.y+=f.vy*dt; f.o.position.z+=f.vz*dt; if(f.g) f.vy-=f.g*dt; const k=f.t/f.life, s=f.s*(k<.15?k/.15:1-Math.max(0,(k-.6)/.4)); f.o.scale.set(s,s,s); if(k>=1){ f.o.parent&&f.o.parent.remove(f.o); return false; } return true; }); }
+function cinPoints(sc,n,col,size,box,add){ const P=new Float32Array(n*3); for(let k=0;k<n;k++){ P[k*3]=box[0]+Math.random()*(box[1]-box[0]); P[k*3+1]=box[2]+Math.random()*(box[3]-box[2]); P[k*3+2]=box[4]+Math.random()*(box[5]-box[4]); }
+  const c=document.createElement("canvas"); c.width=c.height=32; const x=c.getContext("2d"), g=x.createRadialGradient(16,16,1,16,16,15); g.addColorStop(0,"#fff"); g.addColorStop(.5,"rgba(255,255,255,.8)"); g.addColorStop(1,"rgba(255,255,255,0)"); x.fillStyle=g; x.fillRect(0,0,32,32);
+  const geo=new THREE.BufferGeometry(); geo.setAttribute("position",new THREE.BufferAttribute(P,3)); const m=new THREE.Points(geo,new THREE.PointsMaterial({color:col,size,map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false,blending:add?THREE.AdditiveBlending:THREE.NormalBlending,toneMapped:false})); sc.add(m); return m; }
+function cinTree(B,x,z,s,col){ B.cyl(.16*s,.24*s,1.8*s,"#8a5a3b",x,.9*s,z,8); [[0,2.5,0,1.2],[.6,2.1,.2,.85],[-.6,2.2,-.1,.9],[.1,2.2,.6,.8]].forEach(([a,b,c,r],k)=>B.add(new THREE.IcosahedronGeometry(r*s,2),col[k%col.length],x+a*s,b*s,z+c*s)); }
+function cinFlowers(sc,n,place){ const a=new THREE.PlaneGeometry(.5,.5); a.translate(0,.25,0); const b=a.clone(); b.rotateY(Math.PI/2); const geo=mergeGeos([{g:a,m:new THREE.Matrix4()},{g:b,m:new THREE.Matrix4()}]); geo.setAttribute("uv",new THREE.Float32BufferAttribute([...a.clone().toNonIndexed().attributes.uv.array,...b.clone().toNonIndexed().attributes.uv.array],2));
+  const d=new THREE.Object3D(); ["daisy","pink","lilac","yellow","red"].forEach((k,ki)=>{ const im=new THREE.InstancedMesh(geo,new THREE.MeshBasicMaterial({map:flowerSpriteTex(k),alphaTest:.5,side:THREE.DoubleSide,color:"#f6f6f6"}),n); let c=0; for(let j=0;j<n*4&&c<n;j++){ const q=place(ki,j); if(!q) continue; d.position.set(q[0],0,q[1]); d.rotation.set(0,Math.random()*3,0); d.scale.setScalar(.9+Math.random()*.8); d.updateMatrix(); im.setMatrixAt(c++,d.matrix); } im.count=c; sc.add(im); }); }
+// de joelho: troca as pernas retas por uma perna dobrada de verdade
+function cinKneel(C,on,pc){ C.legs.forEach(l=>l.visible=!on); if(C.kn){ C.body.remove(C.kn); C.kn=null; } C.sitting=on; if(!on) return; const g=grp(0,0,0), m=CM(pc||"#3d4c6e"), sm=CM("#f7f5f0");
+  const cap=(len,x,y,z,rx)=>{ const o=mesh(new THREE.CapsuleGeometry(.08,len,6,10),m,x,y,z,false); o.rotation.x=rx; g.add(o); };
+  cap(.3,.11,.88,.2,Math.PI/2); cap(.3,.11,.66,.42,0); cap(.28,-.11,.68,0,0); cap(.3,-.11,.5,-.22,Math.PI/2);
+  [[.11,.47,.47,0],[-.11,.5,-.46,1.2]].forEach(([x,y,z,rx])=>{ const s=mesh(new THREE.SphereGeometry(.1,12,10),sm,x,y,z,false); s.scale.set(1,.62,1.5); s.rotation.x=rx; g.add(s); }); C.body.add(g); C.kn=g; }
+function cinNote(n,at,d=.6,v=.05,type="triangle"){ if(CIN.quiet) return; tone(NOTE(n),d,type,v,at); }
+function cinArp(chords,beat,vol,at0=0,type="triangle"){ chords.forEach((ch,b)=>ch.forEach((n,k)=>cinNote(n,at0+(b*ch.length+k)*beat,beat*2.2,vol,type))); return chords.length*chords[0].length*beat; }
+function cinMel(notes,beat,vol,at0=0){ notes.forEach(([n,p,l])=>cinNote(n,at0+p*beat,(l||1)*beat*1.5,vol,"sine")); }
+/* ---------- as cenas ---------- */
+const CIN_SC=[
+ {id:"titulo",dur:4.2,fade:"#1d1320",build(sc){ cinSky(sc,["#1d1320","#3f2838"]); cinCard("Nossa história","toda história de amor tem um começo…"); cinArp([[60,64,67,72],[55,62,67,71]],.42,.035); return ()=>{ cinCam(0,2,8,0,2,0,45); }; }},
+ {id:"aviao",dur:8,build(sc){ cinSky(sc,["#6fa6ee","#a9cdf5","#ffd9c2","#ffe9cf"]); cinLight(sc,"#ffffff","#ffd9b8",1.0,"#fff1dc",1.2,[6,10,8]); cinSub("Ele atravessou o céu inteiro…");
+    const B=batcher(), P=grp(0,0,0); B.add(new THREE.CapsuleGeometry(.95,6.4,8,20),"#fffaf5",0,0,0,1,1,1,0,0,Math.PI/2).add(new THREE.SphereGeometry(.96,16,12),"#fffaf5",3.3,0,0,1.5,.92,.96).box(2.0,.1,4.8,"#f1e9e4",-.2,-.25,2.9,0,.3,0).box(2.0,.1,4.8,"#f1e9e4",-.2,-.25,-2.9,0,-.3,0).box(1.4,1.9,.12,"#ff7a93",-3.6,1.1,0,0,0,.5).box(1.1,.09,3.4,"#f1e9e4",-3.7,.15,0).box(6.6,.16,.02,"#ff7a93",0,.1,.96).box(6.6,.16,.02,"#ff7a93",0,.1,-.96);
+    [-1,1].forEach(s=>B.cyl(.34,.3,1.2,"#d9d2e6",.9,-.62,s*2.5,14,0,0,Math.PI/2)); for(let k=0;k<9;k++) B.box(.28,.34,.02,"#3d5a9e",-2.4+k*.62,.42,.955);
+    P.add(B.mesh(false)); const ht=mesh(heartGeo(.5,.3),CM("#ffffff"),-3.75,1.35,.09,false); ht.rotation.z=.5; P.add(ht); sc.add(P);
+    const clouds=[]; const r=rng(4); for(let k=0;k<16;k++){ const g=grp((r()-.5)*90,(r()-.5)*12-1,-30+r()*26); for(let j=0;j<4;j++){ const s=mesh(new THREE.SphereGeometry(1.4+r()*1.6,10,8),MT("#ffffff"),j*1.9-3,r()*.8,r(),false); g.add(s); } g.userData.sp=5+r()*7; sc.add(g); clouds.push(g); }
+    for(let k=0;k<5;k++){ const g=grp((r()-.5)*70,-4-r()*3,6+r()*5); for(let j=0;j<3;j++) g.add(mesh(new THREE.SphereGeometry(1.2+r(),10,8),MT("#ffffff"),j*1.6-2,0,0,false)); g.userData.sp=16+r()*8; sc.add(g); clouds.push(g); }
+    tone(92,7.5,"sawtooth",.012); tone(138,7.5,"sine",.014); cinArp([[60,67,72,76],[57,64,69,72],[53,60,65,69],[55,62,67,71]],.5,.04,.2);
+    return (t,dt)=>{ P.position.y=Math.sin(t*1.3)*.25; P.rotation.z=Math.sin(t*.8)*.03; P.rotation.x=Math.sin(t*.6)*.04; clouds.forEach(c=>{ c.position.x-=c.userData.sp*dt; if(c.position.x<-50) c.position.x=50; });
+      const k=ez(t/8); cinCam(lerp(-13,2,k),lerp(-2.5,1.2,k),lerp(15,7.5,k),lerp(-1,1.5,k),0,0,40); }; }},
+ {id:"cabine",dur:6.5,build(sc){ cinSky(sc,["#8fbcf2","#ffd9c2"]); cinLight(sc,"#fff6ea","#c9b3bf",.95,"#ffe2c0",.9,[-4,5,6]); cinSub("…contando os minutos pra ver ela de pertinho.");
+    const B=batcher(); B.box(9,4.4,.3,"#f6efe6",0,2.2,-1.2).box(9,.3,3,"#5c3a52",0,-.15,0).box(9,.5,.36,"#e8d9c6",0,3.6,-1.1).box(.74,.5,.72,"#3d5a9e",0,.45,-.2).box(.16,1.1,.72,"#3d5a9e",-.42,1.05,-.2).box(.14,.3,.5,"#4f6fb5",-.42,1.74,-.2).box(.7,.28,.1,"#2f4a86",0,.74,-.6).box(.7,.28,.1,"#2f4a86",0,.74,.2).box(.74,.5,.72,"#3d5a9e",-1.6,.45,-.2).box(.16,1.1,.72,"#3d5a9e",-2.02,1.05,-.2);
+    sc.add(B.mesh(false)); const wn=grp(.25,1.75,-1.04); wn.add(mesh(new THREE.TorusGeometry(.46,.09,10,28),CM("#ffffff"),0,0,0,false)); wn.scale.set(.82,1.15,1); sc.add(wn);
+    const skyP=mesh(new THREE.CircleGeometry(.47,28),new THREE.MeshBasicMaterial({color:"#9fd0ff"}),.25,1.75,-1.03,false); skyP.scale.set(.82,1.15,1); sc.add(skyP); const cl=[]; for(let k=0;k<4;k++){ const c=mesh(new THREE.CircleGeometry(.12,12),new THREE.MeshBasicMaterial({color:"#ffffff"}),.25+k*.3,1.6+(k%2)*.2,-1.02,false); c.scale.set(1.8,.7,1); sc.add(c); cl.push(c); }
+    const A=cinChar(sc,0,{build:0,shirt:5}); A.root.position.set(0,.02,-.2); A.root.rotation.y=Math.PI/2; A.sitting=true; A.pose="think"; A.sh.visible=false; setFace(A,"happy");
+    const th=cinSprite(sc,"💭",.75,2.3,.1,.62), hh=cinSprite(sc,"💖",.78,2.36,.12,.26); cinMel([[76,0,2],[79,2,2],[84,4,3],[83,8,1],[79,9,3]],.42,.05,.3); cinArp([[53,60,65,69],[55,62,67,71]],.42,.03,.2);
+    return (t,dt)=>{ A.lookY=t<3.4?.75:-.45; if(t>3.4) setFace(A,"happy"); cl.forEach((c,k)=>{ c.position.x-=dt*(.25+k*.05); if(c.position.x<-.15) c.position.x=.7; c.visible=Math.abs(c.position.x-.25)<.33; }); const s=.24+Math.abs(Math.sin(t*3))*.06; hh.scale.set(s,s,s); th.position.y=2.3+Math.sin(t*2)*.03; hh.position.y=th.position.y+.04;
+      const k=ez(t/6.5); cinCam(lerp(2.6,2.0,k),1.5,lerp(3.0,2.2,k),.15,1.32,-.2,36); }; }},
+ {id:"aeroporto",dur:15.5,build(sc){ cinSky(sc,["#bfe0ff","#eaf6ff"]); cinLight(sc,"#ffffff","#d8cfe0",1.0,"#fff6ea",1.0,[4,9,7]); cinSub("No aeroporto, o coração quase saiu pela boca.");
+    const fl=mesh(new THREE.PlaneGeometry(40,22),new THREE.MeshStandardMaterial({color:"#efe6ea",roughness:.4,metalness:.05}),0,0,0,false); fl.rotation.x=-Math.PI/2; sc.add(fl);
+    const B=batcher(); B.box(40,7,.4,"#f6efe6",0,3.5,-7).box(40,.5,.5,"#e8d9c6",0,.25,-6.8); for(let k=0;k<7;k++){ B.box(4.2,3.4,.1,"#9fd0ff",-15+k*5,3.4,-6.76).box(.14,3.6,.16,"#ffffff",-17.2+k*5,3.4,-6.72).box(4.3,.12,.16,"#ffffff",-15+k*5,3.4,-6.72); }
+    B.box(3.6,3.4,.5,"#d9d2e6",-9,1.7,-5.2).box(1.5,2.9,.1,"#8fd8ff",-9.8,1.5,-4.92).box(1.5,2.9,.1,"#8fd8ff",-8.2,1.5,-4.92).box(3.8,.5,.6,"#3d5a9e",-9,3.4,-5.2);
+    [[-4,2],[-1.5,2],[1,2],[-4,-1.6],[-1.5,-1.6],[1,-1.6]].forEach(([x,z])=>B.cyl(.06,.09,1,"#d9a54a",x,.5,z,10).cyl(.14,.16,.05,"#d9a54a",x,.03,z,12)); [[-4,-1.5,2],[-1.5,1,2],[-4,-1.5,-1.6],[-1.5,1,-1.6]].forEach(([a,b,z])=>B.box(b-a,.07,.05,"#e2463b",(a+b)/2,.9,z));
+    B.box(3,.12,.8,"#c79bf2",9,.5,-4.5).box(3,.7,.1,"#c79bf2",9,.9,-4.9).box(.1,.5,.7,"#8a7a80",7.7,.25,-4.5).box(.1,.5,.7,"#8a7a80",10.3,.25,-4.5).cyl(.3,.24,.6,"#e9d6c4",12,.3,-5); for(let k=0;k<8;k++) B.add(new THREE.SphereGeometry(.3,8,6),k%2?"#5fae4b":"#4f9d3f",12+Math.cos(k*1.7)*.24,.8+k*.11,-5+Math.sin(k*1.7)*.2,1,.4,.62,k*.4,k,.3);
+    sc.add(B.mesh(false)); const sg=mesh(new THREE.PlaneGeometry(3.4,.4),new THREE.MeshBasicMaterial({map:textTex("DESEMBARQUE",512,64,"#3d5a9e","#ffd15c",null,44)}),-9,3.4,-4.88,false); sc.add(sg);
+    const sky=mesh(new THREE.BoxGeometry(2.4,.5,.5),MT("#ffffff"),14,5,-12,false); sc.add(sky);
+    const r=rng(21); [[6,-3.6,-.6],[8.8,-3.9,3.6],[-13,-3,1.2],[11,2.5,-2.2]].forEach(([x,z,ry],k)=>{ const C=npcChar({skin:Math.floor(r()*6),hair:[0,1,5,3][k],hairColor:Math.floor(r()*9),shirt:Math.floor(r()*10),build:k%2?3:0,pants:k%4},{fat:r()*.3}); C.root.position.set(x,0,z); C.root.rotation.y=ry; C.pose=k===1?"wave":"idle"; sc.add(C.root); CIN.chars.push(C); });
+    const A=cinChar(sc,0,{build:0,shirt:5}), L=cinChar(sc,1,{build:2,shirt:1}); L.root.position.set(4,0,.4); L.root.rotation.y=-Math.PI/2;
+    const mala=grp(0,0,0); mala.add(mesh(new THREE.BoxGeometry(.36,.62,.5),CM("#3aa394"),0,.43,0,false)); mala.add(mesh(new THREE.BoxGeometry(.38,.06,.52),CM("#2f8a7c"),0,.5,0,false)); mala.add(mesh(new THREE.BoxGeometry(.03,.5,.24),CM("#b9aab3"),0,.98,0,false)); [-.2,.2].forEach(z=>mala.add(mesh(new THREE.CylinderGeometry(.06,.06,.06,10),CM("#2a2530"),0,.06,z,false))); sc.add(mala);
+    const bal=grp(0,0,0); bal.add(mesh(heartGeo(.42,.5),MT("#ff5a7e",{emissive:new THREE.Color("#7a1030"),emissiveIntensity:.25}),0,0,0,false)); bal.add(mesh(new THREE.CylinderGeometry(.006,.006,1.1,4),CM("#ffffff"),0,-.75,0,false)); sc.add(bal);
+    cinNote(81,.2,.5,.05,"sine"); cinNote(76,.75,.9,.05,"sine"); mala.position.set(-3.1,0,.4); bal.position.set(4.3,2.4,.65); cinArp([[60,64,67,72],[57,60,64,69],[53,57,60,65],[55,59,62,67],[60,64,67,72],[57,60,64,69]],.36,.035,1.6); let hug=false, seen=false;
+    return (t,dt)=>{ cinGo(A,-9,-4.2,-9,-1.2,seg(t,.3,2.2)); if(t>2.2) cinGo(A,-9,-1.2,-2.6,.4,seg(t,2.2,5.6)); if(t>6.6) cinGo(A,-2.6,.4,.3,.4,seg(t,6.6,8.2),true);
+      if(t<6.4){ mala.position.set(A.root.position.x-Math.sin(A.root.rotation.y)*.55,0,A.root.position.z-Math.cos(A.root.rotation.y)*.55); mala.rotation.y=A.root.rotation.y+Math.PI/2; }
+      if(t>5.6&&!seen){ seen=true; setFace(A,"happy"); setFace(L,"happy"); L.pose="gasp"; snd("pop"); cinSub("E lá estava ela. De verdade."); CIN.fx.push({o:cinSprite(sc,"❗",L.root.position.x,2.5,L.root.position.z,.5),vx:0,vy:.3,vz:0,life:1,t:0,s:.5}); }
+      if(t>6.6){ if(!hug) L.pose="idle"; cinGo(L,4,.4,1.05,.4,seg(t,6.6,8.2),true); }
+      if(t<6.6) bal.position.set(L.root.position.x+.3,2.4+Math.sin(t*2)*.05,L.root.position.z+.25); else { bal.position.y+=dt*1.5; bal.position.x+=dt*.3; bal.rotation.z=Math.sin(t*2)*.15; }
+      if(t>8.2&&!hug){ hug=true; A.pose="hug"; L.pose="hug"; setFace(A,"hug"); setFace(L,"hug"); cinFace(A,L.root.position.x,L.root.position.z); cinFace(L,A.root.position.x,A.root.position.z); snd("hug"); cinHearts(sc,.7,1.7,.4,10); cinSub("O abraço mais esperado do mundo."); cinMel([[72,0,2],[76,2,2],[79,4,2],[84,6,4]],.36,.06); }
+      if(hug){ cinFace(A,1.05,.4,dt*8); cinFace(L,.3,.4,dt*8); if(Math.random()<dt*1.6) cinHearts(sc,.7,1.9,.4,1); }
+      if(t<5.6) cinCam(lerp(6.5,5.6,ez(t/5.6)),1.9,lerp(2.6,2.2,ez(t/5.6)),lerp(-6,-1.5,ez(t/5.6)),1.2,0,42);
+      else if(t<8.2) cinCam(lerp(5.6,.7,ez(seg(t,5.6,8.2))),lerp(1.9,1.5,ez(seg(t,5.6,8.2))),lerp(2.2,6,ez(seg(t,5.6,8.2))),.7,1.2,.4,42);
+      else { const a=(t-8.2)*.22; cinCam(.7+Math.sin(a)*lerp(6,4.2,ez(seg(t,8.2,15))),lerp(1.5,2.1,ez(seg(t,8.2,15))),.4+Math.cos(a)*lerp(6,4.2,ez(seg(t,8.2,15))),.7,1.25,.4,42); } }; }},
+ {id:"praia",dur:7,fade:"#ffffff",build(sc){ cinSky(sc,["#4aa8f0","#8fd0ff","#dff3ff"]); cinLight(sc,"#ffffff","#ffe9b8",1.15,"#fff6d8",1.3,[5,10,4]); cinSub("Teve praia,");
+    const sand=mesh(new THREE.PlaneGeometry(60,30),MT("#f6dfae"),0,0,6,false); sand.rotation.x=-Math.PI/2; sc.add(sand); const sea=mesh(new THREE.PlaneGeometry(80,40),new THREE.MeshStandardMaterial({color:"#3fb4d8",roughness:.25,metalness:.1}),0,.03,-24,false); sea.rotation.x=-Math.PI/2; sc.add(sea);
+    const foam=[0,1,2].map(k=>{ const f=mesh(new THREE.PlaneGeometry(80,.5),new THREE.MeshBasicMaterial({color:"#ffffff",transparent:true,opacity:.75-k*.2}),0,.05,-4-k*1.6,false); f.rotation.x=-Math.PI/2; sc.add(f); return f; });
+    sc.add(mesh(new THREE.SphereGeometry(2.2,20,14),new THREE.MeshBasicMaterial({color:"#fff3b0",toneMapped:false}),-14,13,-40,false));
+    const B=batcher(); B.cyl(.04,.04,2.4,"#f6efe6",-2.6,1.2,1.2,8); for(let k=0;k<8;k++) B.add(new THREE.ConeGeometry(1.5,.6,2,1,true,k*Math.PI/4,Math.PI/4),k%2?"#ff7a93":"#fffaf5",-2.6,2.5,1.2); B.box(1.9,.04,1.1,"#8fd8ff",-2.6,.03,2.3,0,.3,0).box(1.9,.045,.2,"#ffffff",-2.6,.035,2.3,0,.3,0);
+    B.cyl(.6,.7,.5,"#e8c98a",-3.6,.25,4.5,12).cyl(.4,.5,.4,"#e8c98a",-3.6,.7,4.5,12).add(new THREE.ConeGeometry(.3,.4,10),"#e8c98a",-3.6,1.1,4.5).box(.02,.4,.02,"#8a5a3b",-3.6,1.45,4.5).box(.2,.12,.02,"#ff5a7e",-3.5,1.58,4.5);
+    for(let k=0;k<7;k++) B.cyl(.16-k*.008,.18-k*.008,.6,"#a8743c",-7+k*.12,.3+k*.55,1+k*.05,8,0,0,-.12); for(let k=0;k<7;k++) B.add(new THREE.SphereGeometry(1,10,6),k%2?"#4f9d3f":"#5fae4b",-6.2+Math.cos(k*.9)*1.1,4.2-(k%2)*.2,1.3+Math.sin(k*.9)*1.1,1.5,.14,.42,0,k*.9,-.3);
+    B.sph(.26,"#ff9ab0",-1.6,.26,1.9).sph(.262,"#ffffff",-1.6,.26,1.9,1,.3,1); sc.add(B.mesh(false));
+    const A=cinChar(sc,0,{}), L=cinChar(sc,1,{}); setFace(A,"happy"); setFace(L,"happy"); let sp=false; cinArp([[72,76,79,84],[69,72,76,81],[65,69,72,77],[67,71,74,79],[72,76,79,84]],.2,.04,.1,"square");
+    return (t,dt)=>{ foam.forEach((f,k)=>{ f.position.z=-3.6-k*1.5+Math.sin(t*1.4+k)*.7; }); const k=seg(t,.2,4.2); cinGo(A,-.6,6,-.6,-2.4,k,true); cinGo(L,.6,6.2,.6,-2.2,k,true);
+      if(t>4.2){ const j=seg(t,4.2,5.4), y=Math.sin(j*Math.PI)*1.1; A.root.position.y=y; L.root.position.y=y*.9; A.pose=L.pose="happy"; A.root.position.z=-2.4-j*1.4; L.root.position.z=-2.2-j*1.4;
+        if(j>=1&&!sp){ sp=true; snd("splash"); for(let n=0;n<26;n++){ const o=mesh(new THREE.SphereGeometry(.07+Math.random()*.07,6,5),new THREE.MeshBasicMaterial({color:"#eafaff"}),(Math.random()-.5)*2.4,.2,-3.7+(Math.random()-.5),false); sc.add(o); CIN.fx.push({o,vx:(Math.random()-.5)*3,vy:2.5+Math.random()*3,vz:(Math.random()-.5)*2,g:9,life:1.1,t:0,s:1}); } } }
+      cinCam(lerp(4.5,2.6,ez(t/7)),lerp(1.1,1.6,ez(t/7)),lerp(9.5,4.2,ez(t/7)),0,1.1,lerp(4,-3,ez(t/7)),46); }; }},
+ {id:"sorvete",dur:6,fade:"#ffffff",build(sc){ cinSky(sc,["#ffc9a8","#ffe2c4","#fff1dc"]); cinLight(sc,"#fff1e0","#9ac08a",1.0,"#ffe0b8",1.1,[-5,8,6]); cinSub("sorvete derretendo de tanto rir,");
+    const gr=mesh(new THREE.CircleGeometry(30,40),MT("#8ccf6a"),0,0,0,false); gr.rotation.x=-Math.PI/2; sc.add(gr); const B=batcher(); B.box(2.2,.1,.6,"#a87346",0,.46,0).box(2.2,.5,.08,"#a87346",0,.86,-.27).box(.1,.46,.5,"#6e4528",-.95,.23,0).box(.1,.46,.5,"#6e4528",.95,.23,0);
+    cinTree(B,-3.2,-2.4,1.5,["#5fae4b","#4f9d3f","#6dbd57"]); cinTree(B,3.6,-3,1.3,["#f39cc4","#ec7fb3","#f7b5d4"]); cinTree(B,7,-6,1.6,["#5fae4b","#6dbd57"]); cinTree(B,-8,-7,1.7,["#ffd84a","#ffc928"]);
+    B.cyl(.05,.07,2.6,"#2f3a36",2.2,1.3,-.4,8).cyl(.16,.1,.3,"#fff4cf",2.2,2.7,-.4,8).box(40,.02,2,"#e9d2a8",0,.012,2.4); sc.add(B.mesh(false)); cinFlowers(sc,40,(ki,j)=>{ const x=(Math.random()-.5)*16, z=-1.2-Math.random()*5; return [x,z]; });
+    const A=cinChar(sc,0,{build:0,shirt:2}), L=cinChar(sc,1,{}); A.root.position.set(-.42,.04,-.02); L.root.position.set(.42,.04,-.02); [A,L].forEach(C=>{ C.sitting=true; C.pose="give"; C.sh.visible=false; setFace(C,"happy"); });
+    const cone=(C,col)=>{ const g=grp(0,-.3,.1); g.add(mesh(new THREE.ConeGeometry(.055,.2,10),CM("#e0a860"),0,0,0,false).rotateX(Math.PI)); const b=mesh(new THREE.SphereGeometry(.075,12,10),CM(col),0,.14,0,false); g.add(b); g.rotation.x=1.3; C.arms[1].hand.add(g); return b; };
+    const bA=cone(A,"#ff9ab0"), bL=cone(L,"#c79bf2"); let fell=false; cinArp([[67,72,76,79],[65,69,72,77],[64,67,72,76],[62,67,71,74]],.2,.04,.1,"square");
+    return (t,dt)=>{ A.lookY=-.55; L.lookY=t>3?.6:.2; if(t>3&&!fell){ fell=true; const p=bA.getWorldPosition(V3(0,0,0)); bA.visible=false; const o=mesh(new THREE.SphereGeometry(.075,12,10),CM("#ff9ab0"),p.x,p.y,p.z,false); sc.add(o); CIN.fx.push({o,vx:0,vy:.4,vz:.5,g:7,life:.8,t:0,s:1}); snd("plop"); setFace(A,"eat"); L.pose="happy"; CIN.fx.push({o:cinSprite(sc,"😂",.5,2.1,.1,.45),vx:.1,vy:.5,vz:0,life:1.8,t:0,s:.45}); }
+      cinCam(lerp(1.6,.4,ez(t/6)),1.45,lerp(4.4,3.5,ez(t/6)),0,1.1,0,38); }; }},
+ {id:"pordosol",dur:7.5,fade:"#ffffff",build(sc){ cinSky(sc,["#4a3a7a","#b0568a","#ff8a5a","#ffd27a"]); cinLight(sc,"#ffc9a8","#5a3a52",.75,"#ffb36b",1.0,[0,3,-10]); cinSub("e pôr do sol de mãos dadas.");
+    sc.add(mesh(new THREE.CircleGeometry(4.6,40),new THREE.MeshBasicMaterial({color:"#fff0b0",toneMapped:false}),0,2.2,-40,false)); sc.add(mesh(new THREE.CircleGeometry(7,40),new THREE.MeshBasicMaterial({color:"#ffd27a",transparent:true,opacity:.35,toneMapped:false}),0,2.2,-40.5,false));
+    const gr=mesh(new THREE.SphereGeometry(30,40,16,0,Math.PI*2,0,.5),MT("#3f6b3a"),0,-26.4,-2,false); sc.add(gr); const B=batcher(); [[-9,-9,1.5],[10,-11,1.8],[-15,-14,2]].forEach(([x,z,s])=>cinTree(B,x,z-2,s,["#2f5a34","#356f40"])); sc.add(B.mesh(false));
+    const A=cinChar(sc,0,{build:0,shirt:5}), L=cinChar(sc,1,{}); A.root.position.set(-.34,3.14,-1.2); L.root.position.set(.34,3.14,-1.2); [A,L].forEach(C=>{ C.sitting=true; C.pose="sit"; C.root.rotation.y=Math.PI; C.sh.visible=false; }); const birds=[0,1,2].map(k=>{ const b=grp(-6+k*1.4,6+k*.4,-20), bm=new THREE.MeshBasicMaterial({color:"#3a2a4a"}); [-1,1].forEach(q=>{ const w=mesh(new THREE.BoxGeometry(.45,.05,.05),bm,q*.2,0,0,false); w.rotation.z=q*.45; b.add(w); }); sc.add(b); return b; });
+    cinMel([[76,0,3],[74,3,1],[72,4,3],[67,7,2],[69,9,3],[72,12,4]],.42,.055,.2); cinArp([[48,55,60,64],[45,52,57,60],[41,48,53,57],[43,50,55,59]],.42,.03,.2);
+    const fl=cinPoints(sc,26,"#ffe9a8",.16,[-7,7,3,6,-9,2],true);
+    return (t,dt)=>{ L.body.rotation.z=-.2*ez(seg(t,1.5,3.5)); L.head.rotation.z=-.25*ez(seg(t,1.5,3.5)); A.head.rotation.z=.1*ez(seg(t,2.5,4)); birds.forEach((b,k)=>{ b.position.x+=dt*(.9+k*.1); b.position.y=6+k*.4+Math.sin(t*3+k)*.12; }); fl.rotation.y=t*.03;
+      if(t>3.6&&!CIN.sun1){ CIN.sun1=1; cinHearts(sc,0,4.5,-1.2,5); } cinCam(0,lerp(4.4,4.9,ez(t/7.5)),lerp(3.2,5.2,ez(t/7.5)),0,lerp(4.1,4.5,ez(t/7.5)),-6,40); }; }},
+ {id:"jardim",dur:999,fade:"#ffffff",build(sc){ cinSky(sc,["#7a6ad0","#f08ab0","#ffc27a","#ffe6b0"]); const sun=cinLight(sc,"#ffe9d0","#7aa860",.95,"#ffd08a",1.25,[-8,6,-4]); cinSub("Até que um dia, num jardim todo florido…");
+    const gr=mesh(new THREE.CircleGeometry(40,48),MT("#86c96a"),0,0,0,false); gr.rotation.x=-Math.PI/2; sc.add(gr); const pt=mesh(new THREE.PlaneGeometry(22,1.7),MT("#f1dcb6"),-6,.012,0,false); pt.rotation.x=-Math.PI/2; sc.add(pt); const pc=mesh(new THREE.CircleGeometry(2.6,32),MT("#f1dcb6"),0,.013,0,false); pc.rotation.x=-Math.PI/2; sc.add(pc);
+    const B=batcher(), GR=["#5fae4b","#4f9d3f","#6dbd57"], PK=["#f39cc4","#ec7fb3","#f7b5d4"], YL=["#ffd84a","#ffc928","#ffe27a"];
+    for(let k=0;k<15;k++){ const a=-.3+k/14*(Math.PI+.6), d=11+((k*7)%4); cinTree(B,Math.cos(a)*d,-Math.sin(a)*d-1,1.3+((k*5)%3)*.25,k%4===1?PK:k%5===3?YL:GR); }
+    for(let k=0;k<13;k++){ const a=k/12*Math.PI, x=Math.cos(a)*1.9, y=Math.sin(a)*2.9+.1; B.sph(.2,"#4f9d3f",x,y,-2.6,1,1,.8); B.sph(.15,k%2?"#ff7a93":"#ffffff",x*1.03,y+.05,-2.45); B.sph(.12,k%3?"#ffd0dc":"#ff5a7e",x*.95,y-.08,-2.42); } B.cyl(.07,.07,.3,"#8a5a3b",-1.9,.15,-2.6,8).cyl(.07,.07,.3,"#8a5a3b",1.9,.15,-2.6,8);
+    [[-4.6,-3.4],[4.6,-3.4]].forEach(([x,z])=>B.cyl(.05,.06,2.8,"#8a5a3b",x,1.4,z,8)); for(let k=0;k<9;k++){ const sp=[[-5.6,-4.6],[5.2,-5],[-7.5,-1.5],[7.4,-1.8],[-3.4,-6],[3.2,-6.4],[0,-7],[-8.6,-5.4],[8.8,-5]][k]; B.sph(.8,GR[k%3],sp[0],.5,sp[1],1.2,.75,1); for(let j=0;j<6;j++) B.sph(.13,["#ff7a93","#ffffff","#ffd15c","#c79bf2"][(k+j)%4],sp[0]+Math.cos(j)*.7,.85+Math.sin(j*2)*.2,sp[1]+Math.sin(j)*.6+.2); }
+    sc.add(B.mesh(false)); cinFlowers(sc,70,(ki,j)=>{ const a=Math.random()*Math.PI*2, d=2.9+Math.random()*9, x=Math.cos(a)*d, z=Math.sin(a)*d*.8-1; if(Math.abs(z)<1.1&&x<-2) return null; if(z>4.5) return null; return [x,z]; });
+    { const it=[], glow=MT("#ffe9b0",{emissive:new THREE.Color("#ffbf4a"),emissiveIntensity:1}); for(let k=0;k<24;k++){ const x=-4.6+k*.4; it.push({g:new THREE.SphereGeometry(.06,6,5),m:M4(x,2.75-Math.sin(k/23*Math.PI)*.55,-3.4)}); } sc.add(new THREE.Mesh(mergeGeos(it),glow)); }
+    const pet=cinPoints(sc,70,"#ffb6cf",.14,[-8,8,0,6,-7,4]), ff=cinPoints(sc,40,"#fff3a0",.13,[-9,9,.4,3.4,-8,3],true);
+    const A=cinChar(sc,0,{build:0,shirt:5}), L=cinChar(sc,1,{build:2,shirt:1}); const pcA=PANTS[S.players[0].pants]||"#3d4c6e";
+    const box=grp(0,-.3,.1); box.add(mesh(new THREE.BoxGeometry(.11,.06,.11),CM("#2c3f73"),0,0,0,false)); { const lid=mesh(new THREE.BoxGeometry(.11,.03,.11),CM("#2c3f73"),0,.07,-.06,false); lid.rotation.x=-1.1; box.add(lid); } const ring=mesh(new THREE.TorusGeometry(.028,.008,8,18),new THREE.MeshStandardMaterial({color:"#e6e9ee",metalness:.8,roughness:.2,emissive:"#5a6068"}),0,.06,0,false); box.add(ring); box.add(mesh(new THREE.SphereGeometry(.014,8,6),new THREE.MeshBasicMaterial({color:"#ffffff",toneMapped:false}),0,.095,0,false)); box.rotation.x=1.2; box.visible=false; A.arms[1].hand.add(box);
+    const spk=cinSprite(sc,"✨",0,0,0,.3); spk.visible=false; const tears=[];
+    cinArp([[60,67,72,76],[57,64,69,72],[53,60,65,69],[55,62,67,71],[60,67,72,76],[57,64,69,72],[53,60,65,69],[55,62,67,71]],.55,.032,.2); cinMel([[76,2,2],[79,4,2],[81,8,1],[79,9,1],[76,10,2],[77,16,2],[81,18,2],[79,24,4]],.55,.05,.2);
+    const ST={ph:0,t0:0}; CIN.st=ST; const next=(ph)=>{ ST.ph=ph; ST.t0=CIN.t; };
+    if(CIN.entry.recap){ A.root.position.set(.14,0,.25); L.root.position.set(.75,0,.2); Object.assign(ST,{ph:4,t0:-4.3,y:1,up:1,ring:1}); }
+    return (t,dt)=>{ const u=t-ST.t0; pet.geometry.attributes.position.array.forEach((v,k,arr)=>{ if(k%3===1){ arr[k]-=dt*(.5+((k*13)%7)*.08); if(arr[k]<0) arr[k]=6; } else if(k%3===0) arr[k]+=Math.sin(t+k)*dt*.25; }); pet.geometry.attributes.position.needsUpdate=true; ff.rotation.y=Math.sin(t*.2)*.2; ff.position.y=Math.sin(t*.9)*.15;
+      tears.forEach(o=>{ o.position.y-=dt*.8; if(o.position.y<A.head.getWorldPosition(V3(0,0,0)).y-.32){ const p=A.head.getWorldPosition(V3(0,0,0)); o.position.set(p.x+.25,p.y+.02,p.z+(Math.random()<.5?-.09:.09)); } });
+      if(ST.ph===0){ cinGo(A,-9,.35,-.75,.35,seg(t,.3,6.3)); cinGo(L,-9,-.35,-.1,-.35,seg(t,.3,6.3)); cinCam(lerp(-6,-1.6,ez(t/6.3)),1.6,lerp(6.5,6,ez(t/6.3)),lerp(-8,-.4,ez(t/6.3)),1.2,0,40);
+        if(t>6.3){ next(1); setFace(L,"happy"); } }
+      else if(ST.ph===1){ cinGo(L,-.1,-.35,.75,.2,seg(u,.2,1.4)); if(u>1.4) cinFace(L,A.root.position.x,A.root.position.z,dt*6); cinFace(A,.75,.2,dt*5); cinCam(lerp(-1.6,0,ez(u/2.6)),1.5,lerp(6,4.6,ez(u/2.6)),0,1.15,.2,40);
+        if(u>2.6){ next(2); cinKneel(A,true,pcA); A.pose="give"; box.visible=true; setFace(A,"cry"); L.pose="gasp"; setFace(L,"eat"); snd("sparkle"); cinSub("…ele ficou de joelhos. E chorou."); for(let k=0;k<4;k++){ const o=mesh(new THREE.SphereGeometry(.022,6,5),new THREE.MeshBasicMaterial({color:"#8fd8ff"}),0,0,0,false); o.scale.y=1.5; o.position.set(-.5,1.25-k*.09,.35+(k%2?-.09:.09)); sc.add(o); tears.push(o); } } }
+      else if(ST.ph===2){ cinFace(A,.75,.2,dt*8); cinFace(L,-.75,.35,dt*8); const p=box.getWorldPosition(V3(0,0,0)); spk.visible=true; spk.position.set(p.x,p.y+.12,p.z); const s=.22+Math.abs(Math.sin(t*4))*.14; spk.scale.set(s,s,s);
+        cinCam(lerp(0,1.5,ez(u/3)),lerp(1.5,1.1,ez(u/3)),lerp(4.6,2.6,ez(u/3)),-.6,.95,.3,38);
+        if(u>2.4&&!ST.ask){ ST.ask=1; cinAct(online()&&S.me===1?null:"💍 Pedir em namoro",()=>next(3),online()&&S.me===1?2600:0); } }
+      else if(ST.ph===3){ if(!ST.q){ ST.q=1; cinSay(`${nmRaw(1)}… quer namorar comigo?`); snd("chime"); cinMel([[72,0,1],[76,1,1],[79,2,3]],.4,.06); }
+        cinFace(L,-.75,.35,dt*8); cinCam(lerp(1.5,-1.8,ez(u/3)),lerp(1.1,1.5,ez(u/3)),lerp(2.6,2.9,ez(u/3)),.6,1.25,.2,38);
+        if(u>2.6&&!ST.yes){ ST.yes=1; cinAct(online()&&S.me===0?null:"Sim! 💕",()=>next(4),online()&&S.me===0?2400:0); } }
+      else if(ST.ph===4){ if(!ST.y){ ST.y=1; cinSay("SIM! Mil vezes sim!"); setFace(L,"happy"); L.pose="happy"; snd("fanfare"); cinHearts(sc,.75,1.9,.2,14); cinArp([[72,76,79,84],[77,81,84,89],[79,83,86,91],[84,88,91,96]],.16,.05); cinMel([[84,0,2],[88,2,2],[91,4,6]],.3,.07,.7); }
+        L.root.position.y=Math.abs(Math.sin(u*7))*.16*(1-seg(u,0,1.6)); if(u>1.7&&!ST.up){ ST.up=1; cinKneel(A,false); A.pose="idle"; L.pose="idle"; box.visible=false; spk.visible=false; tears.forEach(o=>o.visible=false); tears.length=0; }
+        if(u>1.7) cinGo(A,-.75,.35,.14,.25,seg(u,1.7,2.7)); if(u>2.8&&!ST.ring){ ST.ring=1; const r2=mesh(new THREE.TorusGeometry(.05,.012,8,18),new THREE.MeshStandardMaterial({color:"#e6e9ee",metalness:.8,roughness:.2,emissive:"#5a6068"}),0,-.26,0,false); r2.rotation.x=Math.PI/2; L.arms[1].elb.add(r2); snd("sparkle"); const p=L.arms[1].hand.getWorldPosition(V3(0,0,0)); CIN.fx.push({o:cinSprite(sc,"✨",p.x,p.y+.1,p.z,.5),vx:0,vy:.3,vz:0,life:1.2,t:0,s:.5}); cinSub("A aliança de namoro coube certinho."); }
+        if(u>4&&!ST.hug){ ST.hug=1; A.pose=L.pose="hug"; setFace(A,"hug"); setFace(L,"hug"); snd("hug"); cinHearts(sc,.45,1.8,.22,12); }
+        if(u>6.2&&!ST.kiss){ ST.kiss=1; A.pose=L.pose="kiss"; setFace(A,"kiss"); setFace(L,"kiss"); snd("kiss"); cinHearts(sc,.45,2,.22,18,["💖","💕","💗","✨"]); cinSub("Ele chorou. Ela disse sim."); }
+        if(u>4){ cinFace(A,.75,.2,dt*8); cinFace(L,.14,.25,dt*8); if(Math.random()<dt*3) cinHearts(sc,.45+(Math.random()-.5)*3,2.4+Math.random()*2,.2-Math.random()*3,1); }
+        const a=-.9+u*.12, R=lerp(3.2,7.5,ez(seg(u,7.5,11))); cinCam(.45+Math.sin(a)*R,lerp(1.5,4.6,ez(seg(u,7.5,11))),.2+Math.cos(a)*R,.45,lerp(1.2,1.6,ez(seg(u,5,11))),.2,40);
+        CIN.outK=seg(u,10.2,11); if(u>11) CIN.next(); } }; }},
+ {id:"fim",dur:7.5,fade:"#ffffff",build(sc){ cinSky(sc,["#fff7f2","#ffe6ee"]); cinSub("",true); const cd=CIN.entry.card||["Nosso Mundinho","e assim começou. Capítulo 1: Namoro"]; cinCard(cd[0],cd[1],true); cinArp([[60,64,67,72],[65,69,72,77],[67,71,74,79],[72,76,79,84]],.3,.045); cinMel([[84,10,6]],.3,.06); return ()=>{ cinCam(0,2,8,0,2,0,45); }; }}];
+/* ---------- o "projetor": barras de cinema, legenda, botão de ação, pular ---------- */
+function cinSub(t,force){ const e=CIN.ui&&CIN.ui.querySelector(".cnSub"); if(!e||(CIN.quiet&&!force)) return; e.classList.remove("say"); e.textContent=t; e.classList.remove("in"); void e.offsetWidth; if(t) e.classList.add("in"); }
+function cinSay(t){ if(CIN.quiet) return; cinSub(t); const e=CIN.ui.querySelector(".cnSub"); e.classList.add("say"); }
+function cinCard(a,b,dark){ const e=CIN.ui.querySelector(".cnCard"); e.classList.toggle("dark",!!dark); e.innerHTML=`<b>${esc(a)}</b><span>${esc(b||"")}</span>`; e.classList.remove("in"); void e.offsetWidth; e.classList.add("in"); }
+function cinAct(label,fn,autoMs){ const b=CIN.ui.querySelector(".cnAct"); clearTimeout(CIN.actT); const go=()=>{ clearTimeout(CIN.actT); b.hidden=true; fn(); }; if(label){ b.textContent=label; b.hidden=false; b.onclick=go; CIN.actT=setTimeout(go,45000); } else CIN.actT=setTimeout(go,autoMs||2000); }
+// a primeira vez passa o filme inteiro (sem pular); depois, ao abrir o jogo, só um resuminho
+function cinStart(mode){ if(CIN.on||!HUB||!W3||OB.on||KZ.on||curScreen!=="hub") return; mode=mode||(stGet().intro?"recap":"full"); const first=!stGet().intro, dt=daysTogether(); CIN.played=1; CIN.mode=mode; CIN.quiet=mode==="recap";
+  CIN.list=mode==="recap"?[{id:"aeroporto",off:8,dur:2.9,sub:"Ele atravessou o céu pra ver ela…"},{id:"pordosol",off:2.2,dur:2.9,sub:"…a gente viveu dias lindos…"},{id:"jardim",dur:4.6,recap:true,sub:"…e ela disse sim."},{id:"fim",dur:3.2,card:["Nosso Mundinho",dt!=null&&dt>0?`${dt} ${dt===1?"dia":"dias"} juntos`:"a nossa história continua"]}]:CIN_SC.map(q=>({id:q.id})); closeCtx(); document.querySelectorAll(".modalBg").forEach(m=>m.remove()); if(PC.el) pcClose(); if(CON.on) conClose(true);
+  CIN.on=true; CIN.i=-1; CIN.fx=[]; CIN.chars=[]; CIN.sun1=0; CIN.fov0=W3.cam.fov; CIN.far0=W3.cam.far; W3.cam.far=200; W3.cam.updateProjectionMatrix(); SFX.ytHold=true; HUB.scene.classList.add("cinMode");
+  const ui=document.createElement("div"); ui.className="cnUI"; ui.innerHTML=`<div class="cnBar t"></div><div class="cnBar b"></div><div class="cnCard"></div><div class="cnSub"></div><button class="cnAct" hidden></button><button class="cnSkip">Pular ›</button><div class="cnFade"></div><div class="cnStart"><b>Nossa história</b><span>um filminho de como tudo começou</span><button class="btn pink">▶ Assistir</button></div>`;
+  HUB.scene.appendChild(ui); CIN.ui=ui; ["pointerdown","touchstart"].forEach(ev=>ui.addEventListener(ev,e=>e.stopPropagation())); CIN.fadeEl=ui.querySelector(".cnFade"); CIN.wait=true; CIN.scene=new THREE.Scene(); cinSky(CIN.scene,["#1d1320","#3f2838"]); if(mode==="full"&&first) ui.querySelector(".cnSkip").remove();
+  if(mode==="recap"){ ui.querySelector(".cnStart").remove(); ui.querySelector(".cnSkip").onclick=()=>cinEnd(true); CIN.wait=false; [[72,0],[76,.35],[79,.7],[84,1.05],[83,2.1],[79,2.45],[84,3.4]].forEach(([n,at])=>tone(NOTE(n),.9,"triangle",.045,at)); [[48,0],[53,2.1],[55,3.4],[60,5]].forEach(([n,at])=>tone(NOTE(n),1.8,"sine",.04,at)); CIN.next(); return; }
+  { const sk=ui.querySelector(".cnSkip"); if(sk) sk.onclick=()=>cinEnd(true); } ui.querySelector(".cnStart .btn").onclick=()=>{ try{ const c=ac(); if(c&&c.state==="suspended") c.resume(); }catch(e){} ui.querySelector(".cnStart").remove(); CIN.wait=false; CIN.next(); }; }
+CIN.next=()=>{ if(!CIN.on) return; CIN.i++; if(CIN.i>=CIN.list.length) return cinEnd(false); const E=CIN.list[CIN.i], S0=CIN_SC.find(q=>q.id===E.id); CIN.entry=E; CIN.off=E.off||0; if(CIN.scene) CIN.scene.traverse(o=>{ if(o.geometry&&!o.geometry.userData.keep) o.geometry.dispose(); });
+  CIN.fx=[]; CIN.chars=[]; CIN.t=0; CIN.outK=0; CIN.scene=new THREE.Scene(); const card=CIN.ui.querySelector(".cnCard"); card.classList.remove("in"); CIN.ui.querySelector(".cnAct").hidden=true; CIN.fadeEl.style.background=S0.fade||"#1d1320"; CIN.tick=S0.build(CIN.scene)||(()=>{}); CIN.dur=E.dur||S0.dur; if(E.sub) cinSub(E.sub,true); };
+function cinStep(dt){ const cam=W3.cam; if(CIN.wait){ cinCam(0,2,8,0,2,0,45); W3.R.render(CIN.scene,cam); return; } CIN.t+=dt; const t=CIN.t;
+  CIN.chars.forEach(C=>{ animChar(C,dt,t); }); CIN.tick(t+(CIN.off||0),dt); cinFxTick(dt);
+  CIN.fadeEl.style.opacity=Math.max(1-t/.7,CIN.dur<900?(t-(CIN.dur-.7))/.7:0,CIN.outK||0,0);
+  W3.R.render(CIN.scene,cam); if(t>=CIN.dur) CIN.next(); }
+function cinEnd(skipped){ if(!CIN.on) return; CIN.on=false; clearTimeout(CIN.actT); if(CIN.ui) CIN.ui.remove(); CIN.ui=null; HUB.scene.classList.remove("cinMode"); SFX.ytHold=false; if(CIN.scene) CIN.scene.traverse(o=>{ if(o.geometry&&!o.geometry.userData.keep) o.geometry.dispose(); }); CIN.scene=null; CIN.fx=[]; CIN.chars=[];
+  const cam=W3.cam; cam.fov=CIN.fov0||50; cam.far=CIN.far0||200; cam.updateProjectionMatrix(); HUB.camInit=false; HUB.zone=undefined;
+  const st=stGet(), first=!st.intro&&CIN.mode==="full"; st.intro=1; st.t=st.t||Date.now(); save(); [0,1].forEach(i=>{ if(!S.players[i].ring){ S.players[i]=Object.assign({},S.players[i],{ring:1}); } }); save(); redrawChars(); if(online()) pushMe({});
+  if(first) setTimeout(()=>{ if(!HUB) return; bigToast("Capítulo 1: Namoro","começamos com pouco, mas juntos 💕"); snd("fanfare"); [0,1].forEach(i=>{ const C=W3.chars[i]; heartsW(C.root.position.x,2.3,C.root.position.z,["💖","💕","✨"],10); }); setTimeout(()=>{ if(HUB&&!document.querySelector(".modalBg")) storyModal(); },2600); },900); }
+/* ---------- capítulos e o cofrinho do casamento ---------- */
+const WED=[["alianca","Alianças de ouro","💍",1500],["vestido","Vestido de noiva","👰",3000],["terno","Terno do noivo","🤵",1500],["igreja","Igreja: reserva, flores e música","⛪",3500],["festa","Festa, bolo e docinhos","🎂",5000],["lua","Lua de mel","🏝️",4500]];
+function wedPaid(k){ const c=csGet(), o=csOther(); return (+((c.wed||{})[k])||0)+(o&&o.wed?(+o.wed[k]||0):0); }
+function wedPay(k,n){ const it=WED.find(w=>w[0]===k), left=it[3]-wedPaid(k); n=Math.min(n,left,cBal()); if(n<=0){ toast(left<=0?"Esse já está pago 💕":"Sem moedinhas agora 🪙"); return; } if(!cSpend(n)) return; const c=csGet(); c.wed=c.wed||{}; c.wed[k]=(+c.wed[k]||0)+n; save(); csPush(); snd(wedPaid(k)>=it[3]?"fanfare":"chime"); if(wedPaid(k)>=it[3]) toast(`${it[1]}: pago! 💕`,2600); }
+function storyGoals(){ const J=ntJ(), pets=typeof petsList==="function"?petsList().length:0;
+  return [["Pedido de namoro no jardim",!!stGet().intro],["Primeiro dinheirinho: 10 trabalhos no predinho",(J.st.cons||0)>=10,`${Math.min(10,J.st.cons||0)}/10`],["Abrir o quarto gamer",unlHas("room:gamer")],["Um PC pra cada um",unlHas("pc0")&&unlHas("pc1")],["Adotar o primeiro bichinho",pets>0],["7 dias seguidos de missões",csBest()>=7,`${Math.min(7,csBest())}/7`]]; }
+function storyModal(){ const G=storyGoals(), done=G.filter(g=>g[1]).length, tot=WED.reduce((a,w)=>a+w[3],0), paid=WED.reduce((a,w)=>a+Math.min(w[3],wedPaid(w[0])),0), bal=cBal(), CO=icon("🪙");
+  const m=modal(`<div class="usM stM"><h2>📖 Nossa história <span class="kzCoin">🪙 ${bal}</span></h2>
+    <div class="stCh on"><div class="stHd"><i>1</i><div><b>Namoro</b><span>começamos com pouco, mas juntos</span></div><em>${done}/${G.length}</em></div><ul>${G.map(g=>`<li class="${g[1]?"ok":""}">${g[1]?"✓":"○"} ${esc(g[0])}${!g[1]&&g[2]?` <small>${g[2]}</small>`:""}</li>`).join("")}</ul></div>
+    <div class="stCh"><div class="stHd"><i>2</i><div><b>Morar juntos</b><span>a casa cresce, guarda-roupa, horta, noites de filme</span></div><em>em breve</em></div></div>
+    <div class="stCh wed"><div class="stHd"><i>3</i><div><b>O casamento</b><span>na igreja, do jeitinho que a gente sonha. Vamos pagando aos poucos.</span></div><em>${Math.round(paid/tot*100)}%</em></div>
+      <div class="stW">${WED.map(([k,n,e,p])=>{ const v=Math.min(p,wedPaid(k)), ok=v>=p; return `<div class="stI ${ok?"ok":""}"><i>${ent(e)}</i><div><b>${n}</b><u><s style="width:${v/p*100}%"></s></u><span>${ok?"pago":`${CO}${v} de ${p}`}</span></div>${ok?`<em>✓</em>`:`<button class="btn small gold" data-w="${k}" data-n="100" ${bal<1?"disabled":""}>+100</button><button class="btn small" data-w="${k}" data-n="500" ${bal<1?"disabled":""}>+500</button>`}</div>`; }).join("")}</div></div>
+    <div class="stCh"><div class="stHd"><i>4</i><div><b>Nossa família</b><span>o quartinho do bebê e uma surpresa</span></div><em>depois do casamento</em></div></div>
+    <div class="obBtns"><button class="btn blue" id="stCin">🎬 Rever a abertura</button><button class="btn alt" data-close>Fechar</button></div></div>`);
+  m.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{ wedPay(b.dataset.w,+b.dataset.n); m.remove(); storyModal(); }); m.querySelector("#stCin").onclick=()=>{ m.remove(); cinStart("full"); }; }
 /* =================== MODO SAUDADE: quem tá fora dorme na rede; quem ficou deixa beijinho, cafuné e recadinho =================== */
 const HAM3={x:-18.6,z:-2.5,r:Math.PI/2+.1}, HAM_ROOT_Y=1.15;
 /* Parque Radical: área dos minigames de ação (parkours). Fica a oeste, fora do círculo do mundinho, com chão plano e entrada pelo arco */
@@ -5285,7 +5489,9 @@ function hub(){
   window.addEventListener("keydown",kd); window.addEventListener("keyup",kd);
   screenCleanup=()=>{ if(OB.on) obbyExit(true); if(KZ.on) kzExit(true); cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); if(TV.mode) tvOff(false); TV.scr=null; TV.rem=null; HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
   bindActs3(root); pcBack();
-  if(!S.n76){ S.n76=1; save(); setTimeout(()=>{ if(HUB&&curScreen==="hub"&&!document.querySelector(".modalBg")) modal(`<div class="usM"><h2>🎮 Os jogos mudaram de lugar</h2><p>O Parque Radical e as barraquinhas saíram do mapa. Agora a casa tem um <b>quarto gamer</b> (a porta roxa da sala): vocês abrem o quarto, compram o PC de cada um e jogam tudo por dentro do PC, comprando os jogos aos poucos.</p><p>O <b>Nosso Predinho</b> (💼 no mapa) é onde a gente trabalha pra juntar as moedinhas. Os recordes antigos continuam guardados.</p><div class="obBtns"><button class="btn pink" data-close>Bora</button></div></div>`); },4200); }
+  if(!stGet().intro){ S.n76=1; save(); setTimeout(()=>{ if(HUB&&!stGet().intro) cinStart("full"); },1400); }
+  else if(!CIN.played&&!S.recapOff){ CIN.played=1; setTimeout(()=>{ if(HUB&&curScreen==="hub"&&!document.querySelector(".modalBg")){ CIN.played=0; cinStart("recap"); } },900); }
+  if(!S.n76){ S.n76=1; save(); setTimeout(()=>{ if(HUB&&curScreen==="hub"&&!CIN.on&&!document.querySelector(".modalBg")) modal(`<div class="usM"><h2>🎮 Os jogos mudaram de lugar</h2><p>O Parque Radical e as barraquinhas saíram do mapa. Agora a casa tem um <b>quarto gamer</b> (a porta roxa da sala): vocês abrem o quarto, compram o PC de cada um e jogam tudo por dentro do PC, comprando os jogos aos poucos.</p><p>O <b>Nosso Predinho</b> (💼 no mapa) é onde a gente trabalha pra juntar as moedinhas. Os recordes antigos continuam guardados.</p><div class="obBtns"><button class="btn pink" data-close>Bora</button></div></div>`); },4200); }
   mailTick(); refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags(); SKY.force=true; refreshSkyBtn(); starsChanged();
   root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook; root.querySelector("#bUs").onclick=usModal; root.querySelector("#bPh").onclick=photoOn; PH.on=false; DEC.edit=false; DEC.el=null; DEC.drag=null; setTimeout(()=>{ if(!HUB) return; csRefresh(); thinkCheck(); celebrateCheck(); renderDecor(); photoWall(); petsReset(); },1800); setTimeout(()=>{ if(!HUB) return; frzCheck(); streakMilestones(); csRefresh(); if(!S.nagT||Date.now()-S.nagT>3*36e5){ S.nagT=Date.now(); save(); streakNag(); } },online()?6500:2600);
   root.querySelector("#bTrophy").onclick=trophyModal; root.querySelector("#bSnd").onclick=soundModal; root.querySelector("#bChat").onclick=chatOpen; chatBadge();
@@ -7034,6 +7240,7 @@ function mailCompose(kind, sealed){
 
 /* ---------- loop ---------- */
 function step(dt){
+  if(CIN.on) return cinStep(dt);
   if(KZ.on) return kzStep(dt);
   if(OB.on) return obStep(dt);
   W3.t+=dt; const t=W3.t; decorTick(dt); photoTick();
