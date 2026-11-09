@@ -1869,7 +1869,7 @@ async function initNet(){
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
-      "jogos/bingo-p0","jogos/bingo-p1","casal/p0","casal/p1","casal/datas","casa/decor","trab/p0","trab/p1","toque/p0","toque/p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1","cozinha/estado","cozinha/p0","cozinha/p1","cozinha/acao-p0","cozinha/acao-p1"];
+      "jogos/bingo-p0","jogos/bingo-p1","casal/p0","casal/p1","casal/datas","casa/decor","trab/p0","trab/p1","historia/sala","historia/p0","historia/p1","toque/p0","toque/p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1","cozinha/estado","cozinha/p0","cozinha/p1","cozinha/acao-p0","cozinha/acao-p1"];
     paths.forEach(p=>{ NET.subs[p]=db.doc(p).onSnapshot(s=>{ NET.docs[p]=s.exists?s.data():null; netChanged(p); }, e=>{}); });
     NET.ready=true; initAlbumNet(); setTimeout(csPush,1500); initPetsNet(); initMailNet(); initChatNet(); refreshStatus();
   }catch(e){}
@@ -1882,6 +1882,7 @@ function netChanged(path){
   if(path.startsWith("casal/p")) csNet(path);
   if(path==="casa/decor") decorNet();
   if(path.startsWith("trab/")) jobNet(path);
+  if(path.startsWith("historia/")){ stNet(path); if(curScreen==="hub") refreshBanners(); }
   if(path==="toque/p"+other()) thinkCheck();
   if(path==="dupla/lev" && OB.coop){ const d=NET.docs[path]; OB.lev=Object.assign({},d||{}); }
   if(path===hubPath(other())){
@@ -1908,7 +1909,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "7.7";
+const VERSION = "7.7.1";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -3292,7 +3293,7 @@ function usModal(){ const m=modal(`<div class="usM" id="usM"></div>`); US.el=m;
       <p class="small">Cada missão dá 🪙 40. As de 🤝 só contam com vocês dois online juntos. As 3 no mesmo dia mantêm a sequência 🔥 e dão bônus. Se um dia passar em branco, um protetor ❄️ segura sozinho.</p>
       <button class="btn gold" id="uStory" style="margin-top:10px">📖 Nossa história e o casamento</button><div class="usGrid"><button class="btn pink" id="uThink">💭 Pensei em você</button><button class="btn" id="uShop">🛍️ Lojinha</button><button class="btn blue" id="uDecor">🛋️ Decorar a casa</button><button class="btn gold" id="uAlb">📸 Álbum</button><button class="btn alt" id="uDates">📅 Datas</button><button class="btn alt" id="uPh">📷 Tirar foto</button></div>`);
     const on=(id,fn)=>{ const e=box.querySelector(id); if(e) e.onclick=fn; };
-    on("#uStory",()=>{ m.remove(); storyModal(); }); on("#uStart",()=>{ m.remove(); datesModal(); }); on("#uThink",()=>{ thinkSend(); }); on("#uShop",()=>{ m.remove(); shopModal(); }); on("#uDecor",()=>{ m.remove(); decorEdit(); });
+    { const sb=box.querySelector("#uStory"); if(sb&&!(stLive()&&stGet().prem)) sb.remove(); } on("#uStory",()=>{ m.remove(); storyModal(); }); on("#uStart",()=>{ m.remove(); datesModal(); }); on("#uThink",()=>{ thinkSend(); }); on("#uShop",()=>{ m.remove(); shopModal(); }); on("#uDecor",()=>{ m.remove(); decorEdit(); });
     on("#uAlb",()=>{ m.remove(); albumModal(); }); on("#uRem",()=>{ m.remove(); remindModal(); }); on("#uNudge",nudgeSend);
     on("#uFrz",()=>{ if(frzLeft()>=3){ toast("Já tem 3 protetores ❄️ (o máximo)"); return; } if(!cSpend(80)){ toast("Faltam moedinhas 🪙"); return; } const c=csGet(); c.frz++; save(); csPush(); snd("fanfare"); toast("❄️ Protetor guardado! Ele salva a sequência se um dia passar em branco",3000); US.draw(); }); on("#uDates",()=>{ m.remove(); datesModal(); }); on("#uPh",()=>{ m.remove(); photoOn(); }); };
   US.draw(); }
@@ -4420,6 +4421,9 @@ function pcOpen(i,tab){ PC.i=i; if(tab) PC.tab=tab; let el=PC.el; if(!el){ el=do
   el.querySelectorAll("[data-b]").forEach(b=>b.onclick=()=>{ const k=b.dataset.b, g=PCG[k]; if(!unlBuy("g:"+k,g.p,g.n)) return; toast(`${g.n} instalado! 🎮`,2200); pcOpen(i,"jogos"); }); }
 /* =================== NOSSA HISTÓRIA: a abertura (avião, aeroporto, dias felizes, pedido de namoro) e os capítulos do casal =================== */
 const CIN={on:false,fx:[]};
+// ESTREIA: o filme de abertura fica guardado até o jogo estar pronto. Com STORY_LIVE=false nada da história aparece (nem resumo, nem painel).
+// Pra ver sozinho sem gastar a estreia: abrir o site com ?previa=1 no fim do endereço.
+const STORY_LIVE=false, stPreview=()=>/[?&]previa=1/.test(location.search), stLive=()=>STORY_LIVE||stPreview();
 const ez=k=>{ k=Math.max(0,Math.min(1,k)); return k*k*(3-2*k); }, lerp=(a,b,k)=>a+(b-a)*k, seg=(t,a,b)=>Math.max(0,Math.min(1,(t-a)/(b-a)));
 function stGet(){ const s=S.story&&typeof S.story==="object"?S.story:(S.story={}); return s; }
 function cinSky(sc,stops){ const c=document.createElement("canvas"); c.width=4; c.height=256; const x=c.getContext("2d"), g=x.createLinearGradient(0,0,0,256); stops.forEach((col,k)=>g.addColorStop(k/(stops.length-1),col)); x.fillStyle=g; x.fillRect(0,0,4,256); sc.background=new THREE.CanvasTexture(c); }
@@ -4542,10 +4546,10 @@ const CIN_SC=[
         if(u>2.6){ next(2); cinKneel(A,true,pcA); A.pose="give"; box.visible=true; setFace(A,"cry"); L.pose="gasp"; setFace(L,"eat"); snd("sparkle"); cinSub("…ele ficou de joelhos. E chorou."); for(let k=0;k<4;k++){ const o=mesh(new THREE.SphereGeometry(.022,6,5),new THREE.MeshBasicMaterial({color:"#8fd8ff"}),0,0,0,false); o.scale.y=1.5; o.position.set(-.5,1.25-k*.09,.35+(k%2?-.09:.09)); sc.add(o); tears.push(o); } } }
       else if(ST.ph===2){ cinFace(A,.75,.2,dt*8); cinFace(L,-.75,.35,dt*8); const p=box.getWorldPosition(V3(0,0,0)); spk.visible=true; spk.position.set(p.x,p.y+.12,p.z); const s=.22+Math.abs(Math.sin(t*4))*.14; spk.scale.set(s,s,s);
         cinCam(lerp(0,1.5,ez(u/3)),lerp(1.5,1.1,ez(u/3)),lerp(4.6,2.6,ez(u/3)),-.6,.95,.3,38);
-        if(u>2.4&&!ST.ask){ ST.ask=1; cinAct(online()&&S.me===1?null:"💍 Pedir em namoro",()=>next(3),online()&&S.me===1?2600:0); } }
+        if(u>2.4&&!ST.ask){ ST.ask=1; if(CIN.sync){ if(S.me===0) cinAct("💍 Pedir em namoro",()=>{ push("historia/p0",{ask:Date.now()}); next(3); }); else cinWait("ask",()=>next(3)); } else cinAct(online()&&S.me===1?null:"💍 Pedir em namoro",()=>next(3),online()&&S.me===1?2600:0); } }
       else if(ST.ph===3){ if(!ST.q){ ST.q=1; cinSay(`${nmRaw(1)}… quer namorar comigo?`); snd("chime"); cinMel([[72,0,1],[76,1,1],[79,2,3]],.4,.06); }
         cinFace(L,-.75,.35,dt*8); cinCam(lerp(1.5,-1.8,ez(u/3)),lerp(1.1,1.5,ez(u/3)),lerp(2.6,2.9,ez(u/3)),.6,1.25,.2,38);
-        if(u>2.6&&!ST.yes){ ST.yes=1; cinAct(online()&&S.me===0?null:"Sim! 💕",()=>next(4),online()&&S.me===0?2400:0); } }
+        if(u>2.6&&!ST.yes){ ST.yes=1; if(CIN.sync){ if(S.me===1) cinAct("Sim! 💕",()=>{ push("historia/p1",{yes:Date.now()}); next(4); }); else cinWait("yes",()=>next(4)); } else cinAct(online()&&S.me===0?null:"Sim! 💕",()=>next(4),online()&&S.me===0?2400:0); } }
       else if(ST.ph===4){ if(!ST.y){ ST.y=1; cinSay("SIM! Mil vezes sim!"); setFace(L,"happy"); L.pose="happy"; snd("fanfare"); cinHearts(sc,.75,1.9,.2,14); cinArp([[72,76,79,84],[77,81,84,89],[79,83,86,91],[84,88,91,96]],.16,.05); cinMel([[84,0,2],[88,2,2],[91,4,6]],.3,.07,.7); }
         L.root.position.y=Math.abs(Math.sin(u*7))*.16*(1-seg(u,0,1.6)); if(u>1.7&&!ST.up){ ST.up=1; cinKneel(A,false); A.pose="idle"; L.pose="idle"; box.visible=false; spk.visible=false; tears.forEach(o=>o.visible=false); tears.length=0; }
         if(u>1.7) cinGo(A,-.75,.35,.14,.25,seg(u,1.7,2.7)); if(u>2.8&&!ST.ring){ ST.ring=1; const r2=mesh(new THREE.TorusGeometry(.05,.012,8,18),new THREE.MeshStandardMaterial({color:"#e6e9ee",metalness:.8,roughness:.2,emissive:"#5a6068"}),0,-.26,0,false); r2.rotation.x=Math.PI/2; L.arms[1].elb.add(r2); snd("sparkle"); const p=L.arms[1].hand.getWorldPosition(V3(0,0,0)); CIN.fx.push({o:cinSprite(sc,"✨",p.x,p.y+.1,p.z,.5),vx:0,vy:.3,vz:0,life:1.2,t:0,s:.5}); cinSub("A aliança de namoro coube certinho."); }
@@ -4561,11 +4565,13 @@ function cinSay(t){ if(CIN.quiet) return; cinSub(t); const e=CIN.ui.querySelecto
 function cinCard(a,b,dark){ const e=CIN.ui.querySelector(".cnCard"); e.classList.toggle("dark",!!dark); e.innerHTML=`<b>${esc(a)}</b><span>${esc(b||"")}</span>`; e.classList.remove("in"); void e.offsetWidth; e.classList.add("in"); }
 function cinAct(label,fn,autoMs){ const b=CIN.ui.querySelector(".cnAct"); clearTimeout(CIN.actT); const go=()=>{ clearTimeout(CIN.actT); b.hidden=true; fn(); }; if(label){ b.textContent=label; b.hidden=false; b.onclick=go; CIN.actT=setTimeout(go,45000); } else CIN.actT=setTimeout(go,autoMs||2000); }
 // a primeira vez passa o filme inteiro (sem pular); depois, ao abrir o jogo, só um resuminho
-function cinStart(mode){ if(CIN.on||!HUB||!W3||OB.on||KZ.on||curScreen!=="hub") return; mode=mode||(stGet().intro?"recap":"full"); const first=!stGet().intro, dt=daysTogether(); CIN.played=1; CIN.mode=mode; CIN.quiet=mode==="recap";
+function cinWait(k,fn){ clearTimeout(CIN.actT); CIN.wf={k,fn}; CIN.actT=setTimeout(()=>{ if(CIN.wf){ CIN.wf=null; fn(); } },70000); }
+function cinStart(mode,opt){ if(CIN.on||!HUB||!W3||OB.on||KZ.on||curScreen!=="hub") return; opt=opt||{}; mode=mode||(stGet().prem?"recap":"full"); const first=!stGet().prem&&!opt.preview, dt=daysTogether(); CIN.played=1; CIN.mode=mode; CIN.quiet=mode==="recap"; CIN.sync=!!opt.sync; CIN.preview=!!opt.preview; CIN.t0=Date.now()-3000; CIN.wf=null;
   CIN.list=mode==="recap"?[{id:"aeroporto",off:8,dur:2.9,sub:"Ele atravessou o céu pra ver ela…"},{id:"pordosol",off:2.2,dur:2.9,sub:"…a gente viveu dias lindos…"},{id:"jardim",dur:4.6,recap:true,sub:"…e ela disse sim."},{id:"fim",dur:3.2,card:["Nosso Mundinho",dt!=null&&dt>0?`${dt} ${dt===1?"dia":"dias"} juntos`:"a nossa história continua"]}]:CIN_SC.map(q=>({id:q.id})); closeCtx(); document.querySelectorAll(".modalBg").forEach(m=>m.remove()); if(PC.el) pcClose(); if(CON.on) conClose(true);
   CIN.on=true; CIN.i=-1; CIN.fx=[]; CIN.chars=[]; CIN.sun1=0; CIN.fov0=W3.cam.fov; CIN.far0=W3.cam.far; W3.cam.far=200; W3.cam.updateProjectionMatrix(); SFX.ytHold=true; HUB.scene.classList.add("cinMode");
   const ui=document.createElement("div"); ui.className="cnUI"; ui.innerHTML=`<div class="cnBar t"></div><div class="cnBar b"></div><div class="cnCard"></div><div class="cnSub"></div><button class="cnAct" hidden></button><button class="cnSkip">Pular ›</button><div class="cnFade"></div><div class="cnStart"><b>Nossa história</b><span>um filminho de como tudo começou</span><button class="btn pink">▶ Assistir</button></div>`;
   HUB.scene.appendChild(ui); CIN.ui=ui; ["pointerdown","touchstart"].forEach(ev=>ui.addEventListener(ev,e=>e.stopPropagation())); CIN.fadeEl=ui.querySelector(".cnFade"); CIN.wait=true; CIN.scene=new THREE.Scene(); cinSky(CIN.scene,["#1d1320","#3f2838"]); if(mode==="full"&&first) ui.querySelector(".cnSkip").remove();
+  if(opt.sync){ ui.querySelector(".cnStart").remove(); CIN.wait=false; CIN.next(); return; }
   if(mode==="recap"){ ui.querySelector(".cnStart").remove(); ui.querySelector(".cnSkip").onclick=()=>cinEnd(true); CIN.wait=false; [[72,0],[76,.35],[79,.7],[84,1.05],[83,2.1],[79,2.45],[84,3.4]].forEach(([n,at])=>tone(NOTE(n),.9,"triangle",.045,at)); [[48,0],[53,2.1],[55,3.4],[60,5]].forEach(([n,at])=>tone(NOTE(n),1.8,"sine",.04,at)); CIN.next(); return; }
   { const sk=ui.querySelector(".cnSkip"); if(sk) sk.onclick=()=>cinEnd(true); } ui.querySelector(".cnStart .btn").onclick=()=>{ try{ const c=ac(); if(c&&c.state==="suspended") c.resume(); }catch(e){} ui.querySelector(".cnStart").remove(); CIN.wait=false; CIN.next(); }; }
 CIN.next=()=>{ if(!CIN.on) return; CIN.i++; if(CIN.i>=CIN.list.length) return cinEnd(false); const E=CIN.list[CIN.i], S0=CIN_SC.find(q=>q.id===E.id); CIN.entry=E; CIN.off=E.off||0; if(CIN.scene) CIN.scene.traverse(o=>{ if(o.geometry&&!o.geometry.userData.keep) o.geometry.dispose(); });
@@ -4576,14 +4582,26 @@ function cinStep(dt){ const cam=W3.cam; if(CIN.wait){ cinCam(0,2,8,0,2,0,45); W3
   W3.R.render(CIN.scene,cam); if(t>=CIN.dur) CIN.next(); }
 function cinEnd(skipped){ if(!CIN.on) return; CIN.on=false; clearTimeout(CIN.actT); if(CIN.ui) CIN.ui.remove(); CIN.ui=null; HUB.scene.classList.remove("cinMode"); SFX.ytHold=false; if(CIN.scene) CIN.scene.traverse(o=>{ if(o.geometry&&!o.geometry.userData.keep) o.geometry.dispose(); }); CIN.scene=null; CIN.fx=[]; CIN.chars=[];
   const cam=W3.cam; cam.fov=CIN.fov0||50; cam.far=CIN.far0||200; cam.updateProjectionMatrix(); HUB.camInit=false; HUB.zone=undefined;
-  const st=stGet(), first=!st.intro&&CIN.mode==="full"; st.intro=1; st.t=st.t||Date.now(); save(); [0,1].forEach(i=>{ if(!S.players[i].ring){ S.players[i]=Object.assign({},S.players[i],{ring:1}); } }); save(); redrawChars(); if(online()) pushMe({});
+  CIN.wf=null; if(CIN.preview){ HUB.zone=undefined; return; }
+  const st=stGet(), first=!st.prem&&CIN.mode==="full"; st.prem=1; st.t=st.t||Date.now(); save(); [0,1].forEach(i=>{ if(!S.players[i].ring){ S.players[i]=Object.assign({},S.players[i],{ring:1}); } }); save(); redrawChars(); if(online()) pushMe({});
   if(first) setTimeout(()=>{ if(!HUB) return; bigToast("Capítulo 1: Namoro","começamos com pouco, mas juntos 💕"); snd("fanfare"); [0,1].forEach(i=>{ const C=W3.chars[i]; heartsW(C.root.position.x,2.3,C.root.position.z,["💖","💕","✨"],10); }); setTimeout(()=>{ if(HUB&&!document.querySelector(".modalBg")) storyModal(); },2600); },900); }
+/* ---------- estreia a dois: um chama, o outro aceita, e o filme começa junto nos dois celulares ---------- */
+function premCall(){ try{ const c=ac(); if(c&&c.state==="suspended") c.resume(); }catch(e){} if(!online()||(stPreview()&&!STORY_LIVE)) return cinStart("full",{preview:stPreview()&&!STORY_LIVE}); if(!partnerHere()){ toast(`A estreia espera ${nmRaw(other())} chegar 💕`,2600); return; }
+  push("historia/sala",{call:Date.now(),by:S.me}); toast(`Chamando ${nmRaw(other())} pra estreia… 🎬`,4000); }
+function stNet(path){ const d=NET.docs[path]; if(!d) return;
+  if(path==="historia/sala"){ if(!stLive()||stGet().prem||CIN.on) return;
+    if(d.go&&d.go>Date.now()-3000&&d.go!==CIN.goT){ CIN.goT=d.go; document.querySelectorAll(".modalBg").forEach(m=>m.remove()); const ms=Math.max(0,d.go-Date.now()); bigToast("Nossa história","começa em instantes 💕"); setTimeout(()=>{ if(HUB&&curScreen==="hub") cinStart("full",{sync:true}); },ms); return; }
+    if(d.call&&!d.go&&d.by!==S.me&&Date.now()-d.call<120e3&&d.call!==CIN.callT){ CIN.callT=d.call; const m=modal(`<div class="usM" style="text-align:center"><h2 style="justify-content:center">🎬 ${esc(nmRaw(d.by))} preparou uma coisa pra vocês</h2><p>Um filminho da história de vocês dois. Aumenta o som e assiste junto, cada um no seu celular.</p><div class="obBtns"><button class="btn pink" id="prGo">▶ Assistir juntos</button></div></div>`); snd("chime");
+      m.querySelector("#prGo").onclick=()=>{ try{ const c=ac(); if(c&&c.state==="suspended") c.resume(); }catch(e){} m.remove(); push("historia/sala",{call:d.call,by:d.by,go:Date.now()+3500}); }; } return; }
+  if(CIN.on&&CIN.wf){ const k=CIN.wf.k, ok=(path==="historia/p0"&&k==="ask"&&d.ask>CIN.t0)||(path==="historia/p1"&&k==="yes"&&d.yes>CIN.t0); if(ok){ const fn=CIN.wf.fn; CIN.wf=null; clearTimeout(CIN.actT); fn(); } } }
+function premBanner(){ if(!stLive()||stGet().prem||CIN.on) return ""; if(!online()||(stPreview()&&!STORY_LIVE)) return `<div class="banner"><span>🎬 Nossa história: o filminho de como tudo começou</span><button class="btn pink" data-a="prem">Assistir</button></div>`;
+  return partnerHere()? `<div class="banner"><span>🎬 A estreia da nossa história tá pronta</span><button class="btn pink" data-a="prem">Assistir juntos</button></div>` : `<div class="banner"><span>🎬 Tem uma estreia esperando vocês dois online juntos 💕</span></div>`; }
 /* ---------- capítulos e o cofrinho do casamento ---------- */
 const WED=[["alianca","Alianças de ouro","💍",1500],["vestido","Vestido de noiva","👰",3000],["terno","Terno do noivo","🤵",1500],["igreja","Igreja: reserva, flores e música","⛪",3500],["festa","Festa, bolo e docinhos","🎂",5000],["lua","Lua de mel","🏝️",4500]];
 function wedPaid(k){ const c=csGet(), o=csOther(); return (+((c.wed||{})[k])||0)+(o&&o.wed?(+o.wed[k]||0):0); }
 function wedPay(k,n){ const it=WED.find(w=>w[0]===k), left=it[3]-wedPaid(k); n=Math.min(n,left,cBal()); if(n<=0){ toast(left<=0?"Esse já está pago 💕":"Sem moedinhas agora 🪙"); return; } if(!cSpend(n)) return; const c=csGet(); c.wed=c.wed||{}; c.wed[k]=(+c.wed[k]||0)+n; save(); csPush(); snd(wedPaid(k)>=it[3]?"fanfare":"chime"); if(wedPaid(k)>=it[3]) toast(`${it[1]}: pago! 💕`,2600); }
 function storyGoals(){ const J=ntJ(), pets=typeof petsList==="function"?petsList().length:0;
-  return [["Pedido de namoro no jardim",!!stGet().intro],["Primeiro dinheirinho: 10 trabalhos no predinho",(J.st.cons||0)>=10,`${Math.min(10,J.st.cons||0)}/10`],["Abrir o quarto gamer",unlHas("room:gamer")],["Um PC pra cada um",unlHas("pc0")&&unlHas("pc1")],["Adotar o primeiro bichinho",pets>0],["7 dias seguidos de missões",csBest()>=7,`${Math.min(7,csBest())}/7`]]; }
+  return [["Pedido de namoro no jardim",!!stGet().prem],["Primeiro dinheirinho: 10 trabalhos no predinho",(J.st.cons||0)>=10,`${Math.min(10,J.st.cons||0)}/10`],["Abrir o quarto gamer",unlHas("room:gamer")],["Um PC pra cada um",unlHas("pc0")&&unlHas("pc1")],["Adotar o primeiro bichinho",pets>0],["7 dias seguidos de missões",csBest()>=7,`${Math.min(7,csBest())}/7`]]; }
 function storyModal(){ const G=storyGoals(), done=G.filter(g=>g[1]).length, tot=WED.reduce((a,w)=>a+w[3],0), paid=WED.reduce((a,w)=>a+Math.min(w[3],wedPaid(w[0])),0), bal=cBal(), CO=icon("🪙");
   const m=modal(`<div class="usM stM"><h2>📖 Nossa história <span class="kzCoin">🪙 ${bal}</span></h2>
     <div class="stCh on"><div class="stHd"><i>1</i><div><b>Namoro</b><span>começamos com pouco, mas juntos</span></div><em>${done}/${G.length}</em></div><ul>${G.map(g=>`<li class="${g[1]?"ok":""}">${g[1]?"✓":"○"} ${esc(g[0])}${!g[1]&&g[2]?` <small>${g[2]}</small>`:""}</li>`).join("")}</ul></div>
@@ -5489,8 +5507,7 @@ function hub(){
   window.addEventListener("keydown",kd); window.addEventListener("keyup",kd);
   screenCleanup=()=>{ if(OB.on) obbyExit(true); if(KZ.on) kzExit(true); cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); if(TV.mode) tvOff(false); TV.scr=null; TV.rem=null; HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
   bindActs3(root); pcBack();
-  if(!stGet().intro){ S.n76=1; save(); setTimeout(()=>{ if(HUB&&!stGet().intro) cinStart("full"); },1400); }
-  else if(!CIN.played&&!S.recapOff){ CIN.played=1; setTimeout(()=>{ if(HUB&&curScreen==="hub"&&!document.querySelector(".modalBg")){ CIN.played=0; cinStart("recap"); } },900); }
+  if(stLive()&&stGet().prem&&!CIN.played&&!S.recapOff){ CIN.played=1; setTimeout(()=>{ if(HUB&&curScreen==="hub"&&!document.querySelector(".modalBg")){ CIN.played=0; cinStart("recap"); } },900); }
   if(!S.n76){ S.n76=1; save(); setTimeout(()=>{ if(HUB&&curScreen==="hub"&&!CIN.on&&!document.querySelector(".modalBg")) modal(`<div class="usM"><h2>🎮 Os jogos mudaram de lugar</h2><p>O Parque Radical e as barraquinhas saíram do mapa. Agora a casa tem um <b>quarto gamer</b> (a porta roxa da sala): vocês abrem o quarto, compram o PC de cada um e jogam tudo por dentro do PC, comprando os jogos aos poucos.</p><p>O <b>Nosso Predinho</b> (💼 no mapa) é onde a gente trabalha pra juntar as moedinhas. Os recordes antigos continuam guardados.</p><div class="obBtns"><button class="btn pink" data-close>Bora</button></div></div>`); },4200); }
   mailTick(); refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags(); SKY.force=true; refreshSkyBtn(); starsChanged();
   root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook; root.querySelector("#bUs").onclick=usModal; root.querySelector("#bPh").onclick=photoOn; PH.on=false; DEC.edit=false; DEC.el=null; DEC.drag=null; setTimeout(()=>{ if(!HUB) return; csRefresh(); thinkCheck(); celebrateCheck(); renderDecor(); photoWall(); petsReset(); },1800); setTimeout(()=>{ if(!HUB) return; frzCheck(); streakMilestones(); csRefresh(); if(!S.nagT||Date.now()-S.nagT>3*36e5){ S.nagT=Date.now(); save(); streakNag(); } },online()?6500:2600);
@@ -7717,11 +7734,12 @@ function refreshBanners(){
   }
   if(online() && partnerHere() && !OB.on){ const dh=NET.docs[hubPath(other())]; if(dh && dh.place==="cozinha") html+=`<div class="banner"><span>🍳 ${nm(other())} tá na Cozinha a Dois</span><button class="btn pink" data-a="kz">Ir junto</button></div>`;
     if(dh && dh.place==="obby"){ const dob=NET.docs["obby/p"+other()]||{}; html+=`<div class="banner"><span>🚀 ${nm(other())} tá no ${(OB_COURSES[dob.c]||OB_COURSES.nuvens).name}</span><button class="btn pink" data-a="obby">Ir junto</button></div>`; } }
-  html+=mailBanners();
+  html+=premBanner(); html+=mailBanners();
   if(html && html!==box._last){ const n=(html.match(/class="banner"/g)||[]).length; if(n>(box._n||0)) snd("ding"); box._n=n; } box._last=html; box.innerHTML=artify(html);
   box.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{
     const a=b.dataset.a, o=other();
     if(a.startsWith("mail")||a==="sealx"){ mailBannerAct(a); return; }
+    if(a==="prem"){ premCall(); return; }
     if(a==="hideInv"){ S.inviteHidden=true; save(); refreshBanners(); return; }
     if((a==="kz"||a==="obby"||a.startsWith("join-")||a==="inv")&&!pcMine()){ toast("Pra jogar você precisa do seu PC no quarto gamer 🎮",3000); return; }
     if(a==="kz"){ kzMenu(); return; }
