@@ -727,7 +727,7 @@ const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 /* =================== ESTADO LOCAL =================== */
 const KEY = "parquinho-v1";
 const DEF = {players:[
-  {name:"Alvaro",skin:4,hair:6,hairColor:7,shirt:9,build:4,acc:2,pants:1,wrist:0},
+  {name:"Alvaro",skin:4,hair:8,hairColor:7,shirt:9,build:4,acc:2,pants:1,wrist:0},
   {name:"Leticia",skin:5,hair:7,hairColor:8,shirt:6,build:3,acc:3,pants:2,wrist:1}],
   wins:{termo:[0,0],bingo:[0,0],caca:[0,0]}, me:0, picked:false, used:[], seenRes:[], seenInv:[],
   pos:[{x:.36,y:.74},{x:.64,y:.74}], rounds:0};
@@ -736,7 +736,8 @@ try{ const saved=JSON.parse(localStorage.getItem(KEY)||"null")||{}; S=Object.ass
 catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 if(!S.look45){ S.look44=S.look45=true; [0,1].forEach(i=>{ const n=S.players[i]&&S.players[i].name; S.players[i]=Object.assign({},DEF.players[i],{name:n||DEF.players[i].name}); }); save(); }
-[0,1].forEach(i=>{ const q=S.players[i]; if(q && q.wrist==null){ q.wrist= q.acc===3?1:0; save(); } });   // v4.4: bonequinhos parecidos com vocês
+[0,1].forEach(i=>{ const q=S.players[i]; if(q && q.wrist==null){ q.wrist= q.acc===3?1:0; save(); } });
+if(!S.look46){ S.look46=true; const q=S.players[0]; if(q && q.hair===6) q.hair=8; save(); }   // v4.4: bonequinhos parecidos com vocês
 const nm = i => esc(S.players[i].name || (i? "Jogador 2":"Jogador 1"));
 const nmRaw = i => S.players[i].name || (i? "Jogador 2":"Jogador 1");
 function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -754,7 +755,7 @@ const newSeed=()=>1+Math.floor(Math.random()*2147483000);
 const SKINS=["#fbe0cc","#f1c7a5","#d39a6a","#8d5a3b","#e4b48e","#d49f78"];
 const HAIRC=["#1f1411","#5a3424","#c27a35","#e6c36a","#93324a","#2c3f73","#3b2519","#45301f","#2a1a14"];
 const SHIRTS=["#4a7bd6","#e8607f","#3aa394","#f0a23b","#8a63d2","#f4efe9","#1f1d23","#e2463b","#f9c93c","#4d5a49"];
-const HAIRS=["Curto","Longo liso","Cacheado","Coque","Careca","Franja","Médio repartido","Bem longo"];
+const HAIRS=["Curto","Longo liso","Cacheado","Coque","Careca","Franja","Médio repartido","Bem longo","Old money"];
 const BUILDS=["Camiseta","Regata (fortão)","Vestido","Top e calça","Sem camisa"];
 const ACCS=["Nada","Girassol 🌻","Correntinha","Colar de coração"];
 const WRISTS=["Nada","Pulseira de berloques"];
@@ -788,7 +789,7 @@ function avatarSVG2D(p, mood="idle", o={}){
   const pose=armPose(mood==="eat"?"idle":mood, sxL, sxR, sy);
   // ---------- cabelo de trás
   let back="", front="";
-  switch(p.hair===7?1:p.hair===6?5:p.hair){
+  switch(p.hair===7?1:(p.hair===6||p.hair===8)?5:p.hair){
     case 1: back=`<path d="M33 40 C31 16 69 16 67 40 L71 116 Q61 124 50 119 Q39 124 29 116 Z" fill="${hc}"/>`;
       front=`<path d="M33.5 41 C33 25 42 20 50 20 C58 20 67 25 66.5 41 C64 33 59 28.5 51 27.5 L50 25 L49 27.5 C41 28.5 36 33 33.5 41Z" fill="${hc}"/>
         <path d="M33.5 40 C32.5 50 33 62 31 74 Q35 76 37 71 C37 58 37 48 39 38 Z" fill="${hc}"/><path d="M66.5 40 C67.5 50 67 62 69 74 Q65 76 63 71 C63 58 63 48 61 38 Z" fill="${hc}"/>
@@ -1323,7 +1324,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "4.5";
+const VERSION = "4.6";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -1567,11 +1568,11 @@ function buildChar(p){
       const pe=mesh(new THREE.SphereGeometry(.13,18,12), mSk, s*.1,1.315,.142); pe.scale.set(1.08,.66,.58); pe.rotation.z=s*-.14; body.add(pe);
       const pl=mesh(new THREE.CapsuleGeometry(.012,.17,3,8), sd, s*.1,1.255,.168,false); pl.rotation.z=Math.PI/2+s*.18; pl.scale.z=.4; body.add(pl);   // peitoral
       const tr=mesh(new THREE.SphereGeometry(.11,14,10), mSk, s*.12,1.455,-.01); tr.scale.set(1.15,.5,.9); tr.rotation.z=s*-.35; body.add(tr);   // trapézio
-      const ob=mesh(new THREE.CapsuleGeometry(.018,.15,4,8), sd, s*.1,1.02,.12); ob.rotation.set(-.15,0,s*.55); ob.scale.z=.5; body.add(ob);   // "V" do quadril
+      const ob=mesh(new THREE.CapsuleGeometry(.016,.09,4,8), sd, s*.1,1.075,.124); ob.rotation.set(-.15,0,s*.55); ob.scale.z=.5; body.add(ob);   // "V" do quadril
       const lat=mesh(new THREE.SphereGeometry(.1,12,10), mSk, s*.215,1.23,-.01); lat.scale.set(.55,1.25,.95); body.add(lat);   // dorsal
-      [[1.2,.155],[1.125,.137],[1.05,.123]].forEach(([y,z])=>{ const ab=mesh(new THREE.SphereGeometry(.05,12,10), sl, s*.046,y,z); ab.scale.set(.88,.66,.42); body.add(ab); }); });   // tanquinho
-    const line=mesh(new THREE.CapsuleGeometry(.006,.2,3,6), sd, 0,1.12,.148,false); line.scale.z=.5; body.add(line);
-    const nav=mesh(new THREE.SphereGeometry(.011,8,6), sd, 0,.985,.128,false); nav.scale.z=.4; body.add(nav);
+      [[1.215,.158],[1.15,.143],[1.088,.128]].forEach(([y,z])=>{ const ab=mesh(new THREE.SphereGeometry(.05,12,10), sl, s*.046,y,z); ab.scale.set(.88,.66,.42); body.add(ab); }); });   // tanquinho
+    const line=mesh(new THREE.CapsuleGeometry(.006,.13,3,6), sd, 0,1.15,.15,false); line.scale.z=.5; body.add(line);
+    const nav=mesh(new THREE.SphereGeometry(.011,8,6), sd, 0,1.048,.126,false); nav.scale.z=.4; body.add(nav);
     const pants=mesh(new THREE.CylinderGeometry(.2,.198,.22,18), mPants, 0,.92,0); pants.scale.z=.72; body.add(pants);
     const belt=mesh(new THREE.CylinderGeometry(.203,.203,.045,18), MT("#3a2a24"), 0,.99,0); belt.scale.z=.73; body.add(belt);
     body.add(mesh(new THREE.BoxGeometry(.055,.04,.02), MT("#cfd3da"), 0,.99,.146,false));
@@ -1640,7 +1641,7 @@ function buildChar(p){
   // cabelo
   const cap=(thetaLen,sc=1.06,m=mHair)=>{ const g=mesh(new THREE.SphereGeometry(HR,30,16,0,Math.PI*2,0,thetaLen), m); g.scale.set(sc,sc,sc); return g; };
   const backCap=(len,sc=1.07)=>{ const m=mesh(new THREE.SphereGeometry(HR,28,16,Math.PI,Math.PI,0,len), mHair); m.scale.set(sc,sc*1.03,sc); return m; };
-  if(p.hair!==4) head.add(backCap(p.hair===1||p.hair===7?Math.PI*.8:p.hair===6?Math.PI*.74:Math.PI*.64));
+  if(p.hair!==4) head.add(backCap(p.hair===1||p.hair===7?Math.PI*.8:p.hair===6?Math.PI*.74:p.hair===8?Math.PI*.7:Math.PI*.64));
   if(p.hair===1){ // longo liso
     const c=cap(Math.PI*.52,1.075); c.rotation.x=-.28; head.add(c);
     const ln=new THREE.CylinderGeometry(.27,.32,.74,32,6,true,Math.PI*.36,Math.PI*1.28), lp=ln.attributes.position;
@@ -1660,6 +1661,17 @@ function buildChar(p){
       const lk=mesh(new THREE.CapsuleGeometry(.06,.13,4,12), mHair, s*.228,-.1,.03); lk.scale.set(.85,1,.85); lk.rotation.z=s*.1; head.add(lk);   // ponta na altura do queixo
       const sd=mesh(new THREE.SphereGeometry(.16,16,12), mHair, s*.19,-.03,-.09); sd.scale.set(.6,1.1,1); head.add(sd); });
     const nape=mesh(new THREE.SphereGeometry(.24,20,12), mHair, 0,-.06,-.07); nape.scale.set(1.04,.92,.9); head.add(nape);
+  } else if(p.hair===8){ // old money: penteado pra trás com volume, risca de lado, laterais assentadas e pontas virando na nuca
+    const hl=hairMat(shade(hc,24)), dk=hairMat(shade(hc,-12));
+    const c=cap(Math.PI*.5,1.08); c.rotation.x=-.3; head.add(c);
+    const vol=mesh(new THREE.SphereGeometry(.2,24,14), hl, .02,.155,-.03); vol.scale.set(1.2,.4,1.25); vol.rotation.set(.12,0,-.08); head.add(vol);   // volume em cima
+    const sw=mesh(new THREE.SphereGeometry(.15,20,12), mHair, .04,.18,.12); sw.scale.set(1.15,.38,.85); sw.rotation.set(-.32,.3,-.16); head.add(sw);   // topete varrido pra trás e pro lado
+    const sw2=mesh(new THREE.SphereGeometry(.12,18,12), hl, .1,.17,.135); sw2.scale.set(1.0,.36,.75); sw2.rotation.set(-.28,.45,-.3); head.add(sw2);
+    const pl=mesh(new THREE.SphereGeometry(.13,16,10), dk, -.13,.145,.06); pl.scale.set(.75,.34,1.1); pl.rotation.set(-.1,0,.42); head.add(pl);   // lado da risca, mais assentado
+    [-1,1].forEach(s=>{ const sd=mesh(new THREE.SphereGeometry(.15,16,12), s<0?dk:mHair, s*.2,.06,-.06); sd.scale.set(.42,.82,1.05); sd.rotation.z=s*.1; head.add(sd);   // laterais penteadas pra trás
+      const fl=mesh(new THREE.CapsuleGeometry(.032,.06,4,10), mHair, s*.13,-.13,-.19); fl.rotation.set(.95,0,s*-.3); head.add(fl); });   // pontinhas virando na nuca
+    const nape=mesh(new THREE.SphereGeometry(.22,20,12), mHair, 0,-.04,-.08); nape.scale.set(1.05,.85,.9); head.add(nape);
+    const fc=mesh(new THREE.CapsuleGeometry(.03,.06,4,10), mHair, 0,-.14,-.2); fc.rotation.x=.95; head.add(fc);
   } else if(p.hair===7){ // bem longo, liso, repartido no meio, caindo na frente dos ombros
     const c=cap(Math.PI*.5,1.07); c.rotation.x=-.52; head.add(c);
     [-1,1].forEach(s=>{
