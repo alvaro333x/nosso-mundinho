@@ -727,15 +727,16 @@ const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 /* =================== ESTADO LOCAL =================== */
 const KEY = "parquinho-v1";
 const DEF = {players:[
-  {name:"Alvaro",skin:4,hair:6,hairColor:7,shirt:9,build:0,acc:2,pants:1},
-  {name:"Leticia",skin:5,hair:7,hairColor:8,shirt:6,build:3,acc:3,pants:2}],
+  {name:"Alvaro",skin:4,hair:6,hairColor:7,shirt:9,build:4,acc:2,pants:1,wrist:0},
+  {name:"Leticia",skin:5,hair:7,hairColor:8,shirt:6,build:3,acc:3,pants:2,wrist:1}],
   wins:{termo:[0,0],bingo:[0,0],caca:[0,0]}, me:0, picked:false, used:[], seenRes:[], seenInv:[],
   pos:[{x:.36,y:.74},{x:.64,y:.74}], rounds:0};
 let S;
 try{ const saved=JSON.parse(localStorage.getItem(KEY)||"null")||{}; S=Object.assign(JSON.parse(JSON.stringify(DEF)), saved); S.wins=Object.assign(JSON.parse(JSON.stringify(DEF.wins)),saved.wins||{}); }
 catch(e){ S=JSON.parse(JSON.stringify(DEF)); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
-if(!S.look44){ S.look44=true; [0,1].forEach(i=>{ const n=S.players[i]&&S.players[i].name; S.players[i]=Object.assign({},DEF.players[i],{name:n||DEF.players[i].name}); }); save(); }   // v4.4: bonequinhos parecidos com vocês
+if(!S.look45){ S.look44=S.look45=true; [0,1].forEach(i=>{ const n=S.players[i]&&S.players[i].name; S.players[i]=Object.assign({},DEF.players[i],{name:n||DEF.players[i].name}); }); save(); }
+[0,1].forEach(i=>{ const q=S.players[i]; if(q && q.wrist==null){ q.wrist= q.acc===3?1:0; save(); } });   // v4.4: bonequinhos parecidos com vocês
 const nm = i => esc(S.players[i].name || (i? "Jogador 2":"Jogador 1"));
 const nmRaw = i => S.players[i].name || (i? "Jogador 2":"Jogador 1");
 function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -754,8 +755,9 @@ const SKINS=["#fbe0cc","#f1c7a5","#d39a6a","#8d5a3b","#e4b48e","#d49f78"];
 const HAIRC=["#1f1411","#5a3424","#c27a35","#e6c36a","#93324a","#2c3f73","#3b2519","#45301f","#2a1a14"];
 const SHIRTS=["#4a7bd6","#e8607f","#3aa394","#f0a23b","#8a63d2","#f4efe9","#1f1d23","#e2463b","#f9c93c","#4d5a49"];
 const HAIRS=["Curto","Longo liso","Cacheado","Coque","Careca","Franja","Médio repartido","Bem longo"];
-const BUILDS=["Camiseta","Regata (fortão)","Vestido","Top e calça"];
-const ACCS=["Nada","Girassol 🌻","Correntinha","Colar de coração e pulseira do A 💖"];
+const BUILDS=["Camiseta","Regata (fortão)","Vestido","Top e calça","Sem camisa"];
+const ACCS=["Nada","Girassol 🌻","Correntinha","Colar de coração"];
+const WRISTS=["Nada","Pulseira de berloques"];
 const PANTS=["#34374a","#4c6690","#8fa9c9","#e9e2d6"];
 const INK="#2a1f22";
 function shade(h,a){ const n=parseInt(h.slice(1),16); const f=c=>Math.max(0,Math.min(255,c+a)); return "#"+[f(n>>16),f((n>>8)&255),f(n&255)].map(x=>x.toString(16).padStart(2,"0")).join(""); }
@@ -779,7 +781,7 @@ function armPose(mood, sxL, sxR, sy){
 }
 function avatarSVG2D(p, mood="idle", o={}){
   const sk=SKINS[p.skin]||SKINS[0], hc=HAIRC[p.hairColor]||HAIRC[0], sh=SHIRTS[p.shirt]||SHIRTS[0];
-  const build=p.build||0, buff=build===1, dress=build===2, ln=shade(sk,-42), hl=shade(hc,34);
+  const build=p.build||0, buff=build===1||build===4, dress=build===2, ln=shade(sk,-42), hl=shade(hc,34);
   const fem=dress;
   // ombros
   const sy=70, sxL=buff?28:(dress?38:34), sxR=100-sxL;
@@ -1306,7 +1308,7 @@ function netChanged(path){
 }
 function sanitizeLook(l){
   const n=(v,max)=>Number.isInteger(v)&&v>=0&&v<max?v:0;
-  return {name:String(l.name||"").slice(0,12), skin:n(l.skin,SKINS.length), hair:n(l.hair,HAIRS.length), hairColor:n(l.hairColor,HAIRC.length), shirt:n(l.shirt,SHIRTS.length), build:n(l.build,BUILDS.length), acc:n(l.acc,ACCS.length), pants:n(l.pants,PANTS.length)};
+  return {name:String(l.name||"").slice(0,12), skin:n(l.skin,SKINS.length), hair:n(l.hair,HAIRS.length), hairColor:n(l.hairColor,HAIRC.length), shirt:n(l.shirt,SHIRTS.length), build:n(l.build,BUILDS.length), acc:n(l.acc,ACCS.length), pants:n(l.pants,PANTS.length), wrist:l.wrist==null?(l.acc===3?1:0):n(l.wrist,WRISTS.length)};
 }
 /* sessão compartilhada de cada jogo */
 function joinOrCreate(game, extra={}){
@@ -1321,7 +1323,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "4.4";
+const VERSION = "4.5";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -1543,7 +1545,7 @@ function partShell(m,s,sc,tl,rot){ const g=new THREE.SphereGeometry(.26,22,14,s>
 function lathe(pts,seg=28){ return new THREE.LatheGeometry(pts.map(([r,y])=>new THREE.Vector2(r,y)),seg); }
 function buildChar(p){
   const sk=SKINS[p.skin]||SKINS[0], hc=HAIRC[p.hairColor]||HAIRC[0], sh=SHIRTS[p.shirt]||SHIRTS[0];
-  const buff=p.build===1, dress=p.build===2, top=p.build===3, fem=dress||top;
+  const bare=p.build===4, buff=p.build===1||bare, dress=p.build===2, top=p.build===3, fem=dress||top;
   const pc=p.pants!=null&&PANTS[p.pants]? PANTS[p.pants] : (buff?"#3d4c6e":"#34374a");
   const root=grp(), body=grp(); root.add(body);
   const mSk=CM(sk), mHair=hairMat(hc), mHair2=hairMat(hc,{side:THREE.DoubleSide}), mSh=CM(sh), mPants=CM(pc), mShoe=CM(dress?"#f2c84b":"#f7f5f0"), mSole=CM(dress?"#c98f3a":"#d9d4cc");
@@ -1558,7 +1560,22 @@ function buildChar(p){
     if(dress){ const st=mesh(new THREE.TorusGeometry(.055,.012,6,14), MT("#f2c84b"), 0,-hipY+.1,0,false); st.rotation.x=Math.PI/2; lg.add(st); }
     body.add(lg); legs.push(lg); });
   // tronco
-  if(buff){
+  if(bare){   // sem camisa: peitoral, tanquinho, oblíquos e trapézio
+    const sd=CM(shade(sk,-16)), sl=CM(shade(sk,8));
+    const tor=mesh(lathe([[.001,.86],[.19,.88],[.19,1.0],[.215,1.1],[.27,1.24],[.3,1.35],[.27,1.43],[.15,1.5],[.001,1.5]],32), mSk, 0,0,0); tor.scale.z=.64; body.add(tor);
+    [-1,1].forEach(s=>{
+      const pe=mesh(new THREE.SphereGeometry(.13,18,12), mSk, s*.1,1.315,.142); pe.scale.set(1.08,.66,.58); pe.rotation.z=s*-.14; body.add(pe);
+      const pl=mesh(new THREE.CapsuleGeometry(.012,.17,3,8), sd, s*.1,1.255,.168,false); pl.rotation.z=Math.PI/2+s*.18; pl.scale.z=.4; body.add(pl);   // peitoral
+      const tr=mesh(new THREE.SphereGeometry(.11,14,10), mSk, s*.12,1.455,-.01); tr.scale.set(1.15,.5,.9); tr.rotation.z=s*-.35; body.add(tr);   // trapézio
+      const ob=mesh(new THREE.CapsuleGeometry(.018,.15,4,8), sd, s*.1,1.02,.12); ob.rotation.set(-.15,0,s*.55); ob.scale.z=.5; body.add(ob);   // "V" do quadril
+      const lat=mesh(new THREE.SphereGeometry(.1,12,10), mSk, s*.215,1.23,-.01); lat.scale.set(.55,1.25,.95); body.add(lat);   // dorsal
+      [[1.2,.155],[1.125,.137],[1.05,.123]].forEach(([y,z])=>{ const ab=mesh(new THREE.SphereGeometry(.05,12,10), sl, s*.046,y,z); ab.scale.set(.88,.66,.42); body.add(ab); }); });   // tanquinho
+    const line=mesh(new THREE.CapsuleGeometry(.006,.2,3,6), sd, 0,1.12,.148,false); line.scale.z=.5; body.add(line);
+    const nav=mesh(new THREE.SphereGeometry(.011,8,6), sd, 0,.985,.128,false); nav.scale.z=.4; body.add(nav);
+    const pants=mesh(new THREE.CylinderGeometry(.2,.198,.22,18), mPants, 0,.92,0); pants.scale.z=.72; body.add(pants);
+    const belt=mesh(new THREE.CylinderGeometry(.203,.203,.045,18), MT("#3a2a24"), 0,.99,0); belt.scale.z=.73; body.add(belt);
+    body.add(mesh(new THREE.BoxGeometry(.055,.04,.02), MT("#cfd3da"), 0,.99,.146,false));
+  } else if(buff){
     const tor=mesh(lathe([[.001,.86],[.2,.88],[.205,1.0],[.235,1.12],[.275,1.27],[.285,1.36],[.245,1.44],[.14,1.5],[.001,1.5]]), mSh, 0,0,0); tor.scale.z=.66; body.add(tor);
     [-1,1].forEach(s=>{ const pc=mesh(new THREE.SphereGeometry(.12,14,10), mSh, s*.1,1.3,.1); pc.scale.set(1,.7,.55); body.add(pc); });
     const chest=mesh(new THREE.SphereGeometry(.13,14,10,0,Math.PI*2,0,Math.PI/2), mSk, 0,1.43,.035); chest.scale.set(1,.5,.62); body.add(chest);
@@ -1587,7 +1604,7 @@ function buildChar(p){
     body.add(mesh(new THREE.CylinderGeometry(.185,.18,.2,16), mPants, 0,.92,0));
   }
   if(p.acc===2||p.acc===3){ const thin=p.acc===3, silver=MT("#e6e9ee",{emissive:new THREE.Color("#3c4048")});   // correntinha/colar de prata
-    const c= buff? {y:1.5,rx:.115,dy:.1,z0:.085,dz:.035} : fem? {y:1.44,rx:.078,dy:.12,z0:.03,dz:.088} : {y:1.475,rx:.095,dy:.08,z0:.06,dz:.09};
+    const c= bare? {y:1.5,rx:.105,dy:.115,z0:.11,dz:.085} : buff? {y:1.5,rx:.115,dy:.1,z0:.085,dz:.035} : fem? {y:1.44,rx:.078,dy:.12,z0:.03,dz:.088} : {y:1.475,rx:.095,dy:.08,z0:.06,dz:.09};
     const n=thin?30:24, br=thin?.0062:.0105, bg=new THREE.SphereGeometry(br,5,4);
     for(let k=0;k<n;k++){ const a=Math.PI*(.08+k/(n-1)*.84); body.add(mesh(bg, silver, Math.cos(a)*c.rx, c.y-Math.sin(a)*c.dy, c.z0+Math.sin(a)*c.dz, false)); }
     if(thin){ const by=c.y-c.dy-.006, bz=c.z0+c.dz+.006;
@@ -1599,12 +1616,13 @@ function buildChar(p){
   const shY=fem?1.34:1.4, shX=buff?.3:(fem?.17:.24);
   [-1,1].forEach(s=>{
     const sho=grp(s*shX,shY,0); const ur=buff?.082:(fem?.04:.06), lr=buff?.068:(fem?.036:.052);
-    if(buff){ const dl=mesh(new THREE.SphereGeometry(.098,16,12), mSk, 0,-.03,0); dl.scale.set(1,1.1,1); sho.add(dl); }
+    if(buff){ const dl=mesh(new THREE.SphereGeometry(bare?.1:.098,16,12), mSk, 0,-.03,0); dl.scale.set(1,1.1,1); sho.add(dl); }
     sho.add(mesh(new THREE.CapsuleGeometry(ur,.21,6,12), (!buff&&!fem)?mSh:mSk, 0,-.15,0));
-    if(buff){ const bi=mesh(new THREE.SphereGeometry(.075,14,10), mSk, 0,-.16,.025); bi.scale.set(1.05,1.3,1); sho.add(bi); }
-    const elb=grp(0,-.3,0); const fa=mesh(new THREE.CapsuleGeometry(lr,.19,6,12), mSk, 0,-.13,0); if(buff) fa.scale.set(1.08,1,1.08); elb.add(fa);
+    if(buff){ const bi=mesh(new THREE.SphereGeometry(bare?.08:.075,14,10), mSk, 0,-.16,.03); bi.scale.set(1.0,1.35,.95); sho.add(bi);
+      if(bare){ const tri=mesh(new THREE.SphereGeometry(.068,12,10), mSk, 0,-.15,-.025); tri.scale.set(.95,1.4,.85); sho.add(tri); } }
+    const elb=grp(0,-.3,0); const fa=mesh(new THREE.CapsuleGeometry(lr,.19,6,12), mSk, 0,-.13,0); if(buff) fa.scale.set(bare?1.18:1.08,1,bare?1.18:1.08); elb.add(fa);
     const hand=mesh(new THREE.SphereGeometry(lr*1.3,12,10), mSk, 0,-.29,0); hand.scale.set(.9,1.1,.8); elb.add(hand);
-    if(p.acc===3 && s<0){ const silver=MT("#e6e9ee",{emissive:new THREE.Color("#3c4048")});
+    if(p.wrist===1 && s<0){ const silver=MT("#e6e9ee",{emissive:new THREE.Color("#3c4048")});
       const br=mesh(new THREE.TorusGeometry(lr*1.12,.0075,6,22), silver, 0,-.235,0,false); br.rotation.x=Math.PI/2; elb.add(br);
       const cl=mesh(heartGeo(.03,.6), silver, 0,-.235,lr*1.12+.008,false); elb.add(cl);
       [-1,1].forEach(s2=>{ const rg=mesh(new THREE.CylinderGeometry(.0105,.0105,.012,10), silver, s2*.022,-.235,lr*1.05,false); rg.rotation.z=Math.PI/2; rg.rotation.y=s2*.5; elb.add(rg); });
@@ -3955,7 +3973,7 @@ function poseInstant(C,name){
   C.head.rotation.set(name==="sad"?.22:(name==="think"?-.12:0), name==="think"?.25:0, 0);
 }
 function portrait(p, mood, o={}){
-  const head=!!o.vb, key=JSON.stringify([p.skin,p.hair,p.hairColor,p.shirt,p.build,p.acc,p.pants,mood,head,!!o.crown,o.sign||"",!!o.revealed,o.hold||""]);
+  const head=!!o.vb, key=JSON.stringify([p.skin,p.hair,p.hairColor,p.shirt,p.build,p.acc,p.pants,p.wrist,mood,head,!!o.crown,o.sign||"",!!o.revealed,o.hold||""]);
   if(PORT.cache[key]) return PORT.cache[key];
   if(!PORT.R){ const R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true}); R.setPixelRatio(1); R.setClearColor(0x000000,0); if(GFX2){ R.outputEncoding=THREE.sRGBEncoding; R.toneMapping=THREE.ACESFilmicToneMapping; R.toneMappingExposure=1.1; }
     const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight("#fff0e0","#9a8a80",GFX2?.9:.5)); const d=new THREE.DirectionalLight("#fff3e0",GFX2?1.3:.62); d.position.set(2.5,4,6); sc.add(d); const d2=new THREE.DirectionalLight("#ffd6e0",.18); d2.position.set(-4,2,2); sc.add(d2);
@@ -5437,9 +5455,10 @@ function customize(i){
       <label class="lb">Cor da roupa</label><div class="chips" id="shirt">${SHIRTS.map((c,k)=>`<button class="chip dot" data-v="${k}" style="background:${c}"></button>`).join("")}</div>
       <label class="lb">Calça</label><div class="chips" id="pants">${PANTS.map((c,k)=>`<button class="chip dot" data-v="${k}" style="background:${c}"></button>`).join("")}</div>
       <label class="lb">Acessório</label><div class="chips" id="acc">${ACCS.map((h,k)=>`<button class="chip" data-v="${k}">${h}</button>`).join("")}</div>
+      <label class="lb">Pulso</label><div class="chips" id="wrist">${WRISTS.map((h,k)=>`<button class="chip" data-v="${k}">${h}</button>`).join("")}</div>
       <div style="margin-top:20px"><button class="btn" id="save">Salvar ✓</button></div>
     </div>`,"custom");
-  const pv=root.querySelector("#pv"), F=["hair","hairColor","skin","shirt","build","pants","acc"];
+  const pv=root.querySelector("#pv"), F=["hair","hairColor","skin","shirt","build","pants","acc","wrist"];
   const draw=()=>{ pv.innerHTML=`<div class="avatar m-happy" style="height:100%"><div class="fig">${avatarSVG(p,"happy")}</div><div class="shadow"></div></div>`;
     F.forEach(f=>root.querySelectorAll(`#${f} .chip`).forEach(c=>c.classList.toggle("on",+c.dataset.v===(p[f]||0)))); };
   F.forEach(f=>root.querySelectorAll(`#${f} .chip`).forEach(c=>c.onclick=()=>{p[f]=+c.dataset.v;draw();}));
