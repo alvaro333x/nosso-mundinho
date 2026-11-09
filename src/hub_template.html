@@ -1939,7 +1939,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "7.8.1";
+const VERSION = "7.8.2";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -4651,10 +4651,10 @@ function storyModal(){ const G=storyGoals(), done=G.filter(g=>g[1]).length, tot=
 /* =================== MUNDINHO DO ZERO: começamos com um barraquinho e o trabalho; todo o resto é construído com as moedinhas =================== */
 // [chave, nome, emoji, preço, precisa de, descrição, lugar da plaquinha no mapa, grupo]
 const BUILD=[
-  ["casa1","Casinha de madeira","🏠",600,[],"sai o barraquinho, entra uma casinha com varandinha",[3.4,-6.2],"casa"],
-  ["casa2","Casa com sala","🏡",2500,["casa1"],"sala grande pra decorar; abre espaço pro quarto gamer, sofá e TV",[4.4,-6.2],"casa"],
-  ["casa3","Sobrado","🏘️",7000,["casa2"],"dois andares, varandão com colunas",[5.8,-6.2],"casa"],
-  ["casa4","Casarão dos sonhos","🏛️",20000,["casa3"],"a casa branca do nosso filme preferido",[7.2,-6.2],"casa"],
+  ["casa1","Casinha de madeira","🏠",300,[],"sai o barraquinho, entra uma casinha com varandinha",[3.4,-6.2],"casa"],
+  ["casa2","Casa com sala","🏡",1200,["casa1"],"sala grande pra decorar; abre espaço pro quarto gamer, sofá e TV",[4.4,-6.2],"casa"],
+  ["casa3","Sobrado","🏘️",4500,["casa2"],"dois andares, varandão com colunas",[5.8,-6.2],"casa"],
+  ["casa4","Casarão dos sonhos","🏛️",15000,["casa3"],"a casa branca do nosso filme preferido",[7.2,-6.2],"casa"],
   ["colchao","Colchão de casal","🛏️",150,[],"adeus, sacos de dormir",null,"dentro"],
   ["tapete","Tapete da sala","🧶",150,["casa2"],"deixa a sala quentinha",null,"dentro"],
   ["sofa","Sofá","🛋️",400,["casa2"],"pra sentar juntinho",null,"dentro"],
@@ -4672,7 +4672,7 @@ const BUILD=[
   ["pets","Casinha dos pets","🐾",300,[],"pra adotar o primeiro bichinho",[-15,-7.2],"terreno"],
   ["praca","Pracinha","🌳",250,[],"um larguinho de pedra no sul",[0,10.6],"terreno"],
   ["fonte","Fonte dos desejos","⛲",450,[],"jogar moedinha e fazer pedido",[1.6,6.2],"terreno"],
-  ["lago","Lago","💧",2500,[],"cavar, encher de água, fazer o píer: dá pra nadar",[9.2,4.6],"lago"],
+  ["lago","Lago","💧",1800,[],"cavar, encher de água, fazer o píer: dá pra nadar",[9.2,4.6],"lago"],
   ["vara","Varas de pesca","🎣",200,["lago"],"15 peixes pra colecionar",null,"lago"],
   ["barco","Barquinho","🛶",600,["lago"],"passeio a dois no lago",null,"lago"],
   ["cisnes","Casal de cisnes","🦢",300,["lago"],"eles nadam juntinhos",null,"lago"]];
