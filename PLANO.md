@@ -14,6 +14,17 @@ Capítulos, cada um com objetivos pagos com moedinhas e coisas que destravam:
 4. **Casamento** (o grande objetivo): pagar aos poucos alianças, vestido, terno, festa, igreja católica; cerimônia jogável.
 5. **Família**: quarto do bebê, filho.
 
+## Mundinho do zero — v7.8 (a próxima, prioridade)
+Pedido: começar sem nada mesmo, só o trabalho e a casinha pobre, e ir evoluindo tudo (até o lago é comprado). Refazer o mundo do zero.
+- **Era nova**: carteira zerada, nada desbloqueado, móveis e bichinhos antigos saem (lembranças ficam: sequência, datas, álbum, cartas, chat, quadros, nível do trabalho). Marca de era nos docs (`era`), pra valer nos dois celulares.
+- **Estado inicial**: barraquinho de madeira (por dentro: sala vazia, 2 sacos de dormir, um lampião, uma caixa de papelão), o Predinho pra trabalhar, um caminho de terra e mato em volta.
+- **Como evolui**: placas de terreno no mundo ("Aqui vai o lago · 3000") e o catálogo 🏗️ Construir. Comprou, o mundinho recarrega com a obra pronta e uma festinha; o outro celular recebe o aviso e atualiza quando estiver livre.
+- **Casa** (por fora e por dentro): barraquinho → casinha de madeira (600) → casa com sala (2500) → sobrado (7000) → casarão do Diário de uma Paixão (20000). Cômodos entram conforme a casa cresce: quarto gamer e quarto do casal com guarda-roupa (casa com sala), cozinha (sobrado), quartinho do bebê (casarão, capítulo família).
+- **Dentro de casa**: saco de dormir → colchão → cama; TV, sofá, estante, tapete, mesa: tudo comprado.
+- **Terreno**: caixinha de correio, postes de luz, rede, canteiros do jardim (um por um), hortinha, fonte, pracinha, ateliê, lago (cavar) → píer → vara de pesca → barquinho → cisnes.
+- **Loja de pets**: prédio com atendente e os bichinhos expostos, preço por raridade (hamster e cachorro baratos, jacaré caro).
+- **Técnica**: desbloqueios em `casal/pN.unl` com chaves `w:<obra>`; `buildWorld` monta só o que existe (terreno sem a cova do lago, sem colisão do que não foi construído); união dos desbloqueios guardada localmente pra saber o que montar antes da rede conectar.
+
 ## Quarto gamer — v7.6
 - Cômodo da casa comprado com moedinhas. Cada um compra o seu PC gamer; os minigames abrem por dentro do PC (área de trabalho com os jogos). Cada jogo é comprado/desbloqueado.
 - O Parque Radical e as barraquinhas saem do mapa.
