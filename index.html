@@ -1329,28 +1329,46 @@ function petSound(sp,vol=1){
   }
 }
 /* musiquinha de fundo (suave e gerada na hora) */
+// tema do mundinho (melodia original): balada romântica lenta, caixinha de música por cima de violão dedilhado
+const THEME={bpm:72,
+  prog:[[50,62,66,69],[45,61,64,69],[47,62,66,71],[43,62,67,71],[50,62,66,69],[45,61,64,69],[43,62,67,71],[45,61,64,69]],
+  mel:[[[78,0,1],[81,1,.5],[78,1.5,.5],[76,2,1.5],[74,3.5,.5]],
+       [[76,0,.5],[78,.5,.5],[76,1,1],[73,2,1],[69,3,1]],
+       [[71,0,1],[74,1,.5],[78,1.5,1.5],[76,3,.5],[74,3.5,.5]],
+       [[74,0,1.5],[71,1.5,.5],[74,2,1],[76,3,1]],
+       [[78,0,1],[81,1,1],[83,2,.5],[81,2.5,.5],[78,3,1]],
+       [[76,0,1.5],[78,1.5,.5],[76,2,1],[73,3,1]],
+       [[74,0,.5],[76,.5,.5],[78,1,1],[79,2,1],[78,3,.5],[76,3.5,.5]],
+       [[76,0,2],[73,3,.5],[76,3.5,.5]]]};
+const PICK=[0,1,2,3,2,1,3,2];
 function startMusic(){
-  if(SFX.musicOn || S.mute || S.music===false) return; const c=ac(); if(!c) return;
+  if(SFX.musicOn || SFX.ytHold || S.mute || S.music===false) return; const c=ac(); if(!c) return;
   SFX.musicOn=true; SFX.musicGain=c.createGain(); SFX.musicGain.gain.value=.0001; SFX.musicGain.connect(SFX.master);
-  SFX.musicGain.gain.exponentialRampToValueAtTime(.22,c.currentTime+2);
-  const chords=[[60,64,67,71],[57,60,64,67],[53,57,60,64],[55,59,62,65]], mel=[76,79,81,79,76,74,72,74, 72,76,74,71,72,74,76,79];
-  let bar=0; const beat=.75;
+  SFX.musicGain.gain.exponentialRampToValueAtTime(.22,c.currentTime+2.5);
+  const beat=60/THEME.bpm, out=SFX.musicGain; let bar=0;
+  const box=(n,at,d)=>{ tone(NOTE(n),Math.max(1.1,d*beat*1.6),"sine",.032,at,null,out); tone(NOTE(n)*2.01,.45,"sine",.007,at,null,out); tone(NOTE(n)*3,.18,"triangle",.003,at,null,out); };
   const sched=()=>{
-    if(!SFX.musicOn) return; const ch=chords[bar%4];
-    ch.forEach(n=>tone(NOTE(n),beat*4,"sine",.018,0,null,SFX.musicGain));
-    tone(NOTE(ch[0]-12),beat*2,"triangle",.03,0,null,SFX.musicGain); tone(NOTE(ch[0]-12),beat*2,"triangle",.025,beat*2,null,SFX.musicGain);
-    for(let k=0;k<4;k++){ if(Math.random()<.75) tone(NOTE(mel[(bar*4+k)%16]),beat*.9,"triangle",.022,k*beat,null,SFX.musicGain); }
+    if(!SFX.musicOn) return; const k=bar%8, ch=THEME.prog[k];
+    PICK.forEach((ix,e)=>{ tone(NOTE(ix===0?ch[0]:ch[ix]-12),beat*1.6,"triangle",ix===0?.03:.017,e*beat/2,null,out); });   // violão dedilhado
+    ch.slice(1).forEach(n=>tone(NOTE(n),beat*4.2,"sine",.006,0,null,out));   // cama suave
+    if(bar>=2) THEME.mel[k].forEach(([n,at,d])=>box(n,at*beat,d));   // caixinha de música entra no 3º compasso
     bar++; SFX.mt=setTimeout(sched, beat*4*1000);
   };
   sched();
 }
 function stopMusic(){ SFX.musicOn=false; clearTimeout(SFX.mt); if(SFX.musicGain){ try{ SFX.musicGain.gain.exponentialRampToValueAtTime(.0001,SFX.ctx.currentTime+.6); }catch(e){} } }
+// "nossa música": o clipe oficial não deixa tocar fora do YouTube, então toca a versão com letra (dá pra cantar junto) e, se nada tocar, abre o oficial no YouTube
+const OUR_OFFICIAL="dWpGsK8Md28", OUR_IDS=["O0MU-tzvrNs","B0gFMJ_dThY"], OUR_SONG=OUR_IDS[0];
+const isOurSong=id=>id===OUR_OFFICIAL||OUR_IDS.includes(id);
+function playOurSong(){ if(!HUB){ hub(); return setTimeout(playOurSong,800); } document.querySelectorAll(".modalBg").forEach(m=>m.remove());
+  openYT(OUR_SONG,0,true,true); cineSendQuiet({k:"yt",id:OUR_SONG,st:"play",pos:0}); snd("chime"); }
 function soundModal(){
   const m=modal(`<h2>🎵 Sons</h2>
-    <div class="stack"><button class="btn ${S.mute?"alt":""}" id="sfx">${S.mute?"Sons desligados":"Sons ligados ✓"}</button>
-    <button class="btn ${S.music===false||S.mute?"alt":"pink"}" id="mus">${S.music===false?"Música desligada":"Música ligada ✓"}</button>
+    <div class="stack"><button class="btn pink" id="ours">💞 Tocar a nossa música</button><a class="link" style="text-align:center" href="https://www.youtube.com/watch?v=${OUR_OFFICIAL}" target="_blank" rel="noopener">Ver o clipe oficial no YouTube</a><button class="btn ${S.mute?"alt":""}" id="sfx">${S.mute?"Sons desligados":"Sons ligados ✓"}</button>
+    <button class="btn ${S.music===false||S.mute?"alt":"blue"}" id="mus">${S.music===false?"Musiquinha de fundo desligada":"Musiquinha de fundo ligada ✓"}</button>
     <p style="font-size:.85rem;text-align:center">No iPhone, a chavinha de silencioso também desliga os sons do jogo.</p>
     <button class="btn alt" data-close>Fechar</button></div>`);
+  m.querySelector("#ours").onclick=playOurSong;
   m.querySelector("#sfx").onclick=()=>{ S.mute=!S.mute; save(); if(S.mute) stopMusic(); else { snd("pop"); startMusic(); } m.remove(); soundModal(); };
   m.querySelector("#mus").onclick=()=>{ S.music=S.music===false; save(); if(S.music===false) stopMusic(); else startMusic(); m.remove(); soundModal(); };
 }
@@ -1475,7 +1493,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "4.7";
+const VERSION = "4.8";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -2726,18 +2744,21 @@ function ytId(u){ u=(u||"").trim(); let m=u.match(/(?:youtu\.be\/|v=|shorts\/|em
 function ytApi(cb){ if(window.YT&&YT.Player) return cb(); (window._ytq=window._ytq||[]).push(cb); if(window._ytLoading) return; window._ytLoading=1; window.onYouTubeIframeAPIReady=()=>{ (window._ytq||[]).forEach(f=>f()); window._ytq=[]; }; const s=document.createElement("script"); s.src="https://www.youtube.com/iframe_api"; s.onerror=()=>toast("Não consegui carregar o YouTube aqui 😕"); document.head.appendChild(s); }
 function openYT(id,pos,play,mine){
   if(!HUB) return; setScreen("yt"); const C=W3.chars[actor()]; if(!C.sofa && isIn(C.root.position.x)) sofaSit(actor());
-  let box=HUB.ytBox; if(box && box.dataset.id===id){ return; } closeYT(); box=document.createElement("div"); box.className="ytBox"; box.dataset.id=id; box.innerHTML=`<div class="ytBar"><span>${artText("▶ Vendo juntos")}</span><button class="ytX">✕</button></div><div class="ytFrame"><div id="ytP"></div></div><div class="ytTap" style="display:none">Toque aqui pra sincronizar ▶</div>`; HUB.scene.appendChild(box); HUB.ytBox=box;
+  let box=HUB.ytBox; if(box && box.dataset.id===id){ return; } closeYT(); SFX.ytHold=true; stopMusic(); box=document.createElement("div"); box.className="ytBox"; box.dataset.id=id; box.innerHTML=`<div class="ytBar"><span>${artText(isOurSong(id)?"💞 Nossa música":"▶ Vendo juntos")}</span><button class="ytX">✕</button></div><div class="ytFrame"><div id="ytP"></div></div><div class="ytTap" style="display:none">Toque aqui pra sincronizar ▶</div>`; HUB.scene.appendChild(box); HUB.ytBox=box;
   box.querySelector(".ytX").onclick=()=>{ snd("close"); closeYT(); };
   box.querySelector(".ytTap").onclick=()=>{ box.querySelector(".ytTap").style.display="none"; if(HUB.yt&&HUB.ytWant){ HUB.ytQuiet=Date.now()+1200; HUB.yt.seekTo(HUB.ytWant.pos+(Date.now()-HUB.ytWant.t)/1000,true); HUB.yt.playVideo(); } };
   ytApi(()=>{ if(!HUB||HUB.ytBox!==box) return; HUB.yt=new YT.Player("ytP",{videoId:id,playerVars:{playsinline:1,rel:0,modestbranding:1,start:Math.floor(pos||0)},events:{
     onReady:()=>{ if(play){ HUB.ytQuiet=Date.now()+1500; HUB.yt.playVideo(); setTimeout(()=>{ if(HUB&&HUB.yt&&HUB.yt.getPlayerState&&HUB.yt.getPlayerState()!==1) box.querySelector(".ytTap").style.display=""; },1800); } },
+    onError:e=>{ if(!HUB||HUB.ytBox!==box) return; const nx=OUR_IDS[OUR_IDS.indexOf(id)+1];
+      if((e.data===101||e.data===150) && nx){ closeYT(); openYT(nx,0,true,mine); if(mine) cineSendQuiet({k:"yt",id:nx,st:"play",pos:0}); return; }
+      const t=box.querySelector(".ytTap"); t.style.display=""; t.innerHTML=artText(isOurSong(id)?"Não deu pra tocar aqui: toca pra abrir no YouTube 💞":"Esse vídeo não deixa tocar aqui: toca pra abrir no YouTube"); t.onclick=()=>window.open("https://www.youtube.com/watch?v="+(isOurSong(id)?OUR_OFFICIAL:id),"_blank"); },
     onStateChange:e=>{ if(!HUB||Date.now()<(HUB.ytQuiet||0)) return; const st=e.data; if(st===1) cineSendQuiet({k:"yt",id,st:"play",pos:HUB.yt.getCurrentTime()}); if(st===2) cineSendQuiet({k:"yt",id,st:"pause",pos:HUB.yt.getCurrentTime()}); } }}); });
 }
 function cineSendQuiet(o){ o.t=Date.now(); o.by=actor(); if(online()) pushMe({cine:o}); }
-function closeYT(){ if(!HUB) return; if(HUB.yt&&HUB.yt.destroy){ try{ HUB.yt.destroy(); }catch(e){} } HUB.yt=null; if(HUB.ytBox){ HUB.ytBox.remove(); HUB.ytBox=null; } }
+function closeYT(){ if(!HUB) return; if(HUB.yt&&HUB.yt.destroy){ try{ HUB.yt.destroy(); }catch(e){} } HUB.yt=null; if(HUB.ytBox){ HUB.ytBox.remove(); HUB.ytBox=null; } if(SFX.ytHold){ SFX.ytHold=false; startMusic(); } }
 function ytRemote(o){
   HUB.ytWant={pos:+o.pos||0,t:o.t};
-  if(!HUB.ytBox || HUB.ytBox.dataset.id!==o.id){ toast(`${nmRaw(o.by)} abriu um vídeo pra vocês ▶`); openYT(o.id,(+o.pos||0)+(o.st==="play"?(Date.now()-o.t)/1000:0),o.st==="play",false); return; }
+  if(!HUB.ytBox || HUB.ytBox.dataset.id!==o.id){ toast(isOurSong(o.id)?`${nmRaw(o.by)} colocou a nossa música 💞`:`${nmRaw(o.by)} abriu um vídeo pra vocês ▶`); openYT(o.id,(+o.pos||0)+(o.st==="play"?(Date.now()-o.t)/1000:0),o.st==="play",false); return; }
   const P=HUB.yt; if(!P||!P.seekTo) return; HUB.ytQuiet=Date.now()+1200;
   if(o.st==="play"){ const target=(+o.pos||0)+(Date.now()-o.t)/1000; if(Math.abs(P.getCurrentTime()-target)>1) P.seekTo(target,true); P.playVideo(); setTimeout(()=>{ if(HUB&&HUB.yt&&HUB.yt.getPlayerState&&HUB.yt.getPlayerState()!==1&&HUB.ytBox) HUB.ytBox.querySelector(".ytTap").style.display=""; },1500); }
   if(o.st==="pause"){ P.pauseVideo(); P.seekTo(+o.pos||0,true); }
