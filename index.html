@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Nosso Parquinho</title>
-<script src="peerjs.min.js"></script>
+<script src="peerjs.min.js"></script><script src="mqtt.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
@@ -564,6 +564,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
+const VERSION = "1.3";
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
@@ -577,7 +578,30 @@ function makeP2PDB(){
   let seq=0; const stamp=()=>Date.now()*1000+((seq++)%500)*2+(role||0);
   function apply(p,d,ts){ const cur=store[p]; if(cur && cur.ts>=ts) return; store[p]={d,ts}; persist(); emit(p); }
   const send=m=>{ conns.forEach(c=>{ if(c.open){ try{ c.send(m); }catch(e){} } }); };
-  function write(p,d){ const ts=stamp(); apply(p,clone(d),ts); send({t:"set",p,d,ts}); }
+  function write(p,d){ const ts=stamp(); apply(p,clone(d),ts); send({t:"set",p,d,ts}); mqPub(p,d,ts); }
+  // ---------- relay pela internet (MQTT): funciona em qualquer rede, inclusive 4G
+  let mq=null, mqOk=false, partnerSeen=0, hiT=0; const MYID=Math.random().toString(36).slice(2,10); const T=`mundinho/${ROOM}`;
+  function mqPub(p,d,ts){ if(mq&&mqOk){ try{ mq.publish(`${T}/d/${p}`, JSON.stringify({d,ts}), {qos:1,retain:true}); }catch(e){} } }
+  function announce(){ if(mq&&mqOk&&role!=null){ try{ mq.publish(`${T}/hi`, JSON.stringify({role,id:MYID,t:Date.now()}), {qos:0}); }catch(e){} } }
+  function announceRe(){ if(mq&&mqOk&&role!=null){ try{ mq.publish(`${T}/hi`, JSON.stringify({role,id:MYID,t:Date.now(),re:1}), {qos:0}); }catch(e){} } }
+  function startMQ(){
+    if(!window.mqtt || mq) return;
+    try{ mq=window.mqtt.connect(window.__MQTT_URL||"wss://broker.emqx.io:8084/mqtt",{clientId:"mdn_"+MYID, keepalive:30, reconnectPeriod:3000, connectTimeout:12000, clean:true}); }catch(e){ mq=null; return; }
+    mq.on("connect",()=>{ mqOk=true; mq.subscribe(`${T}/#`,{qos:1}); for(const [pp,e] of Object.entries(store)) if(e&&typeof e.ts==="number") mqPub(pp,e.d,e.ts); announce(); onState(); });
+    mq.on("close",()=>{ if(mqOk){ mqOk=false; onState(); } });
+    mq.on("error",()=>{});
+    mq.on("message",(topic,buf)=>{
+      let m; try{ m=JSON.parse(buf.toString()); }catch(e){ return; }
+      const sub=topic.slice(T.length+1);
+      if(sub.startsWith("d/")){ if(m && typeof m.ts==="number") apply(sub.slice(2), m.d, m.ts); }
+      else if(sub==="hi" && m && m.id!==MYID){
+        const was=Date.now()-partnerSeen<50000, isNew=m.id!==NET.partnerId; partnerSeen=Date.now(); NET.partnerRole=m.role; NET.partnerId=m.id;
+        if(!was||isNew){ if(!m.re) announceRe(); onState(); }
+      }
+    });
+    clearInterval(hiT); hiT=setInterval(()=>{ const was=presence(); announce(); setTimeout(()=>{ if(presence()!==was) onState(); },100); },15000);
+  }
+  const presence=()=>Date.now()-partnerSeen<50000;
   function onData(m){
     if(!m||typeof m!=="object") return;
     if(m.t==="set" && typeof m.p==="string") apply(m.p, m.d, m.ts);
@@ -590,7 +614,7 @@ function makeP2PDB(){
     const drop=()=>{ conns=conns.filter(x=>x!==c); lastOpen=Date.now(); if(!connected()) setSt(isHost?"esperando":"procurando"); };
     c.on("close",drop); c.on("error",drop);
   }
-  const connected=()=>conns.some(c=>c.open);
+  const connected=()=>conns.some(c=>c.open) || presence();
   const HOST=`mundinho-${ROOM}-host`;
   let isHost=false, st="iniciando", pendT=0, lastOpen=0;
   const setSt=s=>{ st=s; onState(); };
@@ -628,7 +652,7 @@ function makeP2PDB(){
     else dial();
   }
   function start(r){
-    role=r; send({t:"hello",role:r});
+    role=r; send({t:"hello",role:r}); startMQ(); announce();
     if(peer) return;
     becomeHost(); clearInterval(tryT); tryT=setInterval(tick,5000);
   }
@@ -641,7 +665,7 @@ function makeP2PDB(){
     collection:(c)=>({path:c, doc:(id)=>db.doc(c+"/"+(id||Math.random().toString(36).slice(2))),
       onSnapshot:(next)=>{ (colL[c]=colL[c]||[]).push(next); setTimeout(()=>next(qsnap(c)),0); return ()=>{ colL[c]=colL[c].filter(f=>f!==next); }; }})
   };
-  return {db, start, connected, status:()=>st, set onState(f){ onState=f; }};
+  return {db, start, connected, status:()=>st, info:()=>({p2p:st, p2pOpen:conns.some(c=>c.open), host:isHost, relay:mqOk?"ok":(mq?"conectando":"indisponível"), visto:partnerSeen}), set onState(f){ onState=f; }};
 }
 
 /* =================== TECLADO =================== */
@@ -750,6 +774,9 @@ function hub(){
   const pd=NET.docs[hubPath(other())]; if(online() && pd && typeof pd.x==="number"){ HUB.pos[other()]={x:pd.x,y:pd.y}; placeChar(other(),pd.x,pd.y,0); HUB.lastEmote[other()]=pd.emote&&pd.emote.t; }
   refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags();
   HUB.statusInt=setInterval(()=>{ refreshStatus(); },15000);
+  root.querySelector("#status").onclick=()=>{ const i=NET.p2p?NET.p2p.info():{}; modal(`<h2>Conexão</h2><p>Versão <b>${VERSION}</b> · você é <b>${nm(S.me)}</b></p>
+    <p>Direta: <b>${esc(i.p2p||"-")}</b>${i.p2pOpen?" ✅":""}<br>Pela internet: <b>${esc(i.relay||"-")}</b><br>${nm(other())} visto: <b>${i.visto?ago(i.visto):"ainda não"}</b></p>
+    <p style="font-size:.85rem">Os dois precisam estar na mesma versão. Se não estiver, recarregue a página.</p><button class="btn" data-close>OK</button>`); };
   syncPetEls(); HUB.petInt=setInterval(()=>{ syncPetEls(); const ids=Object.keys(HUB.pets||{}); if(ids.length&&Math.random()<.35){ const id=pick(ids), p=getPet(id); if(p) petSay(id, petPhrase(p)); } },9000);
   root.querySelector("#fab").onclick=petsModal;
 
@@ -845,7 +872,7 @@ function refreshCtrl(){
   if(!HUB) return;
   [0,1].forEach(i=>{ const el=charEl(i); if(el) el.classList.toggle("ctrl", online()? i===S.me : i===HUB.ctrl); });
   const bar=HUB.root.querySelector("#ctrlBar");
-  if(online()) bar.innerHTML=`Você é <b style="color:#fff">${nm(S.me)}</b> · toque no chão pra andar`;
+  if(online()) bar.innerHTML=`Você é <b style="color:#fff">${nm(S.me)}</b> · toque no chão pra andar <span style="opacity:.6">· v${VERSION}</span>`;
   else { bar.innerHTML=`Mexendo: ${[0,1].map(i=>`<button data-c="${i}" class="${HUB.ctrl===i?"on":""}">${nm(i)}</button>`).join("")}`;
     bar.querySelectorAll("button").forEach(b=>b.onclick=()=>{ HUB.ctrl=+b.dataset.c; refreshCtrl(); }); }
 }
@@ -854,7 +881,7 @@ function refreshStatus(){
   if(online()){
     const d=NET.docs[hubPath(other())];
     if(partnerHere()) el.innerHTML=`<span class="dot on"></span>${nm(other())} tá online`;
-    else if(NET.p2p){ const s=NET.p2p.status(); el.innerHTML=`<span class="dot"></span>${s.startsWith("erro")?`Sem conexão (${esc(s.slice(5)||"rede")}) · tentando de novo…`: s==="conectando"?"Conectando…":`Esperando ${nm(other())} abrir o jogo… ${d&&d.act?`(visto ${ago(d.act)})`:""}`}`; }
+    else if(NET.p2p){ const s=NET.p2p.info(); el.innerHTML=`<span class="dot"></span>${s.relay!=="ok" && !s.p2pOpen && s.p2p!=="esperando" && s.p2p!=="procurando" ? "Conectando…" : `Esperando ${nm(other())} abrir o jogo… ${d&&d.act?`(visto ${ago(d.act)})`:""}`}`; }
     else el.innerHTML=`<span class="dot"></span>Online · ${nm(other())} ${d&&d.act?`visto ${ago(d.act)}`:"ainda não entrou"}`;
   } else el.innerHTML=`<span class="dot"></span>Modo mesmo celular`;
   refreshTags(); refreshCtrl();
