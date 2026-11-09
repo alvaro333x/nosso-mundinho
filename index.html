@@ -766,6 +766,68 @@ span.ico svg{width:100%!important;height:100%!important;transform:none!important
 /* estilo único: botões redondos de vidro em todas as telas */
 .top .ibtn{background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff7f2}
 .top h1{font-weight:600;letter-spacing:.2px}
+
+/* =================== ESTILO ÚNICO "PÔR DO SOL DE DOMINGO" (v5.5) ===================
+   fundo amora + papel creme + botões de cor com bordinha da mesma cor.
+   rosa = ação principal · sálvia = confirmar · dourado = prêmio/sorteio · lilás = extra · neutro suave */
+:root{--berry9:#21141e;--berry8:#2d1c29;--berry7:#3f2838;--berry6:#5c3a52;--paper:#fffaf5;--ink2:#3a2a33;--inkSoft:#6e5866;
+  --pink:#ff6f91;--pinkD:#d9496d;--sage:#58b394;--sageD:#3c8d72;--gold:#ffc65c;--goldD:#d99a2b;--lilac:#9583ec;--lilacD:#6f5dcc;--soft:#7b6274;--softD:#5f4858;
+  --correct:#4fae8e;--present:#e9ae45;--absent:#2a1f27;--future:rgba(255,255,255,.08);--key:rgba(255,255,255,.16);--accent:#ff6f91}
+body{background:
+  radial-gradient(2px 2px at 12% 18%,rgba(255,220,235,.35),transparent 60%),radial-gradient(1.5px 1.5px at 72% 12%,rgba(255,240,200,.35),transparent 60%),
+  radial-gradient(1.5px 1.5px at 38% 62%,rgba(255,220,235,.22),transparent 60%),radial-gradient(2px 2px at 88% 70%,rgba(255,240,200,.25),transparent 60%),
+  radial-gradient(130% 95% at 50% -12%,#7a4a66 0%,var(--berry7) 42%,var(--berry9) 100%) fixed;background-color:var(--berry9)}
+/* botões */
+.btn{border-radius:16px;font-weight:600;letter-spacing:.2px;background:var(--sage);box-shadow:0 3px 0 var(--sageD),inset 0 1px 0 rgba(255,255,255,.28);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--sageD),inset 0 1px 0 rgba(255,255,255,.2)}
+.btn.pink{background:var(--pink);box-shadow:0 3px 0 var(--pinkD),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn.gold{background:var(--gold);color:var(--ink2);box-shadow:0 3px 0 var(--goldD),inset 0 1px 0 rgba(255,255,255,.4);--ig:var(--ink2)}
+.btn.blue{background:var(--lilac);box-shadow:0 3px 0 var(--lilacD),inset 0 1px 0 rgba(255,255,255,.3)}
+.btn.alt{background:var(--soft);box-shadow:0 3px 0 var(--softD),inset 0 1px 0 rgba(255,255,255,.18)}
+.btn.wa{background:#2fb565;box-shadow:0 3px 0 #1f8a4a,inset 0 1px 0 rgba(255,255,255,.3)}
+.btn.pink:active,.btn.gold:active,.btn.blue:active,.btn.alt:active,.btn.wa:active{box-shadow:0 1px 0 rgba(0,0,0,.25)}
+/* janelas: papel creme */
+.modalBg{background:rgba(26,14,22,.58);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.modal{background:var(--paper);color:var(--ink2);border-radius:24px;box-shadow:0 22px 50px rgba(20,8,16,.5),inset 0 0 0 1px rgba(58,42,51,.06)}
+.modal h2{color:var(--ink2);font-weight:700}
+.modal p{color:var(--inkSoft)}
+.modal .btn.alt{background:#efe2e8;color:#5a4652;box-shadow:0 3px 0 #dccbd3;--ia:var(--pink)}
+.modal .btn.alt:active{box-shadow:0 1px 0 #dccbd3}
+.link{color:var(--inkSoft)}
+.modal .chip{background:#f3e8ed}
+.modal input.txt,.inp,.mTa{border-radius:14px}
+.inp{border:2px solid #ead9e1;background:#fff}.inp:focus{border-color:var(--pink);outline:none}
+.toast{background:var(--paper);color:var(--ink2)}
+.banner{background:var(--paper);border-radius:14px}
+.ctx button{background:var(--paper);border-radius:16px}
+.ctxT{background:rgba(45,28,41,.82)}
+/* telas internas */
+.top h1{color:#fff3f6}
+.key{background:var(--key);box-shadow:0 2px 0 rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.12);border-radius:10px;color:#fff7f2}
+.key.absent{background:rgba(0,0,0,.28);color:#9c8794}
+.brow.future .tile{background:var(--future);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.brow.current .tile{border-color:rgba(255,214,228,.55)}
+.chip{background:rgba(255,255,255,.12)}
+.chip.on{border-color:#fff;box-shadow:0 0 0 3px rgba(255,111,145,.45)}
+.pcard,.stTable,.qCard,.bcard,.cgrid{border-radius:20px}
+.qCard,.stTable{background:var(--paper);box-shadow:0 10px 26px rgba(20,8,16,.35)}
+.qOpt{border-radius:14px;box-shadow:0 3px 0 #ecdde4}
+.qOpt.on{background:var(--pink);box-shadow:0 3px 0 var(--pinkD)}
+.bcard{background:var(--paper);box-shadow:0 8px 22px rgba(20,8,16,.32)}
+.bingoBtn{background:var(--pink);box-shadow:0 3px 0 var(--pinkD);border-radius:14px}
+.cgrid{background:var(--paper);box-shadow:0 8px 22px rgba(20,8,16,.32)}
+.words span{background:rgba(255,255,255,.12)}.words span.got{background:var(--gold);color:var(--ink2)}
+.stL{background:var(--lilac);box-shadow:0 4px 0 var(--lilacD)}
+.endCard{background:var(--paper);border-radius:24px}
+.pill{background:rgba(0,0,0,.22)}
+canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0,0,0,.35)}
+.palette .sw{border-color:rgba(255,255,255,.4)}
+.ptools button{background:rgba(255,255,255,.14)}.ptools button.on{background:var(--pink)}.ptools .svb{background:var(--sage);box-shadow:0 3px 0 var(--sageD)}
+/* mundinho: vidro amora em tudo que flutua */
+:root{--hud:rgba(45,28,41,.5)}
+.tvRemote2{background:linear-gradient(180deg,rgba(63,40,56,.96),rgba(33,20,30,.96))}
+.trBtns>button.big{background:var(--pink)}
+.aInt{background:var(--pink)}
 /* adicionar à Tela de Início */
 .a2hs{text-align:left}
 .a2hs ol{margin:6px 0 12px;padding-left:22px;line-height:1.55;color:#5a4652}
@@ -1551,7 +1613,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "5.4";
+const VERSION = "5.5";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2189,6 +2251,15 @@ function gridTex(){ const c=document.createElement("canvas"); c.width=c.height=2
   for(let r=0;r<5;r++) for(let k=0;k<6;k++) x.fillText(L[(r*6+k)%L.length],22+k*42,28+r*48);
   x.strokeStyle="#ff7a93"; x.lineWidth=8; x.globalAlpha=.7; x.beginPath(); x.roundRect? x.roundRect(4,8,170,42,20) : x.rect(4,8,170,42); x.stroke();
   x.strokeStyle="#3aa394"; x.beginPath(); x.moveTo(22,76); x.lineTo(232,220); x.stroke(); return new THREE.CanvasTexture(c); }
+// plaquinha de madeira (mesmo estilo em todo o mundinho)
+function woodSignTex(text,w=512,h=128,font=60){ const c=document.createElement("canvas"); c.width=w; c.height=h; const x=c.getContext("2d"), r=h*.22;
+  const path=()=>{ x.beginPath(); x.moveTo(r,4); x.arcTo(w-4,4,w-4,h-4,r); x.arcTo(w-4,h-4,4,h-4,r); x.arcTo(4,h-4,4,4,r); x.arcTo(4,4,w-4,4,r); };
+  path(); const g=x.createLinearGradient(0,0,0,h); g.addColorStop(0,"#d39c66"); g.addColorStop(1,"#b57a45"); x.fillStyle=g; x.fill();
+  x.save(); path(); x.clip(); const rr=rng(text.length*7+3); x.strokeStyle="rgba(110,64,30,.22)"; x.lineWidth=2; for(let k=0;k<9;k++){ const y=rr()*h; x.beginPath(); x.moveTo(0,y); x.bezierCurveTo(w*.3,y+rr()*8-4,w*.7,y+rr()*8-4,w,y+rr()*6-3); x.stroke(); } x.restore();
+  path(); x.lineWidth=8; x.strokeStyle="#8e5a34"; x.stroke();
+  [[18,h/2],[w-18,h/2]].forEach(([px,py])=>{ x.fillStyle="#6b4226"; x.beginPath(); x.arc(px,py,5,0,7); x.fill(); });
+  x.font=`700 ${font}px Fredoka, ui-rounded, system-ui, sans-serif`; x.textAlign="center"; x.textBaseline="middle"; x.fillStyle="rgba(80,40,15,.45)"; x.fillText(text,w/2+2,h/2+6); x.fillStyle="#fff7ea"; x.fillText(text,w/2,h/2+3);
+  const t=new THREE.CanvasTexture(c); t.anisotropy=4; t.encoding=THREE.sRGBEncoding; return t; }
 function signPlane(text,w,h,col,fs){ const g=grp(); const tex=textTex(text,512,128,"#ffffff","#3a2a33",col,fs); const m=new THREE.MeshBasicMaterial({map:tex,transparent:true});
   const f=new THREE.Mesh(new THREE.PlaneGeometry(w,h),m); g.add(f); const bk=new THREE.Mesh(new THREE.PlaneGeometry(w,h),m); bk.rotation.y=Math.PI; bk.position.z=-.01; g.add(bk); return g; }
 function boothGroup(key){
@@ -2230,7 +2301,7 @@ function easelGroup(idx){
   const cv=mesh(new THREE.PlaneGeometry(1.08,1.08),new THREE.MeshBasicMaterial({map:tex}),0,1.6,.215,false); g.add(cv);
   if(idx===0){ const pal=grp(1.2,0,.3); pal.add(mesh(new THREE.CylinderGeometry(.2,.25,.7,8),MT("#c8935f"),0,.35,0)); const pt=mesh(new THREE.CylinderGeometry(.32,.32,.04,14),MT("#f4e3cc"),0,.73,0); pal.add(pt);
     ["#e2463b","#4a9bff","#ffcf33","#3aa394","#8a63d2"].forEach((cc,k)=>pal.add(mesh(new THREE.SphereGeometry(.05,6,4),MT(cc),Math.cos(k*1.2)*.2,.77,Math.sin(k*1.2)*.2,false))); g.add(pal); }
-  const sg=mesh(new THREE.PlaneGeometry(1.5,.38),new THREE.MeshBasicMaterial({map:textTex(`Quadro de ${nmRaw(idx)}`,512,128,"#ffffff","#3a2a33",idx?"#f9c93c":"#4a7bd6",46),transparent:true}),0,2.5,.1,false); g.add(sg);
+  const sg=mesh(new THREE.PlaneGeometry(1.5,.38),new THREE.MeshBasicMaterial({map:woodSignTex(`Quadro de ${nmRaw(idx)}`,512,128,44),transparent:true}),0,2.5,.1,false); g.add(sg);
   g.traverse(o=>o.userData.hit="easel-"+idx);
   W3.easels=W3.easels||[]; W3.easels[idx]={c,tex,idx}; drawEaselCanvas();
   return g;
@@ -2259,7 +2330,7 @@ function doghouseGroup(){
   g.add(mesh(new THREE.ShapeGeometry(arch),MT("#3a2620"),0,.15,.756,false));
   const trim=mesh(new THREE.TorusGeometry(.36,.035,6,20,Math.PI),WH,0,.65,.77,false); g.add(trim);
   const pl=mesh(new THREE.BoxGeometry(.9,.26,.05),MT("#c8935f"),0,1.52,.85,false); g.add(pl);
-  const sg=mesh(new THREE.PlaneGeometry(.84,.22),new THREE.MeshBasicMaterial({map:textTex("PETS",512,128,"#c8935f","#fff7f2","#c8935f",80),transparent:true}),0,1.52,.878,false); g.add(sg);
+  const sg=mesh(new THREE.PlaneGeometry(.84,.22),new THREE.MeshBasicMaterial({map:woodSignTex("Pets",512,128,72),transparent:true}),0,1.52,.878,false); g.add(sg);
   const bowl=mesh(new THREE.CylinderGeometry(.22,.16,.12,16),MT("#ff7a93"),1.2,.06,.6); g.add(bowl);
   for(let k=0;k<7;k++){ const a=k*.9; g.add(mesh(new THREE.SphereGeometry(.035,6,4),MT("#a8743c"),1.2+Math.cos(a)*.1,.13,.6+Math.sin(a)*.1,false)); }
   g.traverse(o=>o.userData.hit="doghouse"); return g;
@@ -2350,7 +2421,7 @@ function buildWorld(){
   const fence=MT("#c8935f"); const fx0=-19.2, fx1=-6.8, fz0=-1.4, fz1=5.6;
   const rail=(x1,z1,x2,z2)=>{ const L=Math.hypot(x2-x1,z2-z1), a=Math.atan2(x2-x1,z2-z1); for(const y of [.35,.7]){ const r=mesh(new THREE.BoxGeometry(.08,.08,L),fence,(x1+x2)/2,y,(z1+z2)/2); r.rotation.y=a; sc.add(r); } const n=Math.ceil(L/1.2); for(let k=0;k<=n;k++) sc.add(mesh(new THREE.BoxGeometry(.14,.95,.14),fence,x1+(x2-x1)*k/n,.47,z1+(z2-z1)*k/n)); };
   rail(fx0,fz0,fx1,fz0); rail(fx0,fz0,fx0,fz1); rail(fx0,fz1,-13.6,fz1); rail(-11.4,fz1,fx1,fz1); rail(fx1,fz0,fx1,1.4);
-  const gs=mesh(new THREE.PlaneGeometry(2.6,.62),new THREE.MeshBasicMaterial({map:textTex("Nosso Jardim",512,128,"#fff8ee","#3a2a33","#c8935f",60),transparent:true}),-13,1.6,fz0-.05,false); sc.add(gs);
+  const gs=mesh(new THREE.PlaneGeometry(2.6,.62),new THREE.MeshBasicMaterial({map:woodSignTex("Nosso Jardim",512,128,58),transparent:true}),-13,1.6,fz0-.05,false); sc.add(gs);
   W3.garden=grp(); sc.add(W3.garden); redrawGarden();
   W3.easels=[]; sc.add(easelGroup(0)); sc.add(easelGroup(1)); sc.add(doghouseGroup());
   Object.keys(BOOTH3).forEach(k=>{ const bg=boothGroup(k); sc.add(bg); if(bg.userData.cage) W3.cage=bg.userData.cage; });
@@ -3051,7 +3122,7 @@ function buildLake(sc){
   [0,2.3,4.4].forEach(x=>[-.6,.6].forEach(z=>dock.add(mesh(new THREE.CylinderGeometry(.07,.08,1.4,6),dark,x,-.2,z))));
   [-.6,.6].forEach(z=>{ const r=mesh(new THREE.BoxGeometry(DOCK_LEN,.05,.05),dark,DOCK_LEN/2,.42,z); dock.add(r); });
   const bk=grp(DOCK_LEN-.15,.38,-.52); bk.add(mesh(new THREE.CylinderGeometry(.16,.12,.26,12),MT("#4a9bff"),0,.13,0)); bk.add(mesh(new THREE.TorusGeometry(.15,.012,4,16,Math.PI),MT("#c9ced6"),0,.3,0,false)); dock.add(bk);
-  const sign=grp(-.35,0,-.85); sign.add(mesh(new THREE.CylinderGeometry(.04,.04,1.3,6),dark,0,.65,0)); const sp=mesh(new THREE.PlaneGeometry(1.2,.36),new THREE.MeshBasicMaterial({map:textTex("Pesca",512,150,"#fff8ee","#3a2a33","#4a9bff",78),transparent:true,side:THREE.DoubleSide}),0,1.3,0,false); sp.rotation.y=-Math.PI/2; sign.add(sp); dock.add(sign);
+  const sign=grp(-.35,0,-.85); sign.add(mesh(new THREE.CylinderGeometry(.04,.04,1.3,6),dark,0,.65,0)); const sp=mesh(new THREE.PlaneGeometry(1.2,.36),new THREE.MeshBasicMaterial({map:woodSignTex("Pesca",512,150,76),transparent:true,side:THREE.DoubleSide}),0,1.3,0,false); sp.rotation.y=-Math.PI/2; sign.add(sp); dock.add(sign);
   dock.traverse(o=>o.userData.hit="dock"); sc.add(dock);
 }
 

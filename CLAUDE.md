@@ -17,6 +17,12 @@ Tudo em português do Brasil. O Alvaro não quer ter que escolher entre opções
 3. `node --check` no `<script>` principal (extraia o bloco que começa em `<script>\n` para um .js e confira).
 4. `git add -A && git commit -m "..." && git push origin main && git push origin main:gh-pages` (o Pages serve a branch gh-pages).
 
+## Estilo do jogo (v5.5, "Pôr do sol de domingo")
+- Fundo amora (`--berry9..6`) com estrelinhas, papel creme (`--paper`) nos cartões e janelas, fonte Fredoka.
+- Botões `.btn` com bordinha de baixo da mesma cor: rosa `.pink` = ação principal, sálvia (padrão) = confirmar, dourado `.gold` = prêmio/sorteio, lilás `.blue` = extra, `.alt` = neutro (creme dentro de janela). Não invente cor nova: use esses papéis.
+- No mundinho, tudo que flutua é vidro amora (`--hud`). Ícones: `UIC` (traço fino). Plaquinhas do mundo: `woodSignTex` (madeira); as barraquinhas dos jogos mantêm as cores de cada jogo.
+- O bloco de CSS do estilo fica no fim do `<style>` (procure "ESTILO ÚNICO").
+
 ## Arquitetura (seções do template, nesta ordem)
 - **ESTADO LOCAL**: `S` fica no localStorage (`KEY="parquinho-v1"`). `DEF.players` (v4.4, feitos a partir das fotos do casal): Alvaro `{skin:4, hair:8 old money (penteado pra trás; o 6 médio repartido continua como opção), hairColor:7 castanho, shirt:9 verde-musgo, build:4 sem camisa (peitoral, tanquinho, braços fortes), pants:1 jeans, acc:2 correntinha prata}` e Leticia `{skin:5, hair:7 bem longo repartido, hairColor:8 castanho escuro, shirt:6 preto, build:3 top e calça, pants:2 jeans claro, acc:3 colar de coração, wrist:1 pulseira de berloques}`. `S.look51` aplica esse visual uma vez nos dois celulares. O visual vai no doc `hub/pN` com `lookV`; `netChanged` só aceita o visual do outro se `lookV >= LOOK_V` (assim um celular ainda numa versão antiga não desfaz o visual novo). Ao mudar o visual padrão, suba `LOOK_V` e a flag de migração; `wrist` (pulso, `WRISTS`) é separado do `acc` (pescoço/cabeça). Peças: `partShell` (risca do meio), `heartGeo`, `letterAGeo`, `PANTS`.
 - **Ícones** (v4.7): `UIC` é o conjunto próprio do jogo (24x24, traço fino `currentColor`, preenchimento suave, rosa `--ia` = amor, dourado `--ig` = conquista); `icon()` usa ele. `ICONS` (figurinhas coloridas 48x48) ficou só pros efeitos que voam no mundo (`iconArt`, `hearts`, `bigPopW`) e pras texturas 3D (`iconTexture`). `EMO2ICO` mapeia emoji → nome. Use `artify(html)` / `artText(txt)` ao montar HTML. Ícone novo: desenhe nos dois (`UIC` e, se for aparecer voando, `ICONS`).
