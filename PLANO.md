@@ -34,6 +34,13 @@ Pedido: começar sem nada mesmo, só o trabalho e a casinha pobre, e ir evoluind
 - Utilidade: comida dá disposição (pra trabalhar bem sem dormir toda hora), presente se entrega pro outro (carinho + missão), ração vai pra despensa dos bichinhos, móveis vão pra casa.
 - Próximas ideias: promoção do dia, lista de compras como missão, sementes da hortinha, roupas (jaleco da Leticia), cesta de piquenique, pipoca pro filme, ingredientes pra cozinhar em casa.
 
+## Pedidos de 09/11 à noite (fila)
+- Sem emoji em lugar nenhum: arte própria (feito no mercadinho na v7.11; falta o resto).
+- Produtos em 3D nas prateleiras (feito na v7.11).
+- Bichinhos mais fofos e em proporção (proporção feita; redesenho ou modelos prontos depende de autorização pra baixar arquivos).
+- Academia: o Alvaro vira personal trainer, com alunos, fichas, treinos, evolução e máquinas funcionando, ao lado do consultório.
+- Mais conteúdo e objetivos longos pro jogo não acabar rápido.
+
 ## Quarto gamer — v7.6
 - Cômodo da casa comprado com moedinhas. Cada um compra o seu PC gamer; os minigames abrem por dentro do PC (área de trabalho com os jogos). Cada jogo é comprado/desbloqueado.
 - O Parque Radical e as barraquinhas saem do mapa.
