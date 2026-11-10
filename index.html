@@ -1106,6 +1106,17 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .stI u{display:block;height:6px;border-radius:9px;background:#f4e6eb;overflow:hidden;text-decoration:none;margin:3px 0 1px}.stI s{display:block;height:100%;background:var(--gold);border-radius:9px;text-decoration:none}.stI span{font-size:.66rem;color:var(--inkSoft);font-weight:700;display:flex;align-items:center;gap:3px}.stI span .ico{width:12px!important;height:12px!important}
 .stI .btn{margin:0;padding:6px 8px;font-size:.72rem;width:auto;flex:none}.stI.ok{box-shadow:inset 0 0 0 2px #7fd1a6;background:#f2fbf6}.stI.ok s{background:var(--sage)}.stI em{font-style:normal;color:#2f8a66;font-weight:700;font-size:1.1rem}
 @media (max-width:560px){ .stW,.stCh ul{grid-template-columns:1fr} }
+/* academia (v7.12) */
+.gyHud{top:calc(var(--st) + 82px)}.gyHud .ico{width:1.1rem!important;height:1.1rem!important}
+.gyQ{display:flex;flex-direction:column;gap:6px;flex:1;min-height:0;overflow-y:auto}
+.gyQb{border:0;border-radius:14px;background:#fff;box-shadow:0 3px 0 #ecdde4,inset 0 0 0 1.5px #f2dfe5;padding:8px 12px;font:600 .86rem Fredoka,sans-serif;color:var(--ink2);text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.gyQb span{font-weight:500;font-size:.78rem;color:var(--inkSoft)}.gyQb:disabled{opacity:.55;box-shadow:inset 0 0 0 1.5px #f2dfe5}.gyQb.got{opacity:1;background:#f2fbf6;box-shadow:inset 0 0 0 2px #7fd1a6}
+.gyTop{display:flex;gap:8px;align-items:stretch}.gyGs{flex:1;display:flex;flex-direction:column;gap:2px}.gyGs.fim{flex:none}
+.gyG{font-size:.74rem;font-weight:600;border-radius:8px;padding:2px 8px;background:#fff;box-shadow:inset 0 0 0 1.5px #f2dfe5;color:var(--ink2)}.gyG.ok{background:#f2fbf6;color:#2f7d5f;box-shadow:inset 0 0 0 1.5px #7fd1a6}.gyG.no{background:#fff1f1;color:#c2410c;box-shadow:inset 0 0 0 1.5px #fdba74}.gyG.hid{opacity:.6;font-style:italic}
+.gyM{display:grid;grid-template-columns:1fr 1fr;gap:3px;align-content:start;font-size:.7rem;color:var(--inkSoft)}.gyM span{background:#fff;border-radius:8px;padding:2px 7px;box-shadow:inset 0 0 0 1.5px #f2dfe5;white-space:nowrap}.gyM b{color:var(--ink2);font-size:.86rem}
+.gyX{flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:5px;align-content:start;padding:2px}
+.gyE{border:0;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1.5px #f2dfe5;padding:5px 8px;font:600 .76rem Fredoka,sans-serif;color:var(--ink2);text-align:left;cursor:pointer;display:flex;flex-direction:column}.gyE span{font-weight:500;font-size:.66rem;color:var(--inkSoft)}.gyE.on{background:#fff0f4;box-shadow:inset 0 0 0 2.5px var(--pink)}.gyE:disabled{opacity:.45}
+.cs.gy.low{align-items:flex-end;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;pointer-events:none}.cs.gy.low .csCard{pointer-events:auto;height:auto;max-height:200px;max-width:620px;grid-template-columns:104px 1fr}.cs.gy.low .csR{padding:6px 10px 8px;gap:4px}.cs.gy.low .csSay{padding:5px 10px;font-size:.8rem}.cs.gy.low .csL{padding:6px 8px}.cs.gy.low .csPic img{max-height:70px}.cs.gy.low .csF,.cs.gy.low .csTy{display:none}.cs.gy.low .dvGauge{min-height:34px;max-height:44px;margin:2px 0}
 /* mercadinho (v7.10) */
 .mkFly{position:fixed;z-index:3200;font-size:2rem;line-height:1;pointer-events:none;transition:transform .6s cubic-bezier(.3,-.2,.6,1),opacity .6s;margin:-16px 0 0 -16px}
 .mkM .shopI:active{transform:scale(.93)}.mkM .shopI i .ico,.usM.jobM .shopI i .ico{width:3rem!important;height:3rem!important}.mkM .shopI i,.usM.jobM .shopI i{line-height:1}.mkIt i .ico,.jbRow>i .ico{width:1.7rem!important;height:1.7rem!important}.mkReg .ico{width:4.2rem!important;height:4.2rem!important}.mkFly .ico{width:2.4rem!important;height:2.4rem!important}#mkHud.pop{animation:apop .28s cubic-bezier(.3,1.6,.6,1)}
@@ -1724,6 +1735,61 @@ Object.assign(EMO2ICO,{"🍌":"banana","🍊":"orange","🥗":"salad","🍲":"so
 Object.assign(UIC,{ cart: uP("M3 4.5h2.2l1.9 9.6h10.4l1.7-6.9H6.2")+uD("M6.6 7.2h12.6l-1.7 6.9H7.1z")+uC(9,18.2,1.3,3)+uC(16.4,18.2,1.3,3),
   bag: uD("M6 10.2a6 6 0 0 1 12 0V19a1.6 1.6 0 0 1-1.6 1.6H7.6A1.6 1.6 0 0 1 6 19z")+uP("M9.3 6.1V5a2.7 2.7 0 0 1 5.4 0v1.1")+uP("M8.8 14.2h6.4v3.2H8.8z"),
   card: uD("M3.5 6.5h17v11h-17z")+uP("M3.5 10h17 M6.5 14.4h4"), bolt: uG("M13.2 3 6 13.4h5l-1.2 7.6L18 10.4h-5.2z") });
+/* ---------- artes dos pratos do consultório e dos ícones de menu que ainda eram emoji (v7.12) ---------- */
+const artPlate=top=>artE(24,31,21,11,"#fff")+artE(24,30,15,7,"#f3e9ee",'stroke-width="1.4"')+top;
+Object.assign(ICONS,{
+  toast: artP("M10 18 Q6 10 14 9 H34 Q42 10 38 18 V38 Q38 41 35 41 H13 Q10 41 10 38Z","#eab873")+artP("M14 19 Q13 14 17 14 H31 Q35 14 34 19 V35 H14Z","#fff3d6",'stroke-width="1.6"'),
+  pancakes: artE(24,36,17,6,"#e9a55a")+artE(24,30,17,6,"#f0b45c")+artE(24,24,17,6,"#f5c46e")+artP("M10 23 Q12 17 24 17 Q36 17 38 23 Q36 30 31 27 Q28 33 24 28 Q18 31 10 23Z","#a8602a",'stroke-width="1.8"')+artR(20,15,8,5,1.5,"#ffe07a",'stroke-width="1.6"'),
+  cheese: artP("M6 30 L30 12 Q42 14 42 26 V38 H6Z","#ffd24a")+artL("M6 30 H42","#e0a92e",2)+artD(16,34,2.4,"#e0a92e")+artD(28,33,3,"#e0a92e")+artD(36,30,2,"#e0a92e")+artD(30,21,2.2,"#e0a92e"),
+  avocado: artP("M24 5 Q33 8 36 24 Q38 42 24 43 Q10 42 12 24 Q15 8 24 5Z","#5a9e3e")+artP("M24 10 Q30 13 32 25 Q33 38 24 39 Q15 38 16 25 Q18 13 24 10Z","#d8e88a",'stroke-width="1.6"')+artE(24,29,6,6.5,"#8a5a3b",'stroke-width="1.8"')+artG(22,27,1.6,2,.5),
+  watermelon: artP("M5 18 Q24 30 43 18 Q42 40 24 41 Q6 40 5 18Z","#5aa84a")+artP("M9 20 Q24 29 39 20 Q38 36 24 37 Q10 36 9 20Z","#ff5a6e",'stroke-width="1.4"')+artD(18,27,1.3,"#3a2a33")+artD(24,31,1.3,"#3a2a33")+artD(30,27,1.3,"#3a2a33"),
+  corn: artP("M24 5 Q32 10 32 28 Q32 40 24 42 Q16 40 16 28 Q16 10 24 5Z","#ffd84a")+artL("M20 12 V36 M24 9 V40 M28 12 V36 M17 20 H31 M16.5 28 H31.5","#e0a92e",1.3)+artP("M16 26 Q8 28 8 40 Q16 44 24 42 Q16 38 16 26Z","#6fbf4f")+artP("M32 26 Q40 28 40 40 Q32 44 24 42 Q32 38 32 26Z","#5aa84a"),
+  egg: artP("M24 5 Q36 12 37 28 Q37 43 24 43 Q11 43 11 28 Q12 12 24 5Z","#fff6e6")+artG(19,17,3,5,.7),
+  riceplate: artPlate(artP("M10 30 Q10 18 20 18 Q26 18 26 30Z","#fffaf2",'stroke-width="1.8"')+artP("M24 31 Q24 21 32 21 Q39 22 38 31Z","#8a5a3b",'stroke-width="1.8"')+artL("M14 34 Q20 37 28 35","#6fbf4f",3)),
+  broccoli: artR(21,26,6,16,2,"#8ccf5a")+artE(16,20,8,7.5,"#4f9d3f")+artE(32,20,8,7.5,"#4f9d3f")+artE(24,14,9,8,"#5aa84a")+artE(24,23,7,6,"#5aa84a"),
+  sushi: artE(15,32,10,6,"#fffaf2")+artP("M5 30 Q15 20 25 30 Q15 27 5 30Z","#ff8a5c")+artR(26,22,16,16,4,"#2f3a36")+artE(34,26,6.5,3.6,"#fffaf2",'stroke-width="1.6"')+artD(34,26,2.2,"#ff8a5c"),
+  pasta: artPlate(artP("M11 29 Q11 16 24 16 Q37 16 37 29 Q30 34 24 33 Q18 34 11 29Z","#ffd27a",'stroke-width="1.8"')+artL("M15 26 Q19 20 24 25 Q29 20 33 26 M17 30 Q24 25 31 30","#e0a04a",1.6)+artE(24,20,6,4,"#d8402f",'stroke-width="1.6"')),
+  beans: artP("M6 24 H42 Q42 42 24 42 Q6 42 6 24Z","#c9785a")+artE(24,24,18,5.5,"#4a2a22")+artD(17,23,2,"#7a4436")+artD(25,25,2,"#7a4436")+artD(31,22.5,2,"#7a4436")+artLeaf(21,23,-35),
+  stew: artR(3,22,6,5,2,"#3a3550")+artR(39,22,6,5,2,"#3a3550")+artP("M8 22 H40 V32 Q40 40 32 40 H16 Q8 40 8 32Z","#4a4560")+artE(24,22,16,5,"#ff9f3d")+artD(18,21.5,2.2,"#fff3c4")+artD(26,23,2.2,"#6fbf4f")+artD(31,21,2,"#e2463b"),
+  drumstick: artL("M19 26 L10 36","#3a2a33",6.5)+artL("M19 26 L10 36","#fff6e6",3.6)+artE(8,38,3.4,3.4,"#fff6e6",'stroke-width="1.8"')+artE(12,41,3,3,"#fff6e6",'stroke-width="1.8"')+artP("M30 6 Q42 8 42 20 Q42 30 30 30 Q24 30 20 26 Q14 20 18 12 Q22 6 30 6Z","#d98a3f")+artG(26,13,3,2,.4),
+  ramen: artL("M30 4 L24 22 M36 6 L27 22","#c8935f",2.6)+artP("M6 24 H42 Q42 42 24 42 Q6 42 6 24Z","#e2463b")+artE(24,24,18,5.5,"#ffe2a0")+artL("M12 24 Q16 21 20 24 Q24 27 28 24 Q32 21 36 24","#e0a04a",1.8)+artE(31,23,3.4,2.6,"#fff",'stroke-width="1.4"')+artD(31,23,1.2,"#ffc02e"),
+  eggplant: artP("M30 12 Q42 20 36 34 Q30 44 18 42 Q8 40 10 30 Q12 22 24 18 Q28 16 30 12Z","#7a4aa8")+artP("M27 10 Q33 6 38 9 Q36 14 31 15 Q28 14 27 10Z","#5aa84a")+artG(18,30,2.4,5,.4),
+  potato: artP("M10 22 Q12 10 24 11 Q38 12 40 26 Q40 38 28 39 Q12 40 10 22Z","#d9a86a")+artD(18,20,1.4,"#a8763a")+artD(28,18,1.4,"#a8763a")+artD(31,29,1.4,"#a8763a")+artD(20,31,1.4,"#a8763a")+artG(17,17,3,2,.4),
+  wrap: artP("M12 8 Q24 4 36 8 L32 40 Q24 44 16 40Z","#f5deb3")+artP("M12 8 Q24 14 36 8 Q30 2 24 4 Q18 2 12 8Z","#7cc862",'stroke-width="1.8"')+artD(20,8,2,"#e2463b")+artD(28,8,2,"#ffd84a")+artL("M15 26 Q24 30 33 26","#e0c08a",2),
+  noodles: artPlate(artP("M10 29 Q12 15 24 16 Q36 15 38 29 Q30 35 24 33 Q18 35 10 29Z","#e9b45c",'stroke-width="1.8"')+artL("M14 27 Q20 20 26 26 Q30 20 35 27","#b97a36",1.6)+artD(18,23,2.2,"#6fbf4f")+artD(30,24,2.2,"#ff7a3d")+artD(24,20,2,"#e2463b")),
+  pokebowl: artP("M6 24 H42 Q42 42 24 42 Q6 42 6 24Z","#7fd3c4")+artE(24,24,18,5.5,"#fffaf2")+artE(16,23,4,2.6,"#ff8a8a",'stroke-width="1.4"')+artE(25,25,4,2.6,"#8ccf5a",'stroke-width="1.4"')+artE(32,22.5,3.6,2.4,"#ffd84a",'stroke-width="1.4"'),
+  falafel: artPlate(artC(17,27,6,"#c98a4a")+artC(29,26,6,"#c98a4a")+artC(23,33,6,"#d99a55")+artLeaf(31,37,-10)),
+  skewer: artL("M5 43 L43 5","#8a7a80",2.6)+`<g transform="rotate(-45 24 24)">`+artR(7,18,9,12,3,"#b5553c")+artR(19.5,18,9,12,3,"#ffd84a")+artR(32,18,9,12,3,"#b5553c")+`</g>`,
+  pumpkin: artR(22,7,4,8,1.5,"#6fbf4f")+artE(24,28,17,14,"#ff9f3d")+artL("M24 14 V42 M15 17 Q10 28 15 39 M33 17 Q38 28 33 39","#d97a1e",1.8),
+  rice: artP("M9 24 Q10 11 24 11 Q38 11 39 24Z","#fffaf2")+artD(18,18,1.2,"#e0d2c2")+artD(26,16,1.2,"#e0d2c2")+artD(31,20,1.2,"#e0d2c2")+artP("M6 24 H42 Q42 42 24 42 Q6 42 6 24Z","#5a8fd6"),
+  milk: artP("M13 10 H35 L32 42 H16Z","#eaf6ff")+artP("M14.5 18 H33.5 L32 42 H16Z","#fff",'stroke-width="1.6"')+artG(19,28,1.6,7,.5),
+  grapes: artL("M24 12 V6","#7a5a2a",2.8)+artLeaf(24,9,-10)+artC(14,26,4.6,"#8a4ac6")+artC(17,18,5.2,"#9a5ad6")+artC(27,18,5.2,"#9a5ad6")+artC(22,26,5.2,"#8a4ac6")+artC(31,26,5.2,"#9a5ad6")+artC(26,34,5.2,"#8a4ac6"),
+  cupcake: artP("M12 26 H36 L33 43 H15Z","#8fd8ff")+artL("M19 27 L20 42 M24 27 V42 M29 27 L28 42","#5aaee0",1.4)+artP("M9 26 Q8 16 18 16 Q20 8 28 11 Q38 12 37 20 Q41 23 39 26Z","#ff9ab0")+artE(26,9,2.8,2.8,"#e2463b",'stroke-width="1.6"'),
+  sweetpotato: artP("M6 28 Q10 14 24 14 Q38 12 43 20 Q40 34 26 36 Q12 40 6 28Z","#b5557a")+artP("M20 20 Q28 17 34 20 Q32 28 24 29 Q18 28 20 20Z","#ffcf6b",'stroke-width="1.6"'),
+  sundae: artE(18,20,8,8,"#fff6dc")+artE(30,20,8,8,"#ffb3c8")+artL("M14 14 Q22 8 30 13","#8a4a2a",2.6)+artP("M10 24 H38 Q37 36 24 36 Q11 36 10 24Z","#cfeeff")+artL("M24 36 V42 M17 43 H31","#3a2a33",2.6),
+  tomato: artE(24,27,16,14,"#e8405a")+artP("M24 14 L19 10 L22 15 L15 15 L21 18 L24 22 L27 18 L33 15 L26 15 L29 10Z","#5aa84a",'stroke-width="1.6"')+artG(17,22,3.4,2.4)});
+Object.assign(EMO2ICO,{"🍞":"toast","🥞":"pancakes","🧀":"cheese","🥑":"avocado","🍉":"watermelon","🌽":"corn","🥚":"egg","🍛":"riceplate","🥦":"broccoli","🍣":"sushi","🍝":"pasta","🫘":"beans","🥘":"stew","🍗":"drumstick","🍜":"ramen","🍆":"eggplant","🥔":"potato","🌯":"wrap","🍤":"noodles","🥙":"pokebowl","🧆":"falafel","🍖":"skewer","🎃":"pumpkin","🍚":"rice","🥛":"milk","🍇":"grapes","🧁":"cupcake","🍠":"sweetpotato","🍨":"sundae","🍅":"tomato",
+  "😴":"u_zzz","💭":"u_thought","📷":"u_camera","📸":"u_camera","📅":"u_calendar","🩺":"u_stetho","💼":"u_briefcase","🔔":"u_bell","💍":"u_ring","🏗️":"u_build","🏗":"u_build","🪑":"u_chair","📦":"u_box","📖":"u_book","⏰":"u_clock","⏱️":"u_clock","⏱":"u_clock","💻":"u_laptop","🖥️":"u_laptop","🖥":"u_laptop","☀️":"u_sun","☀":"u_sun","👍":"u_thumb","⚠️":"u_warn","⚠":"u_warn","📝":"u_memo","⛪":"u_church","🏝️":"u_island","🏝":"u_island","🌇":"sunset"});
+Object.assign(UIC,{ u_zzz: uP("M5.5 9.5h5.5l-5.5 6.5h5.5 M13.5 4.5h4.5l-4.5 5h4.5"),
+  u_thought: uD("M7.5 15.2a3.8 3.8 0 0 1-.4-7.6 5 5 0 0 1 9.5-.9 4 4 0 0 1 .4 8z")+uC(8.2,18.4,1,3)+uC(5.8,20.4,.7,3),
+  u_camera: uD("M4 8.5h3.2l1.3-2h7l1.3 2H20v10H4z")+uC(12,13.2,3,0),
+  u_calendar: uD("M4.5 6.5h15v13h-15z")+uP("M4.5 10.3h15 M8.3 4.5v3.6 M15.7 4.5v3.6")+uH(12,15,.38),
+  u_stetho: uP("M6 4.5v5a4 4 0 0 0 8 0v-5 M10 13.5v2.2a4.2 4.2 0 0 0 8.4 0v-1.4")+uC(18.4,12.4,1.9,2),
+  u_briefcase: uD("M3.8 8.2h16.4v10.6H3.8z")+uP("M9 8.2V6.4a1.3 1.3 0 0 1 1.3-1.3h3.4A1.3 1.3 0 0 1 15 6.4v1.8 M3.8 12.6h16.4"),
+  u_bell: uD("M6.2 16.4c1.2-1.4 1.5-3 1.5-5.6a4.3 4.3 0 0 1 8.6 0c0 2.6.3 4.2 1.5 5.6z")+uP("M10.3 19.2a1.8 1.8 0 0 0 3.4 0"),
+  u_ring: uC(12,14.6,5.2,0)+uG("M9.4 6.6 12 3.8l2.6 2.8L12 9.4z"),
+  u_build: uD("M5 6.2h8.6l2 2.4-2 2.4H5z")+uP("M10.2 11v9.2"),
+  u_chair: uD("M7.5 5.5h7.5v5H7.5z")+uP("M7.5 4.5v15 M7.5 13h9v6.5"),
+  u_box: uD("M4.2 8 12 4.4 19.8 8v8.6L12 20.2l-7.8-3.6z")+uP("M4.2 8 12 11.6 19.8 8 M12 11.6v8.6"),
+  u_book: uD("M4 6.2c3-1.2 5.6-.8 8 .8 2.4-1.6 5-2 8-.8v11.6c-3-1.2-5.6-.8-8 .8-2.4-1.6-5-2-8-.8z")+uP("M12 7v11.6"),
+  u_clock: uC(12,13,7,1)+uP("M12 9v4.2l2.8 1.8 M8.4 4.6 6 6.6 M15.6 4.6l2.4 2"),
+  u_laptop: uD("M5.5 6h13v9h-13z")+uP("M3.2 18.4h17.6"),
+  u_sun: uC(12,12,3.6,4)+uP("M12 3.6v2 M12 18.4v2 M3.6 12h2 M18.4 12h2 M6 6l1.4 1.4 M16.6 16.6 18 18 M6 18l1.4-1.4 M16.6 7.4 18 6"),
+  u_thumb: uD("M9 10.5 12.2 4.6c1.6 0 2.4 1.2 2 2.8l-.6 2.6h4.2c1.2 0 2 1 1.7 2.2l-1.3 5.4c-.2 1-1 1.6-2 1.6H9z")+uP("M5 10.5h4v8.7H5z"),
+  u_warn: uD("M12 4.2 20.4 19H3.6z")+uP("M12 9.6v4.4")+uC(12,16.4,.6,3),
+  u_memo: uD("M5.5 4.5h10l3 3v12h-13z")+uP("M8.4 10h7 M8.4 13.4h7 M8.4 16.6h4"),
+  u_church: uD("M6.5 19.5v-7.6L12 8.2l5.5 3.7v7.6z")+uP("M12 8.2V3.6 M10.2 5.2h3.6 M10.6 19.5v-3.2a1.4 1.4 0 0 1 2.8 0v3.2"),
+  u_island: uP("M4 18.5c2-1.6 4-1.6 6 0s4 1.6 6 0 2.6-1.4 4-.4 M12 11.6V6.4 M12 6.6c-1.6-1.6-3.4-1.6-4.6-.2 M12 6.6c1.6-1.6 3.4-1.6 4.6-.2")+uD("M7 15.6c1-2.6 3-4 5-4s4 1.4 5 4z") });
 // atributo repetido (stroke-width duas vezes) quebra o SVG quando ele vira imagem; fica só o último, que é o que o desenho queria
 const svgFix=s=>s.replace(/<[^>]+>/g,tag=>{ const m=tag.match(/ stroke-width="[^"]*"/g); if(m&&m.length>1){ let n=0; tag=tag.replace(/ stroke-width="[^"]*"/g,x=>(++n<m.length?"":x)); } return tag; });
 for(const k in ICONS) ICONS[k]=svgFix(ICONS[k]);
@@ -2033,7 +2099,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "7.11";
+const VERSION = "7.12";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2424,7 +2490,7 @@ const POSE={
   gasp:[[-.5,-.6,-2.3],[-.5,.6,-2.3]], type:[[-.75,.1,-1.0],[-.75,-.1,-1.0]], write:[[-.4,.2,-.9],[-.8,-.15,-1.15]], hold:[[-.85,-.3,-1.25],[-.95,.28,-1.2]], talk:[[0,.12,-.15],[-.55,-.25,-1.5]], cane:[[0,.12,-.15],[-.5,-.12,-.5]]
 };
 function animChar(C, dt, t){
-  C.t+=dt;
+  C.t+=dt; if(C.pose==="run") C.walk=Math.max(C.walk||0,.92);
   if(C.swim||C.diving) return animSwim(C,dt);
   if(C.nap){ const L=Math.min(1,dt*6); C.arms.forEach((a,k)=>{ a.sho.rotation.x+=(0-a.sho.rotation.x)*L; a.sho.rotation.z+=((k?.06:-.06)-a.sho.rotation.z)*L; a.elb.rotation.x+=(-.1-a.elb.rotation.x)*L; });
     C.legs.forEach(lg=>{ lg.rotation.x+=(0-lg.rotation.x)*L; }); C.body.position.y+=(0-C.body.position.y)*L; C.body.position.z=Math.sin(C.t*1.5)*.014;
@@ -2452,9 +2518,16 @@ function animChar(C, dt, t){
     if(C.pose==="reel"){ tx+=Math.sin(C.t*14+i)*.12; }
     if(C.pose==="type"){ te+=Math.sin(C.t*17+i*2.1)*.09; tx+=Math.sin(C.t*13+i)*.04; }
     if(C.pose==="write"&&i===1){ tx+=Math.sin(C.t*11)*.05; tz+=Math.sin(C.t*7)*.06; }
+    if(C.pose==="press"||C.pose==="pull"){ const w=(Math.sin(C.t*3.4)+1)/2, k=C.pose==="press"?w:1-w; tx=0; tz=(i?-1:1)*(1.45+k*1.15); te=-1.75+k*1.5; }
+    else if(C.pose==="curl"){ const w=Math.max(0,Math.sin(C.t*4+(i?Math.PI:0))); tx=-.1-w*.25; tz=(i?-1:1)*.14; te=-.2-w*2.0; }
+    else if(C.pose==="raise"){ const w=(Math.sin(C.t*3)+1)/2; tx=0; tz=(i?-1:1)*(.15+w*1.4); te=-.15; }
+    else if(C.pose==="jack"){ const w=(Math.sin(C.t*7)+1)/2; tx=0; tz=(i?-1:1)*(.3+w*2.3); te=-.2; }
+    else if(C.pose==="squat"){ tx=-1.25; tz=(i?-1:1)*.1; te=-.3; }
+    else if(C.pose==="stretch"){ tx=0; tz=(i?-1:1)*2.75; te=-.1; }
+    else if(C.pose==="bike"){ tx=-.95; tz=(i?-1:1)*.15; te=-.55; }
     tz=-tz; a.sho.rotation.x+=(tx-a.sho.rotation.x)*L; a.sho.rotation.z+=(tz-a.sho.rotation.z)*L; a.elb.rotation.x+=(te-a.elb.rotation.x)*L;
   });
-  C.legs.forEach((lg,i)=>{ let tx=C.walk>.05? Math.sin(C.wt+(i?0:Math.PI))*.6*C.walk*(g>1.3?1.3:1) : 0; if(C.pose==="sit"||C.sitting) tx=-1.45; if(air) tx=i?-.75:.35; lg.rotation.x+=(tx-lg.rotation.x)*(air?Math.min(1,dt*16):L); });
+  C.legs.forEach((lg,i)=>{ let tx=C.walk>.05? Math.sin(C.wt+(i?0:Math.PI))*.6*C.walk*(g>1.3?1.3:1) : 0; if(C.pose==="sit"||C.sitting) tx=-1.45; if(C.pose==="bike") tx=-1.15+Math.sin(C.t*8+(i?Math.PI:0))*.42; else if(C.pose==="squat") tx=-1.1*((Math.sin(C.t*3)+1)/2); if(air) tx=i?-.75:.35; lg.rotation.x+=(tx-lg.rotation.x)*(air?Math.min(1,dt*16):L); });
   let by=Math.sin(C.t*2.2)*.008, lean=C.lean||0, rz=0;
   if(C.walk>.05){ by=Math.abs(Math.sin(C.wt))*.05*(g>1.3?1.5:1); if(g>1.3) lean+=.16; }
   if(C.land>0) by=-.09*Math.sin(C.land/.2*Math.PI);
@@ -2463,6 +2536,7 @@ function animChar(C, dt, t){
   if(C.pose==="reach") lean=.32;
   if(C.pose==="chop"){ lean=.2; by=-.02+Math.abs(Math.sin(C.t*18))*.012; }
   if(C.pose==="sit"||C.sitting) by=-.42;
+  if(C.pose==="squat") by=-.34*((Math.sin(C.t*3)+1)/2); else if(C.pose==="jack") by=Math.abs(Math.sin(C.t*7))*.09; else if(C.pose==="stretch") rz=Math.sin(C.t*1.6)*.28;
   if(C.walk>.05) rz+=Math.max(-.2,Math.min(.2,-(C.turn||0)*.4*C.walk*Math.min(1.6,C.gait||1)));
   C.body.position.y+=(by-C.body.position.y)*Math.min(1,dt*14);
   C.body.rotation.x+=(lean-C.body.rotation.x)*L; C.body.rotation.z+=(rz-C.body.rotation.z)*L;
@@ -3312,12 +3386,13 @@ const MIS_POOL=[
   {id:"papo",ev:"papo",n:15,t:"Troquem 15 mensagens no chat",g:"amor"},
   {id:"foto",ev:"foto",n:1,t:"Tirem uma foto juntos 📷",g:"amor"},
   {id:"pensei",ev:"pensei",n:3,t:"Mandem 3 \"pensei em você\"",g:"amor"},
-  {id:"trab",ev:"trabalho",n:6,t:"Façam 6 trabalhos no predinho (consultas ou projetos)",g:"mundo"},
+  {id:"trab",ev:"trabalho",n:6,t:"Façam 6 trabalhos no predinho (consultas ou aulas na academia)",g:"mundo"},
   {id:"obra",ev:"obra",n:1,t:"Construam ou melhorem alguma coisa no mundinho",g:"mundo"},
   {id:"peixe",ev:"peixe",n:8,t:"Pesquem 8 peixes",g:"mundo",need:["w:vara"]},
   {id:"jardim",ev:"jardim",n:6,t:"Cuidem do jardim 6 vezes",g:"mundo",need:["w:jardim"]},
   {id:"pet",ev:"pet",n:6,t:"Deem 6 carinhos ou comidinhas pros bichinhos",g:"mundo",need:["pets"]},
   {id:"merc",ev:"compras",n:1,t:"Façam compras no mercadinho",g:"mundo"},
+  {id:"treino",ev:"treino",n:3,t:"Façam 3 séries nos aparelhos da academia",g:"mundo"},
   {id:"mimo",ev:"presente",n:1,t:"Deem um presente do mercadinho um pro outro",g:"amor"},
   {id:"pintura",ev:"pintura",n:1,t:"Pintem um quadro no ateliê",g:"mundo",need:["w:atelie"]}];
 // as missões do grupo "Juntos" só contam com os dois online ao mesmo tempo
@@ -3740,7 +3815,7 @@ const isOf=x=>x<-150, zone=x=>x>350?4:x>250?3:x>150?1:x<-150?2:0;
 const inWork=(x,z,m=0)=>x>WORK3.x0-m&&x<WORK3.x1+m&&z>WORK3.z0-m&&z<WORK3.z1+m;
 const OF_DOOR_OUT={x:WORK3.x1+.8,z:4.5}, OF_DOOR_IN={x:OF3.x,z:OF3.z+OF3.d-1.0}, OF_ENTRY={x:OF3.x,z:OF3.z+3.3};
 // móveis fixos (x0,x1,z0,z1 em coordenadas da sala): divisória, café, mesa da nutri, balcão, mesinha, cadeiras da espera, estante, mesa do PC, servidor, pufe, sofá
-const OF_BASE=[[-.16,.16,-5.5,1.2],[-.75,.75,1.2,1.95],[-6.35,-4.05,-3.9,-2.95],[-1.95,-1.3,1.35,3.45],[-7.15,-6.25,2.45,3.35],[-8.6,-7.85,.75,4.25],[-7.3,-3.7,4.45,5.1],[-8.6,-6.8,-5.5,-4.85],[3.8,7.0,-5.3,-4.2],[7.95,8.8,-5.3,-3.9],[7.15,8.15,2.6,3.6],[4.9,7.5,4.4,5.1]].map(([a,b,c,d])=>[OF3.x+a,OF3.x+b,OF3.z+c,OF3.z+d]);
+const OF_BASE=[[-.16,.16,-5.5,1.2],[-.75,.75,1.2,1.95],[-6.35,-4.05,-3.9,-2.95],[-1.95,-1.3,1.35,3.45],[-7.15,-6.25,2.45,3.35],[-8.6,-7.85,.75,4.25],[-7.3,-3.7,4.45,5.1],[-8.6,-6.8,-5.5,-4.85],[1.45,2.55,-5.3,-3.1],[3.5,4.5,-5.3,-3.4],[5.7,7.5,-5.3,-3.5],[6.9,8.8,-1.9,-.5],[7.9,8.8,.5,2.7],[6.5,8.3,4.3,5.1],[3.2,5.2,4.45,5.1],[8.0,8.8,3.2,4.0]].map(([a,b,c,d])=>[OF3.x+a,OF3.x+b,OF3.z+c,OF3.z+d]);
 const OF_BLOCK=OF_BASE.slice();
 // lugares de sentar: [x, z, pra onde olha]
 const OF_SEAT={nutri:[-5.2,-4.3,0], pac:[-5.2,-2.3,Math.PI], recep:[-2.55,2.4,Math.PI/2], estag:[-3.15,-3.95,.5], nutri2:[-8.4,-.55,Math.PI/2], pac2:[-6.55,-.55,-Math.PI/2], dev:[5.4,-3.5,Math.PI],
@@ -3841,10 +3916,10 @@ function workGroup(){
   // vitrines, toldos listrados e placas
   [[-3.05,"nutri"],[3.05,"dev"]].forEach(([x,k])=>{ const c1=k==="nutri"?"#ff7a93":"#3d5a9e";
     B.box(3.2,2.2,.12,WH,x,Y0+1.65,ZF+.02).box(3.4,.14,.34,WH,x,Y0+.5,ZF+.12).box(3.3,.5,.1,k==="nutri"?"#f7c9d2":"#2b3358",x,Y0+.25,ZF+.03);
-    g.add(mesh(new THREE.PlaneGeometry(2.9,1.86),new THREE.MeshBasicMaterial({map:shopWinTex(k)}),x,Y0+1.65,ZF+.09,false)); B.box(.07,1.86,.05,WH,x,Y0+1.65,ZF+.11);
+    g.add(mesh(new THREE.PlaneGeometry(2.9,1.86),new THREE.MeshBasicMaterial({map:k==="dev"?gymWinTex():shopWinTex(k)}),x,Y0+1.65,ZF+.09,false)); B.box(.07,1.86,.05,WH,x,Y0+1.65,ZF+.11);
     const aw=mesh(new THREE.BoxGeometry(3.6,.1,1.4),new THREE.MeshToonMaterial({map:stripeTex(c1,"#fff6ea"),gradientMap:toonGrad()}),x,Y0+3.0,ZF+.62); aw.rotation.x=.32; g.add(aw);
     for(let j=0;j<9;j++) B.add(new THREE.ConeGeometry(.2,.28,3),j%2?c1:"#fff6ea",x-1.6+j*.4,Y0+2.66,ZF+1.27,1,1,1,Math.PI,0,0);
-    const tx=k==="nutri"?textTex(`${nmRaw(1)} · Nutri`,512,128,"#fff8ee","#3a2a33","#ff7a93",nmRaw(1).length>8?48:58):textTex(`${nmRaw(0)} · Estúdio`,512,128,"#232846","#8ff0e0","#5ad0ff",nmRaw(0).length>7?44:54);
+    const tx=k==="nutri"?textTex(`${nmRaw(1)} · Nutri`,512,128,"#fff8ee","#3a2a33","#ff7a93",nmRaw(1).length>8?48:58):textTex(`${nmRaw(0)} · Personal`,512,128,"#232846","#8ff0e0","#5ad0ff",nmRaw(0).length>7?44:54);
     g.add(mesh(new THREE.PlaneGeometry(2.7,.66),new THREE.MeshBasicMaterial({map:tx,transparent:true}),x,y2+.5,ZF+.03,false)); });
   // 1º andar: janelas com veneziana e floreira
   [-3.7,-2.0,2.0,3.7].forEach((x,k)=>{ const sc=k<2?"#7fb79b":"#3d5a9e"; B.box(1.0,1.3,.1,WH,x,y2+1.85,ZF+.02).box(.82,1.12,.06,GL,x,y2+1.85,ZF+.06).box(.05,1.12,.04,WH,x,y2+1.85,ZF+.1).box(.82,.05,.04,WH,x,y2+1.85,ZF+.1);
@@ -3922,24 +3997,9 @@ function buildOffice(sc){
   { const a=B.at(OF_SEAT.recep[0],OF_SEAT.recep[1],OF_SEAT.recep[2]); a.cyl(.25,.25,.09,"#bfe0c9",0,.44,0,16); a.box(.44,.5,.08,"#bfe0c9",0,.8,-.24); a.cyl(.03,.03,.34,"#b9aab3",0,.22,0); a.cyl(.24,.28,.04,"#b9aab3",0,.04,0,5); }
   const plant=(x,z,s=1)=>{ B.cyl(.24*s,.18*s,.42*s,"#e9d6c4",x,.21*s,z); for(let k=0;k<8;k++) B.add(new THREE.SphereGeometry(.24*s,8,6),k%2?"#5fae4b":"#4f9d3f",x+Math.cos(k*1.7)*.2*s,(.62+k*.09)*s,z+Math.sin(k*1.7)*.18*s,1,.4,.62,k*.4,k,.3); };
   plant(-8.45,4.9,1.15);
-  // ===== estúdio (lado direito) =====
-  { const r=mesh(new THREE.PlaneGeometry(4.2,3.2),new THREE.MeshToonMaterial({map:ofRugTex("dev"),gradientMap:toonGradSoft()}),5.4,.012,-3.0,false); r.rotation.x=-Math.PI/2; r.userData.ground=true; H.add(r); }
-  B.box(3.0,.07,.95,"#5a4136",5.4,.76,-4.72).box(.07,.74,.85,"#2a2530",4.0,.37,-4.72).box(.07,.74,.85,"#2a2530",6.8,.37,-4.72).box(2.8,.06,.06,"#2a2530",5.4,.2,-5.05);
-  B.box(.9,.54,.05,"#1d1d22",5.4,1.32,-5.0).box(.08,.22,.06,"#1d1d22",5.4,.95,-5.02).box(.34,.02,.2,"#1d1d22",5.4,.805,-5.0).box(1.1,.01,.44,"#2b3358",5.4,.8,-4.55).box(.56,.03,.18,"#f6efe6",5.3,.82,-4.56).box(.5,.012,.14,"#ff9ab0",5.3,.84,-4.56).sph(.045,"#f6efe6",5.82,.83,-4.54,1,.6,1.4);
-  B.box(.26,.52,.52,"#22243a",6.5,1.06,-4.74).cyl(.05,.045,.11,"#ffd15c",4.35,.855,-4.5).box(.16,.2,.1,"#ff7a93",4.5,.9,-4.95).sph(.07,"#ffd9c2",4.5,1.06,-4.95);
-  { const scr=mesh(new THREE.PlaneGeometry(.84,.48),new THREE.MeshBasicMaterial({map:codeTex(1),toneMapped:false}),5.4,1.32,-4.97,false); H.add(scr); O.screen=scr; }
-  { const rgbM=new THREE.MeshBasicMaterial({color:"#ff5a7e",toneMapped:false}); H.add(mesh(new THREE.BoxGeometry(.02,.44,.03),rgbM,6.365,1.06,-4.5,false)); H.add(mesh(new THREE.BoxGeometry(2.9,.02,.02),rgbM,5.4,.72,-4.26,false)); O.rgb=rgbM; }
-  { const a=B.at(OF_SEAT.dev[0],OF_SEAT.dev[1],Math.PI); a.box(.56,.12,.54,"#2a2530",0,.44,0); a.box(.52,.86,.1,"#2a2530",0,.98,-.27); a.box(.16,.8,.105,"#5ad0ff",0,.98,-.268); a.box(.3,.16,.12,"#2a2530",0,1.48,-.27); a.box(.07,.05,.4,"#3a3550",-.31,.62,0); a.box(.07,.05,.4,"#3a3550",.31,.62,0); a.cyl(.04,.04,.34,"#3a3550",0,.22,0); a.cyl(.3,.34,.04,"#3a3550",0,.04,0,5); }
-  // servidor, quadro kanban, neon, pufe, sofá e planta
-  B.box(.7,1.9,1.1,"#22243a",8.38,.95,-4.6).box(.02,1.7,.9,"#2f3350",8.02,.95,-4.6); for(let k=0;k<6;k++) B.box(.02,.16,.8,"#3b4070",8.005,.3+k*.28,-4.6);
-  { const led=new THREE.MeshBasicMaterial({color:"#58f0a0",toneMapped:false}), it=[]; for(let k=0;k<6;k++) for(let j=0;j<3;j++) it.push({g:new THREE.BoxGeometry(.012,.03,.03),m:M4(7.995,.3+k*.28,-4.9+j*.12)}); const lm=new THREE.Mesh(mergeGeos(it),led); H.add(lm); O.led=led; }
-  slab(right,.05,1.2,1.6,"#fffaf2",8.93,1.9,-1.2); slab(right,.06,1.28,.05,"#b9aab3",8.92,1.9,-2.02); slab(right,.06,1.28,.05,"#b9aab3",8.92,1.9,-.38); pic(posterTex("kanban"),1.5,1.1,8.895,1.9,-1.2,-Math.PI/2,right);
-  { slab(backR,2.4,.64,.04,"#22243a",2.5,2.45,-5.45); const neon=pic(textTex("criado com IA",512,128,"#2c2f4c","#8ff0e0",null,62),2.3,.56,2.5,2.45,-5.42,0,backR); neon.material.toneMapped=false; neon.material.transparent=false; O.neon=neon; }
-  slab(backR,.92,1.14,.05,"#22243a",7.6,2.2,-5.44); pic(posterTex("hello"),.82,1.03,7.6,2.2,-5.405,0,backR);
-  B.sph(.55,"#c79bf2",7.65,.36,3.1,1,.66,1).sph(.38,"#b07fe0",7.65,.62,2.85,1,.6,.9);
-  { const a=B.at(6.2,4.78,Math.PI); a.box(2.4,.36,.8,"#3d5a9e",0,.26,0); a.box(2.4,.6,.2,"#3d5a9e",0,.7,-.32); a.box(.22,.5,.8,"#33508f",-1.2,.42,0); a.box(.22,.5,.8,"#33508f",1.2,.42,0); a.box(1.0,.14,.6,"#4f6fb5",-.52,.5,.06); a.box(1.0,.14,.6,"#4f6fb5",.52,.5,.06); a.sph(.2,"#ff9ab0",-.85,.72,-.1,1,1,.5); a.sph(.2,"#8ff0e0",.85,.72,-.1,1,1,.5); }
-  plant(8.4,4.9,1.1); plant(.8,-4.95,.9);
-  { const wg=grp(8.95,1.95,2.4); wg.rotation.y=-Math.PI/2; wg.add(mesh(new THREE.BoxGeometry(1.8,1.4,.08),CM("#3b3350"),0,0,0,false)); wg.add(mesh(new THREE.PlaneGeometry(1.6,1.2),new THREE.MeshBasicMaterial({color:"#ffd9b8"}),0,0,.05,false)); for(let k=0;k<7;k++) wg.add(mesh(new THREE.BoxGeometry(1.6,.07,.03),CM("#fffaf2"),0,-.52+k*.17,.08,false)); hang(right,wg); }
+  // ===== academia (lado direito) =====
+  gymBuild(H,O,{slab,pic,hang,backR,right});
+  plant(8.45,4.95,1.0); plant(.75,-4.95,.9);
   const bm=B.mesh(); bm.userData.ground=false; H.add(bm);
   O.items=grp(0,0,0); H.add(O.items);
   H.visible=false; sc.add(H);
@@ -4301,26 +4361,25 @@ function officeItems(){ const O=W3.office; if(!O) return; const J=ntJ(), sig=JSO
   if(W3.workNeon) W3.workNeon.visible=!!own.letreiro; }
 /* ---------- entrar, sair, quadro a quadro ---------- */
 function ntActive(){ return jobMine(1)&&!!W3&&zone(W3.chars[1].root.position.x)===2&&(online()||actor()===1); }
-function officeEnter(){ const O=W3.office; if(!O) return; O.active=false; officeItems(); officeSync(true); workHud();
-  if(!S.tutWork){ S.tutWork=1; save(); setTimeout(()=>{ if(HUB&&HUB.zone===2) say(actor(),`Nosso Predinho! Consultório de um lado, estúdio do outro e café no meio ☕`,5200); },900); } }
-function officeLeave(){ const O=W3.office; if(!O) return; if(CON.on) conClose(true); Object.keys(O.npcs).forEach(npcDrop); O.active=false; const h=HUB&&HUB.root.querySelector("#jobHud"); if(h) h.remove(); if(jobMine(1)){ const J=ntJ(); J.seen=Date.now(); jobSave(1); } }
+function officeEnter(){ const O=W3.office; if(!O) return; O.active=false; officeItems(); gymItems(); GY.act=false; officeSync(true); workHud();
+  if(!S.tutWork){ S.tutWork=1; save(); setTimeout(()=>{ if(HUB&&HUB.zone===2) say(actor(),`Nosso Predinho! Consultório de um lado, academia do outro e café no meio ☕`,5200); },900); } }
+function officeLeave(){ const O=W3.office; if(!O) return; if(CON.on) conClose(true); gymLeave(); Object.keys(O.npcs).forEach(npcDrop); O.active=false; const h=HUB&&HUB.root.querySelector("#jobHud"); if(h) h.remove(); if(jobMine(1)){ const J=ntJ(); J.seen=Date.now(); jobSave(1); } }
 function officeTick(dt,zn){ const O=W3.office; if(!O||zn!==2) return; const cam=W3.cam.position, t=W3.t;
   O.walls.forEach(g=>{ const a=g.rotation.y, nx=Math.sin(a), nz=Math.cos(a); g.visible=(cam.x-(OF3.x+g.position.x))*nx+(cam.z-(OF3.z+g.position.z))*nz>-.2; });
-  if(O.rgb) O.rgb.color.setHSL((t*.1)%1,.85,.62); if(O.led) O.led.color.setHSL(.42,.9,.42+.18*Math.sin(t*8)); O.anim.forEach(f=>f(t,dt)); npcTick(dt);
+  if(O.rgb) O.rgb.color.setHSL((t*.1)%1,.85,.62); if(O.led) O.led.color.setHSL(.42,.9,.42+.18*Math.sin(t*8)); O.anim.forEach(f=>f(t,dt)); npcTick(dt); gymTick(dt);
   const act=ntActive(); if(act&&!O.active){ O.active=true; ntOpen(); officeItems(); officeSync(true); } else if(!act) O.active=false;
   O.tk=(O.tk||0)+dt; if(O.tk>=1){ O.tk=0; if(act) ntTick(); else officeItems(); workHud(); patienceFx(); } }
 function patienceFx(){ const O=W3.office, J=ntJ(), pat=ntPatience(J)*1000, now=Date.now(); J.q.forEach(e=>{ const n=O.npcs[e.id]; if(!n) return; const k=(now-e.t)/pat, late=k>.7&&ntActive(); if(late&&!n.huff){ n.huff=emojiSprite("😤",.34); n.huff.position.set(0,2.15,0); n.C.root.add(n.huff); setFace(n.C,"sad"); } else if(!late&&n.huff){ n.C.root.remove(n.huff); n.huff=null; setFace(n.C,"idle"); } }); }
 function workHud(){ if(!HUB||HUB.zone!==2) return; let h=HUB.root.querySelector("#jobHud"); if(!h){ h=document.createElement("button"); h.id="jobHud"; h.className="jobHud"; h.onclick=e=>{ e.stopPropagation(); jobPanel(1); }; h.addEventListener("pointerdown",e=>e.stopPropagation()); HUB.scene.appendChild(h); }
-  const J=ntJ(), L=lvOf(J.xp), rs=ntRepStars(J), html=`<i>🩺</i><span><b>Nv ${L.lv}</b>${rs?` · ★ ${rs.toFixed(1)}`:""}</span><span class="jhQ">${!gOpen()&&!J.q.length?"fechado até as 7h":`${J.q.length} esperando`}</span>${buffOn(1)?`<span class="jhB">☕ +20%</span>`:""}`; if(h.dataset.h!==html){ h.dataset.h=html; h.innerHTML=html; } }
+  const J=ntJ(), L=lvOf(J.xp), rs=ntRepStars(J), html=`<i>${icon("🩺")}</i><span><b>Nv ${L.lv}</b>${rs?` · ★ ${rs.toFixed(1)}`:""}</span><span class="jhQ">${!gOpen()&&!J.q.length?"fechado até as 7h":`${J.q.length} esperando`}</span>${buffOn(1)?`<span class="jhB">☕ +20%</span>`:""}`; if(h.dataset.h!==html){ h.dataset.h=html; h.innerHTML=html; } }
 function officeNear(cand,a,p){ const X=x=>OF3.x+x, Z=z=>OF3.z+z, J=ntJ(), mine=jobMine(1)&&a===1, O=W3.office;
   cand(OF_DOOR_IN.x,OF_DOOR_IN.z+.4,1.9,"🚪","Sair",()=>walkW(a,OF_DOOR_OUT.x+1,OF_DOOR_OUT.z));
   cand(X(-5.2),Z(-3.7),2.5,mine&&J.q.length?"🩺":"📋",mine&&J.q.length?"Atender":"Consultório",()=>mine&&J.q.length?conStart():jobPanel(1),-.25);
   cand(X(0),Z(2.0),1.7,"☕","Café",()=>coffeeMenu(a));
-  cand(X(5.4),Z(-3.9),2.3,"💻",jobMine(0)&&a===0?"Trabalhar":"Estúdio",()=>jobMine(0)&&a===0?devTask():jobPanel(0));
-  cand(X(6.2),Z(4.0),1.6,"🛋️","Sentar",()=>{ const C=W3.chars[a]; walkW(a,X(6.2+(a?.5:-.5)),Z(4.0),()=>{ C.chair={k:"sofa",ox:X(6.2+(a?.5:-.5)),oz:Z(3.9)}; C.root.position.set(X(6.2+(a?.5:-.5)),.02,Z(4.62)); C.targetYaw=Math.PI; C.root.rotation.y=Math.PI; C.sitting=true; C.pose="sit"; }); });
+  gymNear(cand,a);
   if(mine&&O) J.q.forEach(e=>{ const n=O.npcs[e.id]; if(n&&!n.path.length){ const q=n.C.root.position; cand(q.x,q.z,1.5,"🩺","Atender",()=>conStart(e.id),.35); } }); }
 function coffeeMenu(a){ const o=1-a; ctxMenu(()=>V3(OF3.x,1.7,OF3.z+1.6),"☕ Cantinho do café",[{ic:"💕",label:`Levar um pra ${nmRaw(o)}`,fn:()=>coffeeGive(a)},{ic:"☕",label:"Tomar um",fn:()=>{ const C=W3.chars[a]; holdItem(C,"☕"); charMood(a,"happy","give",1600); snd("pop"); say(a,"Hmm, café ☕",1600); later(a,()=>holdItem(C,null),1700); }}]); }
-function officeTap(h){ if(h.startsWith("npc-")){ const id=h.slice(4), J=ntJ(), O=W3.office, n=O&&O.npcs[id]; if(!n) return; const anc=()=>n.C.root.localToWorld(V3(0,2.1,0));
+function officeTap(h){ if(h.startsWith("gym-")||h.startsWith("gal-")) return gymTap(h); if(h.startsWith("npc-")){ const id=h.slice(4), J=ntJ(), O=W3.office, n=O&&O.npcs[id]; if(!n) return; const anc=()=>n.C.root.localToWorld(V3(0,2.1,0));
     if(id.startsWith("st-")){ const st=NSTAFF[id.slice(3)]; return ctxMenu(anc,st.n,[{ic:"📋",label:"Equipe",fn:()=>jobPanel(1,"equipe")}]); }
     const p=ntPt(J,id); if(!p) return; const items=[{ic:"📋",label:"Ver a ficha",fn:()=>fichaModal(id)}]; if(jobMine(1)&&actor()===1&&J.q.some(e=>e.id===id)) items.unshift({ic:"🩺",label:"Atender agora",fn:()=>conStart(id)}); ctxMenu(anc,`${p.n} · ${NT[p.k].n}`,items); } }
 /* ---------- a consulta ---------- */
@@ -4406,7 +4465,7 @@ function conFinish(){ const p=CON.p, J=ntJ(), pz=CON.pz, r=ntScore(p,pz,CON.sel,
   if(alta&&HUB){ const C=W3.chars[1]; heartsW(C.root.position.x,2.3,C.root.position.z,["🎉","💖","✨","⭐"],14); } }
 /* ---------- painel do trabalho ---------- */
 function agoMin(ms){ const m=Math.round(ms/60e3); return m<=0?"agora":m<60?`${m} min`:`${Math.floor(m/60)} h ${m%60?String(m%60).padStart(2,"0"):""}`.trim(); }
-function jobPanel(i,tab){ if(i===0){ const J=dvJ(), L=lvOf(J.xp), mine=jobMine(0), inOf=!!(HUB&&HUB.zone===2); const m=modal(artify(`<div class="usM jobM"><h2>💻 Estúdio de ${esc(nmRaw(0))} <span class="kzCoin">🪙 ${cBal()}</span></h2>`)+`<div class="jbLv"><div class="jbBadge">${L.lv}</div><div><b>${jobTitle(DEV_TITLES,L.lv)}</b><u><s style="width:${L.lv>=30?100:L.cur/L.need*100}%"></s></u><span>${L.lv>=30?"nível máximo":`${L.cur} / ${L.need} xp pro nível ${L.lv+1}`}</span></div></div><div class="jbStats"><div><b>${J.st.tasks||0}</b><span>projetos entregues</span></div><div><b>${J.st.earn||0}</b><span>moedinhas ganhas</span></div><div><b>${Math.round(10+L.lv*2.2)}</b><span>por entrega perfeita</span></div></div><p class="small">${esc(nmRaw(0))} cria sites e apps com IA pros clientes do bairro: monta o pedido pra IA com os blocos certos, testa o app achando o que saiu bugado e publica na hora certa. Em breve: clientes fixos, upgrades do PC e equipe.</p><div class="obBtns">${mine&&inOf&&actor()===0?`<button class="btn pink" id="jDev">Pegar um cliente</button>`:!inOf?`<button class="btn" id="jWalk0">Ir pro predinho</button>`:""}<button class="btn alt" data-close>Fechar</button></div></div>`); const b=m.querySelector("#jDev"); if(b) b.onclick=()=>{ m.remove(); devTask(); }; const w0=m.querySelector("#jWalk0"); if(w0) w0.onclick=()=>{ m.remove(); walkW(actor(),OF_ENTRY.x+1.5,OF_ENTRY.z); }; return; }
+function jobPanel(i,tab){ if(i===0) return gyPanel(tab); if(i===0){ const J=dvJ(), L=lvOf(J.xp), mine=jobMine(0), inOf=!!(HUB&&HUB.zone===2); const m=modal(artify(`<div class="usM jobM"><h2>💻 Estúdio de ${esc(nmRaw(0))} <span class="kzCoin">🪙 ${cBal()}</span></h2>`)+`<div class="jbLv"><div class="jbBadge">${L.lv}</div><div><b>${jobTitle(DEV_TITLES,L.lv)}</b><u><s style="width:${L.lv>=30?100:L.cur/L.need*100}%"></s></u><span>${L.lv>=30?"nível máximo":`${L.cur} / ${L.need} xp pro nível ${L.lv+1}`}</span></div></div><div class="jbStats"><div><b>${J.st.tasks||0}</b><span>projetos entregues</span></div><div><b>${J.st.earn||0}</b><span>moedinhas ganhas</span></div><div><b>${Math.round(10+L.lv*2.2)}</b><span>por entrega perfeita</span></div></div><p class="small">${esc(nmRaw(0))} cria sites e apps com IA pros clientes do bairro: monta o pedido pra IA com os blocos certos, testa o app achando o que saiu bugado e publica na hora certa. Em breve: clientes fixos, upgrades do PC e equipe.</p><div class="obBtns">${mine&&inOf&&actor()===0?`<button class="btn pink" id="jDev">Pegar um cliente</button>`:!inOf?`<button class="btn" id="jWalk0">Ir pro predinho</button>`:""}<button class="btn alt" data-close>Fechar</button></div></div>`); const b=m.querySelector("#jDev"); if(b) b.onclick=()=>{ m.remove(); devTask(); }; const w0=m.querySelector("#jWalk0"); if(w0) w0.onclick=()=>{ m.remove(); walkW(actor(),OF_ENTRY.x+1.5,OF_ENTRY.z); }; return; }
   if(tab) JP.tab=tab; const m=modal(`<div class="usM jobM" id="jobM"></div>`); JP.el=m; const mine=jobMine(1);
   JP.draw=()=>{ const box=m.querySelector("#jobM"); if(!box) return; const J=ntJ(), L=lvOf(J.xp), rs=ntRepStars(J), bal=cBal(), now=Date.now(), tb=JP.tab, inOf=!!(HUB&&HUB.zone===2), roster=J.pts.filter(p=>p.vis>0&&!p.one);
     let body=""; const CO=icon("🪙")+" ";
@@ -4551,7 +4610,7 @@ function pcOpen(i,tab){ PC.i=i; if(tab) PC.tab=tab; let el=PC.el; if(!el){ el=do
 const CIN={on:false,fx:[]};
 // ESTREIA: o filme de abertura fica guardado até o jogo estar pronto. Com STORY_LIVE=false nada da história aparece (nem resumo, nem painel).
 // Pra ver sozinho sem gastar a estreia: abrir o site com ?previa=1 no fim do endereço.
-const STORY_LIVE=false, stPreview=()=>/[?&]previa=1/.test(location.search), stLive=()=>STORY_LIVE||stPreview();
+const STORY_LIVE=true,   /* v7.12: estreia liberada (só começa com os dois online e um chamando o outro) */ stPreview=()=>/[?&]previa=1/.test(location.search), stLive=()=>STORY_LIVE||stPreview();
 const ez=k=>{ k=Math.max(0,Math.min(1,k)); return k*k*(3-2*k); }, lerp=(a,b,k)=>a+(b-a)*k, seg=(t,a,b)=>Math.max(0,Math.min(1,(t-a)/(b-a)));
 function stGet(){ const s=S.story&&typeof S.story==="object"?S.story:(S.story={}); return s; }
 function cinSky(sc,stops){ const c=document.createElement("canvas"); c.width=4; c.height=256; const x=c.getContext("2d"), g=x.createLinearGradient(0,0,0,256); stops.forEach((col,k)=>g.addColorStop(k/(stops.length-1),col)); x.fillStyle=g; x.fillRect(0,0,4,256); sc.background=new THREE.CanvasTexture(c); }
@@ -4772,7 +4831,7 @@ const GTM={acc:0,skip:false,wasNight:null,nag:0,low:{}};
 function gInit(){ GTM.wasNight=null; setTimeout(()=>{ if(!HUB) return; const away=Date.now()-(S.gtSeen||0); if(!(online()&&partnerHere())&&away>20*60e3&&!/[?&]hora=/.test(location.search)){ gJump(7); enMine().forEach(i=>enSet(i,100)); if(S.gtSeen) setTimeout(()=>{ if(HUB&&!CIN.on) bigToast("Bom dia!",`dia ${gDay()} do nosso mundinho`); },1500); } S.gtSeen=Date.now(); save(); },online()?4200:900); }
 function gTick(dt){ GTM.acc+=dt; if(GTM.acc<1) return; GTM.acc=0; if(!HUB) return; const h=gHour(), night=gNight(h), me=online()?S.me:actor();
   let el=HUB.root.querySelector("#gClock"); if(!el){ el=document.createElement("button"); el.id="gClock"; el.className="gClock"; el.onclick=e=>{ e.stopPropagation(); gModal(); }; el.addEventListener("pointerdown",e=>e.stopPropagation()); HUB.scene.appendChild(el); }
-  const en=Math.round(enGet(me)), html=`<i>${h>=6&&h<18?"☀️":h>=18&&h<21?"🌇":"🌙"}</i><b>${gHM(h)}</b><span>dia ${gDay()}</span><u class="${en<15?"lo":en<35?"mid":""}"><s style="width:${en}%"></s></u>`; if(el.dataset.h!==html){ el.dataset.h=html; el.innerHTML=html; }
+  const en=Math.round(enGet(me)), html=`<i>${icon(h>=6&&h<18?"☀️":h>=18&&h<21?"🌇":"🌙")}</i><b>${gHM(h)}</b><span>dia ${gDay()}</span><u class="${en<15?"lo":en<35?"mid":""}"><s style="width:${en}%"></s></u>`; if(el.dataset.h!==html){ el.dataset.h=html; el.innerHTML=html; }
   if(GTM.wasNight===true&&!night) morning(); GTM.wasNight=night;
   if(night&&bedOf(me)) sleepTry();
   if(night&&!bedOf(me)&&HUB.zone!==undefined&&Math.floor(gMs()/G_DAY)!==GTM.nag&&h>=21.5&&!CIN.on){ GTM.nag=Math.floor(gMs()/G_DAY); toast("Já é noite 🌙 Bora pra casa dormir? Com sono o trabalho rende menos",4200); }
@@ -4936,6 +4995,163 @@ function devFinish(){ if(!DEV.el||DEV.done) return; const J=dvJ(), lv=lvOf(J.xp)
   enAdd(0,-3); cEarn(pay,"projeto"); mis("trabalho"); jobSave(0,true); snd(stars===3?"fanfare":stars?"good":"lose"); devDraw();
   if(a>b0) setTimeout(()=>{ usToast(`Nível ${a} no estúdio!`,jobTitle(DEV_TITLES,a)); snd("fanfare"); cEarn(40+a*10,"nível "+a); },900); }
 function preApply(){}
+/* =================== ACADEMIA (v7.12): o Alvaro é personal trainer. Alunos com ficha e objetivo, avaliação, treino montado, aula acompanhada e aparelhos que funcionam =================== */
+const GYM_SPOT={esteira:[2.0,-4.05,0,.17],bike:[4.0,-4.2,0,.36],supino:[6.6,-4.2,0,.08],puxador:[7.15,-1.2,Math.PI/2,.08],halter:[6.9,1.6,Math.PI/2,0],tapete:[3.6,-.5,0,.03]};   // onde o corpo fica em cada aparelho: [x, z, pra onde olha, altura]
+const GYM_M={esteira:["Esteira",0],halter:["Halteres",0],tapete:["Colchonete",0],bike:["Bicicleta ergométrica",200],supino:["Banco de supino",350],puxador:["Puxador",450]};
+const GYM_UP={espelho:["Espelhão na parede","+10% no valor da aula",300],som:["Caixa de som","+15% de experiência",260],vent:["Ventiladores","os alunos chegam mais rápido",220]};
+// exercícios: [chave, nome, aparelho, grupo, intensidade, força o joelho, força a coluna, força o ombro, é cardio, pose]
+const GX=[["est_c","Caminhada na esteira","esteira","cardio",1,0,0,0,1,"run"],["est_i","Caminhada inclinada","esteira","cardio",2,0,0,0,1,"run"],["est_r","Corrida na esteira","esteira","cardio",3,1,0,0,1,"run"],
+  ["bike_l","Bicicleta leve","bike","cardio",1,0,0,0,1,"bike"],["bike_f","Bicicleta com tiros","bike","cardio",3,0,0,0,1,"bike"],
+  ["supino","Supino","supino","peito",3,0,0,1,0,"press"],["desenv","Desenvolvimento","supino","ombro",2,0,0,1,0,"press"],
+  ["puxada","Puxada alta","puxador","costas",2,0,0,0,0,"pull"],["remada","Remada","puxador","costas",3,0,1,0,0,"pull"],
+  ["rosca","Rosca direta","halter","braço",1,0,0,0,0,"curl"],["martelo","Rosca martelo","halter","braço",2,0,0,0,0,"curl"],["elev","Elevação lateral","halter","ombro",1,0,0,1,0,"raise"],
+  ["agach","Agachamento","tapete","perna",3,1,1,0,0,"squat"],["afundo","Afundo","tapete","perna",2,1,0,0,0,"squat"],["ponte","Elevação pélvica","tapete","perna",1,0,0,0,0,"squat"],
+  ["prancha","Prancha","tapete","core",2,0,0,0,0,"stretch"],["abd","Abdominal","tapete","core",1,0,1,0,0,"squat"],["along","Alongamento","tapete","mobilidade",1,0,0,0,0,"stretch"],["polich","Polichinelo","tapete","cardio",2,1,0,0,1,"jack"]];
+const GYG=["peito","costas","perna","braço","ombro"];
+const GT={inic:{n:"Iniciante",lv:1,ic:"sprout",d:"nunca treinou e quer criar o hábito",g:[["Intensidade leve (5 a 7)",s=>s.int>=5&&s.int<=7],["3 grupos diferentes",s=>s.grp.size>=3],["Pelo menos 1 cardio",s=>s.card>=1]]},
+  emag:{n:"Emagrecer",lv:1,ic:"fire",d:"quer perder peso com saúde",body:"fat",g:[["2 ou mais de cardio",s=>s.card>=2],["Intensidade entre 8 e 11",s=>s.int>=8&&s.int<=11],["Trabalhar as pernas",s=>s.grp.has("perna")]]},
+  hiper:{n:"Ganhar massa",lv:2,ic:"arm",d:"quer ficar forte",body:"buff",g:[["Intensidade 9 ou mais",s=>s.int>=9],["No máximo 1 cardio",s=>s.card<=1],["3 grupos de força",s=>GYG.filter(k=>s.grp.has(k)).length>=3]]},
+  cond:{n:"Condicionamento",lv:3,ic:"shoe",d:"quer fôlego pra correr e jogar bola",g:[["2 ou mais de cardio",s=>s.card>=2],["Trabalhar o core",s=>s.grp.has("core")],["Intensidade entre 9 e 12",s=>s.int>=9&&s.int<=12]]},
+  postura:{n:"Postura",lv:4,ic:"person",d:"trabalha sentado e tem dor nas costas",g:[["Core e costas no treino",s=>s.grp.has("core")&&s.grp.has("costas")],["Alongamento no treino",s=>s.grp.has("mobilidade")],["Intensidade até 8",s=>s.int<=8]]},
+  idoso:{n:"Terceira idade",lv:5,ic:"heart",d:"quer saúde e autonomia",old:1,g:[["Intensidade até 6",s=>s.int<=6],["Alongamento no treino",s=>s.grp.has("mobilidade")],["Trabalhar as pernas",s=>s.grp.has("perna")]]}};
+const GR={joelho:["dor no joelho","nada que force o joelho",0],coluna:["problema na coluna","nada que force a coluna",1],ombro:["ombro machucado","nada que force o ombro",2]};
+const GYM_TITLES=[[1,"Estagiário de academia"],[3,"Personal iniciante"],[6,"Personal trainer"],[10,"Personal disputado"],[15,"Treinador"],[20,"Dono de academia"],[30,"Lenda do treino"]];
+const GY={on:false,el:null,npc:{},cur:null,tk:0,use:{}};
+function gyJ(){ const J=jobGet(0); if(!J.g||typeof J.g!=="object"||!Array.isArray(J.g.al)) J.g={al:[],q:[],nid:1,last:0,own:{},st:{aulas:0,altas:0,earn:0},hall:[]}; return J.g; }
+const gyOwn=k=>!GYM_M[k][1]||!!gyJ().own[k], gyX=k=>GX.find(q=>q[0]===k);
+function gyStat(keys){ const s={int:0,card:0,grp:new Set(),bad:[0,0,0]}; keys.forEach(k=>{ const x=gyX(k); if(!x) return; s.int+=x[4]; s.card+=x[8]; s.grp.add(x[3]); s.bad[0]+=x[5]; s.bad[1]+=x[6]; s.bad[2]+=x[7]; }); return s; }
+const gyViol=(al,s)=>!!(al.r&&s.bad[GR[al.r][2]]>0);
+// existe um treino que bate tudo com os aparelhos que a academia tem? (devolve um, ou null)
+function gySolve(k,r){ const L=shuffle(GX.filter(x=>gyOwn(x[2])).map(x=>x[0]),Math.random), n=L.length, T=GT[k]; for(let a=0;a<n;a++) for(let b=a+1;b<n;b++) for(let c=b+1;c<n;c++) for(let d=c+1;d<n;d++) for(let e=d+1;e<n;e++){ const sel=[L[a],L[b],L[c],L[d],L[e]], s=gyStat(sel); if(T.g.every(g=>g[1](s))&&!(r&&s.bad[GR[r][2]]>0)) return sel; } return null; }
+function gyBody(al){ const T=GT[al.k]; return T.body==="fat"?{fat:Math.max(.08,.9-al.pr*.75)}:T.body==="buff"?{buff:.05+al.pr*.85}:T.old?{old:1,fat:.2}:{fat:.22}; }
+function gyNew(){ const J=gyJ(), lv=lvOf(jobGet(0).xp).lv, kinds=Object.keys(GT).filter(k=>GT[k].lv<=lv), r=Math.random;
+  for(let tr=0;tr<14;tr++){ const k=pick(kinds), T=GT[k], sx=r()<.5?1:0, n=T.old?pick(NT_OLD[sx]):pick(NT_NAMES[sx]); if(J.al.some(a=>a.n===n)) continue; let rs=r()<.4?pick(Object.keys(GR)):""; if(!gySolve(k,rs)){ rs=""; if(!gySolve(k,"")) continue; }
+    const al={id:"a"+(J.nid++),n,sx,k,r:rs,fav:pick([...new Set(GX.filter(x=>gyOwn(x[2])&&x[3]!=="mobilidade").map(x=>x[3]))]),ses:0,goal:4+Math.floor(r()*4),pr:0,next:0,kn:{},t0:Date.now()};
+    al.lk={skin:Math.floor(r()*SKINS.length),hair:T.old?(sx?3:pick([0,4,0])):sx?pick([1,7,3,2,5,6]):pick([0,5,8,6,2,0]),hairColor:T.old?HAIRC.length-1:Math.floor(r()*HAIRC.length),shirtC:pick(["#ff7a5c","#4fc0a8","#5a8fd6","#f0b23b","#b07fe0","#e8607f","#3d3a4f"]),shirt:0,build:sx?pick([3,3,2]):pick([0,4,0]),pants:pick([0,1,3])};
+    J.al.push(al); return al; } return null; }
+// chegada: quem tem aula marcada volta, e de tempos em tempos aparece aluno novo (só de dia, com o personal na academia)
+function gyArrive(){ const J=gyJ(), now=Date.now(); if(!gOpen()||J.q.length>=3) return false; let ch=false;
+  const back=J.al.find(a=>a.next&&a.next<=now&&!J.q.includes(a.id)&&GY.cur!==a.id); if(back){ J.q.push(back.id); back.next=0; ch=true; }
+  else if(now-J.last>(J.own.vent?55:80)*1000*(J.al.length?1:.15)&&J.al.filter(a=>!a.next).length-J.q.length<1&&J.al.length<10){ const al=gyNew(); if(al){ J.q.push(al.id); J.last=now; ch=true; } }
+  if(ch){ jobSave(0); gymSync(); } return ch; }
+function gyActive(){ return jobMine(0)&&!!W3&&zone(W3.chars[0].root.position.x)===2&&(online()||actor()===0); }
+/* ---------- os aparelhos (remontados quando compra um novo) ---------- */
+function gymWinTex(){ const c=document.createElement("canvas"); c.width=448; c.height=288; const x=c.getContext("2d"), g=x.createLinearGradient(0,0,0,288); g.addColorStop(0,"#2b3358"); g.addColorStop(1,"#3d4a86"); x.fillStyle=g; x.fillRect(0,0,448,288);
+  x.fillStyle="#ffd23f"; x.fillRect(120,118,208,22); [[84,90],[300,90]].forEach(([a,b])=>{ x.fillStyle="#ff7a5c"; x.fillRect(a,b,64,78); x.fillStyle="#ff9d85"; x.fillRect(a+8,b+8,48,14); }); [[62,104],[364,104]].forEach(([a,b])=>{ x.fillStyle="#e2463b"; x.fillRect(a,b,22,50); });
+  x.fillStyle="#fff"; x.font="700 44px Fredoka, ui-rounded, system-ui, sans-serif"; x.textAlign="center"; x.fillText("ACADEMIA",224,62); x.font="600 26px Fredoka, ui-rounded, system-ui, sans-serif"; x.fillStyle="#8ff0e0"; x.fillText("treino com personal",224,230); return new THREE.CanvasTexture(c); }
+function gymFloorTex(){ const c=document.createElement("canvas"); c.width=c.height=128; const x=c.getContext("2d"); x.fillStyle="#565c74"; x.fillRect(0,0,128,128); const r=rng(61); for(let k=0;k<260;k++){ x.fillStyle=["#6b7190","#484e66","#8ff0e0","#ff9ab0"][k%19===0?2:k%23===0?3:k%2]; x.fillRect(r()*128,r()*128,2,2); } x.strokeStyle="rgba(0,0,0,.18)"; x.lineWidth=2; x.strokeRect(0,0,128,128); const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(4.2,5.2); return t; }
+function gymBuild(H,O,W){ // parte fixa: piso emborrachado, espelho, letreiro, banco de espera, balcão e bebedouro
+  const B=batcher(), f=mesh(new THREE.PlaneGeometry(8.5,10.6),new THREE.MeshToonMaterial({map:gymFloorTex(),gradientMap:toonGradSoft()}),4.55,.011,-.1,false); f.rotation.x=-Math.PI/2; f.userData.ground=true; H.add(f);
+  W.slab(W.backR,2.6,.66,.04,"#22243a",4.4,2.55,-5.45); { const n=W.pic(textTex("ACADEMIA",512,128,"#22243a","#ffd23f",null,84),2.5,.6,4.4,2.55,-5.42,0,W.backR); n.material.toneMapped=false; n.material.transparent=false; O.neon=n; }
+  W.slab(W.backR,.92,1.14,.05,"#22243a",7.9,2.1,-5.44); W.pic(textTex("bora treinar",512,640,"#2b3358","#8ff0e0",null,76),.82,1.03,7.9,2.1,-5.405,0,W.backR);
+  B.box(2.0,.09,.46,"#a87346",4.2,.46,4.78).box(2.0,.4,.07,"#a87346",4.2,.82,4.98).box(.08,.46,.44,"#6e4528",3.3,.23,4.78).box(.08,.46,.44,"#6e4528",5.1,.23,4.78);
+  B.box(1.8,.95,.7,"#3d4a86",7.4,.475,4.7).box(1.9,.06,.8,"#fffaf2",7.4,.98,4.7).box(.4,.14,.3,"#ff9ab0",6.9,1.08,4.7).box(.4,.14,.3,"#8ff0e0",7.35,1.08,4.7).box(.4,.14,.3,"#ffd23f",7.8,1.08,4.7);
+  B.box(.5,1.0,.5,"#fffaf2",8.4,.5,3.6).cyl(.2,.2,.46,"#8fd8ff",8.4,1.26,3.6,14).cyl(.06,.2,.1,"#8fd8ff",8.4,1.54,3.6,14).box(.12,.08,.1,"#e2463b",8.12,.78,3.6);
+  [[2.55,"#ff7a5c"],[4.65,"#4fc0a8"]].forEach(([x,c])=>B.box(1.9,.05,1.5,c,x,.03,-.5).box(1.7,.012,1.3,shade(c,26),x,.058,-.5));
+  H.add(B.mesh()); O.gymG=grp(0,0,0); H.add(O.gymG); O.gymSig=""; }
+function gymItems(){ const O=W3.office; if(!O||!O.gymG) return; const J=gyJ(), sig=JSON.stringify(J.own); if(O.gymSig===sig) return; O.gymSig=sig; const G=O.gymG; while(G.children.length){ const c=G.children[0]; G.remove(c); c.traverse(m=>{ if(m.geometry) m.geometry.dispose(); }); } const M=O.gymM={};
+  const add=(key,B,parts)=>{ const g=grp(0,0,0); g.add(B.mesh()); (parts||[]).forEach(p=>g.add(p)); g.traverse(o=>{ if(o.isMesh) o.userData.hit="of-gym-"+key; }); G.add(g); return g; }, DK="#2a2f45", MT_="#c9ced6", RED="#e2463b";
+  const crate=(key,x,z)=>{ const B=batcher(); B.box(1.0,.9,1.0,"#d9b38a",x,.45,z).box(1.04,.08,1.04,"#b98d5e",x,.9,z).box(.1,.92,1.02,"#b98d5e",x,.45,z); const t=mesh(new THREE.PlaneGeometry(.9,.36),new THREE.MeshBasicMaterial({map:textTex(`${GYM_M[key][0].split(" ")[0]} · ${GYM_M[key][1]}`,512,200,"#fff8ee","#3a2a33","#ffc65c",62),transparent:true}),x,.5,z+.52,false); add(key,B,[t]); };
+  { const [x,z]=[2.0,-4.2], B=batcher(); B.box(.95,.16,2.0,DK,x,.08,z).box(.1,1.15,.1,MT_,x-.42,.72,z+.82).box(.1,1.15,.1,MT_,x+.42,.72,z+.82).box(.95,.08,.1,MT_,x,1.28,z+.82).box(.5,.3,.08,DK,x,1.42,z+.84,-.4,0,0).box(.08,.06,.9,MT_,x-.42,1.0,z+.4).box(.08,.06,.9,MT_,x+.42,1.0,z+.4);
+    const c=document.createElement("canvas"); c.width=32; c.height=64; const cx=c.getContext("2d"); cx.fillStyle="#3a3f55"; cx.fillRect(0,0,32,64); cx.fillStyle="#565c74"; for(let k=0;k<4;k++) cx.fillRect(0,k*16,32,4); const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(1,4);
+    const belt=mesh(new THREE.PlaneGeometry(.72,1.7),new THREE.MeshBasicMaterial({map:t}),x,.165,z-.05,false); belt.rotation.x=-Math.PI/2; add("esteira",B,[belt]); M.esteira={belt:t}; }
+  if(J.own.bike){ const [x,z]=[4.0,-4.3], B=batcher(); B.box(.5,.1,1.3,DK,x,.05,z).box(.08,.8,.08,MT_,x,.5,z-.35,.25,0,0).box(.08,1.0,.08,MT_,x,.6,z+.4,-.2,0,0).box(.34,.08,.3,DK,x,.94,z-.24).box(.5,.06,.06,DK,x,1.12,z+.52).box(.2,.14,.06,RED,x,1.2,z+.5);
+    const wh=mesh(new THREE.CylinderGeometry(.3,.3,.07,18),MT("#ff7a5c"),x,.42,z+.42); wh.rotation.z=Math.PI/2; const pd=grp(x,.42,z); [[-1,1],[1,-1]].forEach(([s,q])=>pd.add(mesh(new THREE.BoxGeometry(.12,.04,.1),MT(DK),s*.2,q*.16,0))); pd.add(mesh(new THREE.BoxGeometry(.3,.05,.05),MT(MT_),0,0,0)); add("bike",B,[wh,pd]); M.bike={wh,pd}; } else crate("bike",4.0,-4.3);
+  if(J.own.supino){ const [x,z]=[6.6,-4.3], B=batcher(); B.box(.6,.14,.6,RED,x,.5,z+.05).box(.6,.75,.14,RED,x,.95,z-.28,-.18,0,0).box(.08,.5,.08,DK,x-.22,.25,z+.25).box(.08,.5,.08,DK,x+.22,.25,z+.25).box(.1,2.2,.1,MT_,x-.75,1.1,z-.1).box(.1,2.2,.1,MT_,x+.75,1.1,z-.1).box(1.7,.1,.5,DK,x,.05,z-.1);
+    const bar=grp(x,1.9,z+.12); bar.add(mesh(new THREE.CylinderGeometry(.03,.03,1.9,10),MT(MT_),0,0,0).rotateZ(Math.PI/2)); [-1,1].forEach(s=>{ bar.add(mesh(new THREE.CylinderGeometry(.2,.2,.07,16),MT(DK),s*.8,0,0).rotateZ(Math.PI/2)); bar.add(mesh(new THREE.CylinderGeometry(.15,.15,.06,16),MT("#ff7a5c"),s*.88,0,0).rotateZ(Math.PI/2)); }); add("supino",B,[bar]); M.supino={bar}; } else crate("supino",6.6,-4.3);
+  if(J.own.puxador){ const [x,z]=[8.2,-1.2], B=batcher(); B.box(.5,.1,1.2,DK,x,.05,z).box(.1,2.3,.1,MT_,x+.2,1.15,z-.45).box(.1,2.3,.1,MT_,x+.2,1.15,z+.45).box(1.3,.1,.14,MT_,x-.4,2.3,z).box(.5,.12,.5,RED,x-1.05,.46,z).box(.1,.4,.1,DK,x-1.05,.2,z).box(.5,.1,.3,DK,x-.7,.82,z);
+    const st=grp(x+.2,.2,z); for(let k=0;k<5;k++) st.add(mesh(new THREE.BoxGeometry(.3,.1,.5),MT(k%2?DK:"#3d4a86"),0,k*.11,0)); const bar=grp(x-1.0,1.95,z); bar.add(mesh(new THREE.CylinderGeometry(.025,.025,1.0,8),MT(MT_),0,0,0).rotateX(Math.PI/2)); bar.add(mesh(new THREE.CylinderGeometry(.008,.008,.4,6),MT(DK),0,.2,0)); add("puxador",B,[st,bar]); M.puxador={st,bar}; } else crate("puxador",8.0,-1.2);
+  { const [x,z]=[8.45,1.6], B=batcher(); B.box(.5,.08,2.0,DK,x,.4,z).box(.5,.08,2.0,DK,x,.85,z).box(.08,.9,.08,MT_,x,.45,z-.95).box(.08,.9,.08,MT_,x,.45,z+.95); ["#ff7a5c","#4fc0a8","#ffd23f","#b07fe0","#5a8fd6"].forEach((c,k)=>[.52,.97].forEach((y,j)=>{ const zz=z-.8+k*.4; B.cyl(.085,.085,.1,j?c:shade(c,-30),x,y,zz-.11,10,Math.PI/2,0,0).cyl(.085,.085,.1,j?c:shade(c,-30),x,y,zz+.11,10,Math.PI/2,0,0).cyl(.025,.025,.2,MT_,x,y,zz,6,Math.PI/2,0,0); })); add("halter",B); }
+  { const B=batcher(); B.box(.02,.01,.02,DK,3.6,.07,-.5); add("tapete",B,[(()=>{ const m=mesh(new THREE.PlaneGeometry(4.0,1.5),new THREE.MeshBasicMaterial({transparent:true,opacity:0}),3.6,.07,-.5,false); m.rotation.x=-Math.PI/2; return m; })()]); }
+  if(J.own.espelho){ const m=mesh(new THREE.PlaneGeometry(4.2,1.7),new THREE.MeshBasicMaterial({color:"#cfe6f5"}),8.93,1.45,.6,false); m.rotation.y=-Math.PI/2; const fr=mesh(new THREE.BoxGeometry(.06,1.86,4.36),MT("#fffaf2"),8.96,1.45,.6,false); const g=grp(0,0,0); g.add(fr); g.add(m); W3.office.g.add(g); O.wallOf.right.attach(g); if(O.gymMir) O.gymMir.parent&&O.gymMir.parent.remove(O.gymMir); O.gymMir=g; }
+  if(J.own.som&&!O.gymSom){ const B=batcher(); B.box(.4,.8,.5,"#22243a",.75,.4,-2.2).cyl(.16,.16,.04,"#565c74",.96,.55,-2.2,14,0,0,Math.PI/2).cyl(.09,.09,.04,"#565c74",.96,.22,-2.2,12,0,0,Math.PI/2); O.gymSom=B.mesh(); W3.office.g.add(O.gymSom); }
+  if(J.own.vent&&!O.gymVent){ const g=grp(4.5,3.2,0); g.add(mesh(new THREE.CylinderGeometry(.06,.06,.3,8),MT("#c9ced6"),0,.1,0)); const bl=grp(0,-.06,0); for(let k=0;k<3;k++){ const b=mesh(new THREE.BoxGeometry(1.1,.03,.2),MT("#fffaf2"),.6,0,0); const h=grp(0,0,0); h.rotation.y=k*2.094; h.add(b); bl.add(h); } g.add(bl); W3.office.g.add(g); O.gymVent=bl; } }
+/* ---------- alunos andando pela academia e aparelhos em uso ---------- */
+function gyNpc(al){ const C=npcChar(al.lk,gyBody(al)); C.root.traverse(o=>{ if(o.isMesh) o.userData.hit="of-gal-"+al.id; }); W3.office.g.parent.add(C.root); C.root.position.set(OF3.x+.7,0,OF3.z+4.7); return GY.npc[al.id]={C,path:[],then:null,al,w:-1}; }
+function gyGo(n,pts,then){ n.path=pts.map(([x,z])=>[OF3.x+x,OF3.z+z]); n.then=then||null; n.ex=null; n.C.sitting=false; n.C.pose="idle"; n.C.root.position.y=0; }
+function gyDrop(id){ const n=GY.npc[id]; if(!n) return; delete GY.npc[id]; n.C.root.parent&&n.C.root.parent.remove(n.C.root); }
+function gymSync(){ const O=W3.office; if(!O||!HUB||HUB.zone!==2||!jobMine(0)) return; const J=gyJ(), Wt=[[2.3,3.5],[3.4,3.95],[4.5,3.5]];
+  J.q.forEach((id,k)=>{ const al=J.al.find(a=>a.id===id); if(!al||GY.cur===id) return; let n=GY.npc[id]; if(!n){ n=gyNpc(al); snd("door"); } if(n.w!==k){ n.w=k; gyGo(n,[[1.5,3.7],Wt[k%3]],()=>{ n.C.root.rotation.y=Math.PI*.95; }); } });
+  Object.keys(GY.npc).forEach(id=>{ const n=GY.npc[id]; if(!J.q.includes(id)&&GY.cur!==id&&!n.leaving){ n.leaving=true; gyGo(n,[[1.5,3.7],[.7,4.7]],()=>gyDrop(id)); } }); }
+function gyPlace(C,key,pose,ry){ const s=GYM_SPOT[key]; C.root.position.set(OF3.x+s[0],s[3],OF3.z+s[1]); C.root.rotation.y=C.targetYaw=ry!=null?ry:s[2]; C.pose=pose; C.sitting=pose==="bike"||pose==="press"||pose==="pull"; }
+function gymTick(dt){ const O=W3.office; if(!O||!O.gymG) return; const t=W3.t, M=O.gymM||{}, use={};
+  for(const id in GY.npc){ const n=GY.npc[id], C=n.C, p=C.root.position; if(n.path.length){ const tg=n.path[0], dx=tg[0]-p.x, dz=tg[1]-p.z, d=Math.hypot(dx,dz), sp=2.3*dt; let a=Math.atan2(dx,dz)-C.root.rotation.y; while(a>Math.PI) a-=Math.PI*2; while(a<-Math.PI) a+=Math.PI*2; C.root.rotation.y+=a*Math.min(1,dt*9);
+      if(d<=sp){ p.x=tg[0]; p.z=tg[1]; n.path.shift(); if(!n.path.length){ const cb=n.then; n.then=null; if(cb) cb(); } } else { p.x+=dx/d*sp; p.z+=dz/d*sp; } C.walk=Math.min(1,(C.walk||0)+dt*6); } else if(C.pose!=="run") C.walk=Math.max(0,(C.walk||0)-dt*6);
+    if(n.ex) use[n.ex]=1; animChar(C,dt,t); }
+  W3.chars.forEach(C=>{ if(C.chair&&C.chair.k==="gym") use[C.chair.m]=1; });
+  if(M.esteira&&use.esteira) M.esteira.belt.offset.y=(t*1.6)%1;
+  if(M.bike&&use.bike){ M.bike.wh.rotation.x=t*7; M.bike.pd.rotation.x=t*8; }
+  if(M.supino) M.supino.bar.position.y+=((use.supino?1.55+(Math.sin(t*3.4)+1)/2*.42:1.9)-M.supino.bar.position.y)*Math.min(1,dt*12);
+  if(M.puxador){ const w=use.puxador?(Math.sin(t*3.4)+1)/2:0; M.puxador.bar.position.y+=((1.95-w*.5)-M.puxador.bar.position.y)*Math.min(1,dt*12); M.puxador.st.position.y+=((.2+w*.5)-M.puxador.st.position.y)*Math.min(1,dt*12); }
+  if(O.gymVent) O.gymVent.rotation.y=t*5; if(O.neon&&O.neon.material) O.neon.material.color.setScalar(.9+.1*Math.sin(t*4));
+  GY.tk+=dt; if(GY.tk>=1){ GY.tk=0; gymItems(); if(gyActive()){ if(!GY.act){ GY.act=true; gymSync(); } gyArrive(); } else GY.act=false; gyHud(); } }
+function gymLeave(){ Object.keys(GY.npc).forEach(gyDrop); GY.act=false; if(GY.on) gyClose(); const h=HUB&&HUB.root.querySelector("#gyHud"); if(h) h.remove(); }
+function gyHud(){ if(!HUB) return; let h=HUB.root.querySelector("#gyHud"); if(HUB.zone!==2||!jobMine(0)||(!online()&&actor()!==0)){ if(h) h.remove(); return; } if(!h){ h=document.createElement("button"); h.id="gyHud"; h.className="jobHud gyHud"; h.onclick=e=>{ e.stopPropagation(); jobPanel(0); }; h.addEventListener("pointerdown",e=>e.stopPropagation()); HUB.scene.appendChild(h); }
+  const J=gyJ(), L=lvOf(jobGet(0).xp), html=`<i>${iconArt("arm")}</i><span><b>Nv ${L.lv}</b></span><span class="jhQ">${!gOpen()&&!J.q.length?"fechada até as 7h":`${J.q.length} ${J.q.length===1?"aluno":"alunos"} esperando`}</span>`; if(h.dataset.h!==html){ h.dataset.h=html; h.innerHTML=html; } }
+/* ---------- o casal também treina: cada aparelho funciona de verdade ---------- */
+function gyUse(a,key,pose){ if(GY.on) return; if(!gyOwn(key)){ toast(`${GYM_M[key][0]}: ainda está na caixa. Compra no painel da academia`,3000); if(jobMine(0)) jobPanel(0,"ap"); return; } const C=W3.chars[a], s=GYM_SPOT[key], o=W3.chars[1-a]; if(o.chair&&o.chair.k==="gym"&&o.chair.m===key){ toast("Esse aparelho está ocupado 😅"); return; }
+  const P={esteira:"run",bike:"bike",supino:"press",puxador:"pull",halter:pose||"curl",tapete:pose||"squat"}[key], ox=OF3.x+s[0]+(key==="puxador"||key==="halter"?-.9:0), oz=OF3.z+s[1]+(key==="puxador"||key==="halter"?0:key==="tapete"?1.3:1.5);
+  walkW(a,ox,oz,()=>{ C.path=[]; C.chair={k:"gym",m:key,ox,oz}; gyPlace(C,key,P); setFace(C,"happy"); say(a,pick(["Bora treinar! 💪","Mais uma série!","Foco!"]),1600); if(online()&&a===S.me) pushMe({gym:{m:key,p:P,t:Date.now()}});
+    clearTimeout(GY.use[a]); GY.use[a]=setTimeout(()=>{ if(!(C.chair&&C.chair.k==="gym")) return; const Co=W3.chars[1-a], junto=!!(Co.chair&&Co.chair.k==="gym"); enAdd(a,-2); mis("treino"); if(!S.fit) S.fit=[0,0]; S.fit[a]=(+S.fit[a]||0)+1; save(); heartsW(C.root.position.x,2.2,C.root.position.z,["💪","✨",junto?"💕":"⭐"],8); toast(junto?"Treino em dupla feito! 💪💕":"Série feita! 💪 (joystick ou pulo pra sair do aparelho)",2800); },9000); }); }
+function gymNet(o,d){ const g=d.gym, C=W3.chars[o]; if(!g||!g.t||g.t===HUB["lastGym"+o]) return; const first=HUB["lastGym"+o]===undefined; HUB["lastGym"+o]=g.t; if(first&&Date.now()-g.t>60e3) return; if(!GYM_SPOT[g.m]||zone(C.root.position.x)!==2) return; const s=GYM_SPOT[g.m]; C.path=[]; C.chair={k:"gym",m:g.m,ox:OF3.x+s[0],oz:OF3.z+s[1]+1.4}; gyPlace(C,g.m,String(g.p||"squat")); }
+function gymNear(cand,a){ const X=x=>OF3.x+x, Z=z=>OF3.z+z, J=gyJ(), mine=jobMine(0)&&a===0;
+  Object.keys(GYM_SPOT).forEach(k=>{ const s=GYM_SPOT[k], off=k==="puxador"||k==="halter"?[-.9,0]:k==="tapete"?[0,1.2]:[0,1.4]; cand(X(s[0]+off[0]),Z(s[1]+off[1]),1.5,gyOwn(k)?"arm":"u_box",gyOwn(k)?GYM_M[k][0].split(" ")[0]:"Na caixa",()=>k==="tapete"?gyMatMenu(a):k==="halter"?gyUse(a,k,pick(["curl","raise"])):gyUse(a,k),.2); });
+  cand(X(7.4),Z(3.9),1.6,"clip","Academia",()=>jobPanel(0),.3);
+  if(mine) J.q.forEach(id=>{ const n=GY.npc[id]; if(n&&!n.path.length){ const q=n.C.root.position; cand(q.x,q.z,1.7,"arm","Dar aula",()=>gyStart(id),-.3); } }); }
+function gyMatMenu(a){ ctxMenu(()=>V3(OF3.x+3.6,1.6,OF3.z-.5),"Colchonete",[{ic:"arm",label:"Agachamento",fn:()=>gyUse(a,"tapete","squat")},{ic:"✨",label:"Polichinelo",fn:()=>gyUse(a,"tapete","jack")},{ic:"🌸",label:"Alongamento",fn:()=>gyUse(a,"tapete","stretch")}]); }
+function gymTap(h){ const a=actor(); if(h.startsWith("gym-")){ const k=h.slice(4); return k==="tapete"?gyMatMenu(a):gyUse(a,k); } if(h.startsWith("gal-")){ const id=h.slice(4), J=gyJ(); if(jobMine(0)&&a===0&&J.q.includes(id)) return gyStart(id); const al=J.al.find(q=>q.id===id); if(al) toast(`${al.n}: ${GT[al.k].n.toLowerCase()}`,2200); } }
+/* ---------- a aula: avaliação → montar o treino → acompanhar no aparelho → resultado ---------- */
+function gyStart(id){ if(GY.on||!HUB) return; if(!jobMine(0)||actor()!==0){ toast(online()?`Só ${nmRaw(0)} dá aula aqui`:`Troca pra ${nmRaw(0)} pra dar aula (toca nele)`,2600); return; } const J=gyJ(); id=id||J.q[0]; const al=J.al.find(a=>a.id===id); if(!al){ toast(gOpen()?"Nenhum aluno esperando agora":"A academia abre às 7h",2400); return; }
+  closeCtx(); document.querySelectorAll(".modalBg").forEach(m=>m.remove()); const C0=W3.chars[0]; if(C0.chair) chairUp(C0);
+  Object.assign(GY,{on:true,cur:id,al,step:"ava",sel:[],ask:0,hits:[],rep:0,res:null,moving:false}); J.q=J.q.filter(q=>q!==id); jobSave(0); gymSync();
+  const el=document.createElement("div"); el.className="cs dv gy"; document.body.appendChild(el); GY.el=el; ["pointerdown","touchstart"].forEach(ev=>el.addEventListener(ev,e=>e.stopPropagation())); gyDraw(); }
+function gyClose(){ if(GY.el){ GY.el.remove(); GY.el=null; } const id=GY.cur, n=id&&GY.npc[id]; GY.on=false; GY.cur=null; if(n&&!n.leaving){ n.leaving=true; gyGo(n,[[3.6,2.6],[1.5,3.7],[.7,4.7]],()=>gyDrop(id)); } if(GY.step!=="fim"&&GY.al){ const J=gyJ(); if(GY.al.ses===0) J.al=J.al.filter(a=>a.id!==GY.al.id); else GY.al.next=Date.now()+3*60e3; jobSave(0); } const C=W3&&W3.chars[0]; if(C&&C.pose==="talk"){ C.pose="idle"; } wPending(); }
+function gyDraw(){ const el=GY.el; if(!el) return; const al=GY.al, T=GT[al.k], L=lvOf(jobGet(0).xp), steps=["ava","plan","treino","fim"], si=steps.indexOf(GY.step), st=gyStat(GY.sel), kn=al.kn; let R="";
+  const goals=()=>T.g.map(g=>{ const ok=g[1](st); return `<div class="gyG ${kn.obj?(GY.sel.length?(ok?"ok":"no"):""):"hid"}">${kn.obj?(GY.sel.length?(ok?"✓":"✗"):"•"):"?"} ${kn.obj?esc(g[0]):"objetivo (não perguntou)"}</div>`; }).join("")+`<div class="gyG ${kn.dor?(al.r?(gyViol(al,st)?"no":GY.sel.length?"ok":""):"ok"):"hid"}">${kn.dor?(al.r?`${gyViol(al,st)?"✗":"!"} ${esc(GR[al.r][1])}`:"✓ sem dores, liberado"):"? dores (não perguntou)"}</div>`;
+  if(GY.step==="ava"){ const Q=[["obj","Qual é o seu objetivo?",`“${T.d[0].toUpperCase()+T.d.slice(1)}.” Objetivo: ${T.n.toLowerCase()}.`],["dor","Sente alguma dor?",al.r?`“Tenho ${GR[al.r][0]}.” Então: ${GR[al.r][1]}.`:"“Não sinto nada, tô inteiro!”"],["gosto","O que você mais gosta de treinar?",`“Adoro treino de ${al.fav}.” (se tiver no treino, a aula rende mais)`]], left=2-GY.ask;
+    R=`<div class="csSay"><b>${esc(al.n)}</b> chegou pra aula${al.ses?` nº ${al.ses+1}`:" pela primeira vez"}. Converse antes de montar o treino: dá pra fazer <b>${left}</b> ${left===1?"pergunta":"perguntas"}${al.ses?" (o que você já sabe continua anotado)":""}.</div>
+      <div class="gyQ">${Q.map(([k,q,ans])=>`<button class="gyQb ${kn[k]?"got":""}" data-q="${k}" ${kn[k]||left<=0?"disabled":""}><b>${esc(q)}</b>${kn[k]?`<span>${esc(ans)}</span>`:""}</button>`).join("")}</div><div class="csBar"><span class="aiCnt">${left>0?"pergunte o que achar mais importante":"agora é montar o treino"}</span><button class="btn pink small" id="gyGo">Montar o treino ›</button></div>`; }
+  else if(GY.step==="plan"){ R=`<div class="gyTop"><div class="gyGs">${goals()}</div><div class="gyM"><span>Intensidade <b>${st.int}</b></span><span>Cardio <b>${st.card}</b></span><span>Grupos <b>${st.grp.size}</b></span><span><b>${GY.sel.length}</b>/5</span></div></div>
+      <div class="gyX">${GX.map(x=>{ const own=gyOwn(x[2]), on=GY.sel.includes(x[0]); return `<button class="gyE ${on?"on":""}" data-x="${x[0]}" ${own?"":"disabled"}><b>${esc(x[1])}</b><span>${own?`${esc(x[3])} · ${"●".repeat(x[4])}${"○".repeat(3-x[4])}${x[8]?" · cardio":""}`:`falta: ${GYM_M[x[2]][0].toLowerCase()}`}</span></button>`; }).join("")}</div>
+      <div class="csBar"><span class="aiCnt">escolha 5 exercícios</span><button class="btn pink small" id="gyGo" ${GY.sel.length===5?"":"disabled"}>Começar a aula ›</button></div>`; }
+  else if(GY.step==="treino"){ const x=gyX(GY.main[GY.rep]||GY.main[0]); R=`<div class="csSay">${GY.moving?`${esc(al.n)} está indo pro próximo aparelho…`:`<b>${esc(x[1])}</b> (${GY.rep+1} de ${GY.main.length}). Conte as repetições: aperte quando o ponteiro estiver no verde.`}</div><div class="dvGauge"><div class="dvZone" style="left:${GY.zone[0]}%;width:${GY.zone[1]}%"></div><div class="dvNeedle" style="animation-duration:${(1.25-GY.rep*.18).toFixed(2)}s"></div></div><div class="csBar"><span class="aiCnt">${GY.hits.map(h=>h?"✓":"✗").join(" ")}</span><button class="btn pink small" id="gyHit" ${GY.moving?"disabled":""}>Boa, mais uma! ›</button></div>`; }
+  else { const r=GY.res; R=`<div class="csSay"><b>${"★".repeat(r.stars)}${"☆".repeat(3-r.stars)}</b> ${r.stars>=3?"Aula perfeita!":r.stars===2?"Boa aula!":r.stars===1?"Deu pro gasto.":"Hoje não rendeu…"}</div><div class="gyGs fim">${r.lines.map(([ok,t])=>`<div class="gyG ${ok?"ok":"no"}">${ok?"✓":"✗"} ${esc(t)}</div>`).join("")}</div>
+      <div class="csSay">${r.alta?`<b>${esc(al.n)} bateu a meta!</b> Bônus de ${icon("🪙")} ${r.bonus} e mais um nome no mural.`:`Progresso de ${esc(al.n)}: <b>${Math.round(al.pr*100)}%</b> da meta. Volta daqui a pouco pra próxima aula.`}</div><div class="csBar"><span class="aiCnt">${icon("🪙")} +${r.pay} · +${r.xp} xp</span>${gyJ().q.length?`<button class="btn small" id="gyNext">Próximo aluno ›</button>`:""}<button class="btn pink small" id="gyEnd">Fechar</button></div>`; }
+  el.className="cs dv gy"+(GY.step==="treino"?" low":"");
+  el.innerHTML=`<div class="csCard"><div class="csL"><div class="csPic"><img src="${npcPortrait(al,GY.step==="fim"?(GY.res.stars>=2?"happy":"sad"):"idle",gyBody(al))}" alt=""></div><b class="csNm">${esc(al.n)}<small>${T.n}</small></b><span class="csTy">${icon(T.ic)} aula ${al.ses+(GY.step==="fim"?0:1)} de ~${al.goal}</span><div class="csF"><b>${Math.round(al.pr*100)}%</b><span>da meta</span><u><s style="width:${al.pr*100}%"></s></u></div></div>
+    <div class="csR"><div class="csHd"><b>${["Avaliação","Montar o treino","Aula","Resultado"][si]}</b><span class="csDots">${steps.map((s,k)=>`<i class="${k<si?"dn":k===si?"on":""}"></i>`).join("")}</span><button class="csX" id="gyX" aria-label="Fechar">✕</button></div>${R}</div></div>`;
+  const on=(q,fn)=>{ const e=el.querySelector(q); if(e) e.onclick=fn; };
+  on("#gyX",gyClose); on("#gyEnd",gyClose); on("#gyNext",()=>{ gyClose(); setTimeout(()=>gyStart(),500); });
+  el.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{ if(GY.ask>=2) return; al.kn[b.dataset.q]=1; GY.ask++; snd("pop"); gyDraw(); });
+  el.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{ const k=b.dataset.x, i=GY.sel.indexOf(k); if(i>=0) GY.sel.splice(i,1); else if(GY.sel.length<5) GY.sel.push(k); else { toast("Já tem 5: tira um pra trocar"); return; } snd("tap"); const sc=el.querySelector(".gyX").scrollTop; gyDraw(); el.querySelector(".gyX").scrollTop=sc; });
+  on("#gyGo",()=>{ if(GY.step==="ava"){ GY.step="plan"; snd("pop"); gyDraw(); } else if(GY.sel.length===5) gyTrain(); });
+  on("#gyHit",()=>{ if(GY.moving) return; const g=el.querySelector(".dvGauge").getBoundingClientRect(), nd=el.querySelector(".dvNeedle").getBoundingClientRect(), x=(nd.left+nd.width/2-g.left)/g.width*100, ok=x>=GY.zone[0]-1&&x<=GY.zone[0]+GY.zone[1]+1; GY.hits.push(ok?1:0); snd(ok?"good":"meh"); const n=GY.npc[GY.cur]; if(n){ setFace(n.C,ok?"happy":"sad"); heartsW(n.C.root.position.x,2.2,n.C.root.position.z,ok?["💪","✨"]:["💦"],4); } GY.rep++; if(GY.rep>=GY.main.length) return gyFinish(); gyStation(); }); }
+// a aula de verdade: o aluno vai pros aparelhos dos 3 exercícios mais puxados do treino e o personal acompanha do lado
+function gyTrain(){ GY.step="treino"; GY.main=GY.sel.slice().sort((a,b)=>gyX(b)[4]-gyX(a)[4]).slice(0,3); GY.rep=0; GY.hits=[]; if(!GY.npc[GY.cur]) gyNpc(GY.al); gyStation(); }
+function gyStation(){ const n=GY.npc[GY.cur], x=gyX(GY.main[GY.rep]), s=GYM_SPOT[x[2]], C0=W3.chars[0]; GY.moving=true; GY.zone=[18+Math.random()*50,26-GY.rep*4]; gyDraw(); if(!n) { GY.moving=false; return gyDraw(); }
+  const side=x[2]==="puxador"||x[2]==="halter"?[s[0]-.9,s[1]+1.0]:[s[0]+1.0,s[1]+1.1]; walkW(0,OF3.x+side[0],OF3.z+side[1],()=>{ faceW(0,OF3.x+s[0],OF3.z+s[1]); C0.pose="talk"; });
+  gyGo(n,[[3.6,1.6],[s[0]+(x[2]==="puxador"||x[2]==="halter"?-.8:0),s[1]+(x[2]==="puxador"||x[2]==="halter"?0:1.2)]],()=>{ gyPlace(n.C,x[2],x[9]); n.C.gait=x[0]==="est_r"?1.6:1; n.ex=x[2]; GY.moving=false; gyDraw(); }); }
+function gyFinish(){ const al=GY.al, T=GT[al.k], J=gyJ(), JJ=jobGet(0), lv=lvOf(JJ.xp).lv, st=gyStat(GY.sel), met=T.g.filter(g=>g[1](st)).length, viol=gyViol(al,st), fav=st.grp.has(al.fav), hit=GY.hits.filter(Boolean).length;
+  let score=met/3*.55+hit/GY.main.length*.3+(fav?.15:0); if(viol) score*=.45; score=Math.max(0,Math.min(1,score)); const stars=score>=.85?3:score>=.6?2:score>=.33?1:0;
+  const pay=Math.max(4,Math.round((13+lv*3.2)*(.35+score*.65)*(J.own.espelho?1.1:1)*(buffOn(0)?1.2:1)*enMul(0))), xp=Math.round((8+score*14)*(J.own.som?1.15:1));
+  al.ses++; al.pr=Math.min(1,al.pr+stars/(al.goal*3)+.03); al.next=Date.now()+(5+Math.random()*7)*60e3; al.kn.obj=1; al.kn.dor=1; J.st.aulas++; J.st.earn+=pay; const b0=lvOf(JJ.xp).lv; JJ.xp+=xp;
+  const lines=[[met===3,`Objetivos do treino: ${met} de 3`],[!viol,al.r?(viol?`Forçou onde não podia (${GR[al.r][0]})`:`Respeitou a restrição (${GR[al.r][0]})`):"Sem restrições"],[fav,fav?`Tinha o que ${al.sx?"ela":"ele"} gosta (${al.fav})`:`Faltou o que ${al.sx?"ela":"ele"} gosta (${al.fav})`],[hit===GY.main.length,`Contagem das séries: ${hit} de ${GY.main.length}`]];
+  let alta=false, bonus=0; if(al.pr>=1){ alta=true; bonus=50+lv*8; J.st.altas++; J.hall.unshift(`${al.n} · ${GT[al.k].n}`); J.hall=J.hall.slice(0,12); J.al=J.al.filter(a=>a.id!==al.id); }
+  GY.res={stars,pay,xp,lines,alta,bonus}; GY.step="fim"; enAdd(0,-3); cEarn(pay+bonus,alta?"aluno formado":"aula"); mis("trabalho"); jobSave(0,true); snd(stars>=2?"fanfare":"meh");
+  const n=GY.npc[GY.cur]; if(n){ n.ex=null; n.C.sitting=false; n.C.pose=stars>=2?"happy":"idle"; n.C.root.position.y=0; setFace(n.C,stars>=2?"happy":"idle"); } const C0=W3.chars[0]; C0.pose="idle"; if(stars>=2) charMood(0,"happy","happy",1800);
+  if(lvOf(JJ.xp).lv>b0) setTimeout(()=>bigToast(`Nível ${lvOf(JJ.xp).lv}!`,jobTitle(GYM_TITLES,lvOf(JJ.xp).lv)),900); gyDraw(); }
+function gyPanel(tab){ tab=tab||gyPanel.tab||"al"; gyPanel.tab=tab; const JJ=jobGet(0), J=gyJ(), L=lvOf(JJ.xp), mine=jobMine(0), bal=cBal(), inG=!!(HUB&&HUB.zone===2);
+  const m=modal(`<div class="usM jobM"><h2>${iconArt("arm")} Academia de ${esc(nmRaw(0))} <span class="kzCoin">🪙 ${bal}</span></h2><div class="jbLv"><div class="jbBadge">${L.lv}</div><div><b>${jobTitle(GYM_TITLES,L.lv)}</b><u><s style="width:${L.lv>=30?100:L.cur/L.need*100}%"></s></u><span>${L.lv>=30?"nível máximo":`${L.cur} / ${L.need} xp pro nível ${L.lv+1}`}</span></div></div>
+    <div class="jbStats"><div><b>${J.st.aulas}</b><span>aulas dadas</span></div><div><b>${J.st.altas}</b><span>metas batidas</span></div><div><b>${J.st.earn}</b><span>moedinhas ganhas</span></div></div>
+    <div class="shopTabs"><button class="chip ${tab==="al"?"on":""}" data-t="al">Alunos</button><button class="chip ${tab==="ap"?"on":""}" data-t="ap">Aparelhos</button><button class="chip ${tab==="co"?"on":""}" data-t="co">Como funciona</button></div>
+    ${tab==="al"?`${J.q.length?`<div class="jbL">${J.q.map(id=>{ const a=J.al.find(q=>q.id===id); return a?`<div class="jbRow st"><img src="${npcPortrait(a,"idle",gyBody(a))}" alt=""><div><b>${esc(a.n)}</b><span>${GT[a.k].n} · ${a.ses?`aula ${a.ses+1}`:"primeira aula"}</span></div>${mine&&inG?`<button class="btn pink small" data-go="${a.id}">Dar aula</button>`:`<em>esperando</em>`}</div>`:""; }).join("")}</div>`:`<p class="small">${gOpen()?(inG?"Ninguém esperando agora. Aluno novo aparece de tempos em tempos e quem já treina volta pra próxima aula.":`Os alunos chegam com ${esc(nmRaw(0))} dentro da academia.`):"A academia funciona das 7h às 19h (hora do mundinho)."}</p>`}
+      ${J.al.filter(a=>!J.q.includes(a.id)).length?`<h3>Seus alunos</h3><div class="jbL">${J.al.filter(a=>!J.q.includes(a.id)).map(a=>`<div class="jbRow st"><img src="${npcPortrait(a,"idle",gyBody(a))}" alt=""><div><b>${esc(a.n)}</b><span>${GT[a.k].n}${a.r&&a.kn.dor?` · ${GR[a.r][0]}`:""}</span><div class="csF"><b>${Math.round(a.pr*100)}%</b><span>da meta</span><u><s style="width:${a.pr*100}%"></s></u></div></div><em>${a.next>Date.now()?`volta em ${Math.max(1,Math.round((a.next-Date.now())/60e3))} min`:"chegando"}</em></div>`).join("")}</div>`:""}
+      ${J.hall.length?`<h3>Mural dos que bateram a meta</h3><div class="jbHall">${J.hall.map(h=>`<span>${esc(h)}</span>`).join("")}</div>`:""}`
+    :tab==="ap"?`<div class="shopG">${Object.entries(GYM_M).map(([k,[n,p]])=>{ const has=gyOwn(k); return `<button class="shopI ${has?"on":""}" data-buy="${k}" ${has||!mine?"disabled":""}><i>${has?iconArt("arm"):icon("u_box")}</i><b>${n}</b><span>${has?"instalado":`${icon("🪙")} ${p}`}</span><small class="shopD">${GX.filter(x=>x[2]===k).map(x=>x[1].toLowerCase()).join(", ")}</small></button>`; }).join("")}${Object.entries(GYM_UP).map(([k,[n,d,p]])=>{ const has=!!J.own[k]; return `<button class="shopI ${has?"on":""}" data-buy="${k}" ${has||!mine?"disabled":""}><i>${iconArt("sparkle")}</i><b>${n}</b><span>${has?"instalado":`${icon("🪙")} ${p}`}</span><small class="shopD">${d}</small></button>`; }).join("")}</div>`
+    :`<p>O aluno chega, você <b>conversa</b> (só dá pra fazer 2 perguntas), <b>monta o treino</b> com 5 exercícios que batam o objetivo dele sem forçar onde dói, e <b>acompanha a aula</b> contando as séries no aparelho.</p><p>Aula boa paga mais, dá experiência e faz o aluno chegar na meta mais rápido (dá pra ver o corpo dele mudando). Meta batida vale bônus. Aparelho novo libera exercício novo, e nível novo traz tipos novos de aluno.</p><p>Você e ${esc(nmRaw(1))} também podem treinar em qualquer aparelho: é só chegar perto.</p>`}
+    <div class="obBtns"><button class="btn alt" data-close>Fechar</button></div></div>`); JP.el=m; JP.draw=()=>{ if(document.body.contains(m)) gyPanel(); };
+  m.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>gyPanel(b.dataset.t)); m.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ m.remove(); gyStart(b.dataset.go); });
+  m.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>{ const k=b.dataset.buy, p=GYM_M[k]?GYM_M[k][1]:GYM_UP[k][2], n=GYM_M[k]?GYM_M[k][0]:GYM_UP[k][0]; if(!cSpend(p)){ toast(`Faltam ${p-cBal()} moedinhas pra ${n.toLowerCase()} 🪙`,2600); return; } J.own[k]=1; jobSave(0,true); snd("fanfare"); gymItems(); bigToast("Chegou na academia!",n); gyPanel("ap"); }); }
 /* =================== MERCADINHO: fazer compras de verdade (carrinho, prateleiras, caixa com atendente e cantinho dos pets) =================== */
 const MK3={x0:17,x1:23.5,z0:-.5,z1:9.5}, MKI={x:400,z:0,w:8,d:6};
 const inMk=(x,z,m=0)=>x>MK3.x0-m&&x<MK3.x1+m&&z>MK3.z0-m&&z<MK3.z1+m, isMk=x=>x>350;
@@ -5677,7 +5893,7 @@ function charAnimTick(C,i,dt){
     C.targetYaw=Math.atan2(A.to.x-A.from.x,A.to.z-A.from.z); C.walk=0; C.jy=0; C.jv=null; C.jyP=0;
     if(k>=1){ C.anim=null; if(A.cb) A.cb(); if(C.queue){ const q=C.queue; C.queue=null; walkW(...q); } }
     return true; }
-  if(!C.seated){ const ty=C.sofa?.2:C.swim?(C.walk>.05?-.5:-1.28):(onDock(p.x,p.z)?.38:0);
+  if(!C.seated){ const ty=C.chair&&C.chair.k==="gym"?GYM_SPOT[C.chair.m][3]:C.sofa?.2:C.swim?(C.walk>.05?-.5:-1.28):(onDock(p.x,p.z)?.38:0);
     if(C.jv!=null){ C.jy+=C.jv*dt; C.jv-=(C.jv>0&&HUB&&i===actor()&&HUB.jumpHeld===false?52:C.jv>0?25:33)*dt; if(C.jy<=0){ C.jy=0; C.jv=null; C.land=.2; C.squash=.7; if(W3.dust) W3.dust.burst(p.x,p.y,p.z,6);
       if(HUB && i===actor() && performance.now()-(HUB.jumpBuf||0)<170){ HUB.jumpBuf=0; setTimeout(jumpMe,0); } } }   // gravidade do pulo
     const base=p.y-(C.jyP||0); p.y=base+(ty-base)*Math.min(1,dt*(C.swim?3:12))+(C.jy||0); C.jyP=C.jy||0; }
@@ -8217,7 +8433,7 @@ function hubNet(path){
     if(d.typing && d.typing!==HUB.lastTyping){ const first=HUB.lastTyping===undefined; HUB.lastTyping=d.typing; if(!first||Date.now()-d.typing<6000){ CHAT.typingAt=performance.now(); chatTypingUI(); } }
     if(typeof d.x==="number"){ const dst=(HUB.dest&&HUB.dest[o])||HUB.pos[o]; if(Math.abs(dst.x-d.x)>.002||Math.abs(dst.y-d.y)>.002) walkTo(o, d.x, d.y, null, true); }
     if(d.tv && d.tv.t && d.tv.t!==HUB.lastTv){ const fresh=Date.now()-d.tv.t<15*60e3; HUB.lastTv=d.tv.t; if(fresh) tvRemote(d.tv); }
-    sitNet(o,d); bedNet(o,d); mkNet(o,d); giftNet(o,d);
+    sitNet(o,d); bedNet(o,d); mkNet(o,d); giftNet(o,d); gymNet(o,d);
     if(d.jump && d.jump.t && d.jump.t!==HUB.lastJump){ const fresh=Date.now()-d.jump.t<4000; HUB.lastJump=d.jump.t; if(fresh) jumpChar(o,true); }
     if(d.emote && d.emote.t && d.emote.t!==HUB.lastEmote[o]){ const fresh=Date.now()-d.emote.t<20000; HUB.lastEmote[o]=d.emote.t; if(fresh) showEmote(o, d.emote.e); }
     refreshStatus();

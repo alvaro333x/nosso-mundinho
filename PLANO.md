@@ -34,6 +34,12 @@ Pedido: começar sem nada mesmo, só o trabalho e a casinha pobre, e ir evoluind
 - Utilidade: comida dá disposição (pra trabalhar bem sem dormir toda hora), presente se entrega pro outro (carinho + missão), ração vai pra despensa dos bichinhos, móveis vão pra casa.
 - Próximas ideias: promoção do dia, lista de compras como missão, sementes da hortinha, roupas (jaleco da Leticia), cesta de piquenique, pipoca pro filme, ingredientes pra cozinhar em casa.
 
+## Academia do Alvaro — v7.12 (feito; aprofundar)
+- Lado direito do Predinho. O Alvaro é personal: aluno chega, avaliação (2 perguntas), treino com 5 exercícios que batem os 3 objetivos sem forçar onde dói, aula acompanhada nos aparelhos, resultado. O aluno evolui a cada aula (o corpo muda) até bater a meta.
+- Aparelhos comprados liberam exercícios; nível libera tipos de aluno (iniciante, emagrecer, massa, condicionamento, postura, terceira idade).
+- O casal também treina nos aparelhos (missão do dia).
+- Próximos passos: alunos visíveis nos dois celulares, aula em dupla com a Leticia (nutri + personal pro mesmo paciente/aluno), mais aparelhos, estagiário, campeonato.
+
 ## Pedidos de 09/11 à noite (fila)
 - Sem emoji em lugar nenhum: arte própria (feito no mercadinho na v7.11; falta o resto).
 - Produtos em 3D nas prateleiras (feito na v7.11).
