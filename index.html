@@ -1933,7 +1933,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "8.0";
+const VERSION = "8.1";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -4773,6 +4773,7 @@ function makeDust(sc,n=28){
 function obBuild(cid){
   cid=OB_COURSES[cid]?cid:"nuvens"; const CC=OB_COURSES[cid]; OB.cid=cid; OB_ORDER=CC.order; OB_PER=CC.per; OB_N=CC.order.length/CC.per;
   const sc=new THREE.Scene(); OB.scene=sc;
+  OB.arena=false; OB.coop=false; OB.qd=null; OB.qdAnim=null; OB.tiles=null; OB.qdSyms=[]; OB.backPortal=null; OB.goalHeart=null; OB.rem=null; /* cada percurso começa limpo (o modo arena do Chão que Cai vazava pro parkour seguinte) */
   const c=document.createElement("canvas"); c.width=4; c.height=256; const x=c.getContext("2d"), gr=x.createLinearGradient(0,0,0,256);
   gr.addColorStop(0,CC.sky[0]); gr.addColorStop(.42,CC.sky[1]); gr.addColorStop(.72,CC.sky[2]); gr.addColorStop(1,CC.sky[3]); x.fillStyle=gr; x.fillRect(0,0,4,256);
   const bt=new THREE.CanvasTexture(c); bt.encoding=THREE.sRGBEncoding; sc.background=bt;
@@ -5009,7 +5010,7 @@ function obbyMenu(cid){
   m.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{ m.remove(); obbyEnter(b.dataset.o==="zero",cid); });
 }
 function obbyEnter(fromZero,cid){
-  if(!HUB||!W3) return; cid=OB_COURSES[cid]?cid:(OB.cid||"nuvens"); if(!OB.scene||OB.cid!==cid) obBuild(cid); const st=obState();
+  if(!HUB||!W3) return; cid=OB_COURSES[cid]?cid:(OB.cid||"nuvens"); if(!OB.scene||OB.cid!==cid) obBuild(cid); OB.arena=!!OB_COURSES[cid].arena; OB.coop=!!OB_COURSES[cid].coop; const st=obState();
   if(fromZero){ st.cp=0; save(); }
   OB.lev=Object.assign({},(OB.coop&&online()&&NET.docs["dupla/lev"])||{}); if(OB.coop && fromZero && !(NET.docs["obby/p"+other()]||{}).c==="dupla"){}
   if(OB.coop && fromZero){ const dO=NET.docs["obby/p"+other()]||{}; if(!online()||dO.out||dO.c!=="dupla"){ OB.lev={}; obLevPush(); } }
