@@ -2099,7 +2099,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "327aa23377f0";
-const VERSION = "7.12";
+const VERSION = "7.12.1";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -4023,7 +4023,7 @@ function jobSave(i,now){ if(!jobMine(i)) return; const J=jobGet(i); J.t=Date.now
   if(JP.el&&document.body.contains(JP.el)) JP.draw(); }
 function jobNet(path){ const i=+path.slice(-1), d=NET.docs[path]; if(!d||typeof d!=="object") return;
   if(i===S.me){ const L=S.job&&S.job[i]; if(d.v&&(!L||!L.v||(+d.t||0)>(+L.t||0)+5000)){ S.job=S.job||{}; S.job[i]=JSON.parse(JSON.stringify(d)); save(); } }   // este celular estava atrás (ex.: app novo na Tela de Início): recupera
-  else { giftCheck(); if(HUB&&HUB.zone===2) officeSync(); }
+  else { giftCheck(); if(HUB&&HUB.zone===2){ officeSync(); gymSync(); } }
   if(JP.el&&document.body.contains(JP.el)) JP.draw(); }
 const lvNeed=lv=>Math.round(30*Math.pow(lv,1.3)/5)*5;
 function lvOf(xp){ let lv=1; xp=+xp||0; while(lv<30&&xp>=lvNeed(lv)){ xp-=lvNeed(lv); lv++; } return {lv,cur:xp,need:lvNeed(lv)}; }
@@ -4361,7 +4361,7 @@ function officeItems(){ const O=W3.office; if(!O) return; const J=ntJ(), sig=JSO
   if(W3.workNeon) W3.workNeon.visible=!!own.letreiro; }
 /* ---------- entrar, sair, quadro a quadro ---------- */
 function ntActive(){ return jobMine(1)&&!!W3&&zone(W3.chars[1].root.position.x)===2&&(online()||actor()===1); }
-function officeEnter(){ const O=W3.office; if(!O) return; O.active=false; officeItems(); gymItems(); GY.act=false; officeSync(true); workHud();
+function officeEnter(){ const O=W3.office; if(!O) return; O.active=false; officeItems(); gymItems(); GY.act=false; gyStale(); officeSync(true); workHud();
   if(!S.tutWork){ S.tutWork=1; save(); setTimeout(()=>{ if(HUB&&HUB.zone===2) say(actor(),`Nosso Predinho! Consultório de um lado, academia do outro e café no meio ☕`,5200); },900); } }
 function officeLeave(){ const O=W3.office; if(!O) return; if(CON.on) conClose(true); gymLeave(); Object.keys(O.npcs).forEach(npcDrop); O.active=false; const h=HUB&&HUB.root.querySelector("#jobHud"); if(h) h.remove(); if(jobMine(1)){ const J=ntJ(); J.seen=Date.now(); jobSave(1); } }
 function officeTick(dt,zn){ const O=W3.office; if(!O||zn!==2) return; const cam=W3.cam.position, t=W3.t;
@@ -5034,6 +5034,7 @@ function gyArrive(){ const J=gyJ(), now=Date.now(); if(!gOpen()||J.q.length>=3) 
   const back=J.al.find(a=>a.next&&a.next<=now&&!J.q.includes(a.id)&&GY.cur!==a.id); if(back){ J.q.push(back.id); back.next=0; ch=true; }
   else if(now-J.last>(J.own.vent?55:80)*1000*(J.al.length?1:.15)&&J.al.filter(a=>!a.next).length-J.q.length<1&&J.al.length<10){ const al=gyNew(); if(al){ J.q.push(al.id); J.last=now; ch=true; } }
   if(ch){ jobSave(0); gymSync(); } return ch; }
+function gyStale(){ const J=gyJ(); if(jobMine(0)&&J.cur&&!GY.on){ const a=J.al.find(q=>q.id===J.cur.id); if(a&&!a.next&&!J.q.includes(a.id)) a.next=Date.now()+60e3; J.cur=null; jobSave(0); } }
 function gyActive(){ return jobMine(0)&&!!W3&&zone(W3.chars[0].root.position.x)===2&&(online()||actor()===0); }
 /* ---------- os aparelhos (remontados quando compra um novo) ---------- */
 function gymWinTex(){ const c=document.createElement("canvas"); c.width=448; c.height=288; const x=c.getContext("2d"), g=x.createLinearGradient(0,0,0,288); g.addColorStop(0,"#2b3358"); g.addColorStop(1,"#3d4a86"); x.fillStyle=g; x.fillRect(0,0,448,288);
@@ -5067,12 +5068,14 @@ function gymItems(){ const O=W3.office; if(!O||!O.gymG) return; const J=gyJ(), s
   if(J.own.som&&!O.gymSom){ const B=batcher(); B.box(.4,.8,.5,"#22243a",.75,.4,-2.2).cyl(.16,.16,.04,"#565c74",.96,.55,-2.2,14,0,0,Math.PI/2).cyl(.09,.09,.04,"#565c74",.96,.22,-2.2,12,0,0,Math.PI/2); O.gymSom=B.mesh(); W3.office.g.add(O.gymSom); }
   if(J.own.vent&&!O.gymVent){ const g=grp(4.5,3.2,0); g.add(mesh(new THREE.CylinderGeometry(.06,.06,.3,8),MT("#c9ced6"),0,.1,0)); const bl=grp(0,-.06,0); for(let k=0;k<3;k++){ const b=mesh(new THREE.BoxGeometry(1.1,.03,.2),MT("#fffaf2"),.6,0,0); const h=grp(0,0,0); h.rotation.y=k*2.094; h.add(b); bl.add(h); } g.add(bl); W3.office.g.add(g); O.gymVent=bl; } }
 /* ---------- alunos andando pela academia e aparelhos em uso ---------- */
-function gyNpc(al){ const C=npcChar(al.lk,gyBody(al)); C.root.traverse(o=>{ if(o.isMesh) o.userData.hit="of-gal-"+al.id; }); W3.office.g.parent.add(C.root); C.root.position.set(OF3.x+.7,0,OF3.z+4.7); return GY.npc[al.id]={C,path:[],then:null,al,w:-1}; }
+function gyNpc(al){ const C=npcChar(al.lk||{skin:1,hair:0,hairColor:0,shirt:0,build:0,pants:0},gyBody(al)); C.root.traverse(o=>{ if(o.isMesh) o.userData.hit="of-gal-"+al.id; }); W3.office.g.parent.add(C.root); C.root.position.set(OF3.x+.7,0,OF3.z+4.7); return GY.npc[al.id]={C,path:[],then:null,al,w:-1}; }
 function gyGo(n,pts,then){ n.path=pts.map(([x,z])=>[OF3.x+x,OF3.z+z]); n.then=then||null; n.ex=null; n.C.sitting=false; n.C.pose="idle"; n.C.root.position.y=0; }
 function gyDrop(id){ const n=GY.npc[id]; if(!n) return; delete GY.npc[id]; n.C.root.parent&&n.C.root.parent.remove(n.C.root); }
-function gymSync(){ const O=W3.office; if(!O||!HUB||HUB.zone!==2||!jobMine(0)) return; const J=gyJ(), Wt=[[2.3,3.5],[3.4,3.95],[4.5,3.5]];
-  J.q.forEach((id,k)=>{ const al=J.al.find(a=>a.id===id); if(!al||GY.cur===id) return; let n=GY.npc[id]; if(!n){ n=gyNpc(al); snd("door"); } if(n.w!==k){ n.w=k; gyGo(n,[[1.5,3.7],Wt[k%3]],()=>{ n.C.root.rotation.y=Math.PI*.95; }); } });
-  Object.keys(GY.npc).forEach(id=>{ const n=GY.npc[id]; if(!J.q.includes(id)&&GY.cur!==id&&!n.leaving){ n.leaving=true; gyGo(n,[[1.5,3.7],[.7,4.7]],()=>gyDrop(id)); } }); }
+function gymSync(){ const O=W3.office; if(!O||!O.gymG||!HUB||HUB.zone!==2) return; const J=gyJ(), mine=jobMine(0), cur=mine?GY.cur:(J.cur&&J.cur.id)||null, Wt=[[2.3,3.5],[3.4,3.95],[4.5,3.5]];
+  if(!mine&&cur){ const al=J.al.find(a=>a.id===cur), c=J.cur; if(al){ const n=GY.npc[cur]||gyNpc(al), sig=(c.ex||"")+"|"+(c.p||"")+"|"+c.t; n.leaving=false; if(n.vsig!==sig){ n.vsig=sig; n.w=-1; const sp=GYM_SPOT[c.ex];
+        if(sp){ const sd=c.ex==="puxador"||c.ex==="halter"; gyGo(n,[[3.6,1.6],[sp[0]+(sd?-.8:0),sp[1]+(sd?0:1.2)]],()=>{ gyPlace(n.C,c.ex,String(c.p||"squat")); n.ex=c.ex; }); } else gyGo(n,[[3.6,2.2]],()=>{ n.C.root.rotation.y=Math.PI; }); } } }
+  J.q.forEach((id,k)=>{ const al=J.al.find(a=>a.id===id); if(!al||cur===id) return; let n=GY.npc[id]; if(!n){ n=gyNpc(al); snd("door"); } if(n.w!==k){ n.w=k; gyGo(n,[[1.5,3.7],Wt[k%3]],()=>{ n.C.root.rotation.y=Math.PI*.95; }); } });
+  Object.keys(GY.npc).forEach(id=>{ const n=GY.npc[id]; if(!J.q.includes(id)&&cur!==id&&!n.leaving){ n.leaving=true; gyGo(n,[[1.5,3.7],[.7,4.7]],()=>gyDrop(id)); } }); }
 function gyPlace(C,key,pose,ry){ const s=GYM_SPOT[key]; C.root.position.set(OF3.x+s[0],s[3],OF3.z+s[1]); C.root.rotation.y=C.targetYaw=ry!=null?ry:s[2]; C.pose=pose; C.sitting=pose==="bike"||pose==="press"||pose==="pull"; }
 function gymTick(dt){ const O=W3.office; if(!O||!O.gymG) return; const t=W3.t, M=O.gymM||{}, use={};
   for(const id in GY.npc){ const n=GY.npc[id], C=n.C, p=C.root.position; if(n.path.length){ const tg=n.path[0], dx=tg[0]-p.x, dz=tg[1]-p.z, d=Math.hypot(dx,dz), sp=2.3*dt; let a=Math.atan2(dx,dz)-C.root.rotation.y; while(a>Math.PI) a-=Math.PI*2; while(a<-Math.PI) a+=Math.PI*2; C.root.rotation.y+=a*Math.min(1,dt*9);
@@ -5084,7 +5087,7 @@ function gymTick(dt){ const O=W3.office; if(!O||!O.gymG) return; const t=W3.t, M
   if(M.supino) M.supino.bar.position.y+=((use.supino?1.55+(Math.sin(t*3.4)+1)/2*.42:1.9)-M.supino.bar.position.y)*Math.min(1,dt*12);
   if(M.puxador){ const w=use.puxador?(Math.sin(t*3.4)+1)/2:0; M.puxador.bar.position.y+=((1.95-w*.5)-M.puxador.bar.position.y)*Math.min(1,dt*12); M.puxador.st.position.y+=((.2+w*.5)-M.puxador.st.position.y)*Math.min(1,dt*12); }
   if(O.gymVent) O.gymVent.rotation.y=t*5; if(O.neon&&O.neon.material) O.neon.material.color.setScalar(.9+.1*Math.sin(t*4));
-  GY.tk+=dt; if(GY.tk>=1){ GY.tk=0; gymItems(); if(gyActive()){ if(!GY.act){ GY.act=true; gymSync(); } gyArrive(); } else GY.act=false; gyHud(); } }
+  GY.tk+=dt; if(GY.tk>=1){ GY.tk=0; gymItems(); if(gyActive()){ if(!GY.act){ GY.act=true; gymSync(); } gyArrive(); } else { GY.act=false; if(!jobMine(0)) gymSync(); } gyHud(); } }
 function gymLeave(){ Object.keys(GY.npc).forEach(gyDrop); GY.act=false; if(GY.on) gyClose(); const h=HUB&&HUB.root.querySelector("#gyHud"); if(h) h.remove(); }
 function gyHud(){ if(!HUB) return; let h=HUB.root.querySelector("#gyHud"); if(HUB.zone!==2||!jobMine(0)||(!online()&&actor()!==0)){ if(h) h.remove(); return; } if(!h){ h=document.createElement("button"); h.id="gyHud"; h.className="jobHud gyHud"; h.onclick=e=>{ e.stopPropagation(); jobPanel(0); }; h.addEventListener("pointerdown",e=>e.stopPropagation()); HUB.scene.appendChild(h); }
   const J=gyJ(), L=lvOf(jobGet(0).xp), html=`<i>${iconArt("arm")}</i><span><b>Nv ${L.lv}</b></span><span class="jhQ">${!gOpen()&&!J.q.length?"fechada até as 7h":`${J.q.length} ${J.q.length===1?"aluno":"alunos"} esperando`}</span>`; if(h.dataset.h!==html){ h.dataset.h=html; h.innerHTML=html; } }
@@ -5103,9 +5106,9 @@ function gymTap(h){ const a=actor(); if(h.startsWith("gym-")){ const k=h.slice(4
 /* ---------- a aula: avaliação → montar o treino → acompanhar no aparelho → resultado ---------- */
 function gyStart(id){ if(GY.on||!HUB) return; if(!jobMine(0)||actor()!==0){ toast(online()?`Só ${nmRaw(0)} dá aula aqui`:`Troca pra ${nmRaw(0)} pra dar aula (toca nele)`,2600); return; } const J=gyJ(); id=id||J.q[0]; const al=J.al.find(a=>a.id===id); if(!al){ toast(gOpen()?"Nenhum aluno esperando agora":"A academia abre às 7h",2400); return; }
   closeCtx(); document.querySelectorAll(".modalBg").forEach(m=>m.remove()); const C0=W3.chars[0]; if(C0.chair) chairUp(C0);
-  Object.assign(GY,{on:true,cur:id,al,step:"ava",sel:[],ask:0,hits:[],rep:0,res:null,moving:false}); J.q=J.q.filter(q=>q!==id); jobSave(0); gymSync();
+  Object.assign(GY,{on:true,cur:id,al,step:"ava",sel:[],ask:0,hits:[],rep:0,res:null,moving:false}); J.q=J.q.filter(q=>q!==id); J.cur={id,ex:"",p:"",t:Date.now()}; jobSave(0,true); gymSync();
   const el=document.createElement("div"); el.className="cs dv gy"; document.body.appendChild(el); GY.el=el; ["pointerdown","touchstart"].forEach(ev=>el.addEventListener(ev,e=>e.stopPropagation())); gyDraw(); }
-function gyClose(){ if(GY.el){ GY.el.remove(); GY.el=null; } const id=GY.cur, n=id&&GY.npc[id]; GY.on=false; GY.cur=null; if(n&&!n.leaving){ n.leaving=true; gyGo(n,[[3.6,2.6],[1.5,3.7],[.7,4.7]],()=>gyDrop(id)); } if(GY.step!=="fim"&&GY.al){ const J=gyJ(); if(GY.al.ses===0) J.al=J.al.filter(a=>a.id!==GY.al.id); else GY.al.next=Date.now()+3*60e3; jobSave(0); } const C=W3&&W3.chars[0]; if(C&&C.pose==="talk"){ C.pose="idle"; } wPending(); }
+function gyClose(){ if(GY.el){ GY.el.remove(); GY.el=null; } const id=GY.cur, n=id&&GY.npc[id]; GY.on=false; GY.cur=null; if(jobMine(0)){ gyJ().cur=null; jobSave(0,true); } if(n&&!n.leaving){ n.leaving=true; gyGo(n,[[3.6,2.6],[1.5,3.7],[.7,4.7]],()=>gyDrop(id)); } if(GY.step!=="fim"&&GY.al){ const J=gyJ(); if(GY.al.ses===0) J.al=J.al.filter(a=>a.id!==GY.al.id); else GY.al.next=Date.now()+3*60e3; jobSave(0); } const C=W3&&W3.chars[0]; if(C&&C.pose==="talk"){ C.pose="idle"; } wPending(); }
 function gyDraw(){ const el=GY.el; if(!el) return; const al=GY.al, T=GT[al.k], L=lvOf(jobGet(0).xp), steps=["ava","plan","treino","fim"], si=steps.indexOf(GY.step), st=gyStat(GY.sel), kn=al.kn; let R="";
   const goals=()=>T.g.map(g=>{ const ok=g[1](st); return `<div class="gyG ${kn.obj?(GY.sel.length?(ok?"ok":"no"):""):"hid"}">${kn.obj?(GY.sel.length?(ok?"✓":"✗"):"•"):"?"} ${kn.obj?esc(g[0]):"objetivo (não perguntou)"}</div>`; }).join("")+`<div class="gyG ${kn.dor?(al.r?(gyViol(al,st)?"no":GY.sel.length?"ok":""):"ok"):"hid"}">${kn.dor?(al.r?`${gyViol(al,st)?"✗":"!"} ${esc(GR[al.r][1])}`:"✓ sem dores, liberado"):"? dores (não perguntou)"}</div>`;
   if(GY.step==="ava"){ const Q=[["obj","Qual é o seu objetivo?",`“${T.d[0].toUpperCase()+T.d.slice(1)}.” Objetivo: ${T.n.toLowerCase()}.`],["dor","Sente alguma dor?",al.r?`“Tenho ${GR[al.r][0]}.” Então: ${GR[al.r][1]}.`:"“Não sinto nada, tô inteiro!”"],["gosto","O que você mais gosta de treinar?",`“Adoro treino de ${al.fav}.” (se tiver no treino, a aula rende mais)`]], left=2-GY.ask;
@@ -5130,14 +5133,14 @@ function gyDraw(){ const el=GY.el; if(!el) return; const al=GY.al, T=GT[al.k], L
 function gyTrain(){ GY.step="treino"; GY.main=GY.sel.slice().sort((a,b)=>gyX(b)[4]-gyX(a)[4]).slice(0,3); GY.rep=0; GY.hits=[]; if(!GY.npc[GY.cur]) gyNpc(GY.al); gyStation(); }
 function gyStation(){ const n=GY.npc[GY.cur], x=gyX(GY.main[GY.rep]), s=GYM_SPOT[x[2]], C0=W3.chars[0]; GY.moving=true; GY.zone=[18+Math.random()*50,26-GY.rep*4]; gyDraw(); if(!n) { GY.moving=false; return gyDraw(); }
   const side=x[2]==="puxador"||x[2]==="halter"?[s[0]-.9,s[1]+1.0]:[s[0]+1.0,s[1]+1.1]; walkW(0,OF3.x+side[0],OF3.z+side[1],()=>{ faceW(0,OF3.x+s[0],OF3.z+s[1]); C0.pose="talk"; });
-  gyGo(n,[[3.6,1.6],[s[0]+(x[2]==="puxador"||x[2]==="halter"?-.8:0),s[1]+(x[2]==="puxador"||x[2]==="halter"?0:1.2)]],()=>{ gyPlace(n.C,x[2],x[9]); n.C.gait=x[0]==="est_r"?1.6:1; n.ex=x[2]; GY.moving=false; gyDraw(); }); }
+  gyGo(n,[[3.6,1.6],[s[0]+(x[2]==="puxador"||x[2]==="halter"?-.8:0),s[1]+(x[2]==="puxador"||x[2]==="halter"?0:1.2)]],()=>{ gyPlace(n.C,x[2],x[9]); n.C.gait=x[0]==="est_r"?1.6:1; n.ex=x[2]; GY.moving=false; gyJ().cur={id:GY.cur,ex:x[2],p:x[9],t:Date.now()}; jobSave(0,true); gyDraw(); }); }
 function gyFinish(){ const al=GY.al, T=GT[al.k], J=gyJ(), JJ=jobGet(0), lv=lvOf(JJ.xp).lv, st=gyStat(GY.sel), met=T.g.filter(g=>g[1](st)).length, viol=gyViol(al,st), fav=st.grp.has(al.fav), hit=GY.hits.filter(Boolean).length;
   let score=met/3*.55+hit/GY.main.length*.3+(fav?.15:0); if(viol) score*=.45; score=Math.max(0,Math.min(1,score)); const stars=score>=.85?3:score>=.6?2:score>=.33?1:0;
   const pay=Math.max(4,Math.round((13+lv*3.2)*(.35+score*.65)*(J.own.espelho?1.1:1)*(buffOn(0)?1.2:1)*enMul(0))), xp=Math.round((8+score*14)*(J.own.som?1.15:1));
   al.ses++; al.pr=Math.min(1,al.pr+stars/(al.goal*3)+.03); al.next=Date.now()+(5+Math.random()*7)*60e3; al.kn.obj=1; al.kn.dor=1; J.st.aulas++; J.st.earn+=pay; const b0=lvOf(JJ.xp).lv; JJ.xp+=xp;
   const lines=[[met===3,`Objetivos do treino: ${met} de 3`],[!viol,al.r?(viol?`Forçou onde não podia (${GR[al.r][0]})`:`Respeitou a restrição (${GR[al.r][0]})`):"Sem restrições"],[fav,fav?`Tinha o que ${al.sx?"ela":"ele"} gosta (${al.fav})`:`Faltou o que ${al.sx?"ela":"ele"} gosta (${al.fav})`],[hit===GY.main.length,`Contagem das séries: ${hit} de ${GY.main.length}`]];
   let alta=false, bonus=0; if(al.pr>=1){ alta=true; bonus=50+lv*8; J.st.altas++; J.hall.unshift(`${al.n} · ${GT[al.k].n}`); J.hall=J.hall.slice(0,12); J.al=J.al.filter(a=>a.id!==al.id); }
-  GY.res={stars,pay,xp,lines,alta,bonus}; GY.step="fim"; enAdd(0,-3); cEarn(pay+bonus,alta?"aluno formado":"aula"); mis("trabalho"); jobSave(0,true); snd(stars>=2?"fanfare":"meh");
+  GY.res={stars,pay,xp,lines,alta,bonus}; GY.step="fim"; J.cur=alta?null:{id:al.id,ex:"",p:"",t:Date.now()}; enAdd(0,-3); cEarn(pay+bonus,alta?"aluno formado":"aula"); mis("trabalho"); jobSave(0,true); snd(stars>=2?"fanfare":"meh");
   const n=GY.npc[GY.cur]; if(n){ n.ex=null; n.C.sitting=false; n.C.pose=stars>=2?"happy":"idle"; n.C.root.position.y=0; setFace(n.C,stars>=2?"happy":"idle"); } const C0=W3.chars[0]; C0.pose="idle"; if(stars>=2) charMood(0,"happy","happy",1800);
   if(lvOf(JJ.xp).lv>b0) setTimeout(()=>bigToast(`Nível ${lvOf(JJ.xp).lv}!`,jobTitle(GYM_TITLES,lvOf(JJ.xp).lv)),900); gyDraw(); }
 function gyPanel(tab){ tab=tab||gyPanel.tab||"al"; gyPanel.tab=tab; const JJ=jobGet(0), J=gyJ(), L=lvOf(JJ.xp), mine=jobMine(0), bal=cBal(), inG=!!(HUB&&HUB.zone===2);
