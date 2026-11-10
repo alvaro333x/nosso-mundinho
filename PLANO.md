@@ -25,8 +25,14 @@ Pedido: começar sem nada mesmo, só o trabalho e a casinha pobre, e ir evoluind
 - **Casa** (por fora e por dentro): barraquinho → casinha de madeira (300) → casa com sala (1200) → sobrado (4500) → casarão do Diário de uma Paixão (15000). Cômodos entram conforme a casa cresce: quarto gamer e quarto do casal com guarda-roupa (casa com sala), cozinha (sobrado), quartinho do bebê (casarão, capítulo família).
 - **Dentro de casa**: saco de dormir → colchão → cama; TV, sofá, estante, tapete, mesa: tudo comprado.
 - **Terreno**: caixinha de correio, postes de luz, rede, canteiros do jardim (um por um), hortinha, fonte, pracinha, ateliê, lago (cavar) → píer → vara de pesca → barquinho → cisnes.
-- **Loja de pets**: prédio com atendente e os bichinhos expostos, preço por raridade (hamster e cachorro baratos, jacaré caro).
+- **Loja de pets**: feita na v7.10 como o cantinho dos pets do mercadinho (cercadinhos, tia atendente, preço por raridade).
 - **Técnica**: desbloqueios em `casal/pN.unl` com chaves `w:<obra>`; `buildWorld` monta só o que existe (terreno sem a cova do lago, sem colisão do que não foi construído); união dos desbloqueios guardada localmente pra saber o que montar antes da rede conectar.
+
+## Vilinha e Mercadinho — v7.10 (feito; enriquecer aos poucos)
+- Mapa em volta da pracinha: casa ao norte, Predinho a oeste, Mercadinho a leste, lago ao sul, jardim e ateliê dos lados da casa. Ruas em cruz, bancos, vasos, placa de direções.
+- Mercadinho por dentro: pega o carrinho, passeia pelos corredores (hortifruti, padaria, bebidas, doces, presentes, pets, utilidades, chapéus, decoração, móveis), paga no caixa com a atendente. Nada mais é comprado por menu.
+- Utilidade: comida dá disposição (pra trabalhar bem sem dormir toda hora), presente se entrega pro outro (carinho + missão), ração vai pra despensa dos bichinhos, móveis vão pra casa.
+- Próximas ideias: promoção do dia, lista de compras como missão, sementes da hortinha, roupas (jaleco da Leticia), cesta de piquenique, pipoca pro filme, ingredientes pra cozinhar em casa.
 
 ## Quarto gamer — v7.6
 - Cômodo da casa comprado com moedinhas. Cada um compra o seu PC gamer; os minigames abrem por dentro do PC (área de trabalho com os jogos). Cada jogo é comprado/desbloqueado.
@@ -39,7 +45,7 @@ Pedido: começar sem nada mesmo, só o trabalho e a casinha pobre, e ir evoluind
 4. Gastar: melhorias do trabalho, móveis, roupas, pets e a próxima etapa da casa.
 
 ## Predinho (área de trabalho) — v7.5
-- Prédio no sudoeste do mundinho (`WORK3`), interior em x = -200 (`OF3`), mesma ideia da casa (teleporte pela porta).
+- Prédio a oeste da pracinha (`WORK3`), interior em x = -200 (`OF3`), mesma ideia da casa (teleporte pela porta).
 - Metade esquerda: consultório da Leticia. Metade direita: estúdio do Alvaro. Parede de vidro no meio, hall com café.
 - Estado de cada profissão em `S.job[i]` e no doc `trab/pN` (cada celular escreve só o seu; o outro só lê e desenha).
 - Carinho no expediente: levar café (bônus de 10 min pro outro), ver o outro trabalhando, pets visitam.
