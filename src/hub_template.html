@@ -1014,8 +1014,16 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .kzB b{font-size:.7rem;font-weight:700}.kzB .ico{width:28px!important;height:28px!important}
 .kzPick{width:86px;height:86px;background:var(--pink);box-shadow:0 5px 0 var(--pinkD),0 10px 22px rgba(0,0,0,.28)}
 .kzChop{width:66px;height:66px;background:var(--sage);box-shadow:0 4px 0 var(--sageD),0 8px 18px rgba(0,0,0,.25)}
-.kzB.on{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.25)}.kzChop.dim{opacity:.55}
+.kzB.on{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.kzGive{width:62px;height:62px;background:var(--lilac);box-shadow:0 4px 0 var(--lilacD),0 8px 18px rgba(0,0,0,.25)}.kzGive[hidden]{display:none}.kzGive .ico{width:24px!important;height:24px!important}
+.kzO span{flex-wrap:wrap;max-width:124px;row-gap:5px}.kzI2{position:relative;width:26px;height:24px;display:inline-grid;place-items:center;font-style:normal}.kzI2>.ico{width:23px!important;height:23px!important}
+.kzI2 u{position:absolute;right:-4px;bottom:-5px;height:13px;min-width:13px;border-radius:7px;background:var(--ink2);color:#fff;font-size:.5rem;line-height:13px;text-decoration:none;padding:0 2px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1.5px var(--paper)}.kzI2 u.f{background:#e8663a}.kzI2 u .ico{width:9px!important;height:9px!important;--ia:#fff;color:#fff}
+.kzBub .kzI2{width:14px;height:13px}.kzBub .kzI2>.ico{width:13px!important;height:13px!important}.kzBub .kzI2 u{display:none}.kzChop.dim{opacity:.55}
 .kzBar{position:absolute;left:0;top:0;width:56px;height:9px;margin:-4px 0 0 -28px;border-radius:9px;background:rgba(45,28,41,.7);box-shadow:0 0 0 2px rgba(255,255,255,.8);overflow:hidden;pointer-events:none}.kzBar i{display:block;height:100%;border-radius:9px}
+.kzTag{position:absolute;left:0;top:0;pointer-events:none}.kzTag b{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:999px;background:rgba(45,28,41,.78);color:#fff}
+.kzTag.ok b{background:#22a86f;font-size:.9rem;padding:3px 12px;box-shadow:0 0 0 2px #fff,0 4px 12px rgba(0,0,0,.35);animation:kzOk .45s ease-in-out infinite alternate}
+.kzTag.hot b{background:#ff3d3d;font-size:.84rem;box-shadow:0 0 0 2px #fff;animation:kzOk .22s ease-in-out infinite alternate}.kzTag.bad b{background:#3a2a33}
+@keyframes kzOk{to{transform:translate(-50%,-100%) scale(1.16)}}
 .kzMenu{text-align:center}.kzMenu h3{margin:12px 0 6px;font-size:1rem;display:flex;justify-content:center;gap:10px;align-items:center}
 .kzCoin{background:#fff1c9;color:#8a5a00;border-radius:999px;padding:1px 10px;font-size:.85rem}.kzCoin .ico{width:16px!important;height:16px!important;vertical-align:-3px}
 .kzLv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
@@ -2033,7 +2041,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "8.5";
+const VERSION = "8.6";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -5431,11 +5439,19 @@ function qdTick(dt){ const Q=OB.qd; if(!Q) return; const now=performance.now();
 /* =================== COZINHA A DOIS: cozinha cooperativa com pedidos, clientes, pia, fogo, combo, fases, estrelas, moedas e melhorias ===================
    Um celular "comanda" a cozinha (estado K) e manda o estado pro outro; o outro só manda as ações (pegar/usar) e a posição. */
 const KZ={on:false, rx:{}}, KZ_C=1.3;
-const KZ_ING={t:{n:"tomate",c:"#ff5a4f"},a:{n:"alface",c:"#79c95a"},p:{n:"pão",c:"#e8b066"},c:{n:"carne",c:"#c4564a"},q:{n:"queijo",c:"#ffd24d"}};
-const KZ_CHOP={t:1,a:1,q:1};
+const KZ_ING={t:{n:"tomate",c:"#ff5a4f"},a:{n:"alface",c:"#79c95a"},p:{n:"pão",c:"#e8b066"},c:{n:"carne",c:"#c4564a"},q:{n:"queijo",c:"#ffd24d"},b:{n:"batata",c:"#b98a4e"},o:{n:"ovo",c:"#fff3d6",tc:"#b36b00"}};
+const KZ_CHOP={t:1,a:1,q:1,b:1};
+/* v8.6: KZ_BOX = letras das caixas; KZ_COOK = em que estado o ingrediente vai pro fogão (carne e ovo crus, batata já picada); KZ_CKT = segundos pra fritar */
+const KZ_BOX="tapcqbo", KZ_COOK={c:0,b:1,o:0}, KZ_CKT={c:6,b:5,o:3.6};
+const kzWhy=it=>KZ_COOK[it.k]===it.s?`${KZ_ING[it.k].n[0].toUpperCase()+KZ_ING[it.k].n.slice(1)} precisa fritar`:(KZ_CHOP[it.k]&&it.s===0?"Pica antes!":"Isso não combina");
+const kzGly=p=>p[1]==="1"?"✂":p[1]==="2"?(KZ_CHOP[p[0]]?"✂♨":"♨"):"";
+/* cartão de pedido: figurinha do ingrediente + selinho do preparo (picar, fritar) */
+const KZ_ICO={t:"tomato",a:"lettuce",p:"bread",c:"steak",q:"cheese",b:"potato",o:"egg"};
+const kzIco=p=>`<i class="kzI2">${iconArt(KZ_ICO[p[0]])}${p[1]==="0"?"":`<u class="${p[1]==="2"?"f":""}">${kzGly(p)}</u>`}</i>`;
 // parte de prato = letra + estado (0 cru, 1 picado, 2 frito, 3 queimado)
-const KZ_REC={salada:{n:"Salada",parts:["a1","t1"],pts:20}, burger:{n:"Hambúrguer",parts:["p0","c2"],pts:30}, natural:{n:"Sanduíche natural",parts:["p0","a1","t1"],pts:40}, xburger:{n:"X-Burguer",parts:["p0","c2","q1"],pts:50}};
-/* mapa: # balcão · = divisor · t a p c q caixas · C tábua · S fogão · D entrega · X lixo · P pratos · W pia · E extintor · . chão */
+const KZ_REC={salada:{n:"Salada",parts:["a1","t1"],pts:20}, burger:{n:"Hambúrguer",parts:["p0","c2"],pts:30}, natural:{n:"Sanduíche natural",parts:["p0","a1","t1"],pts:40}, xburger:{n:"X-Burguer",parts:["p0","c2","q1"],pts:50},
+  paoovo:{n:"Pão com ovo",parts:["p0","o2"],pts:30}, omelete:{n:"Omelete",parts:["o2","q1"],pts:35}, fritas:{n:"Batata frita",parts:["b2"],pts:25}, combo:{n:"Lanche com fritas",parts:["p0","c2","b2"],pts:55}, xegg:{n:"X-Egg",parts:["p0","c2","o2"],pts:50}, bife:{n:"Bife com fritas",parts:["c2","b2"],pts:45}, pf:{n:"Prato feito",parts:["c2","b2","a1","t1"],pts:70}, xtudo:{n:"X-Tudo",parts:["p0","c2","q1","o2","a1","t1"],pts:90}};
+/* mapa: # balcão · = divisor · t a p c q b o caixas (b batata, o ovo) · C tábua · S fogão · D entrega · X lixo · P pratos · W pia · E extintor · . chão */
 const KZ_LV=[
   {n:"Primeiro dia", rec:["salada"], time:150, every:17, lim:75, stars:[40,90,140], spawn:[[2,2],[6,2]], map:[
     "###a#t###",
@@ -5484,7 +5500,55 @@ const KZ_LV=[
     "#...........#",
     "W...##=##...S",
     "#...........#",
-    "##P#E#X#W#D##"]}
+    "##P#E#X#W#D##"]},
+  {n:"Café da manhã", rec:["paoovo","omelete"], time:180, every:15, lim:80, stars:[110,200,280], spawn:[[2,2],[8,2]], map:[
+    "##o#p#q####",
+    "#.........#",
+    "C...###...S",
+    "#.........#",
+    "C...###...S",
+    "#.........#",
+    "##P#X###D##"]},
+  {n:"Batata frita", rec:["fritas","burger","combo"], time:200, every:15, lim:85, stars:[140,240,340], spawn:[[2,2],[8,2]], map:[
+    "##b#p#c####",
+    "#.........#",
+    "C...###...S",
+    "#.........S",
+    "C...###...S",
+    "#.........#",
+    "##P#X###D##"]},
+  {n:"Chapa cheia", rec:["xegg","combo","omelete"], time:210, every:15, lim:90, stars:[180,310,440], dishes:true, spawn:[[3,1],[7,5]], map:[
+    "#o#q#p#c#b###",
+    "#...........#",
+    "C...........C",
+    "###=#=#=#=###",
+    "#...........#",
+    "S...........S",
+    "##P#W#X##D#S#"]},
+  {n:"Prato feito", rec:["bife","pf","salada"], time:210, every:14, lim:90, stars:[170,300,430], fire:true, spawn:[[3,1],[9,5]], map:[
+    "##a#t#b#c####",
+    "#...........#",
+    "C...##=##...S",
+    "#...........#",
+    "C...##=##...S",
+    "#...........#",
+    "##P#E#X###D##"]},
+  {n:"Rodízio de lanches", rec:["burger","xburger","xegg","combo","fritas"], time:240, every:13, lim:90, stars:[190,330,460], dishes:true, fire:true, spawn:[[3,1],[9,5]], map:[
+    "#b#o#q#p#c###",
+    "#...........#",
+    "C...#=#=#...S",
+    "#...........S",
+    "W...#=#=#...S",
+    "#...........#",
+    "##P#E#X#W#D##"]},
+  {n:"Sábado à noite", rec:["burger","xburger","xegg","combo","omelete","natural","xtudo"], time:270, every:12, lim:95, stars:[240,420,600], dishes:true, fire:true, spawn:[[3,1],[11,5]], map:[
+    "#a#t#q#o#b#p#c#",
+    "#.............#",
+    "C....##=##....S",
+    "#.............S",
+    "C....##=##....S",
+    "#.............#",
+    "#P#E#X#W#W#D#D#"]}
 ];
 const KZ_TUT={n:"Aula de culinária", rec:["salada","burger"], time:900, every:999, lim:900, stars:[0,0,0], tut:true, spawn:[[5,1],[6,3]], map:[
     "###a#t#c#p##",
@@ -5583,18 +5647,23 @@ function kzBuild(lv){
     it.push({g:CYL,m:M4(sd*(wx-.6),.3,RH/2-1.5,.32,.6,.32),c:"#c8714a"}); it.push({g:SPH,m:M4(sd*(wx-.6),.95,RH/2-1.5,.55,.6,.55),c:"#6dbd57"}); });
   // balcões: armário com portinha, tampo de mármore, estações com textura própria
   const body=["#ffd2c2","#c2dcff","#bdeedb"][(lv==="tut"?0:lv)%3], TX=kzTextures(body), G={cab:[],cabS:[],marble:[],crate:[],wood:[],stove:[],deliv:[],steel:[]};
-  const LBL={t:"Tomate",a:"Alface",p:"Pão",c:"Carne",q:"Queijo",C:"Tábua",S:"Fogão",D:"Entrega",X:"Lixo",P:"Pratos",W:"Pia",E:"Extintor"}; KZ.labels=[];
+  const LBL={t:"Tomate",a:"Alface",p:"Pão",c:"Carne",q:"Queijo",b:"Batata",o:"Ovo",C:"Tábua",S:"Fogão",D:"Entrega",X:"Lixo",P:"Pratos",W:"Pia",E:"Extintor"}; KZ.labels=[];
   for(let r=0;r<H;r++) for(let cc=0;cc<W;cc++){ const ch=L.map[r][cc]; if(ch==="."||ch===" ") continue; const X=cx(cc), Z=cz(r), k=kzKey(cc,r);
     KZ.cells[k]={c:cc,r,ch,x:X,z:Z};
     it.push({g:BX,m:M4(X,.08,Z,KZ_C-.08,.16,KZ_C-.08),c:"#6e5866"});
     (ch==="S"?G.cabS:ch==="D"?G.deliv:G.cab).push({g:BX,m:M4(X,.52,Z,KZ_C-.04,.72,KZ_C-.04)});
     (ch==="S"?G.stove:ch==="D"?G.deliv:G.marble).push({g:BX,m:M4(X,.93,Z,KZ_C+.02,.1,KZ_C+.02)});
-    if("tapcq".includes(ch)){ G.crate.push({g:BX,m:M4(X,1.16,Z,.98,.36,.98)}); const n=ch==="q"?3:5; for(let j=0;j<n;j++){ const ax=(j%3-1)*.27, az=(j>2?.16:-.12); it.push({g:SPH,m:M4(X+ax,1.38+(j>2?.03:0),Z+az,.17,ch==="p"?.11:ch==="q"?.12:ch==="c"?.07:.15,.17),c:j%2&&ch==="a"?"#a8e07a":KZ_ING[ch].c}); } }
+    if(KZ_BOX.includes(ch)){ G.crate.push({g:BX,m:M4(X,1.16,Z,.98,.36,.98)}); kzCrateFill(it,ch,X,Z,L.map,r,cc,sc); }
     if(ch==="C") G.wood.push({g:BX,m:M4(X,1.0,Z,1.02,.07,.76)});
-    if(ch==="X"){ it.push({g:CYL,m:M4(X,1.2,Z,.42,.5,.42),c:"#5f5a6e"}); it.push({g:CYL,m:M4(X,1.47,Z,.46,.05,.46),c:"#4b4659"}); it.push({g:BX,m:M4(X,1.52,Z,.3,.05,.06),c:"#8a8199"}); }
+    if(ch==="X"){ it.push({g:new THREE.CylinderGeometry(.42,.35,.5,18),m:M4(X,1.23,Z,1,1,1),c:"#6f8fa8"}); it.push({g:CYL,m:M4(X,1.32,Z,.415,.07,.415),c:"#fff7ea"}); it.push({g:CYL,m:M4(X,1.5,Z,.45,.05,.45),c:"#4f6f8a"}); it.push({g:SPH,m:M4(X,1.52,Z,.4,.13,.4),c:"#5f809c"}); it.push({g:SPH,m:M4(X,1.67,Z,.07,.05,.07),c:"#ffd15c"}); }
     if(ch==="D"){ it.push({g:BX,m:M4(X,2.15,Z+.56,1.36,.14,.12),c:"#ffd15c"}); [-1,1].forEach(sd=>it.push({g:BX,m:M4(X+sd*.64,1.55,Z+.56,.1,1.2,.1),c:"#58b394"})); it.push({g:new THREE.SphereGeometry(.15,12,8,0,6.3,0,1.6),m:M4(X+.4,.98,Z-.36,1,1,1),c:"#ffd15c"}); }
     if(ch==="S"){ [-.4,.4].forEach(dx=>it.push({g:CYL,m:M4(X+dx,.72,Z+KZ_C/2,.08,.07,.08,Math.PI/2,0,0),c:"#ffffff"})); }
-    if(ch==="W"){ G.steel.push({g:BX,m:M4(X,.98,Z,.96,.08,.84)}); it.push({g:CYL,m:M4(X,1.28,Z-.38,.05,.56,.05),c:"#cfd6e6"}); it.push({g:BX,m:M4(X,1.54,Z-.25,.06,.06,.32),c:"#cfd6e6"}); }
+    if(ch==="W"){ const d=[[0,1],[0,-1],[1,0],[-1,0]].find(([a2,b2])=>L.map[r+b2]&&L.map[r+b2][cc+a2]===".")||[0,1], fx=X-d[0]*.4, fz2=Z-d[1]*.4;   /* cuba cheia de água com espuma, torneira curva do lado oposto ao chão, registros e esponja */
+      G.steel.push({g:BX,m:M4(X,.985,Z,1.04,.07,1.04)}); it.push({g:BX,m:M4(X,1.035,Z,.86,.03,.86),c:"#8fd3f5"});
+      [[-1,0],[1,0],[0,-1],[0,1]].forEach(([a2,b2])=>it.push({g:BX,m:M4(X+a2*.47,1.05,Z+b2*.47,a2?.1:1.04,.09,b2?.1:1.04),c:"#dfe5f0"}));
+      [[-.18,-.1,.11],[-.05,.02,.14],[.1,-.08,.1],[.16,.1,.09],[-.2,.14,.08],[.02,.18,.07]].forEach(([a2,b2,rr])=>it.push({g:SPH,m:M4(X+a2,1.085,Z+b2,rr,rr*.8,rr),c:"#ffffff"}));
+      it.push({g:CYL,m:M4(fx,1.3,fz2,.045,.5,.045),c:"#cfd6e6"}); it.push({g:new THREE.TorusGeometry(.16,.042,8,12,Math.PI),m:M4(fx+d[0]*.16,1.55,fz2+d[1]*.16,1,1,1,0,d[0]?0:Math.PI/2,0),c:"#cfd6e6"}); it.push({g:CYL,m:M4(fx+d[0]*.32,1.5,fz2+d[1]*.32,.05,.1,.05),c:"#b9c2d6"});
+      [[-1,"#ff6f6f"],[1,"#6fb8ff"]].forEach(([sd,c2])=>it.push({g:SPH,m:M4(fx+(d[0]?0:sd*.24),1.13,fz2+(d[0]?sd*.24:0),.06,.06,.06),c:c2})); it.push({g:BX,m:M4(X+(d[0]?0:.36)*(d[1]||1),1.12,Z+(d[0]?.36:0),.17,.06,.11,0,.3,0),c:"#ffd15c"}); }
     const fz=[[0,1],[0,-1],[1,0],[-1,0]].find(([a2,b2])=>L.map[r+b2]&&L.map[r+b2][cc+a2]===".");
     if(LBL[ch]) KZ.labels.push(Object.assign(kzLabel(sc,LBL[ch],X,ch==="D"?2.3:1.6,Z,ch==="D"?"#bdeedb":ch==="S"?"#ffb38a":ch==="X"?"#d9d2e6":"#fff7ea"),{key:k}));
   }
@@ -5611,7 +5680,7 @@ function kzBuild(lv){
     sc.add(mesh(new THREE.SphereGeometry(.14,10,8),new THREE.MeshBasicMaterial({color:new THREE.Color("#fff1c9"),toneMapped:false}),X,3.82,wz+1.4,false)); });
   // lousa: escreve as receitas da fase
   { const c=document.createElement("canvas"); c.width=512; c.height=320; const x=c.getContext("2d"); x.fillStyle="#3d4a45"; x.fillRect(0,0,512,320); x.fillStyle="#fff7ea"; x.textAlign="center"; x.font="700 46px Fredoka, ui-rounded, system-ui, sans-serif"; x.fillText("Cardápio",256,62);
-    x.font="600 34px Fredoka, ui-rounded, system-ui, sans-serif"; L.rec.forEach((r,k)=>{ x.fillStyle=["#ffd15c","#ff8fb0","#9fd2ff","#bdeedb"][k%4]; x.fillText(KZ_REC[r].n,256,120+k*52); });
+    x.font=`600 ${L.rec.length>5?26:L.rec.length>4?30:34}px Fredoka, ui-rounded, system-ui, sans-serif`; L.rec.forEach((r,k)=>{ x.fillStyle=["#ffd15c","#ff8fb0","#9fd2ff","#bdeedb"][k%4]; x.fillText(KZ_REC[r].n,256,L.rec.length>4?104+k*(212/L.rec.length):120+k*52); });
     const t=new THREE.CanvasTexture(c); t.encoding=THREE.sRGBEncoding; sc.add(mesh(new THREE.PlaneGeometry(2.1,1.3),new THREE.MeshBasicMaterial({map:t}),0,3.05,wz+.24,false)); }
   // frigideiras, fogo e fumaça
   KZ.pans={}; for(const k in KZ.cells){ const cl=KZ.cells[k]; if(cl.ch!=="S") continue; const g=grp(cl.x,1.0,cl.z); g.add(mesh(new THREE.CylinderGeometry(.36,.3,.12,18),MT("#3a3340"),0,.08,0,false)); g.add(mesh(new THREE.BoxGeometry(.5,.05,.08),MT("#3a3340"),.52,.12,0,false));
@@ -5634,29 +5703,68 @@ function kzBuild(lv){
   KZ.cust={}; KZ.fxSeen=0; KZ.pv=null; KZ.fly=[]; KZ.gone=[]; KZ.lastTick=null;
 }
 /* malhas dos ingredientes e do prato */
+/* caixa de ingrediente: miniaturas do ingrediente de verdade (num mesh só, junto com o resto do cenário) e uma etiqueta com a figurinha virada pro lado do chão */
+function kzWedge(){ if(T3.kzWedge) return T3.kzWedge; const sh=new THREE.Shape(); sh.moveTo(-.2,-.1); sh.lineTo(.2,-.1); sh.lineTo(-.2,.14); sh.lineTo(-.2,-.1); const g=new THREE.ExtrudeGeometry(sh,{depth:.2,bevelEnabled:false}); g.translate(0,.1,-.1); return T3.kzWedge=g; }
+function kzCrateFill(it,ch,X,Z,map,r,cc,sc){ const SPH=T3.kzSph||(T3.kzSph=new THREE.SphereGeometry(1,12,10)), CYL=T3.kzCyl||(T3.kzCyl=new THREE.CylinderGeometry(1,1,1,14)), BX=T3.kzBx||(T3.kzBx=new THREE.BoxGeometry(1,1,1)), y0=1.37, P5=[[-.27,-.13],[0,-.15],[.27,-.12],[-.14,.16],[.15,.17]];
+  if(ch==="t") P5.forEach(([a,b],j)=>{ const y=y0+(j>2?.04:0); it.push({g:SPH,m:M4(X+a,y,Z+b,.16,.14,.16),c:j%2?"#ff5a4f":"#f2453c"}); it.push({g:CYL,m:M4(X+a,y+.135,Z+b,.075,.015,.075),c:"#3f8a2e"}); it.push({g:CYL,m:M4(X+a,y+.165,Z+b,.013,.05,.013),c:"#3f8a2e"}); });
+  if(ch==="a") P5.forEach(([a,b],j)=>{ const y=y0+(j>2?.04:0); it.push({g:SPH,m:M4(X+a,y,Z+b,.17,.14,.17),c:"#6cbf4c"}); [[.07,.05,0],[-.06,.06,.05],[0,.07,-.07]].forEach(([dx,dy,dz],q)=>it.push({g:SPH,m:M4(X+a+dx,y+dy,Z+b+dz,.11,.07,.11,q*.5,q,0),c:q%2?"#a8e07a":"#8fd466"})); });
+  if(ch==="p") P5.forEach(([a,b],j)=>{ const y=y0-.03+(j>2?.05:0); it.push({g:SPH,m:M4(X+a,y,Z+b,.18,.12,.18),c:"#dc9a4e"}); it.push({g:CYL,m:M4(X+a,y-.03,Z+b,.175,.05,.175),c:"#f6d9a4"}); [[.05,.03],[-.06,-.02],[0,-.07]].forEach(([dx,dz])=>it.push({g:SPH,m:M4(X+a+dx,y+.108,Z+b+dz,.022,.01,.015),c:"#fff6e0"})); });
+  if(ch==="c") [[-.22,-.08],[.2,-.1],[0,.16]].forEach(([a,b],j)=>{ for(let k=0;k<2+(j%2);k++){ const y=y0-.05+k*.075; it.push({g:CYL,m:M4(X+a,y,Z+b,.19,.05,.19),c:k%2?"#d65a62":"#e0566a"}); it.push({g:BX,m:M4(X+a,y+.032,Z+b,.34,.008,.34,0,.4*j,0),c:"#fffaf2"}); } });
+  if(ch==="q") [[-.22,-.06,.3],[.16,-.1,-.4],[0,.17,1.2]].forEach(([a,b,ry])=>{ it.push({g:kzWedge(),m:M4(X+a,y0-.04,Z+b,1,1,1,0,ry,0),c:"#ffd24d"}); it.push({g:SPH,m:M4(X+a,y0+.2,Z+b,.03,.012,.03),c:"#e6b52e"}); });
+  if(ch==="b") P5.forEach(([a,b],j)=>{ const y=y0-.02+(j>2?.05:0); it.push({g:SPH,m:M4(X+a,y,Z+b,.19,.13,.15,0,j*1.3,0),c:j%2?"#c79a5c":"#b98a4e"}); it.push({g:SPH,m:M4(X+a+.06,y+.1,Z+b+.02,.02,.012,.02),c:"#8a6234"}); it.push({g:SPH,m:M4(X+a-.07,y+.09,Z+b-.04,.018,.012,.018),c:"#8a6234"}); });
+  if(ch==="o"){ it.push({g:BX,m:M4(X,y0-.07,Z,.82,.1,.58),c:"#c9d3e3"}); for(let j=0;j<6;j++) it.push({g:SPH,m:M4(X-.25+(j%3)*.25,y0+.03,Z-.13+Math.floor(j/3)*.26,.1,.135,.1),c:j===4?"#f3dcc0":"#fff6e6"}); }
+  const d=[[0,1],[0,-1],[1,0],[-1,0]].find(([a,b])=>map[r+b]&&map[r+b][cc+a]==="."); if(d){ const [dx,dz]=d, ry=Math.atan2(dx,dz); it.push({g:BX,m:M4(X+dx*.5,1.15,Z+dz*.5,.4,.3,.03,0,ry,0),c:"#fff7ea"});
+    const pl=mesh(new THREE.PlaneGeometry(.27,.27),new THREE.MeshBasicMaterial({map:iconTexture({t:"🍅",a:"🥬",p:"🥖",c:"🥩",q:"🧀",b:"🥔",o:"🥚"}[ch]),transparent:true}),X+dx*.52,1.15,Z+dz*.52,false); pl.rotation.y=ry; sc.add(pl); } }
 function kzIngMesh(k,s){ const g=new THREE.Group(), M=(c,o)=>new THREE.MeshStandardMaterial(Object.assign({color:new THREE.Color(c),roughness:.45},o||{})), add=(geo,mat,x,y,z,sx,sy,sz)=>{ const m=mesh(geo,mat,x,y,z,true); if(sx) m.scale.set(sx,sy,sz); g.add(m); return m; };
   if(s===3){ add(new THREE.CylinderGeometry(.2,.22,.08,12),M("#2a1a14",{roughness:.9}),0,.04,0); add(new THREE.SphereGeometry(.06,6,5),M("#151010"),.06,.09,.04); return g; }
   if(k==="t"){ if(s===1){ for(let i=0;i<3;i++){ const m=add(new THREE.CylinderGeometry(.11,.11,.04,14),M("#ff4d43"),(i-1)*.13,.025,(i%2)*.04); add(new THREE.CylinderGeometry(.06,.06,.042,10),M("#ffb0a0"),(i-1)*.13,.026,(i%2)*.04); } }
     else { add(new THREE.SphereGeometry(.18,16,12),M("#ff4d43",{roughness:.25}),0,.16,0,1,.85,1); for(let i=0;i<5;i++){ const l=add(new THREE.ConeGeometry(.035,.12,4),M("#3f8a2e"),Math.cos(i*1.26)*.05,.31,Math.sin(i*1.26)*.05); l.rotation.z=Math.PI/2.4; l.rotation.y=i*1.26; } add(new THREE.CylinderGeometry(.015,.02,.07,5),M("#3f8a2e"),0,.34,0); } }
   if(k==="a"){ if(s===1){ for(let i=0;i<7;i++){ const m=add(new THREE.BoxGeometry(.12,.025,.07),M(i%2?"#79c95a":"#b6ea86"),((i*37)%7/7-.5)*.32,.025+(i%3)*.012,((i*53)%5/5-.5)*.26); m.rotation.y=i; } }
-    else { for(let i=0;i<7;i++){ const a=i/7*Math.PI*2, r=i?.1:0; add(new THREE.SphereGeometry(.13,10,8),M(i%2?"#6cbf4c":"#a8e07a"),Math.cos(a)*r,.16+(i?0:.05),Math.sin(a)*r,1,.8,1); } } }
+    else { add(new THREE.SphereGeometry(.15,14,10),M("#b6ea86"),0,.17,0,1,.9,1); for(let i=0;i<7;i++){ const a=i/7*Math.PI*2, l=add(new THREE.SphereGeometry(.15,10,8),M(i%2?"#6cbf4c":"#86d35f"),Math.cos(a)*.1,.13+(i%2)*.03,Math.sin(a)*.1,1,.78,.42); l.rotation.y=-a+Math.PI/2; l.rotation.x=.3; } } }   /* pé de alface: miolo claro com folhas em volta */
   if(k==="p"){ add(new THREE.SphereGeometry(.23,16,10,0,Math.PI*2,0,Math.PI/2),M("#e3a35a"),0,.05,0,1,.8,1); add(new THREE.CylinderGeometry(.23,.22,.06,16),M("#f6d9a4"),0,.03,0);
     for(let i=0;i<7;i++){ const a=i*2.4, r=.06+(i%3)*.04; add(new THREE.SphereGeometry(.018,6,4),M("#fff6e0"),Math.cos(a)*r,.05+.17*Math.cos(r*3),Math.sin(a)*r,1.4,.6,1); } }
-  if(k==="c"){ const cooked=s===2; add(new THREE.CylinderGeometry(.2,.19,.08,16),M(cooked?"#7a4430":"#e07a80",{roughness:.7}),0,.04,0);
-    if(cooked) [-.07,0,.07].forEach(dz=>add(new THREE.BoxGeometry(.3,.012,.022),M("#3b1f14"),0,.085,dz)); else for(let i=0;i<6;i++) add(new THREE.SphereGeometry(.022,6,4),M("#ffd0d4"),Math.cos(i*1.1)*.11,.08,Math.sin(i*1.1)*.11,1,.4,1); }
+  if(k==="c"){ const cooked=s===2, body=M(cooked?"#8a4a2c":"#dd4f63",{roughness:cooked?.55:.75});   /* hambúrguer: cru é rosa-avermelhado com gordurinha clara; pronto é marrom dourado, mais alto, com marcas de grelha e um brilho */
+    add(new THREE.CylinderGeometry(.21,.21,cooked?.09:.07,20),body,0,cooked?.05:.04,0); const rim=add(new THREE.TorusGeometry(.2,.035,8,20),body,0,cooked?.05:.04,0); rim.rotation.x=Math.PI/2;
+    if(cooked){ [-.1,-.03,.04,.11].forEach(dz=>add(new THREE.BoxGeometry(Math.sqrt(.21*.21-dz*dz)*1.8,.014,.026),M("#4a2414"),0,.098,dz)); add(new THREE.SphereGeometry(.05,8,6),M("#c9793f",{roughness:.2}),-.08,.095,-.065,1.6,.18,1); }
+    else for(let i=0;i<6;i++) add(new THREE.SphereGeometry(.02,8,6),M("#ffc4cc"),Math.cos(i*1.7)*(.05+(i%3)*.05),.076,Math.sin(i*1.7)*(.05+(i%3)*.05),1,.25,1); }
   if(k==="q"){ if(s===1){ const m=add(new THREE.BoxGeometry(.32,.025,.32),M("#ffd24d"),0,.02,0); [[-.07,.05],[.08,-.06]].forEach(([a,b])=>add(new THREE.CylinderGeometry(.025,.025,.027,8),M("#e6b52e"),a,.022,b)); }
     else { const sh=new THREE.Shape(); sh.moveTo(-.18,-.12); sh.lineTo(.18,-.12); sh.lineTo(-.18,.14); sh.lineTo(-.18,-.12); const geo=new THREE.ExtrudeGeometry(sh,{depth:.18,bevelEnabled:false}); geo.translate(0,0,-.09); const m=add(geo,M("#ffd24d"),0,.12,0); m.rotation.y=.4;
       [[-.1,.05,.091],[.0,-.05,.091],[-.12,-.06,.091]].forEach(([a,b,c])=>{ const h=add(new THREE.CylinderGeometry(.025,.025,.02,8),M("#e6b52e"),a,.12+b,c); h.rotation.x=Math.PI/2; m.add(h); h.position.set(a,b,c); }); } }
+  if(k==="b"){ if(s===1){ for(let i=0;i<6;i++){ const m=add(new THREE.BoxGeometry(.3,.05,.05),M("#f6e3a0"),((i*37)%5/5-.5)*.1,.03+(i%2)*.04,(i-2.5)*.055); m.rotation.y=(i%3-1)*.25; } }
+    else if(s===2){ add(new THREE.CylinderGeometry(.2,.16,.13,12),M("#ff7a6a"),0,.065,0); for(let i=0;i<9;i++){ const m=add(new THREE.BoxGeometry(.045,.3,.045),M(i%2?"#f6b93b":"#ffd15c"),((i%3)-1)*.09,.2+(i%2)*.03,(Math.floor(i/3)-1)*.08); m.rotation.z=-((i%3)-1)*.22; m.rotation.x=(Math.floor(i/3)-1)*.2; } }
+    else { add(new THREE.SphereGeometry(.19,14,10),M("#c79a5c",{roughness:.8}),0,.15,0,1.25,.8,.95); [[.1,.22,.1],[-.12,.24,-.04],[.02,.28,-.08]].forEach(([a,b,c])=>add(new THREE.SphereGeometry(.02,6,4),M("#8a6234"),a,b,c)); } }
+  if(k==="o"){ if(s===2){ add(new THREE.CylinderGeometry(.21,.21,.03,16),M("#fffdf6",{roughness:.35}),0,.02,0,1.1,1,.95); add(new THREE.CylinderGeometry(.11,.11,.03,10),M("#fffdf6",{roughness:.35}),.16,.02,.1); add(new THREE.SphereGeometry(.085,12,8,0,Math.PI*2,0,Math.PI/2),M("#ffb52e",{roughness:.3}),-.02,.03,0,1,.7,1); }
+    else add(new THREE.SphereGeometry(.15,14,12),M("#fff6e6",{roughness:.4}),0,.17,0,.88,1.15,.88); }
   if(k==="ext"){ add(new THREE.CylinderGeometry(.13,.13,.55,14),M("#ff3d3d",{roughness:.3}),0,.28,0); add(new THREE.CylinderGeometry(.05,.05,.12,8),M("#3a3340"),0,.6,0); add(new THREE.BoxGeometry(.22,.04,.05),M("#3a3340"),.08,.64,0); add(new THREE.BoxGeometry(.2,.12,.01),M("#ffffff"),0,.3,.13); }
   return g; }
-function kzItemMesh(it){ if(!it) return null; const g0=kzItemMesh0(it); g0.scale.setScalar(it.k==="ext"?1:1.35); return g0; }
+function kzItemMesh(it,ch){ if(!it) return null; const g0=(ch==="S"&&it.k==="o"&&it.s===0)?kzEggPan():kzItemMesh0(it); g0.scale.setScalar(it.k==="ext"?1:1.35); return g0; }
 function kzItemMesh0(it){
   if(it.k!=="plate") return kzIngMesh(it.k,it.s||0);
   const g=new THREE.Group(); if(!T3.kzPlate) T3.kzPlate=new THREE.LatheGeometry([[0,0],[.26,0],[.3,.01],[.36,.05],[.37,.065],[.34,.06],[.27,.025],[0,.025]].map(([a,b])=>new THREE.Vector2(a,b)),28);
   g.add(mesh(T3.kzPlate,new THREE.MeshStandardMaterial({color:new THREE.Color("#8fd0ff"),roughness:.25}),0,0,0,true)); { const rim=mesh(new THREE.TorusGeometry(.355,.028,6,28),MT("#2f7fc4"),0,.06,0,false); rim.rotation.x=Math.PI/2; g.add(rim); } g.add(mesh(new THREE.CylinderGeometry(.22,.22,.012,24),MT("#e9f6ff"),0,.03,0,false));
-  const order=["p0","c2","q1","a1","t1"]; let y=.05; [...it.parts].sort((a,b)=>order.indexOf(a)-order.indexOf(b)).forEach(pt=>{ const m=kzIngMesh(pt[0],+pt[1]); m.position.y=y; m.scale.setScalar(.85); g.add(m); y+=pt[0]==="p"?.06:.05; });
-  if(it.parts.includes("p0") && it.parts.length>1){ const top=mesh(new THREE.SphereGeometry(.2,14,8,0,Math.PI*2,0,Math.PI/2),MT("#e8b066"),0,y+.02,0,false); g.add(top); }
+  kzPlateFood(g,it.parts);
   return g; }
+/* v8.6: comida montada no prato. Com pão vira um lanche em camadas (cada recheio aparece na borda); sem pão vira prato feito, com cada coisa no seu canto; a batata frita fica sempre do lado */
+function kzSeeds(B,y,R,H){ for(let i=0;i<9;i++){ const a=i*2.4, r=.05+(i%3)*.055, m=mesh(new THREE.SphereGeometry(.02,6,4),MT("#fff6e0"),Math.cos(a)*r,y+H*Math.sqrt(Math.max(0,1-(r/R)*(r/R)))+.004,Math.sin(a)*r,false); m.scale.set(1.5,.6,1); m.rotation.y=a; B.add(m); } }
+function kzPlateFood(g,parts){ const M=(c,o)=>new THREE.MeshStandardMaterial(Object.assign({color:new THREE.Color(c),roughness:.5},o||{})), has=q=>parts.includes(q), fries=has("b2"), rest=parts.filter(q=>q!=="b2");
+  if(fries){ const f=kzIngMesh("b",2); f.position.set(rest.length?.2:0,.045,rest.length?.04:0); f.scale.setScalar(rest.length?.62:.95); g.add(f); }
+  if(!rest.length) return;
+  const B=grp(fries?-.09:0,.04,0); B.scale.setScalar(fries?.78:1); g.add(B); const add=(geo,mat,x,y,z)=>{ const m=mesh(geo,mat,x,y,z,true); B.add(m); return m; };
+  if(has("p0")){ let y=0; const bun=M("#dc9a4e",{roughness:.45}), crumb=M("#f8dfae");
+    add(new THREE.CylinderGeometry(.235,.21,.07,22),bun,0,y+.035,0); add(new THREE.CylinderGeometry(.225,.225,.012,22),crumb,0,y+.074,0); y+=.08;
+    if(parts.length===1){ const top=add(new THREE.SphereGeometry(.24,20,12,0,Math.PI*2,0,Math.PI/2),bun,0,y+.03,0); top.scale.y=.72; kzSeeds(B,y+.03,.24,.173); return; }
+    if(has("c2")){ const pm=M("#8a4a2c",{roughness:.55}); add(new THREE.CylinderGeometry(.262,.262,.075,22),pm,0,y+.037,0); const rm=add(new THREE.TorusGeometry(.252,.036,8,22),pm,0,y+.037,0); rm.rotation.x=Math.PI/2; y+=.08; }
+    if(has("q1")){ const qm=M("#ffcf3f",{roughness:.35}), q=add(new THREE.BoxGeometry(.43,.018,.43),qm,0,y+.008,0); q.rotation.y=Math.PI/4; [[1,0],[-1,0],[0,1],[0,-1]].forEach(([a,b])=>{ const d=add(new THREE.BoxGeometry(.11,.016,.11),qm,a*.262,y-.026,b*.262); d.rotation.order="YXZ"; d.rotation.y=Math.PI/4; d.rotation.z=a*-.55; d.rotation.x=b*.55; }); y+=.022; }
+    if(has("o2")){ add(new THREE.CylinderGeometry(.27,.27,.022,20),M("#fffdf6",{roughness:.35}),.02,y+.011,0); const yk=add(new THREE.SphereGeometry(.085,12,8,0,Math.PI*2,0,Math.PI/2),M("#ffb52e",{roughness:.3}),.2,y+.02,.14); yk.scale.y=.7; y+=.026; }
+    if(has("a1")){ for(let i=0;i<9;i++){ const a=i/9*Math.PI*2, l=add(new THREE.SphereGeometry(.1,8,6),M(i%2?"#6cbf4c":"#9be070"),Math.cos(a)*.235,y+.012,Math.sin(a)*.235); l.scale.set(1,.28,.7); l.rotation.y=-a; } add(new THREE.CylinderGeometry(.22,.22,.02,16),M("#86d35f"),0,y+.01,0); y+=.028; }
+    if(has("t1")){ [[-.12,.06],[.13,.03],[0,-.13]].forEach(([a,b])=>{ add(new THREE.CylinderGeometry(.115,.115,.028,16),M("#f2453c",{roughness:.3}),a,y+.014,b); add(new THREE.CylinderGeometry(.07,.07,.03,12),M("#ff9a8c"),a,y+.015,b); }); y+=.032; }
+    const top=add(new THREE.SphereGeometry(.245,22,12,0,Math.PI*2,0,Math.PI/2),bun,0,y+.004,0); top.scale.y=.74; add(new THREE.CylinderGeometry(.235,.235,.012,22),crumb,0,y+.004,0); kzSeeds(B,y+.004,.245,.181); return; }
+  const prot=rest.filter(q=>q==="c2"||q==="o2"||q==="q1"), sal=rest.filter(q=>q==="a1"||q==="t1"), other=rest.filter(q=>!prot.includes(q)&&!sal.includes(q)), spots=[]; if(prot.length) spots.push(prot); if(sal.length) spots.push(sal); other.forEach(q=>spots.push([q]));
+  spots.forEach((list,i)=>{ const n=spots.length, x=n===1?0:n===2?(i?.13:-.13):Math.cos(i*2.1+.5)*.14, z=n===1?0:n===2?(i?.03:-.02):Math.sin(i*2.1+.5)*.14; let y=0;
+    list.sort((a,b)=>"coatq".indexOf(a[0])-"coatq".indexOf(b[0])).forEach(pt=>{ const m=kzIngMesh(pt[0],+pt[1]); m.position.set(x,y,z); m.scale.setScalar(n>1?.72:.9); if(pt==="q1"&&y>0){ m.rotation.y=.6; m.scale.setScalar(n>1?.6:.75); } B.add(m); y+=pt==="c2"?.08:pt==="a1"?.035:.03; }); }); }
+/* ovo cru na frigideira: clara ainda meio transparente com a gema no meio */
+function kzEggPan(){ const g=new THREE.Group(), wm=new THREE.MeshStandardMaterial({color:new THREE.Color("#fbfbf2"),roughness:.3,transparent:true,opacity:.78}); [[0,0,.2],[.13,.08,.11],[-.1,.1,.1]].forEach(([x,z,r])=>g.add(mesh(new THREE.CylinderGeometry(r,r,.025,16),wm,x,.015,z,false)));
+  const yk=mesh(new THREE.SphereGeometry(.085,12,8,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({color:new THREE.Color("#ffb52e"),roughness:.25}),0,.02,0,false); yk.scale.y=.75; g.add(yk); return g; }
 const kzSig=it=>it?(it.k==="plate"?"P"+it.parts.slice().sort().join(""):it.k+(it.s||0)):"";
 function kzHat(C){ const g=grp(0,.42,0); g.add(mesh(new THREE.CylinderGeometry(.24,.22,.22,16),MT("#ffffff"),0,0,0,false)); [[0,.2,0,.26],[-.14,.16,0,.17],[.14,.16,0,.17],[0,.16,.13,.17],[0,.16,-.13,.17]].forEach(([x,y,z,r])=>g.add(mesh(new THREE.SphereGeometry(r,12,10),MT("#ffffff"),x,y,z,false)));
   g.add(mesh(new THREE.CylinderGeometry(.245,.245,.05,16),MT("#ff8fb0"),0,-.06,0,false)); C.head.add(g); }
@@ -5667,12 +5775,12 @@ function kzNewState(lv){ const L=kzL(lv), K={lv, run:true, t0:Date.now()+3500, d
 function kzFx(type,key,txt,extra){ const K=KZ.K; K.fxN++; K.fx.push(Object.assign({n:K.fxN,type,key,txt,t:Date.now()},extra||{})); if(K.fx.length>8) K.fx.shift(); }
 function kzUseful(key){ const K=KZ.K, cl=KZ.cells[key], ch=cl.ch, h=K.held&&K.held[KZ.me], on=K.it&&K.it[key];
   if(K.fire&&K.fire[key]) return h&&h.k==="ext"?2.5:0;
-  if(!h){ if(on) return on.k==="ext"?.8:1.4; if("tapcqP".includes(ch)) return ch==="P"&&!(K.plates>0)?0:1; if(ch==="W"&&K.dirty>0) return 1.2; return 0; }
+  if(!h){ if(on) return on.k==="ext"?.8:1.4; if((KZ_BOX+"P").includes(ch)) return ch==="P"&&!(K.plates>0)?0:1; if(ch==="W"&&K.dirty>0) return 1.2; return 0; }
   if(h.k==="plate"){ if(ch==="D") return h.parts.length?2.5:0; if(on&&on.k!=="plate"&&on.k!=="ext") return 1.8; if(ch==="X") return h.parts.length?.3:0; if((ch==="#"||ch==="C")&&!on) return .7; return 0; }
   if(h.k==="ext") return ch==="#"&&!on?.6:0;
   if(on&&on.k==="plate") return 2;
   if(ch==="C"&&!on) return KZ_CHOP[h.k]&&h.s===0?2.2:.5;
-  if(ch==="S"&&!on) return h.k==="c"&&h.s===0?2.2:0;
+  if(ch==="S"&&!on) return KZ_COOK[h.k]===h.s?2.2:0;
   if(ch==="X") return h.s===3?2.2:.3;
   if(ch==="#"&&!on) return .7;
   return 0; }
@@ -5686,16 +5794,19 @@ function kzTargetFor(x,z,yaw,vx,vz,loose){ const mv=Math.hypot(vx||0,vz||0)>.6, 
   return best; }
 function kzAllowed(parts){ const L=kzL(KZ.K.lv); return L.rec.some(r=>parts.every(p=>KZ_REC[r].parts.includes(p))); }
 function kzSay(t){ const K=KZ.K; K.msg=t; K.msgT=Date.now(); }
-function kzAct(i,key){ const K=KZ.K; if(!K||!K.run||Date.now()<K.t0||!key) return; const cl=KZ.cells[key]; if(!cl) return; const ch=cl.ch; let h=K.held[i], on=K.it[key]||null;
+function kzAct(i,key){ const K=KZ.K; if(!K||!K.run||Date.now()<K.t0||!key) return;
+  if(key==="@give"){ /* passar na mão: o que eu seguro vai direto pras mãos do outro, se ele estiver perto e de mãos vazias */ const j=1-i, A=i===KZ.me?KZ.P:KZ.rem, B=j===KZ.me?KZ.P:KZ.rem;
+    if(K.held[i]&&!K.held[j]&&A&&B&&Math.hypot(A.x-B.x,A.z-B.z)<2.6){ K.held[j]=K.held[i]; K.held[i]=null; K.pass=(K.pass||0)+1; kzFx("give",null,"",{to:j}); } else if(K.held[i]) kzSay(K.held[j]?"As mãos do outro estão ocupadas":"Chega mais perto pra passar"); return; }
+  const cl=KZ.cells[key]; if(!cl) return; const ch=cl.ch; let h=K.held[i], on=K.it[key]||null;
   const take=it=>{ K.held[i]=it; }, put=it=>{ K.it[key]=it; K.held[i]=null; };
   if(K.fire[key] && !(h&&h.k==="ext")){ kzSay("Tá pegando fogo! Pega o extintor"); return; }
   if(!h){
-    if("tapcq".includes(ch) && !on){ take({k:ch,s:0}); return; }
+    if(KZ_BOX.includes(ch) && !on){ take({k:ch,s:0}); return; }
     if(ch==="P" && !on){ if(K.plates>0){ K.plates--; take({k:"plate",parts:[]}); } else kzSay(kzL(K.lv).dishes?"Sem prato limpo! Lava na pia":"Acabaram os pratos!"); return; }
     if(ch==="W" && !on){ kzSay(K.dirty?"Segura 🔪 pra lavar":"Pia vazia"); return; }
     if(on){ take(on); delete K.it[key]; delete K.pg[key]; if(ch==="S") delete K.ck[key]; }
     return; }
-  if(h.k==="ext"){ if(!on && !"tapcqPDXWS".includes(ch)){ put(h); } else kzSay(K.fire[key]?"Segura 🔪 pra apagar":"Põe o extintor num balcão vazio"); return; }
+  if(h.k==="ext"){ if(!on && !(KZ_BOX+"PDXWS").includes(ch)){ put(h); } else kzSay(K.fire[key]?"Segura 🔪 pra apagar":"Põe o extintor num balcão vazio"); return; }
   if(ch==="X"){ if(h.k==="plate"){ h.parts=[]; } else K.held[i]=null; return; }
   if(ch==="W"){ kzSay("A pia é só pra lavar"); return; }
   if(ch==="D"){ if(h.k!=="plate"||!h.parts.length){ kzSay("Põe a comida num prato!"); return; }
@@ -5703,15 +5814,15 @@ function kzAct(i,key){ const K=KZ.K; if(!K||!K.run||Date.now()<K.t0||!key) retur
     const o=rk&&K.orders.filter(o=>o.r===rk).sort((a,b)=>a.t-b.t)[0];
     if(!o){ kzSay(rk?"Ninguém pediu isso agora":"Essa receita não existe"); kzSnd("bad"); return; }
     K.combo++; const mult=1+Math.min(3,Math.max(0,K.combo-1))*.25, left=Math.max(0,1-(Date.now()-o.t)/o.lim), tip=Math.round(10*left*(1+.25*(K.up.gorjeta||0))), pts=Math.round((KZ_REC[rk].pts+tip)*mult);
-    K.score+=pts; K.served++; K.best=Math.max(K.best,K.combo); K.orders=K.orders.filter(x=>x!==o); K.held[i]=null; K.back.push(Date.now()+6000);
+    K.score+=pts; K.served++; K.best=Math.max(K.best,K.combo); K.orders=K.orders.filter(x=>x!==o); K.held[i]=null; K.back.push(Date.now()+6000); K.hi=Date.now()+4500;
     kzFx("serve",key,`+${pts}`,{oid:o.id,combo:K.combo}); kzSay(K.combo>1?`Combo x${mult.toFixed(2).replace(/\.?0+$/,"")}! ${KZ_REC[rk].n}`:`${KZ_REC[rk].n} entregue!`); return; }
   if(on){
-    if(on.k==="plate" && h.k!=="plate"){ const pt=kzPart(h); if(on.parts.includes(pt)||!kzAllowed([...on.parts,pt])){ kzSay(h.s===0&&(KZ_CHOP[h.k]||h.k==="c")?(h.k==="c"?"A carne precisa fritar":"Pica antes!"):"Isso não combina"); kzSnd("bad"); return; } on.parts.push(pt); K.held[i]=null; return; }
-    if(h.k==="plate" && on.k!=="plate" && on.k!=="ext"){ const pt=kzPart(on); if(h.parts.includes(pt)||!kzAllowed([...h.parts,pt])){ kzSay(on.s===0&&(KZ_CHOP[on.k]||on.k==="c")?(on.k==="c"?"A carne precisa fritar":"Pica antes!"):"Isso não combina"); kzSnd("bad"); return; } h.parts.push(pt); delete K.it[key]; delete K.pg[key]; if(ch==="S") delete K.ck[key]; return; }
+    if(on.k==="plate" && h.k!=="plate"){ const pt=kzPart(h); if(on.parts.includes(pt)||!kzAllowed([...on.parts,pt])){ kzSay(kzWhy(h)); kzSnd("bad"); return; } on.parts.push(pt); K.held[i]=null; return; }
+    if(h.k==="plate" && on.k!=="plate" && on.k!=="ext"){ const pt=kzPart(on); if(h.parts.includes(pt)||!kzAllowed([...h.parts,pt])){ kzSay(kzWhy(on)); kzSnd("bad"); return; } h.parts.push(pt); delete K.it[key]; delete K.pg[key]; if(ch==="S") delete K.ck[key]; return; }
     kzSay("Esse lugar tá ocupado"); return; }
-  if(ch==="S" && h.k!=="c"){ kzSay("No fogão só vai carne"); return; }
+  if(ch==="S" && !(KZ_COOK[h.k]!=null&&(h.s===KZ_COOK[h.k]||h.s>=2))){ kzSay(KZ_COOK[h.k]!=null?"Pica antes de fritar":"Isso não vai no fogão"); return; }
   if(ch==="C" && !(KZ_CHOP[h.k] && h.s===0)){ if(h.k!=="plate"){ put(h); } return; }
-  if("tapcqP".includes(ch)){ kzSay("Põe no balcão"); return; }
+  if((KZ_BOX+"P").includes(ch)){ kzSay("Põe no balcão"); return; }
   put(h); if(ch==="S") K.ck[key]=K.ck[key]||0; }
 function kzHostTick(dt){ const K=KZ.K, L=kzL(K.lv), now=Date.now(); if(!K.run||now<K.t0) return;
   if(now>=K.t0+K.dur){ K.run=false; K.over=true; kzFinish(); return; }
@@ -5721,15 +5832,19 @@ function kzHostTick(dt){ const K=KZ.K, L=kzL(K.lv), now=Date.now(); if(!K.run||n
   for(const o of [...K.orders]) if(now-o.t>o.lim){ K.orders=K.orders.filter(x=>x!==o); K.lost++; K.combo=0; K.score=Math.max(0,K.score-10); kzFx("lost",null,"-10",{oid:o.id}); kzSay("Um cliente foi embora…"); }
   K.back=K.back.filter(t=>{ if(now>=t){ if(L.dishes) K.dirty++; else K.plates++; return false; } return true; });
   const cook=(1+.25*(K.up.fogao||0)), chop=(1+.25*(K.up.faca||0));
-  for(const k in K.ck){ const it=K.it[k]; if(!it||it.k!=="c"){ delete K.ck[k]; continue; }
-    if(it.s===0){ K.ck[k]+=dt*cook/6; if(K.ck[k]>=1){ it.s=2; K.ck[k]=0; } }
+  for(const k in K.ck){ const it=K.it[k]; if(!it||KZ_COOK[it.k]==null){ delete K.ck[k]; continue; }
+    if(it.s===KZ_COOK[it.k]){ K.ck[k]+=dt*cook/(KZ_CKT[it.k]||6); if(K.ck[k]>=1){ it.s=2; K.ck[k]=0; } }
     else if(it.s===2){ K.ck[k]+=dt/(L.tut?30:9); if(K.ck[k]>=1){ it.s=3; K.ck[k]=0; kzSay(L.fire?"Queimou! Tira antes que pegue fogo":"Queimou! Joga no lixo"); kzSnd("bad"); } }
     else if(it.s===3 && L.fire && !K.fire[k]){ K.ck[k]+=dt/6; if(K.ck[k]>=1){ K.fire[k]=1; K.ck[k]=1; kzSay("FOGO! Pega o extintor vermelho!"); } } }
+  /* cortando juntos (cada um numa tábua, ao mesmo tempo) = mais rápido */
+  const chopping=i=>{ const u=KZ.use[i], cl=u&&u.on&&KZ.cells[u.key], it=cl&&K.it[u.key]; return !!(cl&&cl.ch==="C"&&it&&KZ_CHOP[it.k]&&it.s===0&&!K.held[i]); }, duo=chopping(0)&&chopping(1)&&KZ.use[0].key!==KZ.use[1].key; if(duo) K.duoT=now;
+  /* toca aqui: depois de uma entrega, se os dois se encontram em 4,5 s ganham um bônus */
+  if(K.hi){ if(now>K.hi) K.hi=0; else if(KZ.rem&&Math.hypot(KZ.rem.x-KZ.P.x,KZ.rem.z-KZ.P.z)<1.5){ K.hi=0; K.hiN=(K.hiN||0)+1; K.score+=8; kzFx("hi",null,"+8",{x:+((KZ.rem.x+KZ.P.x)/2).toFixed(2),z:+((KZ.rem.z+KZ.P.z)/2).toFixed(2)}); } }
   for(let i=0;i<2;i++){ const u=KZ.use[i]; if(!u||!u.on) continue; const k=u.key, cl=KZ.cells[k]; if(!cl) continue; const h=K.held[i], it=K.it[k];
     if(K.fire[k] && h && h.k==="ext"){ K.fire[k]-=dt/1.6; if(K.fire[k]<=0){ delete K.fire[k]; delete K.it[k]; delete K.ck[k]; kzSay("Fogo apagado!"); } continue; }
     if(cl.ch==="W" && !h && K.dirty>0){ K.wash[k]=(K.wash[k]||0)+dt*chop/2.2; if(K.wash[k]>=1){ K.wash[k]=0; K.dirty--; K.plates++; } continue; }
     if(cl.ch!=="C"||!it||!KZ_CHOP[it.k]||it.s!==0||h) continue;
-    K.pg[k]=(K.pg[k]||0)+dt*chop/2.6; if(K.pg[k]>=1){ it.s=1; delete K.pg[k]; } }
+    K.pg[k]=(K.pg[k]||0)+dt*chop*(duo?1.45:1)/2.6; if(K.pg[k]>=1){ it.s=1; delete K.pg[k]; } }
   for(const k in K.wash) if(!(KZ.use[0]&&KZ.use[0].on&&KZ.use[0].key===k)&&!(KZ.use[1]&&KZ.use[1].on&&KZ.use[1].key===k)) {} }
 function kzFinish(){ const K=KZ.K, L=kzL(K.lv), st=L.stars.filter(v=>K.score>=v).length; K.stars=st; kzPush(true); kzResult(); }
 
@@ -5743,6 +5858,7 @@ function kzNet(path){ if(!KZ.on) return; const d=NET.docs[path]; if(!d) return; 
   if(path==="cozinha/estado" && !KZ.guest && d.by!==S.me && d.run && d.by<S.me && Date.now()-(d.at||0)<4000){ KZ.guest=true; KZ.K=d; toast(`Entrando na cozinha de ${nmRaw(d.by)}`); }
   if(path==="cozinha/acao-p"+other() && kzHost() && KZ.K){ const o=other(); if((d.seq||0)>(KZ.K.seq[o]||0)){ KZ.K.seq[o]=d.seq; kzAct(o,d.key); kzPush(true); } }
   if(path==="cozinha/p"+other()){ KZ.use[other()]={on:!!d.use,key:d.key}; } }
+function kzGive(){ if(!KZ.on||!KZ.K) return; KZ.chars[KZ.me].pose="give"; if(kzHost()){ kzAct(KZ.me,"@give"); kzPush(true); } else { KZ.seq=(KZ.seq||0)+1; push("cozinha/acao-p"+S.me,{seq:KZ.seq,key:"@give",t:Date.now()}); } }
 function kzPick(){ if(!KZ.on||!KZ.K) return; const P=KZ.P; const key=KZ.tgt||kzTargetFor(P.x,P.z,P.yaw,0,0,true); if(!key) return; KZ.tgt=key; KZ.chars[KZ.me].pose="give";
   if(kzHost()){ kzAct(KZ.me,key); kzPush(true); } else { KZ.seq=(KZ.seq||0)+1; push("cozinha/acao-p"+S.me,{seq:KZ.seq,key,t:Date.now()}); } }
 
@@ -5750,6 +5866,7 @@ function kzPick(){ if(!KZ.on||!KZ.K) return; const P=KZ.P; const key=KZ.tgt||kzT
 function kzMenu(){ if(!window.THREE) return; const z=kzSave(), d=NET.docs["cozinha/estado"], live=online()&&d&&d.run&&d.by!==S.me&&Date.now()-(d.at||0)<5000;
   const unlocked=i=>i===0||(z.stars[i-1]||0)>=1, star=n=>"★".repeat(n)+"☆".repeat(3-n);
   const m=modal(`<div class="kzMenu"><h2>🍳 Cozinha a Dois</h2><p class="small">Os clientes chegam na janela com o pedido. Peguem os ingredientes, piquem na tábua, fritem a carne, montem no prato e entreguem antes da paciência acabar. Entregas seguidas viram combo!</p>
+    <p class="small"><b>De dupla:</b> perto um do outro aparece o botão de <b>passar</b> o que está na mão; cortando os dois ao mesmo tempo vai mais rápido; e depois de cada entrega, se vocês se encontrarem, vale um <b>toca aqui</b> com bônus. Da fase 7 em diante tem ovo e batata.</p>
     ${live?`<button class="btn pink" data-g="join">Entrar na cozinha de ${nm(d.by)}</button>`:""}
     <div class="kzLv">${KZ_LV.map((L,i)=>`<button class="kzL ${unlocked(i)?"":"lock"}" data-l="${i}"><b>${i+1}. ${L.n}</b><span>${unlocked(i)?star(z.stars[i]||0):"🔒 1 estrela na anterior"}</span><span class="small">${L.dishes?"pia e fogo · ":""}${z.best[i]?`recorde ${z.best[i]}`:L.rec.map(r=>KZ_REC[r].n).join(" · ")}</span></button>`).join("")}</div>
     <h3>Melhorias da cozinha <span class="kzCoin">🪙 ${cBal()}</span></h3>
@@ -5770,11 +5887,12 @@ function kzEnter(lv,join){ if(!HUB||!W3) return; closeCtx(); hideEnter();
   const hud=document.createElement("div"); hud.className="kzHud";
   hud.innerHTML=artify(`<div class="kzTop"><button class="hb" id="kzX" aria-label="Sair da cozinha">↩️</button><div class="kzOrders" id="kzOrders"></div><div class="kzInfo"><b id="kzTime">3:00</b><span id="kzScore">0</span><span id="kzCombo"></span></div><button class="hb chatHb" id="kzChat" aria-label="Conversa">💬<i class="chatBadge" hidden></i></button></div>
     <div class="kzMsg" id="kzMsg"></div><div class="kzTut" id="kzTut" hidden></div>
-    <div class="kzBtns"><button class="kzB kzChop" id="kzChop">🔪<b id="kzChopL">Cortar</b></button><button class="kzB kzPick" id="kzPick">✋<b id="kzPickL">Pegar</b></button></div>`);
+    <div class="kzBtns"><button class="kzB kzGive" id="kzGive" hidden>🤝<b>Passar</b></button><button class="kzB kzChop" id="kzChop">🔪<b id="kzChopL">Cortar</b></button><button class="kzB kzPick" id="kzPick">✋<b id="kzPickL">Pegar</b></button></div>`);
   HUB.scene.appendChild(hud); KZ.hud=hud;
   hud.querySelector("#kzX").onclick=()=>confirmBox("Sair da cozinha?","A fase acaba pra você.","Sair",()=>kzExit());
   hud.querySelector("#kzChat").onclick=chatOpen; chatBadge();
   const pk=hud.querySelector("#kzPick"); pk.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); pk.classList.add("on"); kzPick(); }); ["pointerup","pointercancel","pointerleave"].forEach(ev=>pk.addEventListener(ev,()=>pk.classList.remove("on")));
+  { const gv=hud.querySelector("#kzGive"); gv.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); gv.classList.add("on"); kzGive(); }); ["pointerup","pointercancel","pointerleave"].forEach(ev=>gv.addEventListener(ev,()=>gv.classList.remove("on"))); }
   const ch=hud.querySelector("#kzChop"); ch.addEventListener("pointerdown",e=>{ e.preventDefault(); e.stopPropagation(); ch.classList.add("on"); KZ.chopHeld=true; }); ["pointerup","pointercancel","pointerleave"].forEach(ev=>ch.addEventListener(ev,()=>{ ch.classList.remove("on"); KZ.chopHeld=false; }));
   KZ.bars={}; doorFade(); snd("go"); pushMe({place:"cozinha"});
   if(!join){ kzPush(true); [3,2,1].forEach((n,k)=>setTimeout(()=>{ if(KZ.on) bigToast(String(n),k?"":kzL(lv).n); },k*1000)); setTimeout(()=>{ if(KZ.on) bigToast(lv==="tut"?"Bora aprender!":"Cozinha aberta!",""); },3000); }
@@ -5787,7 +5905,7 @@ function kzResult(){ if(KZ.shown||!KZ.on||(KZ.K&&KZ.K.tut)) return; KZ.shown=tru
   const coins=Math.round(K.score/4), rec=K.score>(z.best[K.lv]||0); setTimeout(()=>{ cEarn(coins,"cozinha"); mis("cozinha"); if(st>0) mis("estrela",st); },1200); z.stars[K.lv]=Math.max(z.stars[K.lv]||0,st); z.best[K.lv]=Math.max(z.best[K.lv]||0,K.score); save();
   snd(st?"fanfare":"meh"); const nextOk=st>=1&&K.lv<KZ_LV.length-1;
   setTimeout(()=>{ if(!KZ.on) return; const m=modal(`<div class="obMenu"><h2>${st===3?"Chefs de verdade!":st?"Mandaram bem!":"Quase lá!"}</h2><div class="kzStars">${[0,1,2].map(i=>`<span class="${i<st?"on":""}" style="animation-delay:${i*.25}s">★</span>`).join("")}</div>
-    <p><b>${K.score} pontos</b>${rec?" · recorde novo!":""}</p><p class="small">${K.served} ${K.served===1?"pedido entregue":"pedidos entregues"}${K.lost?` · ${K.lost} cliente${K.lost>1?"s foram":" foi"} embora`:""}${K.best>1?` · maior combo x${K.best}`:""}</p><p>+ 🪙 ${coins} pra lojinha</p>
+    <p><b>${K.score} pontos</b>${rec?" · recorde novo!":""}</p><p class="small">${K.served} ${K.served===1?"pedido entregue":"pedidos entregues"}${K.lost?` · ${K.lost} cliente${K.lost>1?"s foram":" foi"} embora`:""}${K.best>1?` · maior combo x${K.best}`:""}</p>${(K.pass||K.hiN)?`<p class="small">Em dupla: ${K.pass||0} ${K.pass===1?"passe":"passes"} na mão · ${K.hiN||0} toca aqui</p>`:""}<p>+ 🪙 ${coins} pra lojinha</p>
     <div class="obBtns">${nextOk&&kzHost()?`<button class="btn pink" data-o="next">Próxima fase</button>`:""}${kzHost()?`<button class="btn gold" data-o="again">Jogar de novo</button>`:""}<button class="btn alt" data-o="out">Sair</button></div></div>`);
     const b=(k,f)=>{ const e=m.querySelector(`[data-o="${k}"]`); if(e) e.onclick=()=>{ m.remove(); f(); }; };
     b("next",()=>{ kzExit(true); HUB.scene.classList.remove("kzMode"); kzEnter(K.lv+1,false); }); b("again",()=>{ kzExit(true); HUB.scene.classList.remove("kzMode"); kzEnter(K.lv,false); }); b("out",()=>kzExit()); },900); }
@@ -5798,7 +5916,7 @@ function kzCoach(){ const K=KZ.K, me=KZ.me, P=KZ.P, cells=KZ.cells, h=K.held&&K.
   const o=(K.orders||[]).find(o=>!L[o.r]); if(!o) return null; const need=KZ_REC[o.r].parts;
   const keys=ch=>Object.keys(cells).filter(k=>cells[k].ch===ch), near=list=>{ let best=null, bd=1e9; list.forEach(k=>{ const c=cells[k], d=Math.hypot(c.x-P.x,c.z-P.z); if(d<bd){ bd=d; best=k; } }); return best; };
   const freeOf=ch=>near(keys(ch).filter(k=>!K.it[k]))||near(keys(ch));
-  const nm={a:"a alface",t:"o tomate",p:"o pão",c:"a carne",q:"o queijo"}, em={a:"na alface",t:"no tomate",p:"no pão",c:"na carne",q:"no queijo"}, st=pt=>pt[1]==="1"?" picad"+(pt[0]==="a"?"a":"o"):pt[1]==="2"?" frita":"";
+  const nm={a:"a alface",t:"o tomate",p:"o pão",c:"a carne",q:"o queijo",b:"a batata",o:"o ovo"}, em={a:"na alface",t:"no tomate",p:"no pão",c:"na carne",q:"no queijo",b:"na batata",o:"no ovo"}, st=pt=>pt[1]==="1"?" picad"+("ab".includes(pt[0])?"a":"o"):pt[1]==="2"?(pt[0]==="o"?" frito":" frita"):"";
   const pk=Object.keys(K.it).find(k=>K.it[k].k==="plate"&&cells[k].ch!=="D"&&K.it[k].parts.every(x=>need.includes(x)));
   const cur=h&&h.k==="plate"?h:(pk?K.it[pk]:null), missing=need.filter(x=>!(cur&&cur.parts.includes(x)));
   const readyOn=()=>Object.keys(K.it).find(k=>{ const it=K.it[k]; return it.k!=="plate"&&it.k!=="ext"&&missing.includes(it.k+(it.s||0)); });
@@ -5810,16 +5928,17 @@ function kzCoach(){ const K=KZ.K, me=KZ.me, P=KZ.P, cells=KZ.cells, h=K.held&&K.
     if(h.s===3) return {k:near(keys("X")),t:"Queimou! Joga no lixo"};
     if(missing.includes(pt)) return pk?{k:pk,t:"Põe no prato"}:{k:freeOf("#"),t:"Deixa num balcão livre e pega um prato"};
     if(KZ_CHOP[h.k]&&h.s===0) return {k:freeOf("C"),t:`Põe ${nm[h.k]} na tábua`};
-    if(h.k==="c"&&h.s===0) return {k:freeOf("S"),t:"Põe a carne no fogão, ela frita sozinha"};
+    if(KZ_COOK[h.k]===h.s) return {k:freeOf("S"),t:`Põe ${nm[h.k]} no fogão, frita sozinho`};
     return {k:near(keys("X")),t:"Esse não vai nesse pedido, joga no lixo"}; }
   if(pk&&!missing.length) return {k:pk,t:"Pega o prato pronto"};
-  const raw=keys("C").find(k=>K.it[k]&&KZ_CHOP[K.it[k].k]&&K.it[k].s===0&&missing.includes(K.it[k].k+"1")); if(raw) return {k:raw,t:"Segura 🔪 Cortar de frente pra tábua"};
+  const raw=keys("C").find(k=>K.it[k]&&KZ_CHOP[K.it[k].k]&&K.it[k].s===0&&missing.some(x=>x[0]===K.it[k].k&&x[1]!=="0")); if(raw) return {k:raw,t:"Segura 🔪 Cortar de frente pra tábua"};
+  const half=Object.keys(K.it).find(k=>{ const it=K.it[k]; return cells[k].ch!=="S"&&it.s>0&&KZ_COOK[it.k]===it.s&&missing.includes(it.k+"2"); }); if(half) return {k:half,t:`Pega ${nm[K.it[half].k]} picada e leva pro fogão`};
   const r=readyOn(); if(r){ const it=K.it[r]; return pk?{k:r,t:`Pega ${nm[it.k]}${st(it.k+(it.s||0))} e põe no prato`}:{k:near(keys("P")),t:"Pega um prato na pilha"}; }
   const busy=new Set(Object.values(K.it).filter(it=>it.k!=="plate"&&it.k!=="ext").map(it=>it.k)), nx=missing.find(x=>!busy.has(x[0])&&!(K.held[1-me]&&K.held[1-me].k===x[0]));
   const nxP=missing.find(x=>x[1]!=="0"&&!busy.has(x[0])&&!(K.held[1-me]&&K.held[1-me].k===x[0]))||(cur?nx:null);
-  if(nxP) return {k:near(keys(nxP[0])),t:`Pega ${nm[nxP[0]]}`+(nxP[1]==="1"?" (depois pica na tábua)":nxP[1]==="2"?" (depois põe no fogão)":"")};
+  if(nxP) return {k:near(keys(nxP[0])),t:`Pega ${nm[nxP[0]]}`+(nxP[1]==="1"?" (depois pica na tábua)":nxP[1]==="2"?(KZ_CHOP[nxP[0]]?" (pica na tábua e depois frita)":" (depois põe no fogão)"):"")};
   if(!cur) return {k:near(keys("P")),t:"Pega um prato na pilha"};
-  const fr=keys("S").find(k=>K.it[k]&&K.it[k].k==="c"); if(fr) return {k:fr,t:"A carne tá fritando, pega quando a barrinha encher"};
+  const fr=keys("S").find(k=>K.it[k]&&KZ_COOK[K.it[k].k]!=null); if(fr) return {k:fr,t:"Tá fritando, pega quando a barrinha encher"};
   return null; }
 function kzCoachTick(){ const box=KZ.hud.querySelector("#kzTut"), c=KZ.on&&KZ.K&&!KZ.shown?kzCoach():null, cl=c&&KZ.cells[c.k];
   KZ.arrow.visible=KZ.ring.visible=!!cl;
@@ -5843,7 +5962,7 @@ function kzCustTick(dt){ const K=KZ.K, now=Date.now(), ids=new Set((K.orders||[]
     animChar(C,dt,KZ.t);
     // balão com o pedido e a paciência
     if(c.st!=="go"){ const o=c.o, left=Math.max(0,1-(now-o.t)/o.lim), q=proj(V3(p.x,2.25,p.z)); c.bub.style.transform=`translate(${q.x}px,${q.y}px)`; c.bub.style.display=q.vis?"":"none";
-      const html=`<b>${KZ_REC[o.r].n}</b><span>${KZ_REC[o.r].parts.map(pp=>`<i class="kzI" style="background:${KZ_ING[pp[0]].c}">${pp[1]==="1"?"✂":pp[1]==="2"?"♨":""}</i>`).join("")}</span><u><s style="width:${left*100}%;background:${left<.25?"#ff5a4f":left<.5?"#ffb020":"#58b394"}"></s></u>`;
+      const html=`<b>${KZ_REC[o.r].n}</b><span>${KZ_REC[o.r].parts.map(pp=>`${kzIco(pp)}`).join("")}</span><u><s style="width:${left*100}%;background:${left<.25?"#ff5a4f":left<.5?"#ffb020":"#58b394"}"></s></u>`;
       if(c.bub._h!==o.r){ c.bub._h=o.r; c.bub.innerHTML=html; } else { const s=c.bub.querySelector("s"); s.style.width=(left*100)+"%"; s.style.background=left<.25?"#ff5a4f":left<.5?"#ffb020":"#58b394"; } }
     else { const q=proj(V3(p.x,2.25,p.z)); c.bub.style.transform=`translate(${q.x}px,${q.y}px)`; if(c.t>1.2){ c.bub.remove(); } if(c.t>4){ KZ.scene.remove(C.root); delete KZ.cust[id]; } } } }
 
@@ -5858,7 +5977,8 @@ function kzSense(dt){ const K=KZ.K, sig=it=>it?kzSig(it):"", pv=KZ.pv; KZ.fly=KZ
   KZ.pv=cur; if(!pv) return;
   const chOf=k=>KZ.cells[k]&&KZ.cells[k].ch, bounce=i=>{ const Ch=KZ.chars[i]; if(Ch&&Ch.root.visible){ Ch.land=.13; Ch.squash=.3; } };
   // mãos
-  for(let i=0;i<2;i++){ const a=pv.h[i], b=cur.h[i]; if(a===b) continue;
+  const gave=[0,1].find(i=>pv.h[i]&&!cur.h[i]&&!pv.h[1-i]&&cur.h[1-i]===pv.h[i]); if(gave!=null){ kzSnd("pluck"); bounce(0); bounce(1); }   /* passou na mão: não é lixo nem balcão */
+  for(let i=0;i<2&&gave==null;i++){ const a=pv.h[i], b=cur.h[i]; if(a===b) continue;
     if(!a&&b){ const from=Object.keys(pv.it).find(k=>pv.it[k]===b&&cur.it[k]!==b); bounce(i);
       if(b[0]==="P") kzSnd("clink"); else if(b.startsWith("ext")) kzSnd("metal"); else if(from&&chOf(from)==="S") kzSnd("sear"); else kzSnd("pluck"); continue; }
     if(a&&!b){ bounce(i); const to=Object.keys(cur.it).find(k=>cur.it[k]===a&&pv.it[k]!==a);
@@ -5871,7 +5991,7 @@ function kzSense(dt){ const K=KZ.K, sig=it=>it?kzSig(it):"", pv=KZ.pv; KZ.fly=KZ
   for(const k in cur.it){ const a=pv.it[k], b=cur.it[k], cl=KZ.cells[k]; if(!a||a===b) continue;
     if(a[0]===b[0]&&a[0]!=="P"){ const s0=a.slice(1), s1=b.slice(1);
       if(s0==="0"&&s1==="1"){ kzSnd("shing"); KZ.dust.burst(cl.x,1.3,cl.z,8,"#ffffff"); }
-      if(s0==="0"&&s1==="2"){ kzSnd("timer"); const e=KZ.itemMesh["c:"+k]; if(e) e.flip=0; KZ.dust.burst(cl.x,1.35,cl.z,6,"#ffd15c"); }
+      if((s0==="0"||s0==="1")&&s1==="2"){ kzSnd("timer"); const e=KZ.itemMesh["c:"+k]; if(e) e.flip=0; KZ.dust.burst(cl.x,1.35,cl.z,6,"#ffd15c"); }
       if(s0==="2"&&s1==="3"){ kzSnd("burnt"); for(let j=0;j<6;j++) KZ.dust.puff(cl.x,1.3,cl.z,.35,(Math.random()-.5)*.6,1.2,(Math.random()-.5)*.6,1.4,"#4a4048"); } } }
   cur.fire.forEach(k=>{ if(!pv.fire.includes(k)){ kzSnd("fire"); const cl=KZ.cells[k]; KZ.dust.burst(cl.x,1.5,cl.z,12,"#ff8a3d"); } });
   pv.fire.forEach(k=>{ if(!cur.fire.includes(k)){ kzSnd("out"); const cl=KZ.cells[k]; for(let j=0;j<10;j++) KZ.dust.puff(cl.x,1.3,cl.z,.4,(Math.random()-.5)*1.2,.9,(Math.random()-.5)*1.2,1.1,"#ffffff"); } });
@@ -5887,7 +6007,7 @@ function kzSense(dt){ const K=KZ.K, sig=it=>it?kzSig(it):"", pv=KZ.pv; KZ.fly=KZ
     if(K.fire&&K.fire[k]){ const u=kzUser(k); if(u>=0&&K.held[u]&&K.held[u].k==="ext"){ if(tick) kzSnd("spray"); const Ch=KZ.chars[u], p=Ch.root.position, yy=Ch.root.rotation.y;
         for(let j=0;j<2;j++) KZ.dust.puff(p.x+Math.sin(yy)*.5,1.15,p.z+Math.cos(yy)*.5,.22,(cl.x-p.x)*2.2+(Math.random()-.5)*.4,.25,(cl.z-p.z)*2.2+(Math.random()-.5)*.4,.45,"#ffffff"); }
       else if(Math.random()<dt*5) kzSnd("crackle"); }
-    if(ch==="S"){ const it=K.it&&K.it[k]; if(it&&it.k==="c"&&it.s===2&&(K.ck[k]||0)>.55){ KZ.bpT=(KZ.bpT||0)-dt; if(KZ.bpT<=0){ KZ.bpT=(K.ck[k]>.8?.25:.5); kzSnd("beep"); } } } }
+    if(ch==="S"){ const it=K.it&&K.it[k]; if(it&&KZ_COOK[it.k]!=null&&it.s===2&&(K.ck[k]||0)>.55){ KZ.bpT=(KZ.bpT||0)-dt; if(KZ.bpT<=0){ KZ.bpT=(K.ck[k]>.8?.25:.5); kzSnd("beep"); } } } }
   // últimos 10 segundos
   const left=Math.ceil((K.t0+K.dur-Date.now())/1000); if(K.run&&left<=10&&left>0&&left!==KZ.lastTick){ KZ.lastTick=left; kzSnd(left<=3?"tock":"tick"); }
   if(pv.run&&!cur.run&&K.over) snd("fanfare");
@@ -5906,26 +6026,29 @@ function kzStep(dt){ const K=KZ.K, P=KZ.P, me=KZ.me, C=KZ.chars[me]; if(!K) retu
   if(sp>1.2){ const ph=Math.floor((C.wt||0)/Math.PI); if(ph!==KZ.stepPh){ KZ.stepPh=ph; kzSnd("step"); } }
   if(sp>3.5){ KZ.dT=(KZ.dT||0)-dt; if(KZ.dT<=0){ KZ.dT=.14; KZ.dust.puff(P.x-P.vx*.05,.05,P.z-P.vz*.05,.2,0,.25,0,.35); } }
   C.root.position.set(P.x,0,P.z); C.root.rotation.y=P.yaw; C.walk=Math.min(1,sp/2.4); C.gait=Math.max(.8,sp/3.7); C.jv=null;
-  const held=K.held&&K.held[me], tc0=KZ.tgt&&KZ.cells[KZ.tgt]; C.pose=KZ.chopHeld&&tc0&&!held&&tc0.ch==="C"?"chop":KZ.chopHeld&&tc0&&!held&&tc0.ch==="W"?"reach":KZ.chopHeld&&held&&held.k==="ext"?"reach":(held?"give":"idle"); animChar(C,dt,KZ.t);
+  const held=K.held&&K.held[me], tc0=KZ.tgt&&KZ.cells[KZ.tgt]; C.pose=KZ.chopHeld&&tc0&&!held&&tc0.ch==="C"?"chop":KZ.chopHeld&&tc0&&!held&&tc0.ch==="W"?"reach":KZ.chopHeld&&held&&held.k==="ext"?"reach":(held?"give":"idle"); if(KZ.hiT>KZ.t) C.pose="wave"; animChar(C,dt,KZ.t);
   KZ.tgt=kzTargetFor(P.x,P.z,P.yaw,P.vx,P.vz);
   if(KZ.tgt&&sp<.5){ const tc1=KZ.cells[KZ.tgt]; let a=Math.atan2(tc1.x-P.x,tc1.z-P.z)-P.yaw; a=Math.atan2(Math.sin(a),Math.cos(a)); P.yaw+=a*Math.min(1,dt*10); C.root.rotation.y=P.yaw; } const tc=KZ.tgt&&KZ.cells[KZ.tgt]; KZ.hl.visible=!!tc; if(tc){ KZ.hl.position.set(tc.x,1.0,tc.z); KZ.hl.material.opacity=.32+.14*Math.sin(KZ.t*6); KZ.hl.material.color.set(K.fire&&K.fire[KZ.tgt]?"#ff5a4f":kzUseful(KZ.tgt)>=1?"#7dffb8":"#ffffff"); }
   kzPosPush();
   // o outro
   const o=1-me, Co=KZ.chars[o], d=online()?NET.docs["cozinha/p"+o]:null, fresh=d&&!d.out&&d.lv===KZ.lv&&performance.now()-(KZ.rx["cozinha/p"+o]||0)<5000;
   if(fresh){ if(!KZ.rem) KZ.rem={x:d.x,z:d.z}; const kk=1-Math.exp(-dt*12); KZ.rem.x+=(d.x-KZ.rem.x)*kk; KZ.rem.z+=(d.z-KZ.rem.z)*kk; Co.root.visible=true; Co.root.position.set(KZ.rem.x,0,KZ.rem.z); let a=(d.r||0)-Co.root.rotation.y; a=Math.atan2(Math.sin(a),Math.cos(a)); Co.root.rotation.y+=a*Math.min(1,dt*12);
-    Co.walk=d.w||0; Co.pose=d.use?(KZ.cells[d.key]&&KZ.cells[d.key].ch==="C"&&!(K.held&&K.held[o])?"chop":"reach"):(K.held&&K.held[o]?"give":"idle"); animChar(Co,dt,KZ.t); } else { Co.root.visible=false; KZ.rem=null; }
+    Co.walk=d.w||0; Co.pose=d.use?(KZ.cells[d.key]&&KZ.cells[d.key].ch==="C"&&!(K.held&&K.held[o])?"chop":"reach"):(K.held&&K.held[o]?"give":"idle"); if(KZ.hiT>KZ.t) Co.pose="wave"; animChar(Co,dt,KZ.t); } else { Co.root.visible=false; KZ.rem=null; }
   // itens no balcão, nas mãos e nas pilhas
   const want={}; for(const key in (K.it||{})) want["c:"+key]={it:K.it[key],cell:KZ.cells[key],key}; for(let i=0;i<2;i++) if(K.held&&K.held[i]) want["h:"+i]={it:K.held[i],hand:i};
   KZ.gone=(KZ.gone||[]).filter(g=>KZ.t-g.t<.35);
   for(const id in KZ.itemMesh) if(!want[id]||KZ.itemMesh[id].sig!==kzSig(want[id].it)){ const e0=KZ.itemMesh[id]; KZ.gone.push({id,sig:e0.sig,pos:e0.m.position.clone(),t:KZ.t}); KZ.scene.remove(e0.m); delete KZ.itemMesh[id]; }
-  for(const id in want){ let e=KZ.itemMesh[id]; if(!e){ const m=kzItemMesh(want[id].it); KZ.scene.add(m); e=KZ.itemMesh[id]={m,sig:kzSig(want[id].it),born:KZ.t};
+  for(const id in want){ let e=KZ.itemMesh[id]; if(!e){ const m=kzItemMesh(want[id].it,want[id].cell&&want[id].cell.ch); KZ.scene.add(m); e=KZ.itemMesh[id]={m,sig:kzSig(want[id].it),born:KZ.t};
       const gi=KZ.gone.findIndex(g=>g.sig===e.sig&&g.id!==id); if(gi>=0){ e.from=KZ.gone[gi].pos; KZ.gone.splice(gi,1); } else { const gj=KZ.gone.findIndex(g=>g.id===id); if(gj>=0){ e.bump=true; KZ.gone.splice(gj,1); } } }
     const w=want[id], s0=w.it.k==="ext"?1:1.35, age=KZ.t-e.born; let sc=s0;
     if(e.bump) sc=s0*(1+.14*Math.sin(Math.min(1,age*5)*Math.PI)); else if(!e.from){ const pop=Math.min(1,age*8); sc=s0*(.6+.4*pop+.15*Math.sin(pop*Math.PI)); }
     e.sq=(e.sq||0)*Math.exp(-dt*14); e.m.scale.set(sc*(1+.12*e.sq),sc*(1-.25*e.sq),sc*(1+.12*e.sq));
     let tx,ty,tz,ry=0;
     if(w.cell){ const ch=w.cell.ch; tx=w.cell.x; ty=ch==="S"?1.12:ch==="C"?1.03:.98; tz=w.cell.z;
-      if(ch==="S"&&w.it.k==="c"&&w.it.s!==3&&!(K.fire&&K.fire[w.key])){ ty+=Math.abs(Math.sin(KZ.t*23+tx*3))*.014; ry=Math.sin(KZ.t*6+tz)*.09; }
+      if(ch==="S"&&KZ_COOK[w.it.k]!=null&&w.it.s!==3&&!(K.fire&&K.fire[w.key])){ ty+=Math.abs(Math.sin(KZ.t*23+tx*3))*.014; ry=Math.sin(KZ.t*6+tz)*.09;
+        const v=K.ck[w.key]||0, raw=w.it.s===KZ_COOK[w.it.k], tgt=raw?({c:"#8a4a2c",b:"#f6b93b"})[w.it.k]:(w.it.s===2&&v>.55?"#2a1a14":null);   /* vai mudando de cor enquanto frita e escurece quando está quase queimando */
+        if(tgt){ if(!e.cols){ e.cols=[]; e.m.traverse(o=>{ if(o.isMesh&&o.material&&o.material.color) e.cols.push([o.material,o.material.color.clone()]); }); } const TC=KZ.tc||(KZ.tc=new THREE.Color()); TC.set(tgt); const f=Math.max(0,Math.min(1,raw?v*.92:(v-.55)/.45*.85)); e.cols.forEach(([m2,c0])=>m2.color.copy(c0).lerp(TC,f)); }
+        if(w.it.s===2&&v<=.55) ty+=Math.abs(Math.sin(KZ.t*7))*.07; }
       if(e.flip!=null){ e.flip+=dt/.5; const f=Math.min(1,e.flip); ty+=Math.sin(f*Math.PI)*.45; e.m.rotation.x=f*Math.PI*2; if(f>=1){ e.flip=null; e.m.rotation.x=0; } } }
     else { const Ch=KZ.chars[w.hand]; if(!Ch.root.visible){ e.m.visible=false; continue; } e.m.visible=true; const yy=Ch.root.rotation.y; tx=Ch.root.position.x+Math.sin(yy)*.55; ty=1.05+Math.abs(Math.sin(KZ.t*9))*.03*(Ch.walk||0); tz=Ch.root.position.z+Math.cos(yy)*.55; ry=yy; }
     if(e.from){ const f=Math.min(1,age/.17), ef=1-(1-f)*(1-f); e.m.position.set(e.from.x+(tx-e.from.x)*ef,e.from.y+(ty-e.from.y)*ef+Math.sin(f*Math.PI)*.32,e.from.z+(tz-e.from.z)*ef); if(f>=1) e.from=null; }
@@ -5934,9 +6057,9 @@ function kzStep(dt){ const K=KZ.K, P=KZ.P, me=KZ.me, C=KZ.chars[me]; if(!K) retu
   KZ.plateMeshes.forEach((m,i)=>m.visible=i<Math.min(6,K.plates||0)); KZ.dirtyMeshes.forEach((m,i)=>m.visible=i<Math.min(6,K.dirty||0));
   // fogão: anel aceso, fumaça, chiado e fogo
   for(const key in KZ.pans){ const it=K.it&&K.it[key], pan=KZ.pans[key], cl=KZ.cells[key], fire=K.fire&&K.fire[key];
-    pan.ring.visible=!!(it&&it.k==="c"&&it.s!==3)&&!fire; if(pan.ring.visible){ pan.ring.material.color.set(it.s===2&&(K.ck[key]||0)>.55?(Math.sin(KZ.t*14)>0?"#ff3d3d":"#ff8a3d"):"#ff8a3d"); pan.ring.scale.setScalar(1+Math.sin(KZ.t*16)*.06); }
+    pan.ring.visible=!!(it&&KZ_COOK[it.k]!=null&&it.s!==3)&&!fire; if(pan.ring.visible){ pan.ring.material.color.set(it.s===2?((K.ck[key]||0)>.55?(Math.sin(KZ.t*14)>0?"#ff3d3d":"#ff8a3d"):"#4be38f"):"#ff8a3d"); pan.ring.scale.setScalar(1+Math.sin(KZ.t*16)*.06); }
     pan.fire.visible=!!fire; if(fire){ pan.fire.children.forEach((f,j)=>{ f.scale.y=1+Math.sin(KZ.t*14+j*2)*.35; f.scale.x=f.scale.z=1+Math.sin(KZ.t*11+j)*.15; }); if(Math.random()<dt*8) KZ.dust.puff(cl.x,1.9,cl.z,.4,(Math.random()-.5)*.3,1.4,(Math.random()-.5)*.3,1.2,"#5c4a52"); }
-    if(it&&it.k==="c"&&it.s!==3&&!fire){ if(Math.random()<dt*5) KZ.dust.puff(cl.x+(Math.random()-.5)*.4,1.25,cl.z+(Math.random()-.5)*.4,.18,0,.9,0,.7,"#ffffff"); KZ.szT=(KZ.szT||0)-dt; if(KZ.szT<=0){ KZ.szT=.4; kzSnd("sizzle"); } }
+    if(it&&KZ_COOK[it.k]!=null&&it.s!==3&&!fire){ if(Math.random()<dt*5) KZ.dust.puff(cl.x+(Math.random()-.5)*.4,1.25,cl.z+(Math.random()-.5)*.4,.18,0,.9,0,.7,"#ffffff"); KZ.szT=(KZ.szT||0)-dt; if(KZ.szT<=0){ KZ.szT=.4; kzSnd("sizzle"); } }
     if(it&&it.s===3&&!fire&&Math.random()<dt*6) KZ.dust.puff(cl.x,1.3,cl.z,.3,(Math.random()-.5)*.2,1.1,(Math.random()-.5)*.2,1.2,"#6e6470"); }
   // faca picando
   for(const key in KZ.knives){ const kn=KZ.knives[key], it=K.it&&K.it[key], raw=!!(it&&KZ_CHOP[it.k]&&it.s===0), dO=online()?NET.docs["cozinha/p"+(1-me)]:null;
@@ -5947,7 +6070,11 @@ function kzStep(dt){ const K=KZ.K, P=KZ.P, me=KZ.me, C=KZ.chars[me]; if(!K) retu
     else if(kn.userData.busy!==false){ kn.position.copy(kn.userData.home); kn.rotation.set(0,0,0); kn.scale.setScalar(1); kn.userData.hit=false; }
     kn.userData.busy=!!Ch; }
   // efeitos que vieram do estado (entrega, cliente bravo)
-  for(const f of (K.fx||[])){ if(f.n<=KZ.fxSeen) continue; KZ.fxSeen=f.n; const cl=f.key&&KZ.cells[f.key]; if(f.type==="serve"&&cl){ kzFloat(cl.x,1.9,cl.z,f.txt,"#ffd15c"); kzSnd("cash"); KZ.dust.burst(cl.x,1.3,cl.z,10,"#ffd15c"); kzServeFly(f,cl); if(f.combo>1) setTimeout(()=>{ kzFloat(cl.x,2.5,cl.z,`Combo x${f.combo}!`,"#ff8fb0"); kzSnd("combo"); },180); } if(f.type==="lost") kzSnd("hmph"); }
+  for(const f of (K.fx||[])){ if(f.n<=KZ.fxSeen) continue; KZ.fxSeen=f.n; const cl=f.key&&KZ.cells[f.key]; if(f.type==="serve"&&cl){ kzFloat(cl.x,1.9,cl.z,f.txt,"#ffd15c"); kzSnd("cash"); KZ.dust.burst(cl.x,1.3,cl.z,10,"#ffd15c"); kzServeFly(f,cl); if(f.combo>1) setTimeout(()=>{ kzFloat(cl.x,2.5,cl.z,`Combo x${f.combo}!`,"#ff8fb0"); kzSnd("combo"); },180); } if(f.type==="lost") kzSnd("hmph");
+    if(f.type==="serve"&&KZ.rem&&Math.hypot(KZ.rem.x-P.x,KZ.rem.z-P.z)>1.5) setTimeout(()=>{ if(KZ.on&&KZ.K&&KZ.K.hi) kzFloat(KZ.P.x,2.5,KZ.P.z,"Corre pro toca aqui!","#ffd0dc"); },450);
+    if(f.type==="hi"){ kzFloat(f.x,2.7,f.z,"Toca aqui! "+f.txt,"#ff8fb0"); kzSnd("combo"); KZ.hiT=KZ.t+1.1; KZ.dust.burst(f.x,1.6,f.z,10,"#ffd0dc"); heartsW(f.x,2.2,f.z,["💖","✨"],6); [0,1].forEach(q=>{ const Ch=KZ.chars[q]; if(Ch&&Ch.root.visible){ Ch.land=.16; Ch.squash=.4; } }); }
+    if(f.type==="give"){ const R3=KZ.rem||P; KZ.dust.burst((P.x+R3.x)/2,1.35,(P.z+R3.z)/2,5,"#ffffff"); } }
+  if(K.duoT&&K.duoT!==KZ.duoLast){ KZ.duoLast=K.duoT; if(KZ.t-(KZ.duoShown==null?-9:KZ.duoShown)>3.2){ KZ.duoShown=KZ.t; const R3=KZ.rem||P; kzFloat((P.x+R3.x)/2,2.6,(P.z+R3.z)/2,"Juntos é mais rápido!","#bdeedb"); kzSnd("combo"); } }
   kzSense(dt);
   KZ.dust.tick(dt);
   kzCustTick(dt);
@@ -5963,29 +6090,32 @@ function kzStep(dt){ const K=KZ.K, P=KZ.P, me=KZ.me, C=KZ.chars[me]; if(!K) retu
   W3.R.render(KZ.scene,cam);
   kzHud(dt); }
 function kzFloat(x,y,z,txt,col){ const p=proj(V3(x,y,z)); const e=document.createElement("div"); e.className="kzFloat"; e.textContent=txt; e.style.left=p.x+"px"; e.style.top=p.y+"px"; e.style.color=col; HUB.ov.appendChild(e); setTimeout(()=>e.remove(),1300); }
-function kzHint(){ const K=KZ.K, key=KZ.tgt, cl=key&&KZ.cells[key]; if(!cl||!K) return "Pegar"; const h=K.held&&K.held[KZ.me], on=K.it&&K.it[key], ch=cl.ch, nm2={t:"tomate",a:"alface",p:"pão",c:"carne",q:"queijo"};
-  if(!h){ if("tapcq".includes(ch)&&!on) return "Pegar "+nm2[ch]; if(ch==="P") return "Pegar prato"; if(on) return on.k==="plate"?"Pegar prato":on.k==="ext"?"Pegar extintor":"Pegar"; return "Pegar"; }
+function kzHint(){ const K=KZ.K, key=KZ.tgt, cl=key&&KZ.cells[key]; if(!cl||!K) return "Pegar"; const h=K.held&&K.held[KZ.me], on=K.it&&K.it[key], ch=cl.ch, nm2={t:"tomate",a:"alface",p:"pão",c:"carne",q:"queijo",b:"batata",o:"ovo"};
+  if(!h){ if(KZ_BOX.includes(ch)&&!on) return "Pegar "+nm2[ch]; if(ch==="P") return "Pegar prato"; if(on) return on.k==="plate"?"Pegar prato":on.k==="ext"?"Pegar extintor":"Pegar"; return "Pegar"; }
   if(ch==="D") return h.k==="plate"?"Entregar":"Pegar"; if(ch==="X") return "Jogar fora";
   if(on&&on.k==="plate"&&h.k!=="plate") return "Pôr no prato"; if(on&&h.k==="plate") return "Pôr no prato";
-  if(ch==="S") return h.k==="c"?"Fritar":"Soltar"; if(ch==="C") return (KZ_CHOP[h.k]&&h.s===0)?"Pôr na tábua":"Soltar"; return "Soltar"; }
+  if(ch==="S") return KZ_COOK[h.k]===h.s?"Fritar":"Soltar"; if(ch==="C") return (KZ_CHOP[h.k]&&h.s===0)?"Pôr na tábua":"Soltar"; return "Soltar"; }
 function kzBar(id,x,y,z,v,col){ let b=KZ.bars[id]; if(!b){ b=document.createElement("div"); b.className="kzBar"; b.innerHTML="<i></i>"; HUB.ov.appendChild(b); KZ.bars[id]=b; }
   const p=proj(V3(x,y,z)); b.style.transform=`translate(${p.x}px,${p.y}px)`; b.firstChild.style.width=(Math.max(0,Math.min(1,v))*100)+"%"; b.firstChild.style.background=col; b.dataset.u=KZ.frame; }
+function kzTag(id,x,y,z,txt,cls){ let b=KZ.bars[id]; if(!b){ b=document.createElement("div"); b.innerHTML="<b></b>"; HUB.ov.appendChild(b); KZ.bars[id]=b; } const c="kzTag "+cls; if(b.className!==c) b.className=c; if(b.firstChild.textContent!==txt) b.firstChild.textContent=txt;
+  const p=proj(V3(x,y,z)); b.style.transform=`translate(${p.x}px,${p.y}px)`; b.dataset.u=KZ.frame; }
 function kzHud(dt){ const K=KZ.K, H=KZ.hud; if(!H) return; KZ.frame=(KZ.frame||0)+1; const now=Date.now();
   const left=K.t0>now?K.dur:Math.max(0,K.t0+K.dur-now), s=Math.ceil(left/1000), tt=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`, e=H.querySelector("#kzTime"); if(e.textContent!==tt){ e.textContent=tt; e.classList.toggle("hurry",s<=30&&K.run); }
   if(K.rush&&!KZ.rushShown){ KZ.rushShown=true; bigToast("Hora do rush!","os clientes vão chegar mais rápido"); kzSnd("rush"); }
   const sc=H.querySelector("#kzScore"), st=`${K.score} pts`; if(sc.textContent!==st){ sc.textContent=st; sc.classList.remove("pop"); void sc.offsetWidth; sc.classList.add("pop"); }
   const cb=H.querySelector("#kzCombo"), ct=K.combo>1?`combo x${K.combo}`:""; if(cb.textContent!==ct) cb.textContent=ct;
-  const sig=(K.orders||[]).map(o=>o.id).join(","), box=H.querySelector("#kzOrders"); if(box.dataset.sig!==sig){ box.dataset.sig=sig; box.innerHTML=(K.orders||[]).map(o=>`<div class="kzO" data-id="${o.id}"><b>${KZ_REC[o.r].n}</b><span>${KZ_REC[o.r].parts.map(p=>`<i class="kzI" style="background:${KZ_ING[p[0]].c}">${p[1]==="1"?"✂":p[1]==="2"?"♨":""}</i>`).join("")}</span><u><s></s></u></div>`).join(""); }
+  const sig=(K.orders||[]).map(o=>o.id).join(","), box=H.querySelector("#kzOrders"); if(box.dataset.sig!==sig){ box.dataset.sig=sig; box.innerHTML=(K.orders||[]).map(o=>`<div class="kzO" data-id="${o.id}"><b>${KZ_REC[o.r].n}</b><span>${KZ_REC[o.r].parts.map(p=>`${kzIco(p)}`).join("")}</span><u><s></s></u></div>`).join(""); }
   (K.orders||[]).forEach(o=>{ const el=box.querySelector(`[data-id="${o.id}"] s`); if(el){ const f=Math.max(0,1-(now-o.t)/o.lim); el.style.width=(f*100)+"%"; el.style.background=f<.25?"#ff5a4f":f<.5?"#ffb020":"#58b394"; el.parentNode.parentNode.classList.toggle("late",f<.25); } });
   const msg=H.querySelector("#kzMsg"); const show=K.msg&&now-K.msgT<1800; if(show&&msg.textContent!==K.msg){ msg.textContent=K.msg; msg.classList.remove("pop"); void msg.offsetWidth; msg.classList.add("pop"); } msg.hidden=!show;
   for(const key in (K.pg||{})){ const cl=KZ.cells[key]; if(cl) kzBar("pg"+key,cl.x,1.6,cl.z,K.pg[key],"#58b394"); }
   for(const key in (K.wash||{})){ const cl=KZ.cells[key]; if(cl&&K.wash[key]>0) kzBar("w"+key,cl.x,1.6,cl.z,K.wash[key],"#4f9dff"); }
-  for(const key in (K.ck||{})){ const cl=KZ.cells[key], it=K.it[key]; if(cl&&it&&!(K.fire&&K.fire[key])) kzBar("ck"+key,cl.x,1.75,cl.z,K.ck[key],it.s===0?"#ffb020":it.s===2?"#ff5a4f":"#5c4a52"); }
+  for(const key in (K.ck||{})){ const cl=KZ.cells[key], it=K.it[key]; if(cl&&it&&!(K.fire&&K.fire[key])) { const raw=it.s===KZ_COOK[it.k], v=K.ck[key]||0; kzBar("ck"+key,cl.x,1.75,cl.z,raw?v:it.s===2?Math.max(0,(v-.55)/.45):v,raw?"#ffb020":it.s===2?"#ff5a4f":"#5c4a52"); const fd=cl.fd||(cl.fd=[[0,1],[0,-1],[1,0],[-1,0]].find(([a2,b2])=>{ const mp=kzL(KZ.lv).map; return mp[cl.r+b2]&&mp[cl.r+b2][cl.c+a2]==="."; })||[0,1]); kzTag("tg"+key,cl.x+fd[0]*.95,fd[0]?1.3:(fd[1]>0?1.05:2.0),cl.z+fd[1]*.8,raw?"Fritando":it.s===2?(v>.55?"Tira logo!":"PRONTO!"):"Queimou",raw?"":it.s===2?(v>.55?"hot":"ok"):"bad"); } }
   for(const key in (K.fire||{})){ const cl=KZ.cells[key]; if(cl) kzBar("f"+key,cl.x,2.2,cl.z,K.fire[key],"#ff3d3d"); }
   for(const id in KZ.bars) if(+KZ.bars[id].dataset.u!==KZ.frame){ KZ.bars[id].remove(); delete KZ.bars[id]; }
   const tc=KZ.tgt&&KZ.cells[KZ.tgt], held=K.held&&K.held[KZ.me], b=H.querySelector("#kzChop"), lab=H.querySelector("#kzChopL");
   const canChop=tc&&tc.ch==="C"&&K.it&&K.it[KZ.tgt]&&KZ_CHOP[K.it[KZ.tgt].k]&&K.it[KZ.tgt].s===0&&!held, canWash=tc&&tc.ch==="W"&&K.dirty>0&&!held, canFire=held&&held.k==="ext"&&K.fire&&K.fire[KZ.tgt];
   const L2=canWash?"Lavar":canFire?"Apagar":"Cortar"; if(lab.textContent!==L2) lab.textContent=L2; b.classList.toggle("dim",!(canChop||canWash||canFire));
+  { const gv=H.querySelector("#kzGive"), m2=KZ.me, can=!!(K.run&&K.held&&K.held[m2]&&!K.held[1-m2]&&KZ.rem&&Math.hypot(KZ.rem.x-KZ.P.x,KZ.rem.z-KZ.P.z)<2.4); if(gv&&gv.hidden===can){ gv.hidden=!can; if(can&&!S.kzGiveTip){ S.kzGiveTip=true; save(); toast("Dá pra passar o que você segura direto pra mão do outro",3600); } } }
   const pl=H.querySelector("#kzPickL"), ph=kzHint(); if(pl&&pl.textContent!==ph) pl.textContent=ph;
   kzCoachTick(); }
 
