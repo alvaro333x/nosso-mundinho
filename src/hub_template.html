@@ -1997,20 +1997,21 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "8.3";
+const VERSION = "8.4";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
   let store={}; try{ store=JSON.parse(localStorage.getItem(KEY_DB)||"{}")||{}; }catch(e){ store={}; }
   const docL={}, colL={}; let conns=[], peer=null, role=null, tryT=0, saveT=0, onState=()=>{};
-  const persist=()=>{ clearTimeout(saveT); saveT=setTimeout(()=>{ try{ localStorage.setItem(KEY_DB, JSON.stringify(store)); }catch(e){} },300); };
+  let lazyT=0; const saveNow=()=>{ try{ localStorage.setItem(KEY_DB, JSON.stringify(store)); }catch(e){} }, FAST_P=/^(hub|obby|cozinha|labirinto|queda)\//;
+  const persist=p=>{ if(p&&FAST_P.test(p)){ if(!lazyT) lazyT=setTimeout(()=>{ lazyT=0; saveNow(); },8000); return; } clearTimeout(saveT); saveT=setTimeout(saveNow,300); };   /* v8.4: posição muda 10x por segundo; não regrava o banco inteiro a cada passo */
   const clone=o=>o==null?null:JSON.parse(JSON.stringify(o));
   const snap=p=>{ const e=store[p]; const d=e&&e.d; return {id:p.split("/").pop(), exists:!!d, data:()=>d?clone(d):undefined, metadata:{fromCache:false,hasPendingWrites:false}}; };
   const colOf=p=>p.split("/").slice(0,-1).join("/");
   const qsnap=c=>{ const docs=Object.keys(store).filter(k=>colOf(k)===c && store[k].d).sort().map(snap); return {docs,size:docs.length,empty:!docs.length,docChanges:()=>[],metadata:{fromCache:false,hasPendingWrites:false}}; };
   const emit=p=>{ (docL[p]||[]).forEach(f=>{ try{f(snap(p));}catch(e){} }); (colL[colOf(p)]||[]).forEach(f=>{ try{f(qsnap(colOf(p)));}catch(e){} }); };
   let seq=0; const stamp=()=>Date.now()*1000+((seq++)%500)*2+(role||0);
-  function apply(p,d,ts){ const cur=store[p]; if(cur && cur.ts>=ts) return; store[p]={d,ts}; persist(); emit(p); }
+  function apply(p,d,ts){ const cur=store[p]; if(cur && cur.ts>=ts) return; store[p]={d,ts}; persist(p); emit(p); }
   const send=m=>{ conns.forEach(c=>{ if(c.open){ try{ c.send(m); }catch(e){} } }); };
   function write(p,d){ const ts=stamp(); apply(p,clone(d),ts); send({t:"set",p,d,ts}); mqPub(p,d,ts); }
   // ---------- relay pela internet (MQTT): funciona em qualquer rede, inclusive 4G
@@ -5138,9 +5139,9 @@ function obPhys(P,h){
     else { const dx=P.x-s.x, dz=P.z-s.z, d=Math.hypot(dx,dz), L=s.r+RAD; if(d<L&&d>1e-4){ P.x=s.x+dx/d*L; P.z=s.z+dz/d*L; } } }
   const g= P.vy>0 && P.jumping && HUB.jumpHeld===false ? 64 : (P.vy>0?28:36);
   P.vy=Math.max(-32,P.vy-g*h); const ny=P.y+P.vy*h; let land=null, lt=-1e9;
-  if(P.vy<=0){ for(const s of L){ if(s.off||(s.only!=null&&obOwn(s)!==P.i)||Math.abs(s.z-P.z)>12) continue; if(s.top>P.y+(s.mate?.3:.14)||s.top<ny-.02) continue; if(!obOver(s,P.x,P.z,s.mate?.4:.12)) continue; if(s.top>lt){ lt=s.top; land=s; } } }
+  if(P.vy<=0){ for(const s of L){ if(s.off||(s.only!=null&&obOwn(s)!==P.i)||Math.abs(s.z-P.z)>12) continue; if(s.top>P.y+(s.mate?.3:.14)||s.top<ny-.02) continue; if(!obOver(s,P.x,P.z,s.mate?.4:.17)) continue; if(s.top>lt){ lt=s.top; land=s; } } }
   else for(const s of L){ if(s.off||s.mate||(s.only!=null&&obOwn(s)!==P.i)||Math.abs(s.z-P.z)>12) continue; if(s.bot<P.y+HT-.05||s.bot>ny+HT) continue; if(!obOver(s,P.x,P.z,-.05)) continue; P.vy=0; break; }
-  if(land){ const fall=P.fallV||0, was=!P.gr; P.y=lt; P.vy=0; P.gr=land; P.coy=.12; P.jumping=false; if(was) obLand(P,land,fall); }
+  if(land){ const fall=P.fallV||0, was=!P.gr; P.y=lt; P.vy=0; P.gr=land; P.coy=.16; P.jumping=false; if(was) obLand(P,land,fall); }
   else { P.fallV=P.vy; P.y=ny; P.gr=null; }
 }
 function obLand(P,s,fall){ const C=OB.chars[P.i];
@@ -5157,7 +5158,7 @@ function obCheckpoint(i,P){ P=P||OB.P; const st=obState(); if(i<=P.cp) return; P
 function obRestart(){ const P=OB.P, st=obState(); st.cp=0; save(); OB.fin=false; (OB.coop&&!online()?OB.Ps:[P]).forEach(q=>{ q.cp=0; q.dead=0; obDie(q,true); }); obFlags(); bigToast("De volta pro começo!",OB_COURSES[OB.cid].name); obPush(true); }
 function bigToast(a,b){ if(!HUB) return; const e=document.createElement("div"); e.className="obBig"; e.innerHTML=`<b>${esc(a)}</b>${b?`<span>${esc(b)}</span>`:""}`; HUB.scene.appendChild(e); setTimeout(()=>e.remove(),1900); }
 function obDie(P,manual){ const C=OB.chars[P.i]; if(P.dead) return;
-  if(OB.arena&&!manual){ OB.dust.burst(P.x,P.y+.8,P.z,10,"#ffb3c6"); C.root.visible=false; return qdFell(P); } P.dead=manual?.35:.8; if(!manual){ OB.deaths++; snd("meh"); } else snd("pop");
+  if(OB.arena&&!manual){ OB.dust.burst(P.x,P.y+.8,P.z,10,"#ffb3c6"); C.root.visible=false; return qdFell(P); } P.dead=manual?.3:.55; if(!manual){ OB.deaths++; snd("meh"); } else snd("pop");
   OB.dust.burst(P.x,P.y+.8,P.z,10,manual?"#ffffff":"#ffb3c6"); C.root.visible=false; if(P===OB.P) OB.buf=0; P.gr=null; }
 function obRespawn(P){ const C=OB.chars[P.i]; obPlace(P,P.cp); C.root.visible=true; C.root.position.set(P.x,P.y,P.z); OB.dust.burst(P.x,P.y,P.z,7,"#fff3c2"); if(P===OB.P) snd("pop"); }
 function obFinish(){ const st=obState(); OB.fin=true; cEarn(60,"percurso completo!");
@@ -5282,7 +5283,8 @@ function obRemote(dt){
   const o=1-OB.me, Co=OB.chars[o], d=online()?NET.docs["obby/p"+o]:null, fresh=d&&!d.out&&d.c===OB.cid&&typeof d.x==="number"&&performance.now()-(OB.rx["obby/p"+o]||0)<6000&&partnerHere();
   if(!fresh){ Co.root.visible=false; OB.rem=null; return; }
   if(!OB.rem||Math.hypot(OB.rem.x-d.x,OB.rem.z-d.z)>8||Math.abs(OB.rem.y-d.y)>8) OB.rem={x:d.x,y:d.y,z:d.z};
-  const R=OB.rem, k=1-Math.exp(-dt*12); R.x+=(d.x-R.x)*k; R.y+=(d.y-R.y)*k; R.z+=(d.z-R.z)*k;
+  const R=OB.rem, now=performance.now(); if(R.t!==d.t){ const gap=(now-(R.at||0))/1000; if(R.lx!=null&&gap>.04&&gap<.6&&Math.hypot(d.x-R.lx,d.z-R.lz)<5){ R.vx=(d.x-R.lx)/gap; R.vz=(d.z-R.lz)/gap; } else R.vx=R.vz=0; R.lx=d.x; R.lz=d.z; R.at=now; R.t=d.t; }
+  const ex=Math.min((now-(R.at||now))/1000,.16), k=1-Math.exp(-dt*14); R.x+=(d.x+(R.vx||0)*ex-R.x)*k; R.y+=(d.y-R.y)*(1-Math.exp(-dt*16)); R.z+=(d.z+(R.vz||0)*ex-R.z)*k;
   OB.remDead=!!d.dead; Co.root.visible=!d.dead; Co.root.position.set(R.x,R.y,R.z); let a=(d.r||0)-Co.root.rotation.y; a=Math.atan2(Math.sin(a),Math.cos(a)); Co.root.rotation.y+=a*Math.min(1,dt*12);
   Co.walk=d.w||0; Co.jv=d.a?(d.y>R.y?3:-3):null; animChar(Co,dt,OB.t);
   if(OB.tag){ const tg=OB.tag.firstChild, s=OB.arena?nmRaw(o):`${nmRaw(o)} · fase ${Math.min(OB_N,(d.cp||0)+1)}`; if(tg.textContent!==s) tg.textContent=s; }
@@ -6018,11 +6020,22 @@ function joyEdge(C,i,why,dx,dz){ const p=C.root.position, t=HUB.joyPush;
   else if(why==="house" && dz<-.4 && Math.abs(p.x-DOOR_OUT.x)<1.6 && t>.15) go(IN3.x+2.6,IN3.z+3.2);
   else if(why==="wall" && dz>.4 && Math.hypot(p.x-DOOR_IN.x,p.z-DOOR_IN.z)<1.9 && t>.15) go(DOOR_OUT.x,DOOR_OUT.z+1.2);
 }
-function joySync(C,i,final,dt=0){ HUB.joyNetT=(HUB.joyNetT||0)-dt; if(!final && HUB.joyNetT>0) return; HUB.joyNetT=.3;
+function joySync(C,i,final,dt=0){ HUB.joyNetT=(HUB.joyNetT||0)-dt; if(!final && HUB.joyNetT>0) return; HUB.joyNetT=.1;
   const p=C.root.position, fp={x:fw(p.x),y:fw(p.z)}; HUB.dest=HUB.dest||[]; const last=HUB.dest[i];
   if(!final && last && Math.abs(last.x-fp.x)<.004 && Math.abs(last.y-fp.y)<.004) return;
   HUB.dest[i]=fp; HUB.pos[i]=fp; if(!online()||i===S.me){ S.pos[i]=fp; if(final) save(); }
-  if(online() && i===S.me) pushMe({x:fp.x,y:fp.y,place:"hub"}); }
+  if(online() && i===S.me){ const M=HUB.mv||{x:0,z:0}; pushMe({x:fp.x,y:fp.y,place:"hub",mv:{x:+p.x.toFixed(2),z:+p.z.toFixed(2),vx:final?0:+M.x.toFixed(2),vz:final?0:+M.z.toFixed(2),s:final?1:0,sw:C.swim?1:0,t:Date.now()}}); } }
+/* v8.4: o boneco do outro celular segue a posição + velocidade recebidas (prevê um pouquinho pra frente e alcança suave), em vez de "andar até o ponto" a cada aviso */
+function netMove(i,mv,d){ const C=W3.chars[i]; if(!C||!mv||typeof mv.x!=="number"||C.anim||C.seated||C.nap||C.diving||C.sofa||C.fishV) return false; const p=C.root.position;
+  if(isIn(mv.x)!==isIn(p.x)||!!mv.sw!==!!C.swim||Math.hypot(mv.x-p.x,mv.z-p.z)>9) return false;
+  const nowMs=performance.now(), off=nowMs-mv.t, O=HUB.netOff||(HUB.netOff={}); O.min=(O.min==null||off<O.min)?off:O.min+(off-O.min)*.03;   /* menor atraso visto = base; o que passar disso é oscilação da rede e entra na previsão */
+  C.path=[]; C.onArrive=null; C.net={x:mv.x,z:mv.z,vx:+mv.vx||0,vz:+mv.vz||0,at:nowMs,sent:mv.t+O.min,stop:!!mv.s,sp:C.net?C.net.sp:0}; if(d&&typeof d.x==="number"){ HUB.dest=HUB.dest||[]; HUB.dest[i]={x:d.x,y:d.y}; } return true; }
+function netStep(C,i,dt){ const N=C.net, age=(performance.now()-N.at)/1000, p=C.root.position; if(C.anim||C.seated||C.nap||(age>1.5&&!N.stop)){ C.net=null; return false; }
+  const ex=N.stop?0:Math.max(0,Math.min((performance.now()-N.sent)/1000+.07,.5)), tx=N.x+N.vx*ex, tz=N.z+N.vz*ex, dx=tx-p.x, dz=tz-p.z, d=Math.hypot(dx,dz), k=1-Math.exp(-dt*(N.stop?10:11)), mx=dx*k, mz=dz*k;
+  p.x+=mx; p.z+=mz; const v0=Math.hypot(N.vx,N.vz), spd=age>.45&&!N.stop?0:Math.max(Math.hypot(mx,mz)/Math.max(dt,1e-3),N.stop?0:v0*.8); N.sp+=(spd-N.sp)*Math.min(1,dt*9);
+  if(v0>.35&&!N.stop) C.targetYaw=Math.atan2(N.vx,N.vz); else if(d>.25) C.targetYaw=Math.atan2(dx,dz);
+  C.walk=Math.min(1,N.sp/1.6); C.gait=Math.max(.75,Math.min(1.75,N.sp/3.7));
+  if(N.stop&&d<.03){ p.x=N.x; p.z=N.z; C.net=null; C.gait=1; return false; } return true; }
 
 /* =================== CÉU DE VERDADE (dia e noite pela hora real) =================== */
 const SKY={h:12, night:0, sunK:1, hemiK:1, paintT:0, force:true, tags:[], shootT:20};
@@ -6370,6 +6383,7 @@ function step(dt){
   W3.chars.forEach((C,i)=>{
     if(charAnimTick(C,i,dt)){}
     else if(HUB && i===actor() && joyStep(C,i,dt)){}
+    else if(C.net && netStep(C,i,dt)){}
     else if(C.path && C.path.length && C.path[0].tp){ const tg=C.path.shift(), p=C.root.position; p.set(tg.to.x,0,tg.to.z); C.root.rotation.y=Math.atan2(tg.to.x-tg.x,0)*0+(isIn(tg.to.x)?Math.PI:0); snd("door"); if(i===actor()){ HUB.camInit=false; doorFade(); } }
     else if(C.path && C.path.length && !C.seated){ const tg=C.path[0], p=C.root.position, dx=tg.x-p.x, dz=tg.z-p.z, d=Math.hypot(dx,dz);
       let mul=1; if(online() && i!==S.me && !C.swim){ let L=d; for(let k=1;k<C.path.length;k++) L+=Math.hypot(C.path[k].x-C.path[k-1].x,C.path[k].z-C.path[k-1].z); mul=Math.max(1,Math.min(2.3,L/1.3)); }
@@ -6479,7 +6493,7 @@ function landPath(cur,q){
   return planPath(cur,q);
 }
 function walkW(i,x,z,onArrive,fromNet){
-  if(!W3) return; const C=W3.chars[i]; if(C.nap && !fromNet && i===actor()) napOff(i,true); if(C.seated) return;
+  if(!W3) return; const C=W3.chars[i]; C.net=null; if(C.nap && !fromNet && i===actor()) napOff(i,true); if(C.seated) return;
   if(C.anim){ C.queue=[x,z,onArrive,fromNet]; return; }
   standUp(C);
   if(C.fishV) stopFish(i, fromNet);
@@ -6746,7 +6760,11 @@ function hubNet(path){
     if(d.fish && d.fish.t && d.fish.t!==HUB.lastFish){ const fresh=Date.now()-d.fish.t<30000; HUB.lastFish=d.fish.t; if(fresh) setTimeout(()=>fishRemote(o,d.fish),W3.chars[o].path&&W3.chars[o].path.length?2200:0); }
     if(d.place!==HUB.lastPlaceO){ HUB.lastPlaceO=d.place; refreshBanners(); }
     if(d.typing && d.typing!==HUB.lastTyping){ const first=HUB.lastTyping===undefined; HUB.lastTyping=d.typing; if(!first||Date.now()-d.typing<6000){ CHAT.typingAt=performance.now(); chatTypingUI(); } }
-    if(typeof d.x==="number"){ const dst=(HUB.dest&&HUB.dest[o])||HUB.pos[o]; if(Math.abs(dst.x-d.x)>.002||Math.abs(dst.y-d.y)>.002) walkTo(o, d.x, d.y, null, true); }
+    { let moved=false; if(HUB.lastMv===undefined) HUB.lastMv=d.mv?d.mv.t:0;   /* o aviso guardado da última vez não conta */
+      if(d.mv&&d.mv.t!==HUB.lastMv){ HUB.lastMv=d.mv.t; moved=netMove(o,d.mv,d); }
+      if(!moved&&typeof d.x==="number"){   /* destino novo sem aviso de joystick = andou por toque/rota: vale o caminho normal (o walkW cancela o modo de seguir) */ const dst=(HUB.dest&&HUB.dest[o])||HUB.pos[o]; if(Math.abs(dst.x-d.x)>.002||Math.abs(dst.y-d.y)>.002) walkTo(o, d.x, d.y, null, true); }
+      const sig=[d.place,d.nap,d.typing,d.emote&&d.emote.t,d.jump&&d.jump.t,d.tv&&d.tv.t].join("|"), same=sig===HUB.sigO; HUB.sigO=sig;
+      if(moved&&same){ if(d.jump && d.jump.t && d.jump.t!==HUB.lastJump){ const fresh=Date.now()-d.jump.t<4000; HUB.lastJump=d.jump.t; if(fresh) jumpChar(o,true); } return; } }   /* só andou: não precisa refazer status e avisos 10x por segundo */
     if(d.tv && d.tv.t && d.tv.t!==HUB.lastTv){ const fresh=Date.now()-d.tv.t<15*60e3; HUB.lastTv=d.tv.t; if(fresh) tvRemote(d.tv); }
     if(d.jump && d.jump.t && d.jump.t!==HUB.lastJump){ const fresh=Date.now()-d.jump.t<4000; HUB.lastJump=d.jump.t; if(fresh) jumpChar(o,true); }
     if(d.emote && d.emote.t && d.emote.t!==HUB.lastEmote[o]){ const fresh=Date.now()-d.emote.t<20000; HUB.lastEmote[o]=d.emote.t; if(fresh) showEmote(o, d.emote.e); }
