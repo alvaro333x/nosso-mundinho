@@ -902,6 +902,47 @@ canvas.paper{box-shadow:0 0 0 7px #c8935f,0 8px 0 7px #8a5a3b,0 14px 30px rgba(0
 .qdStart{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(var(--sb) + 26px);z-index:2452;border:0;border-radius:999px;padding:12px 26px;font:inherit;font-weight:700;font-size:1.05rem;color:#fff;background:var(--pink);box-shadow:0 4px 0 var(--pinkD),0 10px 24px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;animation:obPulse 1.4s ease-in-out infinite}
 .qdStart[hidden]{display:none}.qdStart .ico{width:22px!important;height:22px!important;--ia:#fff;--ig:#fff}
 .qdStart:active{transform:translate(-50%,2px);box-shadow:0 2px 0 var(--pinkD)}
+/* Quem é mais provável (v8.2) */
+.pvMain{flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;padding:4px 14px 12px}
+.pvCard{background:var(--paper);color:var(--ink2);border-radius:22px;padding:12px 16px;box-shadow:0 10px 26px rgba(20,8,16,.35);text-align:center;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.pvCard.in{animation:qin .35s ease-out}
+.pvTop{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;font-weight:700;color:var(--inkSoft)}
+.pvN{background:#ffe1e8;color:#c8325a;border-radius:999px;padding:3px 11px}
+.pvQ{margin:10px 0 0;font-size:.95rem;color:var(--inkSoft)}
+.pvCard h2{margin:2px 0 8px;font-size:1.42rem;line-height:1.2}
+.pvSt{min-height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:.9rem;color:var(--inkSoft)}
+.pvSt b{font-size:1.2rem;color:var(--ink2)}.pvSt b.ok{color:#2f9d78}.pvSt b.no{color:#c8325a}.pvSt u{text-decoration:none;font-weight:700;color:var(--ink2);background:#ffe9a8;border-radius:8px;padding:1px 7px}
+.pvSt .btn{margin-top:3px;padding:7px 18px;font-size:.92rem}
+.pvPeople{display:flex;gap:12px;flex:1;min-height:0}
+.pvP{flex:1;border:0;border-radius:22px;background:rgba(255,255,255,.09);box-shadow:inset 0 0 0 2px rgba(255,255,255,.2);color:#fff;font:inherit;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding:8px 6px 10px;position:relative;min-height:0;cursor:pointer;transition:transform .18s,background .2s,box-shadow .2s,opacity .2s;-webkit-tap-highlight-color:transparent}
+.pvP .avatar{height:min(250px,60dvh);width:125px;pointer-events:none}
+.pvP>b{font-size:1.05rem;font-weight:700}
+.pvP:not(:disabled):active{transform:scale(.97)}
+.pvP.mine{background:color-mix(in srgb,var(--pc) 34%,transparent);box-shadow:inset 0 0 0 3px var(--pc)}
+.pvP.hit{background:rgba(255,198,92,.3);box-shadow:inset 0 0 0 3px var(--gold),0 0 26px rgba(255,198,92,.45);transform:scale(1.03)}
+.pvP.dim{opacity:.5}
+.pvChips{position:absolute;top:8px;left:0;right:0;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.pvChip{width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--pc),0 4px 10px rgba(0,0,0,.3);display:grid;place-items:center;animation:pvPop .4s cubic-bezier(.3,1.6,.5,1) both}
+.pvChip:nth-child(2){animation-delay:.12s}
+.pvChip .headDot{width:32px;height:32px;background:none}
+@keyframes pvPop{from{transform:scale(0) translateY(14px)}to{transform:none}}
+.pvFin{flex:1;flex-direction:row;gap:14px;text-align:left;justify-content:flex-start;align-items:stretch;padding:12px 14px}
+.pvFinL{flex:0 0 38%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px}
+.pvFinL h2{font-size:1.15rem;margin:6px 0 0}.pvFinL p{margin:0 0 8px;font-size:.84rem;color:var(--inkSoft)}.pvFinL .row2{width:100%}.pvFinL .btn{padding:9px 8px;font-size:.92rem}
+.pvRing{width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--pink) calc(var(--p)*1%),#f1e2e8 0);display:grid;place-items:center;position:relative}
+.pvRing::before{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--paper)}
+.pvRing b{position:relative;font-size:2rem;line-height:1;margin-top:-10px}.pvRing span{position:absolute;bottom:22px;font-size:.72rem;color:var(--inkSoft);font-weight:600}
+.pvFinR{flex:1;min-width:0;overflow:auto;display:flex;flex-direction:column;gap:8px;-webkit-overflow-scrolling:touch}
+.pvTit{background:#fff;border-radius:14px;padding:8px 10px;box-shadow:inset 3px 0 0 var(--pc,#e5d5dc)}
+.pvTit h4{margin:0 0 6px;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.pvTags{display:flex;flex-wrap:wrap;gap:5px}.pvTags span{background:color-mix(in srgb,var(--pc) 18%,#fff);border-radius:999px;padding:3px 10px;font-size:.82rem;font-weight:600}
+.pvTit .small{margin:0;font-size:.8rem;color:var(--inkSoft)}
+.pvD{display:flex;flex-direction:column;padding:4px 0;border-top:1px solid #f1e6ea;font-size:.8rem}.pvD:first-of-type{border-top:0}.pvD span{color:var(--inkSoft)}
+@media (orientation:landscape){
+  .screen[data-s="provavel"] .pvMain{flex-direction:row;align-items:stretch;padding:2px calc(var(--sr) + 14px) calc(var(--sb) + 10px) calc(var(--sl) + 14px)}
+  .screen[data-s="provavel"] .pvCard{flex:1.1}.screen[data-s="provavel"] .pvPeople{flex:1}
+  .screen[data-s="provavel"] .pvFin{flex:1}
+}
 /* cozinha a dois (v6.5) */
 .scene.kzMode .hudTop,.scene.kzMode #banners,.scene.kzMode #ctrlBar,.scene.kzMode .ov3,.scene.kzMode .ctx,.scene.kzMode .starTag,.scene.kzMode .enterBtn,.scene.kzMode #acts3,.scene.kzMode #emoTray,.scene.kzMode .tvRemote2,.scene.kzMode .tvScreen{display:none!important}
 .kzHud{position:absolute;inset:0;z-index:2450;pointer-events:none}.kzHud button{pointer-events:auto}
@@ -1649,6 +1690,9 @@ function icon(name, cls="ico"){
   if(u) return `<svg class="${cls} ui" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${u}</svg>`;
   return iconArt(name,cls);
 }
+Object.assign(EMO2ICO,{"🤷":"who","🧭":"maze"});
+Object.assign(UIC,{ who: uC(7,9.4,2.5,1)+uC(17,9.4,2.5,1)+uP("M2.8 19.2c0-3 1.9-4.7 4.2-4.7s4.2 1.7 4.2 4.7 M12.8 19.2c0-3 1.9-4.7 4.2-4.7s4.2 1.7 4.2 4.7")+uH(12,5.4,.34),
+  maze: uD("M4 4h16v16H4z")+uP("M10 4H4v16h16V4h-6 M8 8v8h4 M12 8h4v8 M16 16h0")+uC(12,12,1.2,2) });
 const EMO_RE=new RegExp("("+[...Object.keys(EMO2ICO),...Object.keys(PET_ICON_SP)].sort((a,b)=>b.length-a.length).map(e=>e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")\\uFE0F?","g");
 function artify(html){ return String(html).replace(EMO_RE,(m,e)=>icon(e)); }
 function artText(text){ return artify(esc(text)); }
@@ -1895,7 +1939,7 @@ async function initNet(){
     try{ await db.doc(hubPath(me)).set(myHub); }catch(e){ return; }
     NET.on=true;
     const paths=[hubPath(0),hubPath(1),"jogos/bingo","jogos/caca","jogos/termo","jogos/pra-p0","jogos/pra-p1",
-      "jogos/bingo-p0","jogos/bingo-p1","casal/p0","casal/p1","casal/datas","casa/decor","toque/p0","toque/p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1","cozinha/estado","cozinha/p0","cozinha/p1","cozinha/acao-p0","cozinha/acao-p1"];
+      "jogos/bingo-p0","jogos/bingo-p1","casal/p0","casal/p1","casal/datas","casa/decor","toque/p0","toque/p1","jogos/coop","jardim/canteiros","pintura/tela","pintura/p0","pintura/p1","jogos/caca-p0","jogos/caca-p1","jogos/termo-p0","jogos/termo-p1","pesca/p0","pesca/p1","jogos/quiz","jogos/quiz-p0","jogos/quiz-p1","jogos/stop","jogos/stop-p0","jogos/stop-p1","jogos/desenho","jogos/desenho-p0","jogos/desenho-p1","jogos/provavel","jogos/provavel-p0","jogos/provavel-p1","ceu/estrelas","correio/lido-p0","correio/lido-p1","saudade/p0","saudade/p1","obby/p0","obby/p1","dupla/lev","papo-lido/p0","papo-lido/p1","queda/sala","queda/p0","queda/p1","cozinha/estado","cozinha/p0","cozinha/p1","cozinha/acao-p0","cozinha/acao-p1"];
     paths.forEach(p=>{ NET.subs[p]=db.doc(p).onSnapshot(s=>{ NET.docs[p]=s.exists?s.data():null; netChanged(p); }, e=>{}); });
     NET.ready=true; initAlbumNet(); setTimeout(csPush,1500); initPetsNet(); initMailNet(); initChatNet(); refreshStatus();
   }catch(e){}
@@ -1933,7 +1977,7 @@ function newSession(game, extra={}){
 
 /* =================== CONEXÃO DIRETA ENTRE OS CELULARES (fora do Claude) =================== */
 const ROOM = "__ROOM__";
-const VERSION = "8.1";
+const VERSION = "8.2";
 const LOOK_V = 51;   // sobe quando o visual padrão dos bonequinhos mudar
 function makeP2PDB(){
   const KEY_DB = "mundinho-db-"+ROOM;
@@ -2443,14 +2487,14 @@ const LAKE3={x:9.5,z:20,rx:9.5,rz:7.5};   // v8.0: lago no sul, no fim da rua de
 const HOUSE3={x0:-8.9,x1:12.8,z0:-21,z1:-7.2};
 const MAIL3={x:2.1,z:-5.0};
 const GP3={x:0,z:4.5,r:4.2};   // a pracinha do meio (com a fonte)
-const BOOTH3={}; [["termo",-8.5,.9,0],["bingo",-13.5,.9,0],["caca",-18.5,.9,0],["quiz",-8.5,8.1,Math.PI],["stop",-13.5,8.1,Math.PI],["desenho",-18.5,8.1,Math.PI]].forEach(([k,x,z,r])=>BOOTH3[k]={x,z,r});   // Rua dos Jogos: 3 de cada lado da rua oeste
+const BOOTH3={}; [["termo",-8.5,.9,0],["bingo",-13.5,.9,0],["caca",-18.5,.9,0],["quiz",-8.5,8.1,Math.PI],["stop",-13.5,8.1,Math.PI],["desenho",-18.5,8.1,Math.PI],["provavel",-23.6,4.5,Math.PI/2]].forEach(([k,x,z,r])=>BOOTH3[k]={x,z,r});   // Rua dos Jogos: 3 de cada lado da rua oeste
 const boothFront=(b,d=1.7)=>({x:b.x+Math.sin(b.r)*d, z:b.z+Math.cos(b.r)*d});
 const GARDEN3={x0:-16.2,x1:-10,z0:-16,z1:-6.6,gx:-13.1};   // jardim colado no lado esquerdo da casa
 const PLOT3=Array.from({length:8},(_,i)=>({x:GARDEN3.x0+1.6+(i%2)*3.0, z:GARDEN3.z1-1.6-Math.floor(i/2)*2.2}));
 const EASELS=[{x:-18.6,z:-6.95},{x:-21,z:-6.95}], EASEL3={x:-19.8,z:-6.9}, DOG3={x:8.6,z:-3.5}, DOCK3={x:-.7,z:20}, DOCK_LEN=4.5, BENCH3={x:-3.6,z:15.4};
 const PLACES3=[["🎪","Jogos de palavras",-6.4,4.5],["🚀","Parque Radical",13.4,4.5],["🏡","Casa",0,-7.6],["🛶","Lago",-1.6,20],["🎣","Pescar",3.2,19.7],["🌷","Jardim",-13.1,-5.4],["🎨","Ateliê",-19.8,-5.4],["📬","Caixinha de correio",1.2,-5.0]];
-const STATIONS={quiz:{emoji:"💞",label:"QUIZ DO CASAL",c1:"#e8607f"},stop:{emoji:"✋",label:"STOP",c1:"#4a7bd6"},desenho:{emoji:"✏️",label:"DESENHA E ADIVINHA",c1:"#8a63d2"},termo:{emoji:"🟩",label:"TERMO",c1:"#3aa394"},bingo:{emoji:"🎱",label:"BINGO",c1:"#ff7a93"},caca:{emoji:"🔎",label:"CAÇA-PALAVRAS",c1:"#d9a54a"}};
-const GAME_NAMES={cozinha:"Cozinha a Dois",obby:"Parkour",quiz:"Quiz do casal",stop:"Stop",desenho:"Desenha e adivinha",termo:"Termo",bingo:"Bingo",caca:"Caça-palavras",coop:"Termo juntos"};
+const STATIONS={quiz:{emoji:"💞",label:"QUIZ DO CASAL",c1:"#e8607f"},stop:{emoji:"✋",label:"STOP",c1:"#4a7bd6"},desenho:{emoji:"✏️",label:"DESENHA E ADIVINHA",c1:"#8a63d2"},termo:{emoji:"🟩",label:"TERMO",c1:"#3aa394"},bingo:{emoji:"🎱",label:"BINGO",c1:"#ff7a93"},caca:{emoji:"🔎",label:"CAÇA-PALAVRAS",c1:"#d9a54a"},provavel:{emoji:"🤷",label:"QUEM É MAIS PROVÁVEL",c1:"#ef8a4a"}};
+const GAME_NAMES={cozinha:"Cozinha a Dois",obby:"Parkour",quiz:"Quiz do casal",stop:"Stop",desenho:"Desenha e adivinha",termo:"Termo",bingo:"Bingo",caca:"Caça-palavras",coop:"Termo juntos",provavel:"Quem é mais provável",labirinto:"Labirinto a Dois"};
 const FLOWERS={girassol:{n:"Girassol",e:"🌻"},rosa:{n:"Rosa",e:"🌹"},tulipa:{n:"Tulipa",e:"🌷"},margarida:{n:"Margarida",e:"🌼"},lavanda:{n:"Lavanda",e:"💜"},hortensia:{n:"Hortênsia",e:"💠"}};
 let HUB=null, W3=null;
 const actor=()=> online()? S.me : (HUB?HUB.ctrl:S.me);
@@ -2630,6 +2674,11 @@ function boothGroup(key){
     const c=document.createElement("canvas"); c.width=c.height=128; const x=c.getContext("2d"); x.fillStyle="#fffdf8"; x.fillRect(0,0,128,128); x.strokeStyle="#3a2a33"; x.lineWidth=5; x.lineCap="round"; x.beginPath(); x.arc(64,58,26,0,7); x.moveTo(40,96); x.lineTo(88,96); x.moveTo(52,52); x.lineTo(52,54); x.moveTo(76,52); x.lineTo(76,54); x.moveTo(52,68); x.quadraticCurveTo(64,78,76,68); x.stroke(); x.fillStyle="#8a63d2"; x.font="700 26px sans-serif"; x.fillText("?",96,32);
     const cvm=mesh(new THREE.PlaneGeometry(.6,.6),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}),0,.75,.12,false); ez.add(cvm); ez.add(mesh(new THREE.BoxGeometry(.66,.66,.03),MT("#c8935f"),0,.75,.1)); g.add(ez);
     const sp=emojiSprite("✏️",.55); sp.position.set(.7,1.5,.1); g.add(sp); }
+  if(key==="provavel"){ /* duas plaquinhas de voto (azul e rosa) com coração e um ponto de interrogação dourado no meio */
+    [["#4f9dff",-.82,.14],["#ff6f91",.82,-.14]].forEach(([c,x,rz])=>{ const pd=grp(x,1.08,.05); pd.rotation.z=rz; pd.add(mesh(new THREE.CylinderGeometry(.035,.04,.75,8),wood,0,.36,0)); const d=mesh(new THREE.CylinderGeometry(.34,.34,.07,26),MT(c),0,1.0,0); d.rotation.x=Math.PI/2; pd.add(d);
+      const rim=mesh(new THREE.TorusGeometry(.34,.035,8,26),MT("#fffaf2"),0,1.0,0,false); pd.add(rim); const h=mesh(heartGeo(.3,.06),MT("#fffaf2"),0,1.0,.05,false); pd.add(h); g.add(pd); });
+    const gold=new THREE.MeshStandardMaterial({color:new THREE.Color("#ffc65c"),emissive:new THREE.Color("#8a5a10"),emissiveIntensity:.3,roughness:.35,metalness:.25}), q=grp(0,2.02,.05);
+    const hook=mesh(new THREE.TorusGeometry(.2,.065,10,22,4.36),gold,0,0,0); hook.rotation.z=-1.22; q.add(hook); q.add(mesh(new THREE.CylinderGeometry(.065,.065,.2,10),gold,.05,-.3,0)); q.add(mesh(new THREE.SphereGeometry(.085,12,10),gold,.05,-.56,0)); g.add(q); g.userData.spin=q; }
   g.traverse(o=>o.userData.hit="st-"+key); return g;
 }
 function easelGroup(idx){
@@ -2733,9 +2782,9 @@ function buildWorld(){
   const pathM=pathMat(); W3.paths=[];
   const pathSeg=(x1,z1,x2,z2,w=2)=>{ W3.paths.push({x1,z1,x2,z2,w}); const L=Math.hypot(x2-x1,z2-z1); const p=mesh(uvScale(new THREE.PlaneGeometry(w,L),w/2.2,L/2.2),pathM,(x1+x2)/2,.02,(z1+z2)/2,false); p.rotation.x=-Math.PI/2; p.rotation.z=-Math.atan2(x2-x1,z2-z1); p.userData.ground=true; sc.add(p); [[x2,z2],[x1,z1]].forEach(([cx2,cz2])=>{ const c=mesh(uvScale(new THREE.CircleGeometry(w/2,20),w/2.2,w/2.2),pathM,cx2,.021,cz2,false); c.rotation.x=-Math.PI/2; c.userData.ground=true; sc.add(c); }); };
   // ruas em cruz saindo da pracinha: casa (norte), Rua dos Jogos (oeste), Parque Radical (leste) e lago (sul)
-  pathSeg(0,-7.4,0,.6,2.4); pathSeg(-3.8,4.5,-21.8,4.5,2.8); pathSeg(3.8,4.5,AR_C.x-3,4.5,2.6); pathSeg(0,8.4,-1.8,DOCK3.z,2.2); pathSeg(-1.8,DOCK3.z,DOCK3.x-.6,DOCK3.z,1.8);
+  pathSeg(0,-7.4,0,.6,2.4); pathSeg(-3.8,4.5,-22.5,4.5,2.8); pathSeg(3.8,4.5,AR_C.x-3,4.5,2.6); pathSeg(0,8.4,-1.8,DOCK3.z,2.2); pathSeg(-1.8,DOCK3.z,DOCK3.x-.6,DOCK3.z,1.8);
   pathSeg(-1.2,-5.6,-22.2,-5.6,1.6); pathSeg(GARDEN3.gx,-5.6,GARDEN3.gx,GARDEN3.z1+.3,1.5); pathSeg(1.2,-4.2,DOG3.x-1.2,DOG3.z-.3,1.3);
-  Object.values(BOOTH3).forEach(b=>{ const f=boothFront(b,.95); pathSeg(b.x,4.5,f.x,f.z,2.0); });
+  Object.values(BOOTH3).forEach(b=>{ if(Math.abs(Math.sin(b.r))>.5) return; const f=boothFront(b,.95); pathSeg(b.x,4.5,f.x,f.z,2.0); });
   const plaza=mesh(uvScale(new THREE.CircleGeometry(4.2,44),3.7,3.7),pathM,0,.025,4.5,false); plaza.rotation.x=-Math.PI/2; plaza.userData.ground=true; sc.add(plaza);
   // fonte na praça
   buildFountain(sc);
@@ -2767,7 +2816,7 @@ function buildWorld(){
   const gb=gs.clone(); gb.rotation.y=Math.PI; gb.position.z=fz1-.1; sc.add(gb);
   W3.garden=grp(); sc.add(W3.garden); redrawGarden();
   W3.easels=[]; sc.add(easelGroup(0)); sc.add(easelGroup(1)); sc.add(doghouseGroup());
-  Object.keys(BOOTH3).forEach(k=>{ const bg=boothGroup(k); sc.add(bg); if(bg.userData.cage) W3.cage=bg.userData.cage; });
+  Object.keys(BOOTH3).forEach(k=>{ const bg=boothGroup(k); sc.add(bg); if(bg.userData.cage) W3.cage=bg.userData.cage; if(bg.userData.spin) W3.pvSpin=bg.userData.spin; });
   // árvores, girassóis, flores, postes
   const rt=rng(99);
   for(let k=0;k<70;k++){ const a=rt()*Math.PI*2, d=33.5+rt()*13, tx=Math.cos(a)*d, tz=Math.sin(a)*d, ts=1+rt()*.6; sc.add(treeGroup(tx,tz,ts,k+3)); }
@@ -3221,14 +3270,8 @@ function frzCheck(){ const D=csSet("days"), F=csSet("fd"), c=csGet(); const miss
   if(!miss.length) return; const prev=dayKey(d); if(!(D.has(prev)||F.has(prev))) return; if(miss.length>frzLeft()) return;
   miss.forEach(k=>c.fd.push(k)); save(); csPush(); setTimeout(()=>usToast("❄️ Protetor usado!",`a sequência de ${csStreak()} dias tá salva`),900); }
 function usToast(a,b){ if(HUB&&curScreen==="hub"||KZ.on||OB.on) bigToast(a,b); else toast(`${a} ${b||""}`,2600); }
-function mis(ev,n=1){ try{ if(MIS_TOG.has(ev)&&!(online()&&partnerHere())){ if(misToday().some(m=>m.ev===ev&&misProg(m)<m.n)&&Date.now()-(mis.warnT||0)>5*60e3){ mis.warnT=Date.now(); setTimeout(()=>toast("Essa missão só conta com vocês dois online juntos 💞",3000),1500); } return; } const c=csGet(), L=misToday(), before=L.map(m=>misProg(m)>=m.n), allB=before.every(Boolean); c.c[ev]=(+c.c[ev]||0)+n; save();
-    L.forEach((m,k)=>{ if(m.ev===ev&&!before[k]&&misProg(m)>=m.n){ c.done[m.id]=1; setTimeout(()=>{ usToast("Missão cumprida! 🎉",m.t); snd("fanfare"); cEarn(40,"missão"); },500); } });
-    if(!allB&&misAllDone()){ const day=dayKey(); if(!c.days.includes(day)) c.days.push(day); setTimeout(()=>{ const st=csStreak(); usToast(`${st} ${st===1?"dia":"dias"} seguidos 🔥`,"a sequência tá viva por hoje!"); cEarn(40+Math.min(7,st)*10,"bônus do dia"); streakMilestones(); },2300); }
-    save(); csPush(); csRefresh(); }catch(e){} }
-function csRefresh(){ const c=csGet(); let ch=false; misToday().forEach(m=>{ if(misProg(m)>=m.n&&!c.done[m.id]){ c.done[m.id]=1; ch=true; toast(`Missão cumprida juntos: ${m.t} 🎉`,2600); } });
-  if(misAllDone()&&!c.days.includes(c.day)){ c.days.push(c.day); ch=true; streakMilestones(); } if(ch){ save(); csPush(); }
-  const b=document.querySelector("#bUs .usDot"); if(b) b.hidden=misAllDone(); const bs=document.querySelector("#bUs .usSt"); if(bs){ const st=csStreak(); bs.textContent=st; bs.hidden=!st; bs.classList.toggle("risk",!misAllDone()); }
-  if(US.el&&document.body.contains(US.el)) US.draw(); }
+function mis(ev,n=1){ }   /* v8.2: as missões do dia e a sequência (foguinho) saíram a pedido do Alvaro; as chamadas ficaram e não fazem nada */
+function csRefresh(){ if(US.el&&document.body.contains(US.el)) US.draw(); }
 function csNet(path){ csRefresh(); }
 function hoursLeft(){ const d=new Date(), m=new Date(d); m.setHours(24,0,0,0); return (m-d)/36e5; }
 function streakNag(){ if(!HUB) return; const st=csStreak(), left=misToday().filter(m=>misProg(m)<m.n).length; if(!left) return;
@@ -3280,7 +3323,7 @@ function thinkSend(){ if(Date.now()-(S.thinkT||0)<4000){ toast("Já foi! 💕");
   if(HUB&&W3){ const C=W3.chars[actor()]; heartsW(C.root.position.x,2.2,C.root.position.z,["💭","💕","💗"],9); charMood(actor(),"happy","kiss",1500); }
   toast(online()?`${nmRaw(other())} vai receber agorinha 💌`:"Pensamento guardado 💕",2200); }
 function thinkCheck(){ if(!online()) return; const d=NET.docs["toque/p"+other()]; if(!d||!(+d.t)) return; if((S.thinkSeen||0)>=d.t) return; S.thinkSeen=+d.t; save();
-  if(d.k==="nudge"){ const who=nmRaw(other()), st=csStreak(); if(HUB&&curScreen==="hub"&&!KZ.on&&!OB.on){ bigToast(`${who} te cutucou 👉`,st?`bora salvar os ${st} dias 🔥`:"bora fazer as missões 💞"); } else toast(`👉 ${who} te cutucou: bora fazer as missões 🔥`,3200); snd("pop"); try{ navigator.vibrate&&navigator.vibrate([80,60,80]); }catch(e){} return; }
+  if(d.k==="nudge") return; if(false){ const who=nmRaw(other()), st=csStreak(); if(HUB&&curScreen==="hub"&&!KZ.on&&!OB.on){ bigToast(`${who} te cutucou 👉`,st?`bora salvar os ${st} dias 🔥`:"bora fazer as missões 💞"); } else toast(`👉 ${who} te cutucou: bora fazer as missões 🔥`,3200); snd("pop"); try{ navigator.vibrate&&navigator.vibrate([80,60,80]); }catch(e){} return; }
   const who=nmRaw(other()), ago=Date.now()-d.t, hh=new Date(+d.t).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
   if(HUB&&curScreen==="hub"&&!KZ.on&&!OB.on){ bigToast(`${who} pensou em você`,ago<90000?"agorinha 💭💕":`às ${hh} 💭💕`); const C=W3.chars[S.me]; heartsW(C.root.position.x,2.3,C.root.position.z,["💭","💕","💗","💖"],12); charMood(S.me,"happy","happy",1800); }
   else toast(`💭 ${who} pensou em você ${ago<90000?"agora":"às "+hh} 💕`,3200);
@@ -3291,14 +3334,7 @@ function usModal(){ const m=modal(`<div class="usM" id="usM"></div>`); US.el=m;
   US.draw=()=>{ const box=m.querySelector("#usM"); if(!box) return; const dt=daysTogether(), st=csStreak(), nx=nextDates()[0], L=misToday();
     box.innerHTML=artify(`<div class="usHead">${dt!=null?`<div class="usDays"><b>${dt}</b><span>${dt===1?"dia":"dias"} juntos 💕</span></div>`:`<button class="btn gold small" id="uStart">📅 Quando vocês começaram a namorar?</button>`}
       <div class="usStats"><span title="moedinhas do casal">🪙 ${cBal()}</span></div></div>
-      <div class="stk ${st&&!misAllDone()?"risk":""}"><div class="stkN"><b>🔥 ${st}</b><span>${st===1?"dia seguido":"dias seguidos"}</span><small>recorde ${csBest()}</small></div>
-        <div class="stkW">${(()=>{ const D=csSet("days"), F=csSet("fd"), out=[]; for(let k=6;k>=0;k--){ const d=new Date(); d.setDate(d.getDate()-k); const key=dayKey(d), today=!k; out.push(`<span class="${D.has(key)?"on":F.has(key)?"frz":today?"now":"off"}"><i>${D.has(key)?"🔥":F.has(key)?"❄️":today?"…":"·"}</i><u>${"DSTQQSS"[d.getDay()]}</u></span>`); } return out.join(""); })()}</div>
-        <div class="stkS">${(()=>{ const nx=STREAK_MS.find(([n])=>n>st); return nx?`<span>Próximo marco: <b>${nx[0]} dias</b> (🪙 ${nx[1]}${nx[2]?` + ❄️`:""})</span>`:""; })()}<span>❄️ ${frzLeft()} ${frzLeft()===1?"protetor":"protetores"}</span></div>
-        ${st&&!misAllDone()?`<div class="stkR">Falta${misToday().filter(m=>misProg(m)<m.n).length>1?"m":""} ${misToday().filter(m=>misProg(m)<m.n).length} pra manter · acaba em ${hoursLeft()<1?Math.max(1,Math.round(hoursLeft()*60))+" min":Math.floor(hoursLeft())+"h"}</div>`:""}
-        <div class="stkB"><button class="btn small alt" id="uFrz">❄️ Protetor 🪙 80</button><button class="btn small alt" id="uRem">🔔 Lembrete diário${S.remSet?" ✓":""}</button>${online()?`<button class="btn small alt" id="uNudge">👉 Cutucar ${esc(nmRaw(other()))}</button>`:""}</div></div>
       ${nx?`<div class="usNext">${nx.ic} ${nx.left===0?`<b>Hoje:</b> ${esc(nx.n)}!`:`${esc(nx.n)} ${nx.left===1?"<b>amanhã</b>":`em <b>${nx.left} dias</b>`} <small>(${fmtD(nx.d)})</small>`}</div>`:""}
-      <h3>Missões de hoje</h3><div class="misL">${L.map(mm=>{ const p=Math.min(mm.n,misProg(mm)), ok=p>=mm.n; return `<div class="mis ${ok?"ok":""}"><i>${MIS_G[mm.g][0]}</i><div><b>${esc(mm.t)}</b><u><s style="width:${p/mm.n*100}%"></s></u></div><span>${ok?"✓":`${p}/${mm.n}`}</span></div>`; }).join("")}</div>
-      <p class="small">Cada missão dá 🪙 40. As de 🤝 só contam com vocês dois online juntos. As 3 no mesmo dia mantêm a sequência 🔥 e dão bônus. Se um dia passar em branco, um protetor ❄️ segura sozinho.</p>
       <div class="usGrid"><button class="btn pink" id="uThink">💭 Pensei em você</button><button class="btn" id="uShop">🛍️ Lojinha</button><button class="btn blue" id="uDecor">🛋️ Decorar a casa</button><button class="btn gold" id="uAlb">📸 Álbum</button><button class="btn alt" id="uDates">📅 Datas</button><button class="btn alt" id="uPh">📷 Tirar foto</button></div>`);
     const on=(id,fn)=>{ const e=box.querySelector(id); if(e) e.onclick=fn; };
     on("#uStart",()=>{ m.remove(); datesModal(); }); on("#uThink",()=>{ thinkSend(); }); on("#uShop",()=>{ m.remove(); shopModal(); }); on("#uDecor",()=>{ m.remove(); decorEdit(); });
@@ -3439,7 +3475,7 @@ function shopModal(tab){ tab=tab||SHOP.tab||"decor"; SHOP.tab=tab; const v=decor
       <h3>Coisas deles pra casa</h3><div class="shopG">${Object.entries(DECOR).filter(([,d])=>d.pet).map(([id,d])=>`<button class="shopI" data-b="${id}" ${bal<d.p?"disabled":""}><i>${d.e}</i><b>${d.n}</b><span>🪙 ${d.p}${v.own[id]?` · tem ${v.own[id]}`:""}</span></button>`).join("")}</div>`:""}
     ${tab==="decor"?`<div class="shopG">${Object.entries(DECOR).filter(([,d])=>!d.pet).map(([id,d])=>`<button class="shopI" data-b="${id}" ${bal<d.p?"disabled":""}><i>${d.e}</i><b>${d.n}</b><span>🪙 ${d.p}${v.own[id]?` · tem ${v.own[id]}`:""}</span></button>`).join("")}</div>`
     :`<div class="shopG">${HATS.map((h,k)=>{ if(!k) return `<button class="shopI ${!me.hat?"on":""}" data-h="0"><i>🙂</i><b>Sem chapéu</b><span>${!me.hat?"usando":"tirar"}</span></button>`; const own=hatOwned(i,k); return `<button class="shopI ${me.hat===k?"on":""}" data-h="${k}" ${!own&&bal<h.p?"disabled":""}><i>${h.e}</i><b>${h.n}</b><span>${me.hat===k?"usando":own?"usar":`🪙 ${h.p}`}</span></button>`; }).join("")}</div>`}
-    <p class="small">Ganhem moedinhas nas missões do dia 💞, na cozinha, no parkour, pescando, no jardim e nos jogos.</p>
+    <p class="small">Ganhem moedinhas jogando: nas barraquinhas, no parkour, na cozinha, no labirinto, pescando e no jardim.</p>
     <div class="obBtns"><button class="btn alt" data-close>Fechar</button></div></div>`);
   m.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>shopModal(b.dataset.t));
   const ad=m.querySelector("#sAdopt"); if(ad) ad.onclick=()=>{ m.remove(); adoptModal(); };
@@ -3635,11 +3671,10 @@ function hubDeco(sc){ const B=batcher(), col=(x,z,r)=>(W3.treeCol=W3.treeCol||[]
     [["Casa",0,2.62,"n"],["Jogos de palavras",-1,2.2,"w"],["Parque Radical",1,1.78,"e"],["Lago",0,1.36,"s"]].forEach(([t,s,y,d])=>{ const ew=d==="w"||d==="e", L=t.length>8?1.9:1.1, px=x+(ew?s*(L/2-.1):0), pz=z+(d==="n"?-(L/2-.1):d==="s"?(L/2-.1):0);
       B.box(ew?L:.07,.34,ew?.07:L,"#c8935f",px,y,pz); const m=mesh(new THREE.PlaneGeometry(L-.08,.28),new THREE.MeshBasicMaterial({map:woodSignTex((d==="w"?"‹ ":"")+t+(d==="e"?" ›":""),512,96,t.length>8?40:50),transparent:true}),px+(ew?0:-.045),y,pz+(ew?.045:0),false); if(!ew) m.rotation.y=-Math.PI/2; sc.add(m); }); }
   // moitinhas pelos caminhos
-  const r=rng(321); [[7,2.7],[10.6,6.3],[-1.9,-3.6],[1.9,-5.8],[-2.6,11.2],[1.5,12.6],[-6.2,2.4],[-6.2,6.6],[-23.6,2.9],[-23.6,6.1]].forEach(([x,z])=>{ for(let j=0;j<3;j++) B.sph(.34+r()*.16,j%2?"#4a8f45":"#5fae4b",x+(r()-.5)*.6,.26,z+(r()-.5)*.6,1,.8,1); if(r()<.7) B.sph(.1,"#ff9ab0",x+.2,.56,z); col(x,z,.45); });
-  // Rua dos Jogos: arco na entrada, tapetinho na frente de cada barraquinha e um coreto de bandeirinhas no fim da rua
+  const r=rng(321); [[7,2.7],[10.6,6.3],[-1.9,-3.6],[1.9,-5.8],[-2.6,11.2],[1.5,12.6],[-6.2,2.4],[-6.2,6.6],[-22.1,1.9],[-22.1,7.1]].forEach(([x,z])=>{ for(let j=0;j<3;j++) B.sph(.34+r()*.16,j%2?"#4a8f45":"#5fae4b",x+(r()-.5)*.6,.26,z+(r()-.5)*.6,1,.8,1); if(r()<.7) B.sph(.1,"#ff9ab0",x+.2,.56,z); col(x,z,.45); });
+  // Rua dos Jogos: arco na entrada, tapetinho na frente de cada barraquinha (a do fim da rua é a do Quem é mais provável)
   archGate(B,sc,-5.4,4.5,"Rua dos Jogos","#3aa394","#ffc65c");
   Object.entries(BOOTH3).forEach(([k,b])=>{ const f=boothFront(b,1.25); B.box(1.6,.03,.9,STATIONS[k].c1,f.x,.035,f.z); });
-  { const x=-23.2, z=4.5, cols=["#ff6f91","#ffc65c","#58b394","#9583ec","#6fb8ff"]; B.cyl(1.5,1.6,.24,"#d9cdbd",x,.12,z,18).cyl(.09,.11,3.4,"#fffaf2",x,1.9,z,8).sph(.2,"#ffc65c",x,3.7,z); for(let k=0;k<10;k++){ const a=k/10*Math.PI*2; B.add(new THREE.ConeGeometry(.16,.3,3),cols[k%5],x+Math.cos(a)*.75,2.9,z+Math.sin(a)*.75,1,1,1,Math.PI,0,0); B.box(.03,.03,.8,"#fffaf2",x+Math.cos(a)*.38,3.25,z+Math.sin(a)*.38,0,-a+Math.PI/2,.5); } col(x,z,1.6); }
   // Parque Radical: arco na entrada
   archGate(B,sc,AR_C.x-4.6,4.5,"Parque Radical","#ff6f91","#ffc65c");
   const m=B.mesh(); sc.add(m); }
@@ -4508,7 +4543,7 @@ function hub(){
   pushMe({place:"hub", x:S.pos[S.me].x, y:S.pos[S.me].y});
   const root=render(`
     <div class="scene" id="scene"><div id="gl" style="position:absolute;inset:0;z-index:1"></div><div class="ov" id="ov"></div>
-      <div class="hudTop"><div class="hudG"><button class="hb" id="bMap" aria-label="Lugares">🗺️</button><button class="hb" id="bSky" aria-label="Céu">🌙</button><button class="hb usHb" id="bUs" aria-label="Nós dois: missões, lojinha e datas">💞<i class="usDot"></i><i class="usSt" hidden></i></button><button class="hb" id="bPh" aria-label="Tirar foto">📷</button></div>
+      <div class="hudTop"><div class="hudG"><button class="hb" id="bMap" aria-label="Lugares">🗺️</button><button class="hb" id="bSky" aria-label="Céu">🌙</button><button class="hb usHb" id="bUs" aria-label="Nós dois: lojinha, álbum e datas">💞</button><button class="hb" id="bPh" aria-label="Tirar foto">📷</button></div>
         <div class="pill" id="status"></div>
         <div class="hudG"><button class="hb chatHb" id="bChat" aria-label="Conversa">💬<i class="chatBadge" hidden></i></button><button class="hb" id="bSnd" aria-label="Sons">🎵</button><button class="hb" id="bTrophy" aria-label="Placar">🏆</button></div></div>
       <div class="bannerBox" id="banners"></div><div class="ctrlChip" id="ctrlBar"></div><div class="joy" id="joy"><div class="joyK"></div></div>
@@ -4556,7 +4591,7 @@ function hub(){
   screenCleanup=()=>{ if(OB.on) obbyExit(true); if(KZ.on) kzExit(true); cancelAnimationFrame(raf); window.removeEventListener("resize",szLater); window.removeEventListener("orientationchange",szLater); window.removeEventListener("pageshow",szLater); document.removeEventListener("visibilitychange",onVis); if(ro) ro.disconnect(); szT.forEach(clearTimeout); window.removeEventListener("keydown",kd); window.removeEventListener("keyup",kd); clearInterval(HUB.statusInt); [0,1].forEach(i=>HUB.timers[i].forEach(clearTimeout)); closeCtx(); if(TV.mode) tvOff(false); TV.scr=null; TV.rem=null; HUB.joyV=null; HUB.keys={}; HUB.mv={x:0,z:0}; HUB.joyMoving=false; SKY.tags=[]; };
   bindActs3(root);
   mailTick(); refreshCtrl(); refreshStatus(); refreshBanners(); refreshTags(); SKY.force=true; refreshSkyBtn(); starsChanged();
-  root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook; root.querySelector("#bUs").onclick=usModal; root.querySelector("#bPh").onclick=photoOn; PH.on=false; DEC.edit=false; DEC.el=null; DEC.drag=null; setTimeout(()=>{ if(!HUB) return; csRefresh(); thinkCheck(); celebrateCheck(); renderDecor(); photoWall(); petsReset(); },1800); setTimeout(()=>{ if(!HUB) return; frzCheck(); streakMilestones(); csRefresh(); if(!S.nagT||Date.now()-S.nagT>3*36e5){ S.nagT=Date.now(); save(); streakNag(); } },online()?6500:2600);
+  root.querySelector("#bMap").onclick=placesModal; root.querySelector("#bSky").onclick=skyLook; root.querySelector("#bUs").onclick=usModal; root.querySelector("#bPh").onclick=photoOn; PH.on=false; DEC.edit=false; DEC.el=null; DEC.drag=null; setTimeout(()=>{ if(!HUB) return; csRefresh(); thinkCheck(); celebrateCheck(); renderDecor(); photoWall(); petsReset(); },1800); setTimeout(()=>{ if(!HUB) return; csRefresh(); },online()?6500:2600);
   root.querySelector("#bTrophy").onclick=trophyModal; root.querySelector("#bSnd").onclick=soundModal; root.querySelector("#bChat").onclick=chatOpen; chatBadge();
   root.querySelector("#status").onclick=()=>{ const i=NET.p2p?NET.p2p.info():{}; modal(`<h2>Conexão</h2><p>Versão <b>${VERSION}</b> · você é <b>${nm(S.me)}</b></p>
     <p>Direta: <b>${esc(i.p2p||"-")}</b>${i.p2pOpen?" ✅":""}<br>Pela internet: <b>${esc(i.relay||"-")}</b><br>${nm(other())} visto: <b>${i.visto?ago(i.visto):"ainda não"}</b></p>
@@ -6334,7 +6369,7 @@ function step(dt){
   // cisnes, nuvens, água
   W3.swans.forEach((s,k)=>{ const a=t*.08+s.ph*Math.PI, rx=LAKE3.rx*.55, rz=LAKE3.rz*.5; const x=LAKE3.x+Math.cos(a)*rx+k*.6, z=LAKE3.z+Math.sin(a)*rz; s.g.position.set(x,.02+Math.sin(t*2+k)*.025,z); s.g.rotation.y=Math.atan2(-Math.sin(a)*rx, Math.cos(a)*rz); });
   W3.clouds.forEach((c,k)=>{ c.position.x+=dt*(.4+k*.05); if(c.position.x>60) c.position.x=-60; });
-  if(W3.cage) W3.cage.rotation.y+=dt*1.5;
+  if(W3.cage) W3.cage.rotation.y+=dt*1.5; if(W3.pvSpin) W3.pvSpin.rotation.y=Math.sin(W3.t*1.3)*.7;
   if(W3.water) W3.water.material.uniforms.uT.value=t;
   fxTick(dt); lakeLifeTick(dt); fountainTick(dt); ambientTick(dt); insideTick(dt); WIND.u.value=t; fliesTick(dt); mailboxTick(dt);
   if(W3.boat && !W3.boatRide){ W3.boat.position.y=Math.sin(t*1.5)*.03; W3.boat.rotation.z=Math.sin(t*1.1)*.035; W3.boat.rotation.x=Math.sin(t*.9)*.02; }
@@ -6738,10 +6773,10 @@ function refreshBanners(){
     if(sent && sent.res && !(S.seenRes||[]).includes(sent.code)){
       html+=`<div class="banner"><span>🎯 ${nm(o)} ${sent.res.solved?`acertou sua palavra em ${sent.res.tries}/6`:"não acertou sua palavra"} (${esc(disp(decodeWord(sent.code)||"").toUpperCase())})</span><button class="x" data-a="seen">✕</button></div>`;
     }
-    for(const g of ["bingo","caca","termo","coop","quiz","stop","desenho"]){
+    for(const g of ["bingo","caca","termo","coop","quiz","stop","desenho","provavel"]){
       const s=NET.docs["jogos/"+g];
       if(s && s.by===o && !s.end && Date.now()-s.start<5*60e3 && !(S.seenInv||[]).includes(s.seed)){
-        html+=`<div class="banner"><span>${g==="coop"?"🤝":STATIONS[g].emoji} ${nm(o)} começou ${({caca:"um Caça-palavras",bingo:"um Bingo",coop:"um Termo juntos",quiz:"um Quiz do casal",stop:"uma rodada de Stop",desenho:"um Desenha e adivinha"})[g]||"um duelo de Termo"}!</span><button class="btn" data-a="join-${g}">Entrar</button><button class="x" data-a="no-${g}">✕</button></div>`;
+        html+=`<div class="banner"><span>${g==="coop"?"🤝":STATIONS[g].emoji} ${nm(o)} começou ${({caca:"um Caça-palavras",bingo:"um Bingo",coop:"um Termo juntos",quiz:"um Quiz do casal",stop:"uma rodada de Stop",desenho:"um Desenha e adivinha",provavel:"um Quem é mais provável"})[g]||"um duelo de Termo"}!</span><button class="btn" data-a="join-${g}">Entrar</button><button class="x" data-a="no-${g}">✕</button></div>`;
       }
     }
   }
@@ -6783,7 +6818,8 @@ function openStation(g){
     stop:"Sorteia uma letra e vocês correm pra preencher 6 categorias. Quem terminar grita STOP e o outro tem 3 segundos! ✋",
     desenho:"Um desenha a palavra sorteada e o outro vê o desenho aparecendo ao vivo e tenta adivinhar. Vocês jogam juntos e depois trocam! ✏️",
     bingo:"Cada um tem uma cartela. Os números vão sendo sorteados: marque na sua cartela e grite BINGO quando fechar uma linha, coluna ou diagonal!",
-    caca:"Ache as palavras escondidas arrastando o dedo da primeira até a última letra. Quem achar mais ganha!"}[g];
+    caca:"Ache as palavras escondidas arrastando o dedo da primeira até a última letra. Quem achar mais ganha!",
+    provavel:"Aparece uma frase e cada um vota em quem tem mais a ver com ela: você ou o outro. Votaram igual? Combinou, e a pessoa ganha o título. No fim aparece a sintonia de vocês."}[g];
   const m=modal(`<h2>${STATIONS[g].emoji} ${GAME_NAMES[g]}</h2><p>${desc}</p><div class="stack" style="margin-top:14px">${opts}<button class="btn alt" data-close>Voltar pro parque</button></div>`);
   m.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{
     m.remove(); const o2=b.dataset.o;
@@ -6798,6 +6834,7 @@ function openStation(g){
     else if(g==="quiz"){ o2==="online"? startOnline("quiz") : quizGame(false); }
     else if(g==="stop"){ o2==="online"? startOnline("stop") : stopGame(false); }
     else if(g==="desenho"){ o2==="online"? startOnline("desenho") : drawGame(false); }
+    else if(g==="provavel"){ o2==="online"? startOnline("provavel") : provGame(false); }
   });
 }
 function startOnline(g){
@@ -6806,6 +6843,7 @@ function startOnline(g){
   if(g==="quiz") return quizGame(true);
   if(g==="stop") return stopGame(true);
   if(g==="desenho") return drawGame(true);
+  if(g==="provavel") return provGame(true);
   if(g==="bingo") bingoGame(true);
   else if(g==="caca") cacaGame(true);
   else if(g==="termo") termoDuel();
@@ -7788,7 +7826,7 @@ function adoptModal(){
   m.querySelectorAll("#sp .opt").forEach(o=>o.onclick=()=>{ st.sp=o.dataset.sp; st.c=0; draw(); });
   draw();
   m.querySelector("#ok").onclick=()=>{
-    const pr=petPrice(st.sp); if(pr&&!cSpend(pr)){ toast("Faltam moedinhas 🪙 Façam as missões do dia 💞"); return; }
+    const pr=petPrice(st.sp); if(pr&&!cSpend(pr)){ toast("Faltam moedinhas 🪙 Joguem os minigames pra ganhar mais"); return; }
     const now=Date.now();
     const pers=pick(Object.keys(PERS)), p={id:"pet"+now.toString(36)+Math.floor(Math.random()*1e4).toString(36), sp:st.sp, c:st.c, name:(name.value.trim()||st.name).slice(0,14), by:S.me, born:now, tFed:now, tPet:now, tPlay:now, tBath:now, love:0, pers, xp:0, b0:S.me===0?3:0, b1:S.me===1?3:0, last:{by:S.me,a:"adotou",t:now}};
     m.remove(); savePet(p); snd("adopt");
@@ -8063,6 +8101,138 @@ function quizGame(isOnline){
   if(isOnline) screenNet=(path,d)=>{
     if(path==="jogos/quiz-p"+o && d && d.seed===sess.seed){ if(d.done && step>=N) waitOrResults(); else if(d.done) say(o,"Já terminei! 😏",1800); }
     if(path==="jogos/quiz" && d && d.seed!==sess.seed && d.by===o && !showed && Date.now()-d.start<60e3){ toast(`${nmRaw(o)} começou um quiz novo`); quizGame(true); }
+  };
+}
+
+/* =================== QUEM É MAIS PROVÁVEL (v8.2): aparece uma frase, cada um vota em um dos dois e o jogo mostra se combinou =================== */
+// [frase depois de "Quem é mais provável de…", título se der o Alvaro, título se der a Leticia]
+const PROV=[
+ ["dormir no meio do filme","Dorminhoco","Dorminhoca"],
+ ["esquecer uma data importante","Esquecido","Esquecida"],
+ ["chorar vendo filme","Coração mole","Coração mole"],
+ ["gastar tudo em comida","Comilão","Comilona"],
+ ["mandar mensagem primeiro depois de uma briga","Pacificador","Pacificadora"],
+ ["ficar com ciúme à toa","Ciumento","Ciumenta"],
+ ["se perder mesmo usando o GPS","Perdido","Perdida"],
+ ["rir na hora errada","Riso frouxo","Riso frouxo"],
+ ["fazer uma surpresa romântica","Romântico","Romântica"],
+ ["demorar pra se arrumar","Demorado","Demorada"],
+ ["roubar a coberta de noite","Ladrão de coberta","Ladra de coberta"],
+ ["cantar no chuveiro","Cantor de chuveiro","Cantora de chuveiro"],
+ ["pedir a sobremesa antes da comida","Formiguinha","Formiguinha"],
+ ["falar dormindo","Tagarela do sono","Tagarela do sono"],
+ ["se assustar com qualquer barulho","Medroso","Medrosa"],
+ ["matar a barata","Corajoso","Corajosa"],
+ ["esquecer onde deixou o celular","Cabeça de vento","Cabeça de vento"],
+ ["chegar atrasado no próprio aniversário","Atrasado","Atrasada"],
+ ["virar a noite jogando","Gamer da madrugada","Gamer da madrugada"],
+ ["adotar um bichinho da rua","Protetor dos bichos","Protetora dos bichos"],
+ ["começar a dieta na segunda e desistir na terça","Rei do “segunda eu começo”","Rainha do “segunda eu começo”"],
+ ["ganhar uma discussão","Advogado","Advogada"],
+ ["pedir desculpa primeiro","Coração gigante","Coração gigante"],
+ ["tirar mil fotos do outro","Fotógrafo","Fotógrafa"],
+ ["dançar sem música","Dançarino","Dançarina"],
+ ["comer a comida do prato do outro","Beliscador","Beliscadora"],
+ ["dizer “eu te amo” primeiro de manhã","Apaixonado","Apaixonada"],
+ ["planejar a viagem inteira","Organizado","Organizada"],
+ ["esquecer a mala em casa","Desligado","Desligada"],
+ ["ficar bravo de fome","Bravo de fome","Brava de fome"],
+ ["acordar de bom humor","Raio de sol","Raio de sol"],
+ ["apertar a soneca cinco vezes","Rei da soneca","Rainha da soneca"],
+ ["chorar de saudade","Manteiga derretida","Manteiga derretida"],
+ ["mandar meme o dia inteiro","Rei dos memes","Rainha dos memes"],
+ ["dar spoiler sem querer","Estraga-surpresa","Estraga-surpresa"],
+ ["guardar um segredo até o fim","Cofre","Cofre"],
+ ["contar o presente antes da hora","Língua solta","Língua solta"],
+ ["fazer drama por causa de uma gripe","Dramático","Dramática"],
+ ["cozinhar algo gostoso de surpresa","Chef da casa","Chef da casa"],
+ ["queimar o arroz","Mestre do arroz queimado","Mestra do arroz queimado"],
+ ["comprar uma coisa que não precisa","Gastador","Gastadora"],
+ ["guardar dinheiro pro futuro","Econômico","Econômica"],
+ ["fazer amizade com um desconhecido na fila","Simpático","Simpática"],
+ ["querer ir embora cedo da festa","Caseiro","Caseira"],
+ ["ficar no celular na cama até tarde","Coruja","Coruja"],
+ ["escrever uma carta de amor","Poeta","Poetisa"],
+ ["ligar só pra ouvir a voz","Grudinho","Grudinho"],
+ ["ficar famoso na internet","Famoso","Famosa"],
+ ["rir da própria piada","Comediante","Comediante"],
+ ["perder no jogo e pedir revanche","Competitivo","Competitiva"],
+ ["roubar no jogo","Trapaceiro","Trapaceira"],
+ ["cuidar do outro quando fica doente","Enfermeiro","Enfermeira"],
+ ["inventar um apelido novo","Criativo","Criativa"],
+ ["pegar no sono no meio da ligação","Soneca da ligação","Soneca da ligação"],
+ ["viajar sem planejar nada","Aventureiro","Aventureira"],
+ ["tapar o olho em filme de terror","Tapa-olho do terror","Tapa-olho do terror"],
+ ["dar o último pedaço pro outro","Generoso","Generosa"],
+ ["falar “tô chegando” ainda em casa","Enrolado","Enrolada"],
+ ["decorar a casa inteira no Natal","Natalino","Natalina"],
+ ["querer mais um bichinho em casa","Louco dos bichos","Louca dos bichos"],
+ ["esquecer o que ia falar no meio da frase","Avoado","Avoada"],
+ ["topar qualquer aventura","Parceiro de tudo","Parceira de tudo"],
+ ["sentir saudade cinco minutos depois de desligar","Saudade ambulante","Saudade ambulante"],
+ ["chorar em casamento dos outros","Emocionado","Emocionada"],
+ ["perder a chave de casa","Perde-tudo","Perde-tudo"],
+ ["puxar assunto às três da manhã","Filósofo da madrugada","Filósofa da madrugada"],
+];
+// frases que ainda não saíram vêm primeiro
+function provPick(n){ const seen=new Set(S.provSeen||[]), pool=shuffle([...PROV.keys()],rng(Date.now())), fresh=pool.filter(k=>!seen.has(k)); return (fresh.length>=n?fresh:fresh.concat(pool.filter(k=>seen.has(k)))).slice(0,n); }
+function provGame(isOnline){
+  const N=10; let sess;
+  if(isOnline){ ({sess}=joinOrCreate("provavel",{qs:provPick(N)})); if(!Array.isArray(sess.qs)) sess.qs=[...Array(N).keys()]; pushMe({place:"provavel"}); }
+  else sess={seed:newSeed(), qs:provPick(N)};
+  const me=isOnline?S.me:0, o=1-me, qs=sess.qs.filter(q=>PROV[q]).slice(0,N), n=qs.length, PC=["#4f9dff","#ff6f91"];
+  const a=[[],[]]; let step=0, who=me, stage=isOnline?"live":"v0", phase="vote", showed=false, timer=0;
+  if(isOnline){ [me,o].forEach(i=>{ const d=NET.docs["jogos/provavel-p"+i]; if(d&&d.seed===sess.seed&&Array.isArray(d.a)) a[i]=d.a.slice(0,n); }); step=Math.min(a[0].length,a[1].length); }
+  S.provSeen=[...(S.provSeen||[]).filter(k=>!qs.includes(k)),...qs].slice(-44); save();
+  const root=render(`${topbar("Quem é mais provável",false)}
+    <div class="pvMain"><div class="pvCard" id="pvc"></div>
+      <div class="pvPeople">${[0,1].map(i=>`<button class="pvP" data-i="${i}" style="--pc:${PC[i]}">${av(i,"idle")}<b>${nm(i)}</b><div class="pvChips"></div></button>`).join("")}</div></div>`,"provavel");
+  bindTop(root, hub, ()=>modal(`<h2>Quem é mais provável</h2><p>Aparece uma frase e cada um toca em quem acha que tem mais a ver com ela: você ou o outro. Depois o jogo mostra os dois votos.</p><p>Se vocês votarem igual, combinou: a pessoa ganha o título da frase. No fim aparece a sintonia de vocês e os títulos de cada um.</p><button class="btn" data-close>Entendi</button>`));
+  const pvc=root.querySelector("#pvc"), main=root.querySelector(".pvMain"), btns=[...root.querySelectorAll(".pvP")], live=()=>root.isConnected;
+  const later=(fn,ms)=>{ clearTimeout(timer); timer=setTimeout(()=>{ if(live()) fn(); },ms); };
+  const st=html=>{ const e=pvc.querySelector("#pvs"); if(e) e.innerHTML=artify(html); };
+  const clearP=()=>btns.forEach(b=>{ b.classList.remove("mine","hit","dim"); b.disabled=false; b.querySelector(".pvChips").innerHTML=""; });
+  function card(){
+    clearTimeout(timer); if(step>=n){ if(stage==="v0"){ stage="v1"; who=1; step=0; modal(`<h2>Agora é a vez de ${esc(nmRaw(1))}</h2><p>Passa o celular sem contar em quem você votou.</p><button class="btn" data-close>Pronto</button>`); } else if(stage==="v1"){ stage="rev"; step=0; } else return results(); }
+    if(stage==="rev") return reveal(step);
+    phase="vote"; clearP(); const q=PROV[qs[step]], w=stage==="live"?me:who;
+    pvc.innerHTML=`<div class="pvTop"><span class="pvN">${step+1}/${n}</span><span>${stage==="live"?"vocês dois votam":`vez de ${esc(nmRaw(w))}`}</span></div><p class="pvQ">Quem é mais provável de</p><h2>${esc(q[0])}?</h2><div class="pvSt" id="pvs"></div>`;
+    pvc.classList.remove("in"); void pvc.offsetWidth; pvc.classList.add("in");
+    if(stage==="live" && a[me][step]!=null){ btns[a[me][step]].classList.add("mine"); btns.forEach(b=>b.disabled=true); return check(); }
+    st(stage==="live"&&a[o][step]!=null?`<span>${esc(nmRaw(o))} já votou. Falta você!</span>`:`<span>Toca em quem você acha</span>`);
+  }
+  btns.forEach(b=>b.onclick=()=>{ if(phase!=="vote"||b.disabled) return; const i=+b.dataset.i, w=stage==="live"?me:who; if(a[w][step]!=null) return; a[w][step]=i; snd("key"); btns.forEach(x=>x.disabled=true); b.classList.add("mine");
+    if(stage==="live"){ push("jogos/provavel-p"+me,{seed:sess.seed,a:a[me].slice()}); check(); } else later(()=>{ step++; card(); },280); });
+  function check(){ if(a[me][step]!=null && a[o][step]!=null) return reveal(step); st(`<span>Esperando ${esc(nmRaw(o))} votar</span><div class="dots"><i></i><i></i><i></i></div>`); }
+  function reveal(k){
+    phase="rev"; const q=PROV[qs[k]], v=[a[0][k],a[1][k]], same=v[0]===v[1];
+    if(stage==="rev"){ clearP(); pvc.innerHTML=`<div class="pvTop"><span class="pvN">${k+1}/${n}</span><span>os votos</span></div><p class="pvQ">Quem é mais provável de</p><h2>${esc(q[0])}?</h2><div class="pvSt" id="pvs"></div>`; pvc.classList.remove("in"); void pvc.offsetWidth; pvc.classList.add("in"); }
+    btns.forEach((b,i)=>{ b.disabled=true; b.classList.remove("mine"); b.classList.toggle("hit",same&&v[0]===i); b.classList.toggle("dim",same&&v[0]!==i); b.querySelector(".pvChips").innerHTML=[0,1].filter(j=>v[j]===i).map(j=>`<span class="pvChip" style="--pc:${PC[j]}">${head(j)}</span>`).join(""); });
+    if(same){ const x=v[0]; snd("chime"); setMood(x,"happy"); setMood(1-x,"kiss"); const r=btns[x].getBoundingClientRect(); hearts(document.body,r.left+r.width/2-12,r.top+r.height*.35,["💖","💕","✨"],8);
+      st(`<b class="ok">Combinou!</b><span>${esc(nmRaw(x))} leva o título de <u>${esc(q[x+1])}</u></span><button class="btn pink small pvNext">${k+1>=n?"Ver resultado":"Próxima"}</button>`); }
+    else { snd("boing"); setMood(0,"idle"); setMood(1,"idle"); const self=v[0]===0;
+      st(`<b class="no">${self?"Os dois se entregaram!":"Um jogou pro outro!"}</b><span>${self?"Cada um votou em si mesmo.":"Cada um votou no outro."} Essa rende conversa.</span><button class="btn pink small pvNext">${k+1>=n?"Ver resultado":"Próxima"}</button>`); }
+    const go=()=>{ if(phase!=="rev"||step!==k) return; setMood(0,"idle"); setMood(1,"idle"); step=k+1; card(); };
+    const nb=pvc.querySelector(".pvNext"); if(nb) nb.onclick=go; later(go,stage==="live"?4200:6500);
+  }
+  function results(){
+    if(showed) return; showed=true; clearTimeout(timer); phase="end";
+    const same=qs.map((_,k)=>a[0][k]!=null&&a[0][k]===a[1][k]), c=same.filter(Boolean).length, best=Math.max(+S.provBest||0,c), rec=c>(+S.provBest||0); S.provBest=best; save();
+    mis("jogo"); cEarn(6+c,"sintonia"); snd(c>=n*.7?"win":"chime");
+    if(isOnline&&sess.by===me) push("jogos/provavel",Object.assign({},sess,{end:Date.now()}));
+    const tit=[0,1].map(i=>qs.map((qi,k)=>same[k]&&a[0][k]===i?PROV[qi][i+1]:null).filter(Boolean)), dif=qs.map((qi,k)=>same[k]?null:[PROV[qi][0],a[0][k],a[1][k]]).filter(Boolean);
+    const msg=c===n?"Uma cabeça só!":c>=n*.8?"Sintonia de casal de novela":c>=n*.5?"Vocês se conhecem bem":c>=n*.3?"Rendeu assunto, hein":"Dois mundos diferentes (e tudo bem)";
+    main.innerHTML=artify(`<div class="pvCard pvFin in"><div class="pvFinL"><div class="pvRing" style="--p:${Math.round(c/n*100)}"><b>${c}</b><span>de ${n}</span></div><h2>${msg}</h2><p>vocês votaram igual em ${c} ${c===1?"frase":"frases"}${rec&&c>0?" · recorde novo!":best>c?` · recorde: ${best}`:""}</p>
+        <div class="row2"><button class="btn alt" id="bk">Parque</button><button class="btn pink" id="ag">Jogar de novo</button></div></div>
+      <div class="pvFinR">${[0,1].map(i=>`<div class="pvTit" style="--pc:${PC[i]}"><h4>${head(i)}Títulos de ${esc(nmRaw(i))}</h4>${tit[i].length?`<div class="pvTags">${tit[i].map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:`<p class="small">Nenhum título dessa vez.</p>`}</div>`).join("")}
+        ${dif.length?`<div class="pvTit pvDif"><h4>Pra conversar depois</h4>${dif.map(([t,x,y])=>`<div class="pvD"><b>${esc(t[0].toUpperCase()+t.slice(1))}</b><span>${esc(nmRaw(0))} votou em ${esc(x===0?"si":nmRaw(1))} · ${esc(nmRaw(1))} votou em ${esc(y===1?"si":nmRaw(0))}</span></div>`).join("")}</div>`:""}</div></div>`);
+    const r=main.getBoundingClientRect(); hearts(document.body,r.left+r.width*.22,r.top+60,["💖","💕","✨"],c>=n*.7?12:6);
+    main.querySelector("#bk").onclick=hub; main.querySelector("#ag").onclick=()=>{ if(isOnline) newSession("provavel",{qs:provPick(N)}); provGame(isOnline); };
+  }
+  card();
+  if(isOnline) screenNet=(path,d)=>{
+    if(path==="jogos/provavel-p"+o && d && d.seed===sess.seed && Array.isArray(d.a)){ a[o]=d.a.slice(0,n); if(phase==="vote"){ if(a[me][step]!=null) check(); else if(a[o][step]!=null) st(`<span>${esc(nmRaw(o))} já votou. Falta você!</span>`); } }
+    if(path==="jogos/provavel" && d && d.seed && d.seed!==sess.seed && d.by===o && !d.end && Date.now()-d.start<60e3){ toast(`${nmRaw(o)} começou uma rodada nova`); provGame(true); }
   };
 }
 
